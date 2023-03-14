@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+
+sudo apt-get -y update \
+&& sudo apt-get -y \
+    --force-yes install \
+    --fix-missing \
+    apt-utils \
+    build-essential \
+    bzip2 \
+    ca-certificates \
+    curl \
+    freetds-bin \
+    freetds-dev \
+    git \
+    gnupg \
+    libbz2-dev \
+    libfontconfig \
+    liblzma-dev \
+    libreadline-dev \
+    libsqlite3-dev \
+    libssl-dev \
+    libffi-dev \
+    make \
+    net-tools \
+    openssh-client \
+    readline-common \
+    supervisor \
+    tdsodbc \
+    unixodbc \
+    unixodbc-dev \
+    wget \
+    xz-utils \
+    zlib1g-dev
+
+
+sudo bash -c 'echo "[FreeTDS]"                                             >  /etc/odbcinst.ini'
+sudo bash -c 'echo "Description = TDS driver (Sybase/MS SQL)"              >> /etc/odbcinst.ini'
+sudo bash -c 'echo "Driver = /usr/lib/x86_64-linux-gnu/odbc/libtdsodbc.so" >> /etc/odbcinst.ini'
+sudo bash -c 'echo "Setup = /usr/lib/x86_64-linux-gnu/odbc/libtdsS.so"     >> /etc/odbcinst.ini'

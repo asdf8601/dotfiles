@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+#https://www.linuxbabe.com/cloud-storage/install-google-drive-ocamlfuse-on-ubuntu-16-04-linux-mint-18
+sudo add-apt-repository -y ppa:alessandro-strada/ppa
+sudo apt update && sudo apt install google-drive-ocamlfuse
+google-drive-ocamlfuse
+[ ! -d "/mnt/google-drive" ] && sudo mkdir /mnt/google-drive && sudo chown mgreco:mgreco /mnt/google-drive
+google-drive-ocamlfuse /mnt/google-drive/
+# unmount fusermount -u /mnt/google-drive

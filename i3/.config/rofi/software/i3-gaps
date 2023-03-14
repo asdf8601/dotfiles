@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+sudo apt install libxcb1-dev libxcb-keysyms1-dev libpango1.0-dev \
+libxcb-util0-dev libxcb-icccm4-dev libyajl-dev \
+libstartup-notification0-dev libxcb-randr0-dev \
+libev-dev libxcb-cursor-dev libxcb-xinerama0-dev \
+libxcb-xkb-dev libxkbcommon-dev libxkbcommon-x11-dev \
+autoconf libxcb-xrm0 libxcb-xrm-dev automake libxcb-shape0-dev
+
+sudo apt install build-essential
+sudo apt install meson ninja-build
+
+dir="/tmp/i3-gaps"
+
+set -e
+[ -d "$dir" ] && rm -rf $dir
+# clone the repository
+git clone --depth 1 https://github.com/Airblader/i3 $dir
+cd $dir
+
+# compile
+mkdir -p build && cd build
+meson ..
+ninja

@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+source $DOTFILES/shell/variables
+source $DOTFILES/shell/customization
+source $DOTFILES/shell/functions
+source $DOTFILES/shell/aliases
+source $DOTFILES/shell/nnn
+
+for hidden in $(find $DOTFILES/ -name "*.hide" -type f)
+do
+    source $hidden
+done
+
+[ ! -f ~/.bashrc ] && dotfiles link
+
+# bin
+addToPath "/usr/local/bin"
+addToPath "$HOME/bin"
+addToPath "$HOME/.cargo/bin"
+addToPath "$HOME/.local/bin"
+addToPath "$HOME/.deno/bin"
+# go
+addToPathFront "$HOME/go/bin"
+addToPathFront "/home/mgreco/.go/bin"
+addToPathFront "/usr/local/go/bin"
+# db
+addToPathFront "/opt/mssql-tools/bin"
+addToPath "/opt/mssql-tools/bin"
+# ruby
+addToPathFront "$GEM_HOME/bin"
+# projects folders
+addToMyGitProjects $HOME/github
+addToMyGitProjects $HOME/gitlab

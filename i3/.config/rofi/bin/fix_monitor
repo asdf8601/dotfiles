@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# source https://fedoramagazine.org/using-i3-with-multiple-monitors/
+# xrandr  # execute this to see monitors names
+xrandr --output HDMI-1 --auto --above eDP-1 --rate 144

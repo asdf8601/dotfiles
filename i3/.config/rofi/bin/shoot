@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+img=/tmp/shot$(date "+%FT%T").png
+
+maim -s "$img"
+url=$(imgur "$img")
+
+echo "url: $url"
+echo $url | xclip -selection c
+notify-send "Uploaded to imgur: ${url}"

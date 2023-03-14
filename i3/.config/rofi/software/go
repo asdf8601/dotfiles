@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+file=/tmp/go1.18.1.linux-amd64.tar.gz
+set -e
+wget https://go.dev/dl/$file
+sudo rm -rf /usr/local/go
+sudo tar -C /usr/local -xzf $file
+rm $file
+go version

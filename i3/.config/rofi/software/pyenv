@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+
+sudo apt-get -y --force-yes install \
+    --fix-missing \
+    apt-utils \
+    build-essential \
+    bzip2 \
+    ca-certificates \
+    curl \
+    freetds-bin \
+    freetds-dev \
+    git \
+    gnupg \
+    libbz2-dev \
+    libfontconfig \
+    liblzma-dev \
+    libreadline-dev \
+    libsqlite3-dev \
+    libssl-dev \
+    libffi-dev \
+    make \
+    net-tools \
+    openssh-client \
+    readline-common \
+    supervisor \
+    tdsodbc \
+    unixodbc \
+    unixodbc-dev \
+    vim \
+    wget \
+    xz-utils \
+    zlib1g-dev
+
+curl https://pyenv.run | bash

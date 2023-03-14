@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+sudo apt install zsh -y
+sudo chsh -s $(which zsh) $USERNAME
+
+set -e
+git clone https://github.com/catppuccin/zsh-syntax-highlighting.git /tmp/zsh-syntax-highlighting/
+cd /tmp/zsh-syntax-highlighting/
+
+[ ! -d "~/.zsh/" ] && mkdir ~/.zsh/
+cp -v catppuccin-zsh-syntax-highlighting.zsh ~/.zsh/

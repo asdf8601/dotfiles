@@ -94,7 +94,11 @@ bindsym $super+Shift+d exec i3-dmenu-desktop --dmenu="dmenu -i -fn 'ubuntu:size=
 bindsym $super+Shift+t exec pkill picom && picom -b
 
 # open rofi
-bindsym $super+d exec rofi -lines 12 -padding 18 -width 60 -location 0 -show drun -sidebar-mode -columns 3 -font 'ubuntu 12'
+bindsym $super+d exec sh $HOME/.config/rofi/bin/launcher
+bindsym $super+r exec sh $HOME/.config/rofi/bin/runner
+bindsym $super+p exec sh $HOME/.config/rofi/bin/powermenu
+# bindsym $super+s exec sh $HOME/.config/rofi/bin/screenshot
+# bindsym $super+d exec rofi -lines 12 -padding 18 -width 60 -location 0 -show drun -sidebar-mode -columns 3 -font 'ubuntu 12'
 bindsym $super+Ctrl+Shift+k exec "i3bindings | rofi -dmenu -no-config -theme-str 'listview { columns: 1; flow: vertical; }' -width 80"
 bindsym $super+e exec "/home/mgreco/rofi/splatmoji/splatmoji copy"
 
@@ -214,7 +218,7 @@ mode "resize" {
 
     bindsym Return mode "default"
 }
-bindsym $super+r mode "resize"
+bindsym $super+Shift+r mode "resize"
 
 
 # =============================================================================
@@ -261,7 +265,6 @@ bindsym $super+x layout tabbed
 bindsym $super+c layout toggle split
 
 bindsym $super+s focus mode_toggle
-
 bindsym $super+a focus parent
 bindsym $super+Shift+a focus child
 
@@ -412,6 +415,7 @@ for_window [class="slack" title=".*Huddle"] floating enable
 
 for_window [class="Matplotlib"] floating enable, resize set 500 px 400 px, move position center
 for_window [title="countdown.*"] floating enable, resize set 396 px 102 px, move position center
+for_window [title="MyTODO.md"] floating enable, resize set 500 px 400 px, move position right
 
 # autostart
 exec --no-startup-id xrandr --output HDMI-1 --left-of eDP-1 --auto --primary
@@ -434,3 +438,6 @@ exec --no-startup-id i3-msg 'exec QT_SCALE_FACTOR=1.5 keepassxc'
 # exec --no-startup-id i3-msg 'exec telegram-desktop'
 # exec --no-startup-id i3-msg 'exec flatpak run com.github.wwmm.easyeffects'
 exec_always --no-startup-id "pgrep --exact xev || xev -root -event randr | grep --line-buffered ScreenChangeNotify | while read change; do pkill -RTMIN+4 i3blocks; done"
+
+
+# vim: tw=0

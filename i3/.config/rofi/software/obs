@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+# dependencies
+sudo apt install ffmpeg
+# virtual cam support
+sudo apt install v4l2loopback-dkms
+
+# add ppa
+sudo add-apt-repository ppa:obsproject/obs-studio
+sudo apt update
+sudo apt install obs-studio

@@ -1,0 +1,43 @@
+- defaults:
+    link:
+      relink: true
+      force: true
+      create: true
+
+- clean:
+    ~/:
+      force: true
+    ~/.config:
+      recursive: true
+
+- link:
+    ~/.dotfiles: .
+
+    # shell
+    ~/.profile: shell/profile
+    ~/.bash_profile: shell/bash_profile
+    ~/.bashrc: shell/bashrc
+    ~/.zshrc: shell/zshrc
+    ~/.config/nvim/init.lua:
+      path: vim/init.lua
+      force: true
+
+    # Python
+    ~/.condarc: conda/.condarc
+    ~/.pdbrc.py: python/pdbrc.py
+    ~/.config/pip/pip.conf: python/pip.conf
+    ~/.ipython/profile_default/ipython_config.py: python/ipython_config.py
+
+    # binaries / commands
+    ~/.local/bin/:
+        path: bin/*
+        glob: true
+
+- shell:
+    -
+      command: git submodule update --init
+      stdout: true
+
+    -
+      command: bash ~/.dotfiles/software/nvim
+      stdout: true

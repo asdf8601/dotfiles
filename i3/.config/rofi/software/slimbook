@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# https://ubuntuhandbook.org/index.php/2020/06/improve-battery-life-ubuntu-20-04-lts/
+sudo add-apt-repository ppa:slimbook/slimbook
+sudo apt update
+sudo apt install slimbookbattery

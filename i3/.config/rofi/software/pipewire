@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+clone_dir=/tmp/pipewire
+git clone https://gitlab.freedesktop.org/pipewire/pipewire.git $clone_dir
+pushd $clone_dir > /dev/null
+./autogen.sh --prefix=/usr/local
+make
+sudo make install
+popd
+

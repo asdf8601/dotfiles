@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+conda create -n neovim python=3.7 -y
+conda activate neovim
+python -s -m pip install neovim "python-language-server[all]"
+pip install notedown pynvim --user
+echo "export PYTHON_NEOVIM=$(which python)" >> $DOTFILES/shell/variables
+conda deactivate
+

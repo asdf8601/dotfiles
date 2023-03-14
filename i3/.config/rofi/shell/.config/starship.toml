@@ -1,0 +1,146 @@
+format = """
+$all\
+$line_break\
+$shell\
+$character"""
+
+# Wait 10 milliseconds for starship to check files under the current directory.
+scan_timeout = 10
+
+# Disable the blank line at the start of the prompt
+add_newline = true
+
+"$schema" = 'https://starship.rs/config-schema.json'
+
+[character]
+success_symbol = "[\\$](bold green)"
+error_symbol = "[\\$](bold red)"
+vimcmd_symbol = "[<](bold green)"
+disabled = false
+
+
+[git_commit]
+disabled = false
+tag_symbol = " tag "
+
+[git_status]
+disabled = false
+ahead = ">"
+behind = "<"
+diverged = "<>"
+renamed = "r"
+deleted = "x"
+
+[aws]
+symbol = "aws:"
+
+[c]
+symbol = "C:"
+
+[conda]
+disabled = false
+symbol = "conda:"
+format = "[$symbol$environment]($style) "
+
+[cmake]
+disabled = false
+format = "[$symbol]($style) "
+symbol = "cmake:"
+
+[directory]
+truncation_length = 12
+truncation_symbol = '.../'
+read_only = " ro"
+disabled = false
+
+[docker_context]
+symbol = "docker:"
+disabled = false
+
+[git_branch]
+format = '[$symbol$branch]($style) '
+truncation_length = 10
+truncation_symbol = ''
+style = 'bold purple'
+# ignore_branches = ['master', 'main']
+symbol = ""
+disabled = false
+
+[nodejs]
+format = '[$symbol]($style) '
+symbol = "nodejs:"
+disabled = false
+
+[sudo]
+symbol = "sudo"
+format = '[$symbol]($style) '
+disabled = false
+
+[gcloud]
+disabled = true
+symbol = '️gc:'
+format = '[$symbol$account(@$domain)(\($project\))]($style) '
+style = 'bold blue'
+project_aliases = { 'data-observatory-ops'='do-ops'}
+
+[golang]
+disabled = false
+symbol = "go:"
+format = '[$symbol]($style)'
+
+[lua]
+disabled = false
+symbol = "lua:"
+format = '[$symbol]($style)'
+
+[meson]
+symbol = "meson:"
+format = '[$symbol]($style)'
+disabled = false
+
+[python]
+symbol = "py:"
+# format = '[$symbol]($style)'
+format = '[${symbol}${pyenv_prefix}(${version} )(\($virtualenv\) )]($style)'
+disabled = true
+
+[rust]
+symbol = "rs:"
+format = '[$symbol]($style)'
+disabled = false
+
+[username]
+style_user = 'white bold'
+style_root = 'black bold'
+format = '[$user]($style) '
+disabled = false
+show_always = true
+
+[hostname]
+ssh_only = true
+format = '[$ssh_symbol](bold blue)@[$hostname](bold red) '
+ssh_symbol = ''
+disabled = false
+# trim_at = ''
+
+[time]
+disabled = false
+format = '[$time]($style) '
+style = 'bold purple'
+time_format = '%T'
+
+[line_break]
+disabled = false
+
+
+[cmd_duration]
+min_time = 500
+format = '[took:$duration](bold green) '
+disabled = false
+
+# [custom.foo]
+# command = 'echo foo' # shows output of command
+# detect_files = ['foo'] # can specify filters but wildcards are not supported
+# when = ''' test "$HOME" = "$PWD" '''
+# format = ' transcending [$output]($style) '
+

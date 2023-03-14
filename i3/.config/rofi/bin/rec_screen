@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+ffmpeg -f x11grab -r 30 -s 1920x1080 -i :0.0 -q:v 0 -q:a 0 $HOME/Videos/Screen_$(date +%Y_%m_%d-%H.%M.%S).mpg

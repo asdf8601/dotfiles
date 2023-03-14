@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+dir=/tmp/github/catppuccin/rofi
+git clone https://github.com/catppuccin/rofi $dir
+cp -r $dir/rofi/deathemonic ~/.config/rofi

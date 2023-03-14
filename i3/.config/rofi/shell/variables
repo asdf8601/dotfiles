@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+export SSH_KEY_PATH="~/.ssh/rsa_id"
+export EDITOR="nvim"
+
+export AUTOENV_ENV_FILENAME=".autoenv"
+export AUTOENV_ASSUME_YES=1
+
+export CONDA_DIR="$HOME/miniconda3"
+export GEM_HOME="$HOME/.gem"
+export DEFAULT_IMG=mmngreco/dev:latest
+export PYTHON_NEOVIM="$HOME/miniconda3/envs/neovim/bin/python"
+export MYGITPROJECTS="$HOME/github"
+export MYVIMRC="$HOME/.config/nvim/init.vim"
+export LINODE_HOST="139.162.167.149"
+export KITTY_LISTEN_ON=unix:/tmp/mykitty-$PPID
+
+# export MOIRA_HOURS_PER_DAY=6
+export GDK_BACKEND=x11
+export GTK_THEME=Materia:dark:compact
+export GTK_THEME=Materia:dark
+export AWS_CONFIG_FILE=$HOME/.aws/credentials

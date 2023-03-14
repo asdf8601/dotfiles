@@ -1,0 +1,30 @@
+# vim integration
+pynvim
+
+# linting
+black; python_version>='3.6'
+flake8
+isort
+pydocstyle
+# numpydoc
+# wemake-python-styleguide
+# python-lsp-server[all]
+
+# testing
+pytest
+# pytest-cov
+# pytest-xdist
+# pytest-aggreport
+# pytest-sugar
+# pytest-notifier
+
+# debugging
+pdbpp
+
+# repl
+pyflyby
+ipython
+rich
+typer
+python-devtools
+

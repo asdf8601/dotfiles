@@ -1,0 +1,2 @@
+#!/usr/bin/env zsh
+echo $(tac $HISTFILE | grep -m1 $1 | awk -F ";" '{ print $2 }')

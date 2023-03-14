@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+sudo apt install libxcb-xinerama0-dev \
+                 libxcb-icccm4-dev \
+                 libxcb-randr0-dev \
+                 libxcb-util0-dev \
+                 libxcb-ewmh-dev \
+                 libxcb-keysyms1-dev \
+                 libxcb-shape0-dev \
+                 build-essentials \
+                 -y
+
+clone_dir=/temp/dotfiles/bspwm
+git clone https://github.com/baskerville/bspwm.git $clone_dir
+pushd clone_dir && make && sudo make install && popd
+
+clone_dir=/temp/dotfiles/sxhkd
+git clone https://github.com/baskerville/bspwm.git $clone_dir
+pushd clone_dir && make && sudo make install && popd
+
+sudo apt install feh rofi dunst -y
+
+# uninstalling
+# git clone https://github.com/baskerville/bspwm.git $HOME/bspwm
+# git clone https://github.com/baskerville/sxhkd.git $HOME/sxhkd
+# cd bspwm && sudo make uninstall
+# cd ../sxhkd && sudo make uninstall

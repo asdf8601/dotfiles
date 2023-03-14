@@ -52,7 +52,7 @@ border=#f2d93a
 #
 [todo]
 full_text= todo
-command=xterm -e "nvim ~/TODO.md"
+command=xterm -e "nvim ~/MyTODO.md"
 border=#f2d93a
 
 [time]

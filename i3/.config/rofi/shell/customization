@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# fast keyboard delay (ms) and speed (keys by sec)
+# keyboard typing speed
+
+if [ -x "$(command -v xset)" ]; then
+    [ -z ${IS_DOCKER+x} ] && xset r rate 250 60 &> /dev/null
+fi
+
+if [ -x "$(command -v setxkbmap)" ]; then
+    setxkbmap -rules evdev -model evdev -layout us -variant altgr-intl
+fi
+

@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+set -e
+function install_absent () {
+    echo Installing $1
+    if ! command -v $1 &> /dev/null
+    then
+        bash -x ${DOTFILES}/software/$1
+    fi
+}
+
+echo Cloning ohmyzsh...
+
+# only if it's not present
+[ ! -d "$HOME/.oh-my-zsh"] && ${DOTFILES}/software/ohmyzsh
+[ ! -d "$HOME/.autoenv"] && ${DOTFILES}/software/autoenv
+
+install_absent keepassxc
+install_absent zsh
+install_absent zsh-suggestions
+install_absent fzf
+install_absent git-secret
+install_absent glab
+install_absent rust
+install_absent go
+install_absent conda
+install_absent gh
+install_absent latex
+install_absent node
+install_absent ctags
+install_absent nvim
+install_absent tmux
+install_absent diff-so-fancy
+install_absent delta
+install_absent ctags
+install_absent pipx
+

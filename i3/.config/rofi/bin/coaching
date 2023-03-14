@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+function coaching () {
+    echo who you are?
+    sleep 0.4
+    echo 🚜 máquina 🚜
+}
+
+for i in {1..3}; do
+    if [[ "$i" -eq 3 ]]; then
+        sleep 0.4 && coaching | tr "[a-zá]" "[A-ZÁ]"
+    else
+        sleep 0.4 && coaching
+    fi
+done
