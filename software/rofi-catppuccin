@@ -3,4 +3,4 @@ set -e -v
 dir=/tmp/github/catppuccin/rofi
 [ -d $dir ] && rm -rf $dir
 git clone https://github.com/catppuccin/rofi $dir
-cp -r $dir/deathemonic ~/.config/rofi
+cp -r $dir/deathemonic/* ~/.config/rofi
