@@ -91,7 +91,7 @@ bindsym $super+t exec xterm
 
 # start dmenu (a program launcher)
 bindsym $super+Shift+d exec i3-dmenu-desktop --dmenu="dmenu -i -fn 'ubuntu:size=12'"
-bindsym $super+Shift+t exec pkill picom && picom -b
+# bindsym $super+Shift+t exec pkill picom && picom -b
 
 # open rofi
 bindsym $super+d exec $HOME/.config/rofi/bin/launcher
@@ -425,7 +425,7 @@ exec --no-startup-id xsettingsd &
 exec --no-startup-id nm-applet &
 exec --no-startup-id blueman-applet &
 exec --no-startup-id volumeicon &
-exec --no-startup-id picom -b --experimental-backends
+# exec --no-startup-id picom -b --experimental-backends
 # exec --no-startup-id picom -b
 exec --no-startup-id slimbookbattery &
 # exec --no-startup-id caffeine-indicator &
