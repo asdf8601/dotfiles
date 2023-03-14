@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-# https://unix.stackexchange.com/questions/90990/less-command-and-syntax-highlighting
-# https://superuser.com/questions/71588/how-to-syntax-highlight-via-less
-sudo apt install -y libsource-highlight-common source-highlight
-dpkg -L libsource-highlight-common | grep lesspipe

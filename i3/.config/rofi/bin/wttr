@@ -1,3 +1,0 @@
-#!/bin/bash
-CITY=${1:-Madrid}
-curl -4 http://wttr.in/${CITY}

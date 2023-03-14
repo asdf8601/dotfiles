@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-
-dir=/tmp/github/catppuccin/rofi
-git clone https://github.com/catppuccin/rofi $dir && cd $dir
-cp -r * /home/mgreco/.config/rofi

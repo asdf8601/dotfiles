@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-# https://github.com/wwmm/easyeffects
-flatpak install flathub com.github.wwmm.easyeffects
-# flatpak run com.github.wwmm.easyeffects
-

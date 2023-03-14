@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-# https://github.com/sharkdp/bat#installation
-sudo apt install -y bat
