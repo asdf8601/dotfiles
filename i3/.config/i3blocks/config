@@ -1,26 +1,26 @@
-# vim:filestype=config:fileencoding=utf-8:ft=conf:fdm=marker:fdl=0:fdc=1:
+# vim:filetype=config:fileencoding=utf-8:ft=conf:fdm=marker:fdl=0:fdc=1:
 separator=false
 separator_block_width=8
 border_top=0
 border_left=0
 border_right=0
-border_bottom=2
+border_bottom=3
 # color=#000000
 color=#FFFF
 
 
 [logout]
-full_text=" "
+full_text="  "
 command=i3-msg -q exit
 border=#d84949
 
 [lock]
-full_text=" "
+full_text="  "
 command=i3lock -i /home/mgreco/github/mmngreco/wallpapers/pexels-visually-us-1643409.jpg
 border=#d84949
 
 [shutdoown]
-full_text=" "
+full_text="   "
 command=exec systemctl poweroff -i
 border=#d84949
 
