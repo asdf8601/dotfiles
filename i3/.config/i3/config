@@ -131,7 +131,8 @@ bindsym $super+Ctrl+l exec i3lock -i /home/mgreco/github/mmngreco/wallpapers/000
 bindsym $super+w exec brave-browser-stable
 
 # open file browser
-bindsym $super+Shift+f exec nautilus
+# bindsym $super+Shift+f exec nautilus
+bindsym $super+Shift+f exec thunar
 
 
 # ============================================================================
