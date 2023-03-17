@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+source $DOTFILES/shell/carto
 
 addToMyGitProjects(){
     if [[ "$MYGITPROJECTS" != *"$1"*  ]]; then
@@ -379,3 +380,4 @@ function gcloud_bucket_project() {
 	"https://storage.googleapis.com/storage/v1/b/${BUCKET_NAME}?fields=projectNumber" | jq .projectNumber | sed 's/"//' | sed 's/"//')
 	gcloud projects list --filter "PROJECT_NUMBER=${PROJECT_NUMBER}"
 }
+
