@@ -920,6 +920,12 @@ autocmd({'FileType'}, {
   command = "setl nonumber norelativenumber",
 })
 
+autocmd({'BufWritePost'}, {
+  group = Mgreco,
+  pattern = "~/.Xresources",
+  command = "silent !xrdb <afile> > /dev/null",
+})
+
 
 
 local telescope = require('telescope')
