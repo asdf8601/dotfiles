@@ -22,7 +22,7 @@ require('packer').startup(function(use)
   --     })
   --   end
   -- }
-
+  use { 'michaelb/sniprun', run = 'bash ./install.sh'}
   use {
     "folke/todo-comments.nvim",
     requires = "nvim-lua/plenary.nvim",
@@ -44,7 +44,6 @@ require('packer').startup(function(use)
     end,
   }
 
-  use {'nvim-treesitter/nvim-treesitter-textobjects'}
   use {
     'chipsenkbeil/distant.nvim',
     branch = 'v0.2',
@@ -1703,5 +1702,7 @@ vim.api.nvim_create_autocmd({"BufEnter"}, {
 --   end,
 -- })
 
+-- sniprun
+require('sniprun').setup({})
 
 -- vim:ts=2 sts=2 sw=2 et

@@ -3,6 +3,9 @@ $include /etc/inputrc
 
 set completion-ignore-case On
 
+# enables st shortcut
+set enable-keypad on
+
 # Trying to make alt key send by xterm works with tmux
 # https://vim.fandom.com/wiki/Get_Alt_key_to_work_in_terminal
 # set meta-flag on
