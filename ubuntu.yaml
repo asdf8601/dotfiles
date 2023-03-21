@@ -16,6 +16,7 @@
     # visidata
     ~/.visidatarc: ./.visidatarc
     ~/.config/mimeapps.list: ./mime/mimeapps.list
+    ~/.local/share/applications/st.desktop: ./mime/st.desktop
     ~/.local/share/applications/visidata.desktop: ./mime/visidata.desktop
     ~/.local/share/applications/visidata.png: ./mime/visidata.png
 
