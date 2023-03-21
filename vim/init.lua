@@ -22,6 +22,7 @@ require('packer').startup(function(use)
   --     })
   --   end
   -- }
+  use {'xiyaowong/telescope-emoji.nvim'}
   use { 'michaelb/sniprun', run = 'bash ./install.sh'}
   use {
     "folke/todo-comments.nvim",
@@ -424,6 +425,7 @@ require('gitsigns').setup {
 
 -- [[ Telescope ]]
 -- See `:help telescope` and `:help telescope.setup()`
+require("telescope").load_extension("emoji")
 require('telescope').setup {
   defaults = {
     mappings = {
@@ -432,6 +434,20 @@ require('telescope').setup {
         ['<C-d>'] = false,
       },
     },
+  },
+  extensions = {
+    emoji = {
+      action = function(emoji)
+        -- argument emoji is a table.
+        -- {name="", value="", cagegory="", description=""}
+
+        vim.fn.setreg("*", emoji.value)
+        print([[Press p or "*p to paste this emoji]] .. emoji.value)
+
+        -- insert emoji when picked
+        -- vim.api.nvim_put({ emoji.value }, 'c', false, true)
+      end,
+    }
   },
 }
 
