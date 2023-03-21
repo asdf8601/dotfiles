@@ -51,7 +51,7 @@ set $ws9   "9:  "
 set $ws10 "10:  "
 
 set $default_gaps_inner 8
-set $default_gaps_outer 40
+set $default_gaps_outer 24
 gaps inner $default_gaps_inner
 gaps outer $default_gaps_outer
 gaps top 10
@@ -300,7 +300,7 @@ bar {
     tray_padding 7
     height $height
     colors {
-        statusline         $white
+        statusline         $black
         background         $transparent
         separator          $transparent
 
