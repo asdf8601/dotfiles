@@ -8,6 +8,11 @@ XTerm.vt100.locale: false
 XTerm.vt100.utf8: true
 XTerm.vt100.backarrowKey: false
 xterm*trueColor: true
+XTerm.vt100.scrollTtyOutput: false
+XTerm.vt100.scrollKey: true
+XTerm.vt100.bellIsUrgent: true
+XTerm.vt100.metaSendsEscape: true
+
 ! xterm*eightBitInput: false
 ! XTerm.vt100.allowColorOps: true
 
