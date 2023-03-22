@@ -1181,10 +1181,7 @@ vim.api.nvim_create_autocmd('FileType', { group=mmngreco, pattern='fugitive', co
 vim.api.nvim_create_autocmd('FileType', { group=mmngreco, pattern='python', command='nnoremap <buffer> <F8> :silent !black -l79 -S %<CR><CR>'})
 
 -- [[ slime ]]
-vim.g.slime_bracketed_paste = 0
 vim.g.slime_cell_delimiter = [[\s*#\s*%%]]
-vim.g.slime_dont_ask_default = 1
-vim.g.slime_no_mappings = 1
 vim.g.slime_paste_file='~/.slime_paste'
 vim.g.slime_target = "tmux"
 vim.g.slime_bracketed_paste = 1
