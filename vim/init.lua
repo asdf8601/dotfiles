@@ -767,39 +767,6 @@ cmp.setup {
   },
 }
 
--- require("catppuccin").setup({
---   transparent_background = false,
---   term_colors = false,
---   compile = {
---     enabled = false,
---     path = vim.fn.stdpath("cache") .. "/catppuccin",
---   },
---   dim_inactive = {
---     enabled = false,
---     shade = "dark",
---     percentage = 0.15,
---   },
---   styles = {
---     comments = {},
---     conditionals = {},
---     loops = {},
---     functions = {},
---     keywords = {},
---     strings = {},
---     variables = {},
---     numbers = {},
---     booleans = {},
---     properties = {},
---     types = {},
---     operators = {},
---   },
---   integrations = {
---     -- For various plugins integrations see https://github.com/catppuccin/nvim#integrations
---     treesitter = true,
---   },
---   color_overrides = {},
---   highlight_overrides = {},
--- })
 
 require('illuminate').configure({
   -- providers: provider used to get references in the buffer, ordered by priority
@@ -1191,7 +1158,7 @@ vim.g.slime_no_mappings = 1
 
 vim.keymap.set('n', '<leader>cv', ':SlimeConfig<cr>', {noremap = true})
 vim.keymap.set('n', '<leader>ep', '<Plug>SlimeParagraphSend', {noremap = true})
-vim.keymap.set('n', '<leader>cc', '<Plug>SlimeSendCell', {noremap = true})
+-- vim.keymap.set('n', '<leader>cc', '<Plug>SlimeSendCell', {noremap = true})
 vim.keymap.set('n', '<leader>ck', '<cmd>call search(g:slime_cell_delimiter, "b")<cr>', {noremap = true})
 vim.keymap.set('n', '<leader>cj', '<cmd>call search(g:slime_cell_delimiter)<cr>', {noremap = true})
 vim.keymap.set('n', '<leader>cv', ':SlimeConfig<cr>', {noremap = true})
@@ -1629,55 +1596,6 @@ vim.keymap.set('v', '<leader>p', '"+p', { desc = 'Paste clipboard register' })
 vim.keymap.set('n', '<leader>y', '"+yy', {noremap = true, desc = 'copy to system clipboard'})
 vim.keymap.set('v', '<leader>y', '"+y', {noremap = true, desc = 'copy to system clipboard'})
 vim.keymap.set('n', '<leader>yf', ':let @+ = expand("%:p")<cr>', {noremap = true, desc = 'yank filename/buffer path'})
-
-
--- [[ large files ]]
-local LargeFile = vim.api.nvim_create_augroup("LargeFileAutocmds", {})
-local old_eventignore = vim.o.eventignore;
-local largefile_opened = false;
-
-
-vim.api.nvim_create_autocmd({"BufReadPre"}, {
-	group = LargeFile,
-	callback = function(ev)
-		if ev.file then
-			local status, size = pcall(function() return vim.loop.fs_stat(ev.file).size end)
-			if status and size > 1024 * 1024 then -- large file
-				vim.wo.wrap = false
-				old_eventignore = vim.o.eventignore
-				largefile_opened = true
-				vim.o.eventignore = 'FileType'
-				vim.bo.swapfile = false
-				vim.bo.bufhidden = 'unload'
-				-- vim.bo.buftype = 'nowrite'
-				vim.bo.undolevels = -1
-			end
-		end
-	end
-})
-
-vim.api.nvim_create_autocmd({"BufWinEnter"}, {
-	group = LargeFile,
-	callback = function(ev)
-		if largefile_opened then
-			largefile_opened = false
-			vim.o.eventignore = nil
-		end
-	end
-})
-
-
-vim.api.nvim_create_autocmd({"BufEnter"}, {
-	group = LargeFile,
-	callback = function(ev)
-		local byte_size = vim.api.nvim_buf_get_offset(ev.buf, vim.api.nvim_buf_line_count(ev.buf))
-		if byte_size > 1024 * 1024 then
-			vim.cmd('NoMatchParen')
-		else
-			vim.cmd('DoMatchParen')
-		end
-	end
-})
 
 -- local BigQuery = vim.api.nvim_create_augroup("BigQuery", {})
 -- vim.api.nvim_create_autocmd({"BufEnter"}, {
