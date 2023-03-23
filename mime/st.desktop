@@ -1,5 +1,5 @@
 [Desktop Entry]
-Name=Suckless Terminal
+Name=simple Terminal (st)
 GenericName=simple terminal
 Comment=Suckless terminal emulator for X
 Exec=st -t "Simple Terminal" -f "Caskaydia Cove Nerd Font:size=14"

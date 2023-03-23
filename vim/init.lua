@@ -89,7 +89,7 @@ require('packer').startup(function(use)
           },
           keymaps = {
             close = { "<C-c>" },
-            submit = "<C-Enter>",
+            submit = "<C-e>",
             yank_last = "<C-y>",
             yank_last_code = "<C-k>",
             scroll_up = "<C-u>",
