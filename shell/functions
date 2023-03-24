@@ -355,7 +355,9 @@ pip-dev-tools() {
 }
 
 todo() {
-    [[ -f ./TODO.md ]] && nvim ./TODO.md || nvim ~/TODO.md
+    TODO_DEFAULT=${TODO_DEFAULT:-~/MyTODO.md}
+    TODO_FILE=${1:-TODO.md}
+    [[ -f $TODO_FILE ]] && nvim $TODO_FILE || nvim $TODO_DEFAULT
 }
 
 
