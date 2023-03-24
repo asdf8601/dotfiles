@@ -1,37 +1,11 @@
 # pip install git+farisachugthai/gruvbox_pygments
-from IPython.core.ultratb import AutoFormattedTB
+# from traitlets.config import get_config
+# from IPython.terminal.prompts import ClassicPrompts
 
-
-def custom_exception_colors(ip):
-    # Change the colors below to your preferred colors for the traceback
-    exception_colors = {
-        'Normal': 'NoColor',
-        'Filename': 'LightBlue',
-        'LineNumber': 'Cyan',
-        'FunctionName': 'Cyan',
-        'Exception': 'Red',
-    }
-
-    ip.set_custom_exc(
-        (Exception,),
-        AutoFormattedTB(
-            mode='Context',
-            color_scheme='Linux',
-            call_pdb=False,
-            ostream=ip.showsyntaxerror,
-            tb_offset=1,
-            **exception_colors
-        ),
-    )
-
-
-from traitlets.config import get_config
-from IPython.terminal.prompts import ClassicPrompts
-
-c = get_config()
+# c = get_config()
 
 c.TerminalInteractiveShell.colors = 'Linux'
-c.TerminalInteractiveShell.highlighting_style = 'monokai'
+c.TerminalInteractiveShell.highlighting_style = 'gruvbox-dark'
 c.TerminalInteractiveShell.highlight_matching_brackets = True
 c.TerminalInteractiveShell.xmode = 'Context'
 
@@ -48,12 +22,14 @@ c.PlainTextFormatter.pprint = True
 c.TerminalInteractiveShell.editor = 'nvim'
 # c.TerminalInteractiveShell.editing_mode = 'vi'
 # c.InteractiveShellApp.exec_lines = []
-c.InteractiveShellApp.exec_lines = [
-    "print('Config loaded!')",
-    "from custom_exceptions import custom_exception_colors",
-    "custom_exception_colors(get_ipython())"
+c.InteractiveShellApp.extensions = [
+    "autoreload",
+    "rich",
+    # "pyflyby",
 ]
-c.InteractiveShellApp.extensions = ["autoreload", "rich", "pyflyby"]
+c.InteractiveShellApp.exec_lines = [
+    "%load_ext rich",
+]
 
 # c.InteractiveShell.colors = 'NoColor'
 # c.TerminalInteractiveShell.highlight_matching_brackets = True
@@ -380,7 +356,7 @@ c.InteractiveShellApp.extensions = ["autoreload", "rich", "pyflyby"]
 
 ## The name or class of a Pygments style to use for syntax highlighting. To see
 #  available styles, run `pygmentize -L styles`.
-# c.TerminalInteractiveShell.highlighting_style = "solarized-dark"
+c.TerminalInteractiveShell.highlighting_style = "gruvbox-dark"
 
 ## Override highlighting format for specific tokens
 # c.TerminalInteractiveShell.highlighting_style_overrides = {}
