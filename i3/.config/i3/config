@@ -419,6 +419,8 @@ for_window [title="countdown.*"] floating enable, resize set 400 px 102 px, move
 for_window [title="MyTODO.md"] floating enable, resize set 500 px 400 px, move position right
 
 # autostart
+# pipx install i3-layouts
+exec --no-startup-id i3-layouts
 exec --no-startup-id xrandr --output DP-3 --left-of eDP-1 --auto --primary
 exec --no-startup-id feh --bg-fill $HOME/github/mmngreco/wallpapers/WallpaperDog-10941700.jpg
 exec --no-startup-id dunst &
@@ -440,5 +442,7 @@ exec --no-startup-id i3-msg 'exec QT_SCALE_FACTOR=1.5 keepassxc'
 # exec --no-startup-id i3-msg 'exec flatpak run com.github.wwmm.easyeffects'
 exec_always --no-startup-id "pgrep --exact xev || xev -root -event randr | grep --line-buffered ScreenChangeNotify | while read change; do pkill -RTMIN+4 i3blocks; done"
 
+set $i3l vstack to workspace $ws1
+set $i3l autosplit to workspace $ws2
 
 # vim: tw=0

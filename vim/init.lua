@@ -768,12 +768,13 @@ require('mason').setup()
 -- Enable the following language servers
 -- Feel free to add/remove any LSPs that you want here. They will automatically be installed
 local servers = {
-  -- 'clangd',
-  -- 'rust_analyzer',
-  'pyright',
-  -- 'tsserver',
-  -- 'lua_ls',
-  -- 'gopls'
+    -- 'clangd',
+    -- 'rust_analyzer',
+    'pyright',
+    -- 'tsserver',
+    -- 'lua_ls',
+    -- 'gopls'
+    -- 'sqlls',
 }
 
 -- Ensure the servers above are installed
@@ -1227,6 +1228,8 @@ vim.keymap.set('n', '<leader>rc', ':new ~/.config/nvim/init.lua<cr>', {noremap =
 
 local mmngreco = vim.api.nvim_create_augroup('mmngreco', {clear = true})
 -- vim.api.nvim_create_autocmd('BufWritePost', {group=mmngreco, pattern='~/.config/nvim/init.lua', command='source ~/.config/nvim/init.lua'})
+-- execute '%!python -m json.tool' | w
+vim.api.nvim_create_autocmd('BufRead', { group=mmngreco, pattern='*.json', command='%!python -m json.tool'})
 vim.api.nvim_create_autocmd('BufWritePre', { group=mmngreco, pattern='*', command='%s/\\s\\+$//e'})
 vim.api.nvim_create_autocmd('BufWritePre', { group=mmngreco, pattern='*.go', command='GoFmt'})
 vim.api.nvim_create_autocmd('BufEnter', { group=mmngreco, pattern='*.dbout', command='norm zR'})
