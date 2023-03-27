@@ -2,7 +2,7 @@
 set $super Mod4
 set $alt Mod1
 set $height 35
-set $editor kitty
+set $editor st
 
 # Use: xrandr command to check monitor names.
 # set font
@@ -84,7 +84,7 @@ bindsym $super+minus scratchpad show
 ## Show the sup-mail scratchpad window, if any.
 # bindsym $alt+s [title="^Sup ::"] scratchpad show
 
-bindsym $super+Return exec kitty
+bindsym $super+Return exec st
 bindsym $super+t exec xterm
 
 # bindsym $super+Shift+Return workspace 1; focus; exec xterm
@@ -379,7 +379,7 @@ mode "$mode_gaps_outer" {
 # for window /
 # ----------------------------------------------------------------------------
 
-assign [class=kitty] $ws1
+assign [class=st] $ws1
 assign [class=Brave-browser] $ws2
 assign [class=DBeaver] $ws3
 assign [class=slack|Slack] $ws4
@@ -420,7 +420,7 @@ for_window [title="MyTODO.md"] floating enable, resize set 500 px 400 px, move p
 
 # autostart
 # pipx install i3-layouts
-exec --no-startup-id i3-layouts
+# exec --no-startup-id i3-layouts
 exec --no-startup-id xrandr --output DP-3 --left-of eDP-1 --auto --primary
 exec --no-startup-id feh --bg-fill $HOME/github/mmngreco/wallpapers/WallpaperDog-10941700.jpg
 exec --no-startup-id dunst &
@@ -434,7 +434,7 @@ exec --no-startup-id volumeicon &
 # exec --no-startup-id caffeine-indicator &
 # exec --no-startup-id clipit &
 
-exec --no-startup-id i3-msg 'exec kitty'
+exec --no-startup-id i3-msg 'exec st'
 exec --no-startup-id i3-msg 'exec QT_SCALE_FACTOR=1.5 keepassxc'
 # exec --no-startup-id i3-msg 'exec xterm'
 # exec --no-startup-id i3-msg 'exec nautilus'
@@ -442,7 +442,7 @@ exec --no-startup-id i3-msg 'exec QT_SCALE_FACTOR=1.5 keepassxc'
 # exec --no-startup-id i3-msg 'exec flatpak run com.github.wwmm.easyeffects'
 exec_always --no-startup-id "pgrep --exact xev || xev -root -event randr | grep --line-buffered ScreenChangeNotify | while read change; do pkill -RTMIN+4 i3blocks; done"
 
-set $i3l vstack to workspace $ws1
-set $i3l autosplit to workspace $ws2
+# set $i3l vstack to workspace $ws1
+# set $i3l autosplit to workspace $ws2
 
 # vim: tw=0
