@@ -8,37 +8,75 @@ set $editor st
 # set font
 font pango:CaskaydiaCove Nerd Font, FontAwesome 12
 
-set_from_resource $darkred     color1  #000000
-set_from_resource $red         color9  #000000
-set_from_resource $darkgreen   color2  #000000
-set_from_resource $green       color10 #000000
-set_from_resource $darkyellow  color3  #000000
-set_from_resource $yellow      color11 #000000
-set_from_resource $darkblue    color4  #000000
-set_from_resource $blue        color12 #000000
-set_from_resource $darkmagenta color5  #000000
-set_from_resource $magenta     color13 #000000
-set_from_resource $darkcyan    color6  #000000
-set_from_resource $cyan        color14 #000000
-set_from_resource $darkwhite   color7  #000000
-set_from_resource $white       color15 #000000
-# Use custom colors for black
-set $black       #282828
-set $darkblack   #1d2021
-set $transparent #00000000
-
 floating_minimum_size -1 x -1
 floating_maximum_size -1 x -1
 
 
-#                       BORDER      BACKGROUND  TEXT        INDICATOR   CHILD_BORDER
-client.focused          $black      $black      $darkwhite  $darkblack  $darkblack
-client.unfocused        $black      $black      $white      $darkblack  $darkblack
-client.focused_inactive $black      $black      $white      $darkblack  $darkblack
-client.urgent           $darkred    $darkred    $black      $darkred    $darkred
-client.background       $black
+# set_from_resource $darkred     color1  #000000
+# set_from_resource $red         color9  #000000
+# set_from_resource $darkgreen   color2  #000000
+# set_from_resource $green       color10 #000000
+# set_from_resource $darkyellow  color3  #000000
+# set_from_resource $yellow      color11 #000000
+# set_from_resource $darkblue    color4  #000000
+# set_from_resource $blue        color12 #000000
+# set_from_resource $darkmagenta color5  #000000
+# set_from_resource $magenta     color13 #000000
+# set_from_resource $darkcyan    color6  #000000
+# set_from_resource $cyan        color14 #000000
+# set_from_resource $darkwhite   color7  #000000
+# set_from_resource $white       color15 #000000
+# # Use custom colors for black
+set $black       #282828
+set $darkblack   #1d2021
+set $transparent #00000000
+
+#
+# #                       BORDER      BACKGROUND  TEXT        INDICATOR   CHILD_BORDER
+# client.focused          $black      $black      $darkwhite  $blue       $darkblack
+# client.unfocused        $black      $black      $white      $darkblack  $darkblack
+# client.focused_inactive $black      $black      $white      $darkblack  $darkblack
+# client.urgent           $darkred    $darkred    $black      $darkred    $darkred
+# client.background       $black
+
+## catppuccin
+set $rosewater #f5e0dc
+set $flamingo  #f2cdcd
+set $pink      #f5c2e7
+set $mauve     #cba6f7
+set $red       #f38ba8
+set $maroon    #eba0ac
+set $peach     #fab387
+set $green     #a6e3a1
+set $teal      #94e2d5
+set $sky       #89dceb
+set $sapphire  #74c7ec
+set $blue      #89b4fa
+set $lavender  #b4befe
+set $text      #cdd6f4
+set $subtext1  #bac2de
+set $subtext0  #a6adc8
+set $overlay2  #9399b2
+set $overlay1  #7f849c
+set $overlay0  #6c7086
+set $surface2  #585b70
+set $surface1  #45475a
+set $surface0  #313244
+set $base      #1e1e2e
+set $mantle    #181825
+set $crust     #11111b
+# target                 title     bg     text   indicator  border
+client.focused           $pink     $base  $text  $rosewater $pink
+client.focused_inactive  $mauve    $base  $text  $rosewater $black
+client.focused_tab_title $mauve    $mauve $black $rosewater $mauve
+client.unfocused         $mauve    $base  $text  $rosewater $black
+client.urgent            $peach    $base  $peach $overlay0  $peach
+client.placeholder       $overlay0 $base  $text  $overlay0  $overlay0
+client.background        $base
 
 
+
+## workspace definition
 set $ws1   "1:  "
 set $ws2   "2:  "
 set $ws3   "3:  "
@@ -255,6 +293,7 @@ bindsym $super+8 workspace $ws8
 bindsym $super+9 workspace $ws9
 bindsym $super+0 workspace $ws10
 
+bindsym $alt+Tab layout toggle tabbed split
 bindsym $super+Tab workspace next
 bindsym $super+Shift+Tab workspace prev
 
@@ -391,7 +430,7 @@ assign [class=Audacity|Vlc|mpv|Ghb|Xfburn] $ws8
 assign [class=obs|easyeffects] $ws9
 
 for_window [class=".*"] focus
-for_window [class=".*"] border pixel 0
+for_window [class=".*"] border pixel 1
 
 for_window [class=Viewnior|feh|File-roller|Lxappearance] floating enable
 # for_window [class=Org.gnome.Nautilus|Brave-browser|firefox|TelegramDesktop|Gimp*|Inkscape|Vlc] focus
