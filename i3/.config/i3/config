@@ -40,6 +40,7 @@ set $transparent #00000000
 # client.background       $black
 
 ## catppuccin
+# https://github.com/catppuccin/i3
 set $rosewater #f5e0dc
 set $flamingo  #f2cdcd
 set $pink      #f5c2e7
