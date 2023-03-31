@@ -438,8 +438,8 @@ function SetColorScheme(colorscheme)
     require("catppuccin").setup {
       flavour = "mocha", -- latte, frappe, macchiato, mocha
       term_colors = true,
-      transparent_background = false,
-      no_italic = false,
+      transparent_background = true,
+      no_italic = true,
       no_bold = false,
       styles = {
         comments = {},
@@ -454,23 +454,23 @@ function SetColorScheme(colorscheme)
         properties = {},
         types = {},
       },
-      color_overrides = {
-        mocha = {
-          base = "#000000",
-          mantle = "#000000",
-          crust = "#000000",
-        },
-      },
-      highlight_overrides = {
-        mocha = function(C)
-          return {
-            TabLineSel = { bg = C.pink },
-            CmpBorder = { fg = C.surface2 },
-            Pmenu = { bg = C.none },
-            TelescopeBorder = { link = "FloatBorder" },
-          }
-        end,
-      },
+      -- color_overrides = {
+      --   mocha = {
+      --     base = "#000000",
+      --     mantle = "#000000",
+      --     crust = "#000000",
+      --   },
+      -- },
+      -- highlight_overrides = {
+      --   mocha = function(C)
+      --     return {
+      --       TabLineSel = { bg = C.pink },
+      --       CmpBorder = { fg = C.surface2 },
+      --       Pmenu = { bg = C.none },
+      --       TelescopeBorder = { link = "FloatBorder" },
+      --     }
+      --   end,
+      -- },
     }
     vim.cmd.colorscheme "catppuccin"
 
@@ -490,7 +490,8 @@ end
 
 -- ColoringVim('modus-vivendi')
 -- SetColorScheme('tokyonight')
-SetColorScheme('onedark')
+-- SetColorScheme('onedark')
+SetColorScheme('catppuccin')
 
 -- Set completeopt to have a better completion experience
 vim.o.completeopt = 'menuone,noselect'
@@ -943,7 +944,8 @@ require('illuminate').configure({
 -- local wpm = require("wpm")
 require('lualine').setup({
   options = {
-    theme = 'onedark',
+    -- theme = 'onedark',
+    theme = 'catppuccin',
     icons_enabled = false,
     -- icons_enabled = true,
     -- separator = { left = '', right = ''},
@@ -1491,6 +1493,8 @@ luasnip.config.set_config ({
   },
 })
 
+
+-- [[ luasnip:snippets ]]
 local ls = require("luasnip")
 local s = ls.snippet
 local t = ls.text_node
@@ -1671,9 +1675,9 @@ function CreateScratch()
   end
   local num = 0
   local ext = '.py'
-  local file = function(n) return parent .. '/' .. n .. ext end
+  local file = function(n) return vim.fn.expand(parent..'/'..n..ext) end
 
-  while (vim.fn.filereadable(file(num)) ~= 0) and (num <= 1000) do
+  while (vim.fn.filereadable(file(num)) == 0) and (num <= 1000) do
     num = num + 1
   end
   vim.cmd('10new ' .. file(num))
@@ -1833,7 +1837,7 @@ require'sniprun'.setup({
                               --# possible values are 'none', 'single', 'double', or 'shadow'
 })
 
-print('SnipRun loaded')
+-- print('SnipRun loaded')
 
 vim.api.nvim_set_keymap('v', 'f', '<Plug>SnipRun', {silent = true})
 vim.api.nvim_set_keymap('n', '<leader>f', '<Plug>SnipRunOperator', {silent = true})
