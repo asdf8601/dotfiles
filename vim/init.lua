@@ -1682,7 +1682,7 @@ function CreateScratch()
   end
   vim.cmd('10new ' .. file(num))
 
-  vim.bo.buftype = '__scratch__'
+  -- vim.bo.buftype = '__scratch__'
   -- vim.bo.filetype = 'markdown'
   -- vim.bo.bufhidden = 'wipe'
   -- vim.bo.swapfile = false
