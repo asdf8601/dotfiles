@@ -16,7 +16,7 @@ border=#d84949
 
 [lock]
 full_text="  "
-command=i3lock -i /home/mgreco/github/mmngreco/wallpapers/pexels-visually-us-1643409.jpg
+command=i3lock -i /home/mgreco/github/mmngreco/wallpapers/0011.png
 border=#d84949
 
 [shutdoown]
@@ -42,17 +42,19 @@ border=#b63cc1
 
 [vim]
 full_text= vim
-command=xterm -e "nvim"
+# command=xterm -e "nvim"
+command=st -t "bar:nvim" -f "CaskaydiaCove Nerd Font:size=14" nvim
 border=#f2d93a
 
 # [dotfiles]
 # full_text= Dotfiles
 # command=xterm -e "nvim ~/.dotfiles"
 # border=#f2d93a
-#
+
 [todo]
 full_text= todo
-command=xterm -e "nvim ~/MyTODO.md"
+# command=xterm -e "nvim ~/MyTODO.md"
+command=st -t "bar:todo" -f "CaskaydiaCove Nerd Font:size=14" nvim ~/MyTODO.md
 border=#f2d93a
 
 [time]
