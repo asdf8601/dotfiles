@@ -2,7 +2,7 @@
 set $super Mod4
 set $alt Mod1
 set $height 35
-set $editor st
+set $editor st -f "CaskaydiaCove Nerd Font:size=14"
 
 # Use: xrandr command to check monitor names.
 # set font
@@ -124,7 +124,7 @@ bindsym $super+minus scratchpad show
 # bindsym $alt+s [title="^Sup ::"] scratchpad show
 
 bindsym $super+t exec xterm
-bindsym $super+Return exec st -f "CaskaydiaCove Nerd Font:size=18"
+bindsym $super+Return exec st -f "CaskaydiaCove Nerd Font:size=14"
 
 # bindsym $super+Shift+Return workspace 1; focus; exec xterm
 # bindsym $super+Shift+Ctrl+v exec croma
@@ -469,7 +469,7 @@ exec --no-startup-id xsettingsd &
 exec --no-startup-id nm-applet &
 exec --no-startup-id blueman-applet &
 exec --no-startup-id volumeicon &
-# exec --no-startup-id picom -b --experimental-backends
+exec --no-startup-id picom -b --experimental-backends
 # exec --no-startup-id picom -b
 # exec --no-startup-id slimbookbattery &
 # exec --no-startup-id caffeine-indicator &
