@@ -4,8 +4,8 @@ sudo apt-get install -y build-essential
 # install node and npm
 if [ ! -x "$(command -v npm)" ]
 then
-    # curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
-    curl -fsSL https://deb.nodesource.com/setup_17.x | sudo -E bash -
+    curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
+    # curl -fsSL https://deb.nodesource.com/setup_17.x | sudo -E bash -
     sudo apt-get install -y nodejs
     # curl -L https://npmjs.org/install.sh | sudo sh
 fi

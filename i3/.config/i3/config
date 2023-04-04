@@ -432,7 +432,7 @@ assign [class=Audacity|Vlc|mpv|Ghb|Xfburn] $ws8
 assign [class=obs|easyeffects] $ws9
 
 for_window [class=".*"] focus
-for_window [class=".*"] border pixel 1
+for_window [class=".*"] border pixel 2
 
 for_window [class=Viewnior|feh|File-roller|Lxappearance] floating enable
 # for_window [class=Org.gnome.Nautilus|Brave-browser|firefox|TelegramDesktop|Gimp*|Inkscape|Vlc] focus
