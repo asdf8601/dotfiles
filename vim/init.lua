@@ -23,6 +23,7 @@ require('packer').startup(function(use)
   --   end
   -- }
   -- Packer
+  use({'mracos/mermaid.vim'})
   use({ "iamcco/markdown-preview.nvim", run = "cd app && npm install", setup = function() vim.g.mkdp_filetypes = { "markdown" } end, ft = { "markdown" }, })
 
   -- use({
@@ -34,33 +35,35 @@ require('packer').startup(function(use)
   --     "nvim-telescope/telescope.nvim"
   --   }
   -- })
-  -- use({
-  -- "jackMort/ChatGPT.nvim",
-  -- config = function()
-  --     require("chatgpt").setup({
-  --       keymaps = {
-  --           close = { "<C-c>", "<Esc>" },
-  --           yank_last = "<C-y>",
-  --           yank_last_code = "<C-k>",
-  --           scroll_up = "<C-u>",
-  --           scroll_down = "<C-d>",
-  --           toggle_settings = "<C-o>",
-  --           new_session = "<C-n>",
-  --           cycle_windows = "<Tab>",
-  --           -- in the Sessions pane
-  --           select_session = "<Space>",
-  --           rename_session = "r",
-  --           delete_session = "d",
-  --           submit = '<C-Enter>',
-  --         }
-  --     })
-  --   end,
-  --   requires = {
-  --     "MunifTanjim/nui.nvim",
-  --     "nvim-lua/plenary.nvim",
-  --     "nvim-telescope/telescope.nvim"
-  --   }
-  -- })
+
+  use({
+  "jackMort/ChatGPT.nvim",
+  config = function()
+      require("chatgpt").setup({
+        keymaps = {
+            close = { "<C-c>", "<Esc>" },
+            yank_last = "<C-y>",
+            yank_last_code = "<C-k>",
+            scroll_up = "<C-u>",
+            scroll_down = "<C-d>",
+            toggle_settings = "<C-o>",
+            new_session = "<C-n>",
+            cycle_windows = "<Tab>",
+            -- in the Sessions pane
+            select_session = "<Space>",
+            rename_session = "r",
+            delete_session = "d",
+            submit = "<C-CR>",
+          }
+      })
+    end,
+    requires = {
+      "MunifTanjim/nui.nvim",
+      "nvim-lua/plenary.nvim",
+      "nvim-telescope/telescope.nvim"
+    }
+  })
+
   -- use({
   --   "jackMort/ChatGPT.nvim",
   --   config = function()
@@ -127,7 +130,7 @@ require('packer').startup(function(use)
   --         },
   --         keymaps = {
   --           close = { "<C-c>" },
-  --           submit = "<C-s>",
+  --           submit = "<C-Enter>",
   --           yank_last = "<C-y>",
   --           yank_last_code = "<C-k>",
   --           scroll_up = "<C-u>",
@@ -1218,9 +1221,12 @@ vim.keymap.set('n', 'vic', 'V?%%<cr>o/%%<cr>koj', {noremap = true})
 -- markdown
 vim.g.markdown_fenced_languages = { 'html', 'python', 'bash=sh', 'sql' }
 vim.g.markdown_minlines = 50
+-- TODO: fill this
+-- vim.g.mkdp_markdown_css = ''
 vim.g.mkdp_auto_start = 0
 vim.g.mkdp_auto_close = 0
 vim.g.mkdp_page_title = "${name}"
+vim.g.mkdp_theme = 'light'
 
 --grepper
 vim.g.grepper = {}

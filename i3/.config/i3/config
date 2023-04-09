@@ -369,6 +369,9 @@ set $mode_gaps gaps
 set $mode_gaps_outer outer gaps
 set $mode_gaps_inner inner gaps
 
+# obs
+bindsym $super+Shift+Ctrl+o exec --no-start-up i3-msg "[class='.*'] floating enable, resize set 2560px 1440px, move position center"
+
 ## gaps mode:
 bindsym $super+Shift+g mode "$mode_gaps"
 mode "$mode_gaps" {
@@ -458,6 +461,8 @@ for_window [class="slack" title=".*Huddle"] floating enable
 for_window [class="Matplotlib"] floating enable, resize set 500 px 400 px, move position center
 for_window [title="countdown.*"] floating enable, resize set 400 px 102 px, move position center
 for_window [title="MyTODO.md"] floating enable, resize set 500 px 400 px, move position right
+for_window [class="Matplotlib"] floating enable, resize set 500 px 400 px, move position center
+
 
 # autostart
 # pipx install i3-layouts
