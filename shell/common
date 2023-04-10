@@ -5,6 +5,7 @@ source $DOTFILES/shell/functions
 source $DOTFILES/shell/aliases
 source $DOTFILES/shell/nnn
 
+
 for hidden in $(find $DOTFILES/ -name "*.hide" -type f)
 do
     source $hidden
