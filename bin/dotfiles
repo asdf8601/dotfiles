@@ -10,21 +10,16 @@ dotfilesCommit() {
     case $1 in
         all)
             dotfilesCommit && \
-            dotfilesCommit secret
+            dotfilesCommit personal
             ;;
-        secret)
-            echo -e "${COLOR_RED}Commiting secret dotfiles.${COLOR_NC}"
-            git secret hide && \
-            git add . && \
-            git commit -m "auto commit secrets" && \
-            git push && \
-            git secret reveal -f -p $GIT_SECRET_PASS
+        personal)
+            echo -e "${COLOR_RED}Commiting submodules dotfiles.${COLOR_NC}"
+            git submodule foreach 'git commit -am "update"'
+            git add . && git commit -m "auto commit" && git push
             ;;
         *)
             echo -e "${COLOR_RED}Commiting dotfiles.${COLOR_NC}"
-            git add . && \
-            git commit -m "auto commit" && \
-            git push
+            git add . && git commit -m "auto commit" && git push
             ;;
     esac
     popd > /dev/null
@@ -34,9 +29,8 @@ dotfilesCommit() {
 dotfilesPull () {
 
     pushd $DOTFILES > /dev/null
-    git fetch
-    git pull
-    git secret reveal -p $GIT_SECRET_PASS
+    git fetch && git pull
+    git submodule foreach 'git pull'
     popd > /dev/null
 
 }
@@ -45,8 +39,8 @@ dotfilesPull () {
 dotfilesPush () {
 
     pushd $DOTFILES > /dev/null
-    git fetch
-    git push
+    git fetch && git push
+    git submodule foreach 'git fetch && git push'
     popd > /dev/null
 
 }
@@ -102,7 +96,7 @@ dotfiles() {
         ca)
             dotfilesCommit all ;;
         cs)
-            dotfilesCommit secret ;;
+            dotfilesCommit personal ;;
         source)
             dotfilesSource ;;
         push)
@@ -136,8 +130,8 @@ dotfiles() {
             echo
             echo "                     go, cd : go to dotfiles' folder"
             echo "                 commit, cm : commit files automatically"
-            echo "                         cs : commit secrets only"
-            echo "                         ca : commit all (files and secrets) files automatically"
+            echo "                         cs : commit personals only"
+            echo "                         ca : commit all (files and personals) files automatically"
             echo "                     source : reload dotfiles"
             echo "                       pull : pull dotfiles changes"
             echo "                       link : (re)create symlinks of dotfiles"
