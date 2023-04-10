@@ -6,7 +6,6 @@ config/nvim/.netrwhist
 .undodir
 gmail-pass.txt
 settings.vim
-.gitsecret/keys/random_seed
 
 # End of https://www.gitignore.io/api/python
 vim/lua/
