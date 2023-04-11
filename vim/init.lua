@@ -40,6 +40,15 @@ require('packer').startup(function(use)
   "jackMort/ChatGPT.nvim",
   config = function()
       require("chatgpt").setup({
+        yank_register = "+",
+        chat_layout = {
+          relative = "editor",
+          position = "50%",
+          size = {
+            height = "100%",
+            width = "100%",
+          },
+        },
         keymaps = {
             close = { "<C-c>", "<Esc>" },
             yank_last = "<C-y>",
@@ -53,7 +62,7 @@ require('packer').startup(function(use)
             select_session = "<Space>",
             rename_session = "r",
             delete_session = "d",
-            submit = "<C-CR>",
+            submit = "<C-Enter>",
           }
       })
     end,
@@ -849,6 +858,7 @@ local servers = {
     -- 'clangd',
     -- 'rust_analyzer',
     'pyright',
+    'ruff_lsp',
     -- 'tsserver',
     -- 'lua_ls',
     -- 'gopls'
