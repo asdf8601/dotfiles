@@ -26,46 +26,25 @@ require('packer').startup(function(use)
   use({'mracos/mermaid.vim'})
   use({ "iamcco/markdown-preview.nvim", run = "cd app && npm install", setup = function() vim.g.mkdp_filetypes = { "markdown" } end, ft = { "markdown" }, })
 
-  -- use({
-  --   "jackMort/ChatGPT.nvim",
-  --   config = function() require("chatgpt").setup({}) end,
-  --   requires = {
-  --     "MunifTanjim/nui.nvim",
-  --     "nvim-lua/plenary.nvim",
-  --     "nvim-telescope/telescope.nvim"
-  --   }
-  -- })
-
   use({
-  "jackMort/ChatGPT.nvim",
-  config = function()
-      require("chatgpt").setup({
-        yank_register = "+",
-        chat_layout = {
-          relative = "editor",
-          position = "0%",
-          size = {
-            height = "100%",
-            width = "100%",
-          },
-        },
-        keymaps = {
-            close = { "<C-c>", "<Esc>" },
-            yank_last = "<C-y>",
-            yank_last_code = "<C-k>",
-            scroll_up = "<C-u>",
-            scroll_down = "<C-d>",
-            toggle_settings = "<C-o>",
-            new_session = "<C-n>",
-            cycle_windows = "<Tab>",
-            -- in the Sessions pane
-            select_session = "<Space>",
-            rename_session = "r",
-            delete_session = "d",
-            submit = "<C-Enter>",
-          }
-      })
-    end,
+    "jackMort/ChatGPT.nvim",
+    config = function() require("chatgpt").setup({
+     keymaps = {
+        close = { "<C-c>" },
+        submit = '<C-m>',
+        yank_last = "<C-y>",
+        yank_last_code = "<C-k>",
+        scroll_up = "<C-u>",
+        scroll_down = "<C-d>",
+        toggle_settings = "<C-o>",
+        new_session = "<C-n>",
+        cycle_windows = "<Tab>",
+        -- in the Sessions pane
+        select_session = "<Space>",
+        rename_session = "r",
+        delete_session = "d",
+      }
+    }) end,
     requires = {
       "MunifTanjim/nui.nvim",
       "nvim-lua/plenary.nvim",
@@ -74,72 +53,20 @@ require('packer').startup(function(use)
   })
 
   -- use({
-  --   "jackMort/ChatGPT.nvim",
-  --   config = function()
+  -- "jackMort/ChatGPT.nvim",
+  -- config = function()
   --     require("chatgpt").setup({
-  --       -- optional configuration
-  --       {
-  --         -- welcome_message = WELCOME_MESSAGE,
-  --         loading_text = "loading",
-  --         question_sign = "", -- you can use emoji if you want e.g. 🙂
-  --         answer_sign = "ﮧ", -- 🤖
-  --         max_line_length = 120,
-  --         yank_register = "+",
-  --         chat_layout = {
-  --           relative = "editor",
-  --           position = "50%",
-  --           size = {
-  --             height = "80%",
-  --             width = "80%",
-  --           },
+  --       yank_register = "+",
+  --       chat_layout = {
+  --         relative = "editor",
+  --         position = "0%",
+  --         size = {
+  --           height = "100%",
+  --           width = "100%",
   --         },
-  --         settings_window = {
-  --           border = {
-  --             style = "rounded",
-  --             text = {
-  --               top = " Settings ",
-  --             },
-  --           },
-  --         },
-  --         chat_window = {
-  --           filetype = "chatgpt",
-  --           border = {
-  --             highlight = "FloatBorder",
-  --             style = "rounded",
-  --             text = {
-  --               top = " ChatGPT ",
-  --             },
-  --           },
-  --         },
-  --         chat_input = {
-  --           prompt = "  ",
-  --           border = {
-  --             highlight = "FloatBorder",
-  --             style = "rounded",
-  --             text = {
-  --               top_align = "center",
-  --               top = " Prompt ",
-  --             },
-  --           },
-  --         },
-  --         openai_params = {
-  --           model = "gpt-3.5-turbo",
-  --           frequency_penalty = 0,
-  --           presence_penalty = 0,
-  --           max_tokens = 300,
-  --           temperature = 0,
-  --           top_p = 1,
-  --           n = 1,
-  --         },
-  --         openai_edit_params = {
-  --           model = "code-davinci-edit-001",
-  --           temperature = 0,
-  --           top_p = 1,
-  --           n = 1,
-  --         },
-  --         keymaps = {
-  --           close = { "<C-c>" },
-  --           submit = "<C-Enter>",
+  --       },
+  --       keymaps = {
+  --           close = { "<C-c>"},
   --           yank_last = "<C-y>",
   --           yank_last_code = "<C-k>",
   --           scroll_up = "<C-u>",
@@ -151,8 +78,8 @@ require('packer').startup(function(use)
   --           select_session = "<Space>",
   --           rename_session = "r",
   --           delete_session = "d",
-  --         },
-  --       }
+  --           submit = '<C-m>',
+  --         }
   --     })
   --   end,
   --   requires = {
@@ -161,6 +88,7 @@ require('packer').startup(function(use)
   --     "nvim-telescope/telescope.nvim"
   --   }
   -- })
+
 
   use {'xiyaowong/telescope-emoji.nvim'}
   use { 'michaelb/sniprun', run = 'bash ./install.sh'}
@@ -203,63 +131,23 @@ require('packer').startup(function(use)
 
   use {'dhruvasagar/vim-table-mode'}
 
+  -- use "folke/twilight.nvim"
   use {
     "folke/zen-mode.nvim",
     config = function()
       require("zen-mode").setup({
-        {
-          window = {
-            backdrop = 0.95, -- shade the backdrop of the Zen window. Set to 1 to keep the same as Normal
-            -- height and width can be:
-            -- * an absolute number of cells when > 1
-            -- * a percentage of the width / height of the editor when <= 1
-            -- * a function that returns the width or the height
-            width = 120, -- width of the Zen window
-            height = 1, -- height of the Zen window
-            -- by default, no options are changed for the Zen window
-            -- uncomment any of the options below, or add other vim.wo options you want to apply
-            options = {
-              -- signcolumn = "no", -- disable signcolumn
-              -- number = false, -- disable number column
-              -- relativenumber = false, -- disable relative numbers
-              -- cursorline = false, -- disable cursorline
-              -- cursorcolumn = false, -- disable cursor column
-              -- foldcolumn = "0", -- disable fold column
-              -- list = false, -- disable whitespace characters
-            },
-          },
-          plugins = {
-            -- disable some global vim options (vim.o...)
-            -- comment the lines to not apply the options
-            options = {
-              enabled = true,
-              ruler = false, -- disables the ruler text in the cmd line area
-              showcmd = false, -- disables the command in the last line of the screen
-            },
-            twilight = { enabled = true }, -- enable to start Twilight when zen mode opens
-            gitsigns = { enabled = false }, -- disables git signs
-            tmux = { enabled = false }, -- disables the tmux statusline
-            -- this will change the font size on kitty when in zen mode
-            -- to make this work, you need to set the following kitty options:
-            -- - allow_remote_control socket-only
-            -- - listen_on unix:/tmp/kitty
-            kitty = {
-              enabled = false,
-              font = "+4", -- font size increment
-            },
-          },
-          -- callback where you can add custom code when the Zen window opens
-          on_open = function(win)
-          end,
-          -- callback where you can add custom code when the Zen window closes
-          on_close = function()
-          end,
-        }
+        window = {
+          backdrop = 1,
+        },
+        plugins = {
+          gitsigns = { enabled = true },
+          tmux = { enabled = false },
+          twilight = { enabled = false },
+        },
       })
     end
   }
 
-  use "folke/twilight.nvim"
   use "monaqa/dial.nvim"
   use {
     "NTBBloodbath/rest.nvim",
@@ -1305,7 +1193,7 @@ vim.o.termguicolors = true
 vim.o.scrolloff=8
 -- vim.o.signcolumn='no'
 vim.o.cmdheight = 1
-vim.o.timeoutlen = 220
+vim.o.timeoutlen = 200
 vim.o.updatetime = 50
 vim.o.shortmess = vim.o.shortmess .. 'c'
 vim.o.textwidth = 79
@@ -1897,5 +1785,12 @@ require'sniprun'.setup({
 vim.api.nvim_set_keymap('v', 'f', '<Plug>SnipRun', {silent = true})
 vim.api.nvim_set_keymap('n', '<leader>f', '<Plug>SnipRunOperator', {silent = true})
 vim.api.nvim_set_keymap('n', '<leader>fl', '<Plug>SnipRun', {silent = true})
+
+-- remap ESC to kj
+vim.api.nvim_set_keymap('i', 'kj', '<Esc>', {noremap = true})
+vim.api.nvim_set_keymap('v', 'kj', '<Esc>', {noremap = true})
+vim.api.nvim_set_keymap('n', 'kj', '<Esc>', {noremap = true})
+vim.api.nvim_set_keymap('t', 'kj', '<Esc>', {noremap = true})
+
 
 -- vim:ts=2 sts=2 sw=2 et
