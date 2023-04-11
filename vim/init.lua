@@ -43,7 +43,7 @@ require('packer').startup(function(use)
         yank_register = "+",
         chat_layout = {
           relative = "editor",
-          position = "50%",
+          position = "0%",
           size = {
             height = "100%",
             width = "100%",
