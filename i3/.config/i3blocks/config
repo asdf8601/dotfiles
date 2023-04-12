@@ -53,7 +53,7 @@ border=#f2d93a
 
 [todo]
 full_text=⏱
-command=st -t "bar:countdown" -f "CaskaydiaCove Nerd Font:size=14" countdown 30m
+command=st -t "bar:countdown" -f "CaskaydiaCove Nerd Font:size=14"
 # use color green
 border=#f2d93a
 
