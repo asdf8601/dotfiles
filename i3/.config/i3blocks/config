@@ -51,6 +51,12 @@ border=#f2d93a
 # command=xterm -e "nvim ~/.dotfiles"
 # border=#f2d93a
 
+[stopwatch]
+full_text=⏱
+command=st -t "bar:stopwatch" -f "CaskaydiaCove Nerd Font:size=14" countdown
+# use color green
+border=#f2d93a
+
 [todo]
 full_text= todo
 # command=xterm -e "nvim ~/MyTODO.md"

@@ -43,7 +43,7 @@ require('packer').startup(function(use)
       require("chatgpt").setup({
         chat = {
           keymaps = {
-            close = { "jk", "kj", "<Esc>" },
+            close = { "C-c"},
             yank_last = "<C-y>",
             scroll_up = "<C-u>",
             scroll_down = "<C-d>",
