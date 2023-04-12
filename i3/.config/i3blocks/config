@@ -51,9 +51,9 @@ border=#f2d93a
 # command=xterm -e "nvim ~/.dotfiles"
 # border=#f2d93a
 
-[stopwatch]
+[todo]
 full_text=⏱
-command=st -t "bar:stopwatch" -f "CaskaydiaCove Nerd Font:size=14" countdown
+command=st -t "bar:countdown" -f "CaskaydiaCove Nerd Font:size=14" countdown 30m
 # use color green
 border=#f2d93a
 
