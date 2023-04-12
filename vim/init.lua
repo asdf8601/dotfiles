@@ -26,31 +26,59 @@ require('packer').startup(function(use)
   use({'mracos/mermaid.vim'})
   use({ "iamcco/markdown-preview.nvim", run = "cd app && npm install", setup = function() vim.g.mkdp_filetypes = { "markdown" } end, ft = { "markdown" }, })
 
+
   use({
     "jackMort/ChatGPT.nvim",
-    config = function() require("chatgpt").setup({
-     keymaps = {
-        close = { "<C-c>" },
-        submit = '<C-m>',
-        yank_last = "<C-y>",
-        yank_last_code = "<C-k>",
-        scroll_up = "<C-u>",
-        scroll_down = "<C-d>",
-        toggle_settings = "<C-o>",
-        new_session = "<C-n>",
-        cycle_windows = "<Tab>",
-        -- in the Sessions pane
-        select_session = "<Space>",
-        rename_session = "r",
-        delete_session = "d",
-      }
-    }) end,
-    requires = {
+    dependencies = {
       "MunifTanjim/nui.nvim",
       "nvim-lua/plenary.nvim",
-      "nvim-telescope/telescope.nvim"
-    }
+      "nvim-telescope/telescope.nvim",
+    },
+    config = function()
+      require("chatgpt").setup({
+        chat = {
+          keymaps = {
+            close = { "jk", "kj", "<Esc>" },
+            yank_last = "<C-y>",
+            scroll_up = "<C-u>",
+            scroll_down = "<C-d>",
+            toggle_settings = "<C-o>",
+            new_session = "<C-n>",
+            cycle_windows = "<Tab>",
+          },
+        },
+        popup_input = {
+          submit = "<C-s>",
+        },
+      })
+    end,
   })
+
+  -- use({
+  --   "jackMort/ChatGPT.nvim",
+  --   config = function() require("chatgpt").setup({
+  --    keymaps = {
+  --       close = { "<C-c>" },
+  --       submit = '<C-m>',
+  --       yank_last = "<C-y>",
+  --       yank_last_code = "<C-k>",
+  --       scroll_up = "<C-u>",
+  --       scroll_down = "<C-d>",
+  --       toggle_settings = "<C-o>",
+  --       new_session = "<C-n>",
+  --       cycle_windows = "<Tab>",
+  --       -- in the Sessions pane
+  --       select_session = "<Space>",
+  --       rename_session = "r",
+  --       delete_session = "d",
+  --     }
+  --   }) end,
+  --   requires = {
+  --     "MunifTanjim/nui.nvim",
+  --     "nvim-lua/plenary.nvim",
+  --     "nvim-telescope/telescope.nvim"
+  --   }
+  -- })
 
   -- use({
   -- "jackMort/ChatGPT.nvim",
@@ -1787,10 +1815,10 @@ vim.api.nvim_set_keymap('n', '<leader>f', '<Plug>SnipRunOperator', {silent = tru
 vim.api.nvim_set_keymap('n', '<leader>fl', '<Plug>SnipRun', {silent = true})
 
 -- remap ESC to kj
-vim.api.nvim_set_keymap('i', 'kj', '<Esc>', {noremap = true})
-vim.api.nvim_set_keymap('v', 'kj', '<Esc>', {noremap = true})
-vim.api.nvim_set_keymap('n', 'kj', '<Esc>', {noremap = true})
-vim.api.nvim_set_keymap('t', 'kj', '<Esc>', {noremap = true})
+-- vim.api.nvim_set_keymap('i', 'hh', '<Esc>', {noremap = true})
+-- vim.api.nvim_set_keymap('v', 'hh', '<Esc>', {noremap = true})
+-- vim.api.nvim_set_keymap('n', 'hh', '<Esc>', {noremap = true})
+-- vim.api.nvim_set_keymap('t', 'hh', '<Esc>', {noremap = true})
 
 
 -- vim:ts=2 sts=2 sw=2 et
