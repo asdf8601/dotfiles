@@ -459,9 +459,9 @@ for_window [title="alsamixer"] floating enable
 for_window [class="slack" title=".*Huddle"] floating enable
 
 for_window [class="Matplotlib"] floating enable, resize set 500 px 400 px, move position center
-for_window [title="countdown.*"] floating enable, resize set 400 px 102 px, move position center
-for_window [title="MyTODO.md"] floating enable, resize set 500 px 400 px, move position right
-for_window [class="Matplotlib"] floating enable, resize set 500 px 400 px, move position center
+for_window [title="bar:.*"] floating enable, move position center
+for_window [title="bar:countdown"] floating enable, resize set 700 px 200 px, move position center
+for_window [title="bar:MyTODO.md"] floating enable, resize set 500 px 400 px, move position right
 
 
 # autostart
