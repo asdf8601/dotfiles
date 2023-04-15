@@ -10,11 +10,14 @@ dotfilesCommit() {
     case $1 in
         all)
             dotfilesCommit && \
+            echo "" && \
             dotfilesCommit personal
             ;;
         personal)
             echo -e "${COLOR_RED}Commiting submodules dotfiles.${COLOR_NC}"
+            echo
             dotfilesSubmodulesCmd 'git commit -am "update"'
+            echo
             git add . && git commit -m "auto commit" && git push
             ;;
         *)
@@ -27,13 +30,14 @@ dotfilesCommit() {
 
 dotfilesSubmodulesCmd() {
     local command="$@"
-    git submodule foreach "if [ \"\$path\" != \"dotbot\" ]; then $command; fi"
+    git submodule foreach "if [ \"\$path\" != \"dotbot\" ]; then echo '====\n';$command; fi"
 }
 
 dotfilesPull () {
 
     pushd $DOTFILES > /dev/null
     git fetch && git pull
+    echo
     dotfilesSubmodulesCmd 'git pull'
     popd > /dev/null
 
@@ -126,6 +130,7 @@ dotfiles() {
             ;;
         ec)
             dotfiles edit
+            echo
             dotfiles commit
             ;;
 
