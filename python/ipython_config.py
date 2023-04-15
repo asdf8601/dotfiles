@@ -15,7 +15,7 @@ c.TerminalInteractiveShell.banner1 = ""
 # c.TerminalInteractiveShell.editing_mode = "vim"
 # c.TerminalInteractiveShell.editor = "vi"
 c.TerminalInteractiveShell.extra_open_editor_shortcuts = True
-c.InteractiveShellApp.exec_files = ["*.ipy*"]
+# c.InteractiveShellApp.exec_files = ["*.ipy*"]
 # c.TerminalInteractiveShell.highlighting_style = 'GruvboxDarkHard'
 c.PlainTextFormatter.max_width = 90
 c.PlainTextFormatter.pprint = True
@@ -28,14 +28,14 @@ c.InteractiveShellApp.extensions = [
     # "pyflyby",
 ]
 c.InteractiveShellApp.exec_lines = [
-    "%load_ext rich",
+    "%autoreload 3",
 ]
 
 # c.InteractiveShell.colors = 'NoColor'
 # c.TerminalInteractiveShell.highlight_matching_brackets = True
 # c.PlainTextFormatter.newline = '\\n'
 # c.TerminalInteractiveShell.xmode = "Minimal"
-# c.TerminalInteractiveShell.autoformatter = "black"
+c.TerminalInteractiveShell.autoformatter = "black"
 
 
 # ------------------------------------------------------------------------------

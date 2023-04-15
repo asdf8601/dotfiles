@@ -6,13 +6,9 @@ git clone --depth 1 https://git.suckless.org/st $dir
 
 pushd $dir > /dev/null
 
-git apply ~/.dotfiles/st-patches/anysize.diff
-git apply ~/.dotfiles/st-patches/clipboard.diff
-git apply ~/.dotfiles/st-patches/defaultfont.diff
-git apply ~/.dotfiles/st-patches/fix-keyboard-input.diff
-git apply ~/.dotfiles/st-patches/ligatures.diff
-git apply ~/.dotfiles/st-patches/mmngreco.diff
-git apply ~/.dotfiles/st-patches/xrandrfontsize-0.8.4-20211224-2f6e597.diff
+for patch in ~/.dotfiles/st-patches/*.diff; do
+    git apply $patch
+done
 
 sudo make clean install
 popd > /dev/null

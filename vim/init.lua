@@ -1086,7 +1086,7 @@ vim.keymap.set('n', 'vic', 'V?%%<cr>o/%%<cr>koj', {noremap = true})
 
 
 -- markdown
-vim.g.markdown_fenced_languages = { 'html', 'python', 'bash=sh', 'sql' }
+vim.g.markdown_fenced_languages = { 'html', 'python', 'bash=sh', 'sql', 'mermaid' }
 vim.g.markdown_minlines = 50
 -- TODO: fill this
 -- vim.g.mkdp_markdown_css = ''
@@ -1188,15 +1188,15 @@ vim.api.nvim_create_autocmd('TermOpen', { group=mmngreco, pattern='*', command='
 vim.api.nvim_create_autocmd('FileType', { group=mmngreco, pattern='fugitive', command='setl nonumber norelativenumber'})
 vim.api.nvim_create_autocmd('FileType', { group=mmngreco, pattern='python', command='nnoremap <buffer> <F8> :silent !black -l79 -S %<CR><CR>'})
 
--- [[ slime ]]
+-- [[ slime ]] {
 vim.g.slime_cell_delimiter = [[\s*#\s*%%]]
 vim.g.slime_paste_file = os.getenv("HOME") .. "/.slime_paste"
-vim.g.slime_target = "tmux"
-vim.g.slime_bracketed_paste = 1
-vim.g.slime_dont_ask_default = 1
-vim.g.slime_default_config = {socket_name="default", target_pane=":.2"}
+-- vim.g.slime_target = "tmux"
+-- vim.g.slime_bracketed_paste = 1
+-- vim.g.slime_dont_ask_default = 1
+-- vim.g.slime_default_config = {socket_name="default", target_pane=":.2"}
+vim.g.slime_python_ipython = 1
 vim.g.slime_no_mappings = 1
-
 vim.keymap.set('n', '<leader>cv', ':SlimeConfig<cr>', {noremap = true})
 vim.keymap.set('n', '<leader>ep', '<Plug>SlimeParagraphSend', {noremap = true})
 -- vim.keymap.set('n', '<leader>cc', '<Plug>SlimeSendCell', {noremap = true})
@@ -1210,6 +1210,149 @@ vim.keymap.set('n', '<leader>ep', '<Plug>SlimeParagraphSend', {noremap = true})
 vim.keymap.set('n', '<leader>cc', '<Plug>SlimeSendCell', {noremap = true})
 vim.keymap.set('n', '<leader>ck', '<cmd>call search(g:slime_cell_delimiter, "b")<cr>', {noremap = true})
 vim.keymap.set('n', '<leader>cj', '<cmd>call search(g:slime_cell_delimiter)<cr>', {noremap = true})
+
+vim.g.slime_target = "neovim"
+
+-- local function get_open_terminals()
+--   local terminals = {}
+--   print("getting terminals")
+--   for _, win in ipairs(vim.api.nvim_list_wins()) do
+--     local buf = vim.api.nvim_win_get_buf(win)
+--     if vim.bo[buf].buftype == "terminal" then
+--       table.insert(terminals, {buf = buf, jobid = vim.b[buf].terminal_job_id})
+--     end
+--   end
+--   return terminals
+-- end
+--
+--
+-- local function select_or_create_terminal()
+--   local open_terminals = get_open_terminals()
+--
+--   if #open_terminals == 0 then
+--     -- No hay terminales abiertas, crea una nueva.
+--     vim.cmd("right vsplit | terminal")
+--     return select_or_create_terminal()
+--   end
+--
+--
+--   -- local telescope = require("telescope")
+--   local pickers = require("telescope.pickers")
+--   local finders = require("telescope.finders")
+--   local sorters = require("telescope.sorters")
+--   -- local actions = require("telescope.actions")
+--
+--   local selected_jobid = nil
+--   print("before")
+--   print(vim.inspect(open_terminals))
+--
+--   pickers.new({}, {
+--     prompt_title = "Selecciona una terminal",
+--     finder = finders.new_table {
+--       results = open_terminals,
+--       entry_maker = function(entry)
+--         return {
+--           display = "Terminal: " .. entry.jobid,
+--           ordinal = entry.jobid,
+--           value = entry.jobid,
+--         }
+--       end,
+--     },
+--     sorter = sorters.get_generic_fuzzy_sorter(),
+--     attach_mappings = function(_, map)
+--       map("i", "<CR>", function(prompt_bufnr)
+--         print("prompt_bufnr", prompt_bufnr)
+--         selected_jobid = actions.get_selected_entry(prompt_bufnr).value
+--         print("selected_jobid")
+--         print(selected_jobid)
+--         actions.close(prompt_bufnr)
+--       end)
+--
+--       map("i", "<C-c>", function(prompt_bufnr)
+--         actions.close(prompt_bufnr)
+--       end)
+--
+--       return true
+--     end,
+--   }):find()
+--
+--   print("selected_jobid")
+--   print(selected_jobid)
+--   return selected_jobid
+--
+-- end
+--
+-- local function open_terminal()
+--     -- No hay terminales abiertas, crea una nueva.
+--     vim.cmd("right | vsplit | terminal")
+--     local job_id = vim.b.terminal_job_id
+--     -- retur to the previous window
+--     -- vim.cmd("wincmd p")
+--     return job_id
+-- end
+--
+-- local function select_or_create_terminal()
+--   local open_terminals = get_open_terminals()
+--
+--   if #open_terminals == 0 then
+--     open_terminal()
+--     return select_or_create_terminal()
+--   end
+--
+--   local telescope = require("telescope")
+--   local pickers = require("telescope.pickers")
+--   local finders = require("telescope.finders")
+--   local sorters = require("telescope.sorters")
+--   local actions = require("telescope.actions")
+--   local actions_state = require("telescope.actions.state")
+--
+--
+--   local selected_jobid = nil
+--
+--   pickers.new({}, {
+--     prompt_title = "Selecciona una terminal",
+--     finder = finders.new_table {
+--       results = open_terminals,
+--       entry_maker = function(entry)
+--         return {
+--           display = "Terminal: " .. entry.jobid,
+--           ordinal = entry.jobid,
+--           value = entry.jobid,
+--           bufnr = entry.buf
+--         }
+--       end,
+--     },
+--     sorter = sorters.get_generic_fuzzy_sorter(),
+--     previewer = require("telescope.previewers").new_buffer_previewer({
+--       define_preview = function(self, entry, status)
+--         if entry and entry.bufnr then
+--           vim.api.nvim_win_set_buf(status.preview_win, entry.bufnr)
+--         end
+--       end
+--     }),
+--     attach_mappings = function(_, map)
+--       map("i", "<CR>", function(prompt_bufnr)
+--         local selected_jobid = actions_state.get_selected_entry(prompt_bufnr).value
+--         actions.close(prompt_bufnr)
+--         return selected_jobid
+--       end)
+--
+--       map("i", "<C-c>", function(prompt_bufnr)
+--         actions.close(prompt_bufnr)
+--       end)
+--
+--       return true
+--     end,
+--   }):find()
+--
+--   return selected_jobid
+--
+-- end
+-- vim.g.slime_get_jobid = select_or_create_terminal
+-- vim.keymap.set('n', '<leader>se', function() vim.g.slime_last_channel = select_or_create_terminal() end, {})
+
+-- }
+
 
 -- function to disable number and relative number
 vim.g.number = 1
@@ -1760,6 +1903,7 @@ vim.api.nvim_set_keymap('n', '<leader>fl', '<Plug>SnipRun', {silent = true})
 -- vim.api.nvim_set_keymap('v', 'hh', '<Esc>', {noremap = true})
 -- vim.api.nvim_set_keymap('n', 'hh', '<Esc>', {noremap = true})
 -- vim.api.nvim_set_keymap('t', 'hh', '<Esc>', {noremap = true})
+
 
 
 -- vim:ts=2 sts=2 sw=2 et
