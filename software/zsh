@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # check if command sudo exists if not mock it
-if [ ! -x "$(command -v sudo)" ]; then
+if [ -x "$(command -v sudo)" ]; then
     alias sudo=''
 fi
 
