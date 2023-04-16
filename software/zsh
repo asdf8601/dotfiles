@@ -1,8 +1,18 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 # check if command sudo exists if not mock it
-if [ ! -x "$(command -v sudo)" ]; then
-    echo sudo not found, mocking it
-    alias sudo=''
+if ! command -v sudo &> /dev/null
+then
+    # Define a function that simulates sudo behavior
+    sudo() {
+        if [ "$#" -eq 0 ]; then
+            echo "Usage: sudo command [arguments]"
+            return 1
+        fi
+        command="$1"
+        shift
+        echo "Running command as root: $command $@"
+        $command "$@"
+    }
 fi
 
 sudo apt install zsh -y
