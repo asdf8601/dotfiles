@@ -1,13 +1,11 @@
 #!/usr/bin/env bash
-# check if sudo exists
-if [ $(id -u) -ne 0 ]; then
-    apt install zsh -y
-    chsh -s $(which zsh) $USERNAME
-else
-    sudo apt install zsh -y
-    sudo chsh -s $(which zsh) $USERNAME
+# check if command sudo exists if not mock it
+if [ ! -x "$(command -v sudo)" ]; then
+    alias sudo=''
 fi
 
+sudo apt install zsh -y
+sudo chsh -s $(which zsh) $USERNAME
 
 set -e
 git clone https://github.com/catppuccin/zsh-syntax-highlighting.git /tmp/zsh-syntax-highlighting/
