@@ -184,4 +184,4 @@ alias s="kitty +kitten ssh"
 alias dataops='gcloud compute ssh --zone "us-central1-a" "do-etls"  --tunnel-through-iap --project "data-observatory-ops" --ssh-flag="-L 8081:localhost:8080 -L 5432:localhost:5432 -L 3000:localhost:3000 -X"'
 
 alias cd.='. dotfiles cd'
-alias blog='vim ~/github/mmngreco/blog/'
+alias blog='vim ~/github/mmngreco/mmngreco.github.io/'

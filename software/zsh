@@ -1,6 +1,13 @@
 #!/usr/bin/env bash
-sudo apt install zsh -y
-sudo chsh -s $(which zsh) $USERNAME
+# check if sudo exists
+if [ $(id -u) -ne 0 ]; then
+    apt install zsh -y
+    chsh -s $(which zsh) $USERNAME
+else
+    sudo apt install zsh -y
+    sudo chsh -s $(which zsh) $USERNAME
+fi
+
 
 set -e
 git clone https://github.com/catppuccin/zsh-syntax-highlighting.git /tmp/zsh-syntax-highlighting/
