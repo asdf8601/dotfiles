@@ -24,13 +24,19 @@ require('packer').startup(function(use)
   -- }
   -- Packer
 
+  use({'jakewvincent/mkdnflow.nvim',
+    rocks = 'luautf8', -- Ensures optional luautf8 dependency is installed
+    config = function()
+      require('mkdnflow').setup()
+    end
+  })
+
   use({'mracos/mermaid.vim'})
   use({ "iamcco/markdown-preview.nvim",
     run = "cd app && npm install",
     setup = function() vim.g.mkdp_filetypes = { "markdown" } end,
     ft = { "markdown" },
   })
-
 
   use({
     "jackMort/ChatGPT.nvim",
