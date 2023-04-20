@@ -24,6 +24,35 @@ require('packer').startup(function(use)
   -- }
   -- Packer
 
+  use {
+    'kdheepak/tabline.nvim',
+    config = function()
+      require'tabline'.setup {
+        -- Defaults configuration options
+        enable = true,
+        options = {
+          -- If lualine is installed tabline will use separators configured in lualine by default.
+          -- These options can be used to override those settings.
+          section_separators = {'', ''},
+          component_separators = {'', ''},
+          max_bufferline_percent = 66, -- set to nil by default, and it uses vim.o.columns * 2/3
+          show_tabs_always = false, -- this shows tabs only when there are more than one tab or if the first tab is named
+          show_devicons = true, -- this shows devicons in buffer section
+          show_bufnr = false, -- this appends [bufnr] to buffer section,
+          show_filename_only = true, -- shows base filename only instead of relative path in filename
+          modified_icon = "+ ", -- change the default modified icon
+          modified_italic = false, -- set to true by default; this determines whether the filename turns italic if modified
+          show_tabs_only = false, -- this shows only tabs instead of tabs + buffers
+        }
+      }
+      vim.cmd[[
+      set guioptions-=e " Use showtabline in gui vim
+      set sessionoptions+=tabpages,globals " store tabpages and globals in session
+      ]]
+    end,
+    requires = { { 'hoob3rt/lualine.nvim', opt=true }, {'kyazdani42/nvim-web-devicons', opt = true} }
+  }
+
   use({'jakewvincent/mkdnflow.nvim',
     rocks = 'luautf8', -- Ensures optional luautf8 dependency is installed
     config = function()
@@ -49,7 +78,7 @@ require('packer').startup(function(use)
       require("chatgpt").setup({
         chat = {
           keymaps = {
-            close = { "C-c"},
+            close = { "<C-c>", },
             yank_last = "<C-y>",
             scroll_up = "<C-u>",
             scroll_down = "<C-d>",
@@ -320,6 +349,7 @@ vim.o.smartcase = true
 -- Decrease update time
 vim.o.updatetime = 250
 vim.wo.signcolumn = 'yes'
+vim.o.laststatus = 3
 
 -- Set colorscheme
 function SetColorScheme(colorscheme)
@@ -1910,6 +1940,7 @@ vim.api.nvim_set_keymap('n', '<leader>fl', '<Plug>SnipRun', {silent = true})
 -- vim.api.nvim_set_keymap('n', 'hh', '<Esc>', {noremap = true})
 -- vim.api.nvim_set_keymap('t', 'hh', '<Esc>', {noremap = true})
 
+-- vim.api.nvim_set_keymap('n', ':', '<cmd>FineCmdline<CR>', {noremap = true})
 
 
 -- vim:ts=2 sts=2 sw=2 et
