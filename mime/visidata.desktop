@@ -4,5 +4,5 @@ Type=Application
 Terminal=false
 Name=VisiData
 GenericName=VisiData
-Exec=xterm -e vd
+Exec=xterm -e /home/mgreco/.local/bin/vd
 Icon=/home/mgreco/.dotfiles/mime/visidata.png
