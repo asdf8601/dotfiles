@@ -24,44 +24,50 @@ require('packer').startup(function(use)
   -- }
   -- Packer
 
-  use {
-    'kdheepak/tabline.nvim',
-    config = function()
-      require'tabline'.setup {
-        -- Defaults configuration options
-        enable = true,
-        options = {
-          -- If lualine is installed tabline will use separators configured in lualine by default.
-          -- These options can be used to override those settings.
-          section_separators = {'', ''},
-          component_separators = {'', ''},
-          max_bufferline_percent = 66, -- set to nil by default, and it uses vim.o.columns * 2/3
-          show_tabs_always = false, -- this shows tabs only when there are more than one tab or if the first tab is named
-          show_devicons = true, -- this shows devicons in buffer section
-          show_bufnr = false, -- this appends [bufnr] to buffer section,
-          show_filename_only = true, -- shows base filename only instead of relative path in filename
-          modified_icon = "+ ", -- change the default modified icon
-          modified_italic = false, -- set to true by default; this determines whether the filename turns italic if modified
-          show_tabs_only = false, -- this shows only tabs instead of tabs + buffers
-        }
-      }
-      vim.cmd[[
-      set guioptions-=e " Use showtabline in gui vim
-      set sessionoptions+=tabpages,globals " store tabpages and globals in session
-      ]]
-    end,
-    requires = { { 'hoob3rt/lualine.nvim', opt=true }, {'kyazdani42/nvim-web-devicons', opt = true} }
-  }
+  -- use {
+  --   'kdheepak/tabline.nvim',
+  --   config = function()
+  --     require'tabline'.setup {
+  --       -- Defaults configuration options
+  --       enable = true,
+  --       options = {
+  --         -- If lualine is installed tabline will use separators configured in lualine by default.
+  --         -- These options can be used to override those settings.
+  --         section_separators = {'', ''},
+  --         component_separators = {'', ''},
+  --         max_bufferline_percent = 66, -- set to nil by default, and it uses vim.o.columns * 2/3
+  --         show_tabs_always = false, -- this shows tabs only when there are more than one tab or if the first tab is named
+  --         show_devicons = true, -- this shows devicons in buffer section
+  --         show_bufnr = false, -- this appends [bufnr] to buffer section,
+  --         show_filename_only = true, -- shows base filename only instead of relative path in filename
+  --         modified_icon = "+ ", -- change the default modified icon
+  --         modified_italic = false, -- set to true by default; this determines whether the filename turns italic if modified
+  --         show_tabs_only = false, -- this shows only tabs instead of tabs + buffers
+  --       }
+  --     }
+  --     vim.cmd[[
+  --     set guioptions-=e " Use showtabline in gui vim
+  --     set sessionoptions+=tabpages,globals " store tabpages and globals in session
+  --     ]]
+  --   end,
+  --   requires = { { 'hoob3rt/lualine.nvim', opt=true }, {'kyazdani42/nvim-web-devicons', opt = true} }
+  -- }
+  --
+  --
+  use { 'mhartington/formatter.nvim' }
 
-  use({'jakewvincent/mkdnflow.nvim',
+
+  use({
+    'jakewvincent/mkdnflow.nvim',
     rocks = 'luautf8', -- Ensures optional luautf8 dependency is installed
     config = function()
       require('mkdnflow').setup()
     end
   })
 
-  use({'mracos/mermaid.vim'})
-  use({ "iamcco/markdown-preview.nvim",
+  use({ 'mracos/mermaid.vim' })
+  use({
+    "iamcco/markdown-preview.nvim",
     run = "cd app && npm install",
     setup = function() vim.g.mkdp_filetypes = { "markdown" } end,
     ft = { "markdown" },
@@ -94,8 +100,8 @@ require('packer').startup(function(use)
     end,
   })
 
-  use {'xiyaowong/telescope-emoji.nvim'}
-  use { 'michaelb/sniprun', run = 'bash ./install.sh'}
+  use { 'xiyaowong/telescope-emoji.nvim' }
+  use { 'michaelb/sniprun', run = 'bash ./install.sh' }
   use {
     "folke/todo-comments.nvim",
     requires = "nvim-lua/plenary.nvim",
@@ -133,7 +139,7 @@ require('packer').startup(function(use)
     end
   }
 
-  use {'dhruvasagar/vim-table-mode'}
+  use { 'dhruvasagar/vim-table-mode' }
 
   -- use "folke/twilight.nvim"
   use {
@@ -191,7 +197,7 @@ require('packer').startup(function(use)
 
 
   -- Github integration
-  use {"pwntester/octo.nvim", disable = not executable "gh"}
+  use { "pwntester/octo.nvim", disable = not executable "gh" }
 
   -- Sweet message committer
   use "rhysd/committia.vim"
@@ -217,8 +223,8 @@ require('packer').startup(function(use)
   use 'wuelnerdotexe/vim-enfocado'
   use { "catppuccin/nvim", as = "catppuccin" }
   use { 'ishan9299/modus-theme-vim' }
-  use {'navarasu/onedark.nvim'}
-  use {'folke/tokyonight.nvim'}
+  use { 'navarasu/onedark.nvim' }
+  use { 'folke/tokyonight.nvim' }
 
   use 'mbbill/undotree'
   use 'szw/vim-maximizer'
@@ -263,7 +269,8 @@ require('packer').startup(function(use)
 
   use { -- Autocompletion
     'hrsh7th/nvim-cmp',
-    requires = { 'hrsh7th/cmp-nvim-lsp', 'L3MON4D3/LuaSnip', 'saadparwaiz1/cmp_luasnip', 'hrsh7th/cmp-path', 'hrsh7th/cmp-cmdline' },
+    requires = { 'hrsh7th/cmp-nvim-lsp', 'L3MON4D3/LuaSnip', 'saadparwaiz1/cmp_luasnip', 'hrsh7th/cmp-path',
+      'hrsh7th/cmp-cmdline' },
   }
 
   use { -- Highlight, edit, and navigate code
@@ -281,14 +288,20 @@ require('packer').startup(function(use)
   -- Git related plugins
   use 'lewis6991/gitsigns.nvim'
 
-  use 'nvim-lualine/lualine.nvim' -- Fancier statusline
+  use 'nvim-lualine/lualine.nvim'           -- Fancier statusline
   use 'lukas-reineke/indent-blankline.nvim' -- Add indentation guides even on blank lines
-  use 'numToStr/Comment.nvim' -- "gc" to comment visual regions/lines
-  use 'tpope/vim-sleuth' -- Detect tabstop and shiftwidth automatically
+  use 'numToStr/Comment.nvim'               -- "gc" to comment visual regions/lines
+  use {
+    'numToStr/Comment.nvim',
+    config = function()
+      require('Comment').setup()
+    end
+  }
+  use 'tpope/vim-sleuth'                    -- Detect tabstop and shiftwidth automatically
 
   -- Fuzzy Finder (files, lsp, etc)
   use { 'nvim-telescope/telescope.nvim', branch = '0.1.x', requires = { 'nvim-lua/plenary.nvim' } }
-  use {'nvim-telescope/telescope-symbols.nvim'}
+  use { 'nvim-telescope/telescope-symbols.nvim' }
   -- Fuzzy Finder Algorithm which requires local dependencies to be built. Only load if `make` is available
   use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make', cond = vim.fn.executable 'make' == 1 }
 
@@ -353,23 +366,21 @@ vim.o.laststatus = 3
 
 -- Set colorscheme
 function SetColorScheme(colorscheme)
-
   if colorscheme == 'onedark' then
     require('onedark').setup({
       style = 'darker',
       -- style = 'warmer',
       -- style = 'deep',
       toggle_style_key = ',ts', -- keybind to toggle theme style. Leave it nil to disable it, or set it to a string, for example "<leader>ts"
-      transparent = true,  -- Show/hide background
+      transparent = true,       -- Show/hide background
       diagnostics = {
-        darker = true, -- darker colors for diagnostic
-        undercurl = true,   -- use undercurl instead of underline for diagnostics
-        background = false,    -- use background color for virtual text
+        darker = true,          -- darker colors for diagnostic
+        undercurl = true,       -- use undercurl instead of underline for diagnostics
+        background = false,     -- use background color for virtual text
       },
     })
     require('onedark').load()
     vim.cmd [[colorscheme onedark]]
-
   elseif colorscheme == 'modus-vivendi' then
     vim.g.modus_faint_syntax = 0
     vim.g.modus_green_strings = 1
@@ -377,7 +388,6 @@ function SetColorScheme(colorscheme)
     vim.g.modus_cursorline_intense = 1
     vim.g.modus_termtrans_enable = 0
     vim.cmd('colorscheme modus-vivendi')
-
   elseif colorscheme == 'catppuccin' then
     require("catppuccin").setup {
       flavour = "mocha", -- latte, frappe, macchiato, mocha
@@ -417,20 +427,15 @@ function SetColorScheme(colorscheme)
       -- },
     }
     vim.cmd.colorscheme "catppuccin"
-
   elseif colorscheme == 'tokyonight' then
     vim.cmd [[colorscheme tokyonight]]
-
   elseif colorscheme == 'enfocado' then
     vim.g.enfocado_style = 'nature' -- Available: `nature` or `neon`.
     vim.cmd('colorscheme enfocado')
-
   end
 
   return colorscheme
-
 end
-
 
 -- ColoringVim('modus-vivendi')
 -- SetColorScheme('tokyonight')
@@ -542,13 +547,13 @@ vim.keymap.set('n', '<leader>fw', builtin.grep_string, { desc = '[F]ind current 
 vim.keymap.set('n', '<leader>fg', builtin.live_grep, { desc = '[F]ind by [G]rep' })
 vim.keymap.set('n', '<leader>fd', builtin.diagnostics, { desc = '[F]ind [D]iagnostics' })
 
-vim.keymap.set('n', '<C-p>', builtin.git_files, {noremap = true, desc = 'Find files in git repo'})
-vim.keymap.set('n', '<leader>gs', builtin.git_stash, {noremap = true, desc = 'Git stash'})
+vim.keymap.set('n', '<C-p>', builtin.git_files, { noremap = true, desc = 'Find files in git repo' })
+vim.keymap.set('n', '<leader>gs', builtin.git_stash, { noremap = true, desc = 'Git stash' })
 
 local function create_git_worktree()
   require('telescope').extensions.git_worktree.create_git_worktree()
 end
-vim.keymap.set('n', '<leader>gw', create_git_worktree, {noremap = true, desc = 'Git worktree'})
+vim.keymap.set('n', '<leader>gw', create_git_worktree, { noremap = true, desc = 'Git worktree' })
 
 
 -- local function grep_for()
@@ -564,7 +569,6 @@ vim.keymap.set('n', '<leader>gw', create_git_worktree, {noremap = true, desc = '
 
 local actions = require('telescope.actions')
 local function search_scio()
-
   -- function to edit a file
   local vim_edit_prompt = function(prompt_bufnr)
     local current_picker = require('telescope.actions.state').get_current_picker(prompt_bufnr)
@@ -587,7 +591,8 @@ local function search_scio()
   })
 end
 
-local ignore_patterns = { "venv/", ".venv/", ".git/", "node_modules/", "*.pyc", "__.*cache.*/", "*.pkl", "*.pickle" , "*.mat"}
+local ignore_patterns = { "venv/", ".venv/", ".git/", "node_modules/", "*.pyc", "__.*cache.*/", "*.pkl", "*.pickle",
+  "*.mat" }
 
 local function search_dotfiles()
   require("telescope.builtin").find_files({
@@ -619,16 +624,16 @@ local function git_branches()
   })
 end
 
-vim.keymap.set('n', '<leader>dot', search_dotfiles, {noremap = true})
-vim.keymap.set('n', '<Leader>ff', find_files, {noremap = true})
-vim.keymap.set('n', '<leader>gc', git_branches, {noremap = true})
-vim.keymap.set('n', '<leader>sc', search_scio, {noremap = true})
+vim.keymap.set('n', '<leader>dot', search_dotfiles, { noremap = true })
+vim.keymap.set('n', '<Leader>ff', find_files, { noremap = true })
+vim.keymap.set('n', '<leader>gc', git_branches, { noremap = true })
+vim.keymap.set('n', '<leader>sc', search_scio, { noremap = true })
 
 -- [[ Configure Treesitter ]]
 -- See `:help nvim-treesitter`
 require('nvim-treesitter.configs').setup {
   -- Add languages to be installed here that you want installed for treesitter
-  ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'typescript', 'vim', 'help'},
+  ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'typescript', 'vim', 'help' },
 
   highlight = { enable = true },
   indent = { enable = true },
@@ -748,14 +753,17 @@ require('mason').setup()
 -- Enable the following language servers
 -- Feel free to add/remove any LSPs that you want here. They will automatically be installed
 local servers = {
-    -- 'clangd',
-    -- 'rust_analyzer',
-    'pyright',
-    'ruff_lsp',
-    -- 'tsserver',
-    -- 'lua_ls',
-    -- 'gopls'
-    -- 'sqlls',
+  -- 'clangd',
+  -- 'rust_analyzer',
+  'pyright',
+  'ruff_lsp',
+  'bashls',
+  'dockerls',
+  'efm',
+  -- 'tsserver',
+  -- 'lua_ls',
+  -- 'gopls'
+  -- 'sqlls',
 }
 
 -- Ensure the servers above are installed
@@ -894,15 +902,15 @@ require('lualine').setup({
     icons_enabled = false,
     -- icons_enabled = true,
     -- separator = { left = '', right = ''},
-    component_separators = {'', ''},
-    section_separators = {'', ''},
+    component_separators = { '', '' },
+    section_separators = { '', '' },
     disabled_filetypes = {}
   },
   sections = {
-    lualine_a = {'mode'},
+    lualine_a = { 'mode' },
     -- lualine_b = {'branch'},
-    lualine_b = {'branch', 'diff'},
-    lualine_c = {{'filename', path = 1}},
+    lualine_b = { 'branch', 'diff' },
+    lualine_c = { { 'filename', path = 1 } },
     -- lualine_c = {'filename'},
     lualine_x = {
       'encoding',
@@ -911,15 +919,15 @@ require('lualine').setup({
       -- wpm.wpm,
       -- wpm.historic_graph
     },
-    lualine_y = {function() return vim.fn.ObsessionStatus('Ob:ON', 'Ob:Off') end },
-    lualine_z = {'location'}
+    lualine_y = { function() return vim.fn.ObsessionStatus('Ob:ON', 'Ob:Off') end },
+    lualine_z = { 'location' }
   },
   inactive_sections = {
     lualine_a = {},
-    lualine_b = {'branch'},
-    lualine_c = {'filename'},
-    lualine_x = {'location'},
-    lualine_y = {''},
+    lualine_b = { 'branch' },
+    lualine_c = { 'filename' },
+    lualine_x = { 'location' },
+    lualine_y = { '' },
     lualine_z = {}
   },
   tabline = {},
@@ -933,33 +941,33 @@ local autocmd = vim.api.nvim_create_autocmd
 -- local yank_group = augroup('HighlightYank', {})
 
 
-autocmd({"BufWritePre"}, {
+autocmd({ "BufWritePre" }, {
   group = Mgreco,
   pattern = "*",
   command = "%s/\\s\\+$//e",
 })
 
-autocmd({'FileType'}, {
+autocmd({ 'FileType' }, {
   group = Mgreco,
   pattern = "dbui",
   command = "nmap <buffer> <leader>w <Plug>(DBUI_SaveQuery)",
 })
 
-autocmd({'FileType'}, {
+autocmd({ 'FileType' }, {
   group = Mgreco,
   pattern = "markdown",
   command = "normal zR",
 })
 
-vim.keymap.set('n', '<leader>sq', '<Plug>(DBUI_SaveQuery)', {noremap = true})
+vim.keymap.set('n', '<leader>sq', '<Plug>(DBUI_SaveQuery)', { noremap = true })
 
-autocmd({'FileType'}, {
+autocmd({ 'FileType' }, {
   group = Mgreco,
   pattern = "dbui",
   command = "setl nonumber norelativenumber",
 })
 
-autocmd({'BufWritePost'}, {
+autocmd({ 'BufWritePost' }, {
   group = Mgreco,
   pattern = "~/.Xresources",
   command = "silent !xrdb <afile> > /dev/null",
@@ -975,14 +983,14 @@ telescope.load_extension('harpoon')
 -- [[ netrw ]]
 vim.g.netrw_browse_split = 0
 vim.g.netrw_winsize = 25
-vim.g.netrw_localrmdir='rm -r'
-vim.g.netrw_browsex_viewer= 'xdg-open'
+vim.g.netrw_localrmdir = 'rm -r'
+vim.g.netrw_browsex_viewer = 'xdg-open'
 vim.g.netrw_hide = 0
 
 vim.keymap.set('n', 'gx', '<Plug>(openbrowser-smart-search)')
 vim.keymap.set('v', 'gx', '<Plug>(openbrowser-smart-search)')
-vim.keymap.set('n', '<leader>dd', ':Lexplore %:p:h<CR>', {noremap = true})
-vim.keymap.set('n', '<Leader>da', ':Lexplore<CR>', {noremap = true})
+vim.keymap.set('n', '<leader>dd', ':Lexplore %:p:h<CR>', { noremap = true })
+vim.keymap.set('n', '<Leader>da', ':Lexplore<CR>', { noremap = true })
 
 vim.cmd([[
 if &columns < 90
@@ -1042,32 +1050,32 @@ augroup END
 
 -- [[ terminal ]]
 -- terminal settings
-vim.keymap.set('t', '<Esc>', '<C-\\><C-n>', {noremap = true})
-vim.keymap.set('t', '<C-w>h', '<C-\\><C-n><C-w>h', {noremap = true})
-vim.keymap.set('t', '<C-w>j', '<C-\\><C-n><C-w>j', {noremap = true})
-vim.keymap.set('t', '<C-w>k', '<C-\\><C-n><C-w>k', {noremap = true})
-vim.keymap.set('t', '<C-w>l', '<C-\\><C-n><C-w>l', {noremap = true})
-vim.keymap.set('t', '<C-w>w', '<C-\\><C-n><C-w>w', {noremap = true})
-vim.keymap.set('t', '<C-P>', '<C-\\><C-n>pi<cr>', {noremap = true})
+vim.keymap.set('t', '<Esc>', '<C-\\><C-n>', { noremap = true })
+vim.keymap.set('t', '<C-w>h', '<C-\\><C-n><C-w>h', { noremap = true })
+vim.keymap.set('t', '<C-w>j', '<C-\\><C-n><C-w>j', { noremap = true })
+vim.keymap.set('t', '<C-w>k', '<C-\\><C-n><C-w>k', { noremap = true })
+vim.keymap.set('t', '<C-w>l', '<C-\\><C-n><C-w>l', { noremap = true })
+vim.keymap.set('t', '<C-w>w', '<C-\\><C-n><C-w>w', { noremap = true })
+vim.keymap.set('t', '<C-P>', '<C-\\><C-n>pi<cr>', { noremap = true })
 -- vim.keymap.set('n', '<C-l>', 'i<C-l>', {noremap = true})
 
 
 -- [[ LSP ]]
 vim.g.completion_matching_strategy_list = { 'exact', 'substring', 'fuzzy' }
 vim.g.completion_enable_snippet = 'vim-vsnip'
-vim.keymap.set('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', {noremap = true})
-vim.keymap.set('n', 'gr', '<cmd>lua vim.lsp.buf.rename()<CR>', {noremap = true})
-vim.keymap.set('n', '<leader>gd', ':lua vim.lsp.buf.definition()<CR>', {noremap = true})
-vim.keymap.set('n', '<leader>gi', ':lua vim.lsp.buf.implementation()<CR>', {noremap = true})
-vim.keymap.set('n', '<leader>gh', ':lua vim.lsp.buf.signature_help()<CR>', {noremap = true})
-vim.keymap.set('n', '<leader>gf', ':lua vim.lsp.buf.references()<CR>', {noremap = true})
-vim.keymap.set('n', '<leader>ga', ':lua vim.lsp.buf.code_action()<CR>', {noremap = true})
-vim.keymap.set('n', '<leader>dq', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', {noremap = true})
-vim.keymap.set('n', '<leader>dn', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', {noremap = true})
-vim.keymap.set('n', '<leader>dp', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', {noremap = true})
+vim.keymap.set('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', { noremap = true })
+vim.keymap.set('n', 'gr', '<cmd>lua vim.lsp.buf.rename()<CR>', { noremap = true })
+vim.keymap.set('n', '<leader>gd', ':lua vim.lsp.buf.definition()<CR>', { noremap = true })
+vim.keymap.set('n', '<leader>gi', ':lua vim.lsp.buf.implementation()<CR>', { noremap = true })
+vim.keymap.set('n', '<leader>gh', ':lua vim.lsp.buf.signature_help()<CR>', { noremap = true })
+vim.keymap.set('n', '<leader>gf', ':lua vim.lsp.buf.references()<CR>', { noremap = true })
+vim.keymap.set('n', '<leader>ga', ':lua vim.lsp.buf.code_action()<CR>', { noremap = true })
+vim.keymap.set('n', '<leader>dq', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', { noremap = true })
+vim.keymap.set('n', '<leader>dn', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', { noremap = true })
+vim.keymap.set('n', '<leader>dp', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', { noremap = true })
 
 -- [[ jupytext ]]
-vim.g.jupytext_filetype_map = { py='python' }
+vim.g.jupytext_filetype_map = { py = 'python' }
 vim.g.jupytext_fmt = 'py'
 
 -- [[ harpoon ]]
@@ -1090,35 +1098,34 @@ function SendToHarpoon(term_num, visual)
   if goto_term == 1 then
     term.gotoTerminal(term_num)
   end
-
 end
 
 vim.g.harpoon_goto_term = 0
 
 -- send to harpoon terminal
-vim.keymap.set('n', '<C-s><C-h>', ':lua SendToHarpoon(1, 0)<CR>', {noremap = true})
-vim.keymap.set('v', '<C-s><C-h>', ':lua SendToHarpoon(1, 1)<CR>', {noremap = true})
+vim.keymap.set('n', '<C-s><C-h>', ':lua SendToHarpoon(1, 0)<CR>', { noremap = true })
+vim.keymap.set('v', '<C-s><C-h>', ':lua SendToHarpoon(1, 1)<CR>', { noremap = true })
 -- open harpoon menu
-vim.keymap.set('n', '<leader>ha', ':lua require("harpoon.ui").toggle_quick_menu()<CR>', {noremap = true})
+vim.keymap.set('n', '<leader>ha', ':lua require("harpoon.ui").toggle_quick_menu()<CR>', { noremap = true })
 
-vim.keymap.set('n', '<C-h>', ':lua require("harpoon.ui").nav_file(1)<cr>', { noremap = true } )
-vim.keymap.set('n', '<C-j>', ':lua require("harpoon.ui").nav_file(2)<cr>', { noremap = true } )
-vim.keymap.set('n', '<C-k>', ':lua require("harpoon.ui").nav_file(3)<cr>', { noremap = true } )
-vim.keymap.set('n', '<C-l>', ':lua require("harpoon.ui").nav_file(4)<cr>', { noremap = true } )
+vim.keymap.set('n', '<C-h>', ':lua require("harpoon.ui").nav_file(1)<cr>', { noremap = true })
+vim.keymap.set('n', '<C-j>', ':lua require("harpoon.ui").nav_file(2)<cr>', { noremap = true })
+vim.keymap.set('n', '<C-k>', ':lua require("harpoon.ui").nav_file(3)<cr>', { noremap = true })
+vim.keymap.set('n', '<C-l>', ':lua require("harpoon.ui").nav_file(4)<cr>', { noremap = true })
 
-vim.keymap.set('n', '<C-h><C-h>', ':lua require("harpoon.term").gotoTerminal(1)<cr>i', { noremap = true } )
-vim.keymap.set('n', '<C-j><C-j>', ':lua require("harpoon.term").gotoTerminal(2)<cr>i', { noremap = true } )
-vim.keymap.set('n', '<C-k><C-k>', ':lua require("harpoon.term").gotoTerminal(3)<cr>i', { noremap = true } )
-vim.keymap.set('n', '<C-l><C-l>', ':lua require("harpoon.term").gotoTerminal(4)<cr>i', { noremap = true } )
+vim.keymap.set('n', '<C-h><C-h>', ':lua require("harpoon.term").gotoTerminal(1)<cr>i', { noremap = true })
+vim.keymap.set('n', '<C-j><C-j>', ':lua require("harpoon.term").gotoTerminal(2)<cr>i', { noremap = true })
+vim.keymap.set('n', '<C-k><C-k>', ':lua require("harpoon.term").gotoTerminal(3)<cr>i', { noremap = true })
+vim.keymap.set('n', '<C-l><C-l>', ':lua require("harpoon.term").gotoTerminal(4)<cr>i', { noremap = true })
 
 -- add file to harpoon
-vim.keymap.set('n', '<leader>hf', ':lua require("harpoon.mark").add_file()<CR>', {noremap = true})
+vim.keymap.set('n', '<leader>hf', ':lua require("harpoon.mark").add_file()<CR>', { noremap = true })
 
 -- add python cells
-vim.keymap.set('n', '<leader>co', 'O%%<esc>:norm gcc<cr>j', {noremap = true})
-vim.keymap.set('n', '<leader>cO', 'o%%<esc>:norm gcc<cr>k', {noremap = true})
-vim.keymap.set('n', '<leader>c-', 'O<esc>77i-<esc>:norm gcc<cr>j', {noremap = true})
-vim.keymap.set('n', 'vic', 'V?%%<cr>o/%%<cr>koj', {noremap = true})
+vim.keymap.set('n', '<leader>co', 'O%%<esc>:norm gcc<cr>j', { noremap = true })
+vim.keymap.set('n', '<leader>cO', 'o%%<esc>:norm gcc<cr>k', { noremap = true })
+vim.keymap.set('n', '<leader>c-', 'O<esc>77i-<esc>:norm gcc<cr>j', { noremap = true })
+vim.keymap.set('n', 'vic', 'V?%%<cr>o/%%<cr>koj', { noremap = true })
 
 
 -- markdown
@@ -1139,8 +1146,8 @@ vim.g.grepper.next_tool = '<leader>g'
 vim.g.grepper.simple_prompt = 1
 vim.g.grepper.quickfix = 0
 
-vim.keymap.set('n', '<leader>*', ':Grepper -tool ag -cword -noprompt<cr>', {noremap = true})
-vim.keymap.set('n', '<leader>g', ':Grepper -tool ag<cr>', {noremap = true})
+vim.keymap.set('n', '<leader>*', ':Grepper -tool ag -cword -noprompt<cr>', { noremap = true })
+vim.keymap.set('n', '<leader>g', ':Grepper -tool ag<cr>', { noremap = true })
 
 -- [[ fasfold ]]
 
@@ -1150,7 +1157,7 @@ vim.g.tex_fold_enabled = 1
 vim.g.vimsyn_folding = 'af'
 vim.g.xml_syntax_folding = 1
 vim.g.javaScript_fold = 1
-vim.g.sh_fold_enabled= 7
+vim.g.sh_fold_enabled = 7
 vim.g.ruby_fold = 1
 vim.g.perl_fold = 1
 vim.g.perl_fold_blocks = 1
@@ -1158,13 +1165,13 @@ vim.g.r_syntax_folding = 1
 vim.g.rust_fold = 1
 vim.g.php_folding = 1
 vim.g.fastfold_savehook = 1
-vim.g.fastfold_fold_command_suffixes =  { 'x','X','a','A','o','O','c','C' }
-vim.g.fastfold_fold_movement_commands = {']z', '[z', 'zj', 'zk'}
+vim.g.fastfold_fold_command_suffixes = { 'x', 'X', 'a', 'A', 'o', 'O', 'c', 'C' }
+vim.g.fastfold_fold_movement_commands = { ']z', '[z', 'zj', 'zk' }
 vim.g.fastfold_savehook = 0
 
 vim.keymap.set('n', 'zuz', '<Plug>FastFoldUpdate', { noremap = true, desc = 'update folds' })
 local Fold = vim.api.nvim_create_augroup('Fold', { clear = true })
-vim.api.nvim_create_autocmd('BufWinEnter', { group=Fold, pattern='*', command='setlocal foldmethod=expr' })
+vim.api.nvim_create_autocmd('BufWinEnter', { group = Fold, pattern = '*', command = 'setlocal foldmethod=expr' })
 -- vim.api.nvim_create_autocmd('FileType', { group=Fold, pattern='python', command='foldmethod=indent' })
 
 vim.g.SimpylFold_docstring_preview = 0
@@ -1176,14 +1183,14 @@ vim.g.SimpylFold_fold_blank = 0
 vim.b.SimpylFold_fold_blank = 0
 
 -- sets
-vim.o.scrollback=20000
+vim.o.scrollback = 20000
 -- vim.o.guicursor=""
 -- vim.o.nohlsearch = true
 -- vim.o.hidden = true
 -- vim.o.noerrorbells = true
-vim.o.tabstop=4
-vim.o.softtabstop=4
-vim.o.shiftwidth=4
+vim.o.tabstop = 4
+vim.o.softtabstop = 4
+vim.o.shiftwidth = 4
 vim.o.expandtab = true
 vim.o.smartindent = true
 -- vim.o.number = true
@@ -1195,7 +1202,7 @@ vim.o.undodir = os.getenv("HOME") .. '/.vim/undodir'
 vim.o.undofile = true
 vim.o.incsearch = true
 vim.o.termguicolors = true
-vim.o.scrolloff=8
+vim.o.scrolloff = 8
 -- vim.o.signcolumn='no'
 vim.o.cmdheight = 1
 vim.o.timeoutlen = 200
@@ -1208,21 +1215,25 @@ vim.o.colorcolumn = "80" -- works!
 
 vim.g.python3_host_prog = 'python3'
 
-vim.keymap.set('n', '<leader><cr>', ':source ~/.config/nvim/init.lua<cr>', {noremap = true})
-vim.keymap.set('n', '<leader>rc', ':new ~/.config/nvim/init.lua<cr>', {noremap = true})
+vim.keymap.set('n', '<leader><cr>', ':source ~/.config/nvim/init.lua<cr>', { noremap = true })
+vim.keymap.set('n', '<leader>rc', ':new ~/.config/nvim/init.lua<cr>', { noremap = true })
 
-local mmngreco = vim.api.nvim_create_augroup('mmngreco', {clear = true})
+local mmngreco = vim.api.nvim_create_augroup('mmngreco', { clear = true })
 -- vim.api.nvim_create_autocmd('BufWritePost', {group=mmngreco, pattern='~/.config/nvim/init.lua', command='source ~/.config/nvim/init.lua'})
 -- execute '%!python -m json.tool' | w
-vim.api.nvim_create_autocmd('BufRead', { group=mmngreco, pattern='*.json', command='%!python -m json.tool'})
-vim.api.nvim_create_autocmd('BufWritePre', { group=mmngreco, pattern='*', command='%s/\\s\\+$//e'})
-vim.api.nvim_create_autocmd('BufWritePre', { group=mmngreco, pattern='*.go', command='GoFmt'})
-vim.api.nvim_create_autocmd('BufEnter', { group=mmngreco, pattern='*.dbout', command='norm zR'})
-vim.api.nvim_create_autocmd('FileType', { group=mmngreco, pattern='markdown', command='setl conceallevel=2 spl=en,es'})
-vim.api.nvim_create_autocmd('FileType', { group=mmngreco, pattern='make', command='setl noexpandtab shiftwidth=4 softtabstop=0'})
-vim.api.nvim_create_autocmd('TermOpen', { group=mmngreco, pattern='*', command='setl nonumber norelativenumber'})
-vim.api.nvim_create_autocmd('FileType', { group=mmngreco, pattern='fugitive', command='setl nonumber norelativenumber'})
-vim.api.nvim_create_autocmd('FileType', { group=mmngreco, pattern='python', command='nnoremap <buffer> <F8> :silent !black -l79 -S %<CR><CR>'})
+vim.api.nvim_create_autocmd('BufRead', { group = mmngreco, pattern = '*.json', command = '%!python -m json.tool' })
+vim.api.nvim_create_autocmd('BufWritePre', { group = mmngreco, pattern = '*', command = '%s/\\s\\+$//e' })
+vim.api.nvim_create_autocmd('BufWritePre', { group = mmngreco, pattern = '*.go', command = 'GoFmt' })
+vim.api.nvim_create_autocmd('BufEnter', { group = mmngreco, pattern = '*.dbout', command = 'norm zR' })
+vim.api.nvim_create_autocmd('FileType', { group = mmngreco, pattern = 'markdown', command =
+'setl conceallevel=2 spl=en,es' })
+vim.api.nvim_create_autocmd('FileType',
+{ group = mmngreco, pattern = 'make', command = 'setl noexpandtab shiftwidth=4 softtabstop=0' })
+vim.api.nvim_create_autocmd('TermOpen', { group = mmngreco, pattern = '*', command = 'setl nonumber norelativenumber' })
+vim.api.nvim_create_autocmd('FileType', { group = mmngreco, pattern = 'fugitive',
+  command = 'setl nonumber norelativenumber' })
+vim.api.nvim_create_autocmd('FileType',
+{ group = mmngreco, pattern = 'python', command = 'nnoremap <buffer> <F8> :silent !black -l79 -S %<CR><CR>' })
 
 -- [[ slime ]] {
 vim.g.slime_cell_delimiter = [[\s*#\s*%%]]
@@ -1233,19 +1244,19 @@ vim.g.slime_paste_file = os.getenv("HOME") .. "/.slime_paste"
 -- vim.g.slime_default_config = {socket_name="default", target_pane=":.2"}
 vim.g.slime_python_ipython = 1
 vim.g.slime_no_mappings = 1
-vim.keymap.set('n', '<leader>cv', ':SlimeConfig<cr>', {noremap = true})
-vim.keymap.set('n', '<leader>ep', '<Plug>SlimeParagraphSend', {noremap = true})
+vim.keymap.set('n', '<leader>cv', ':SlimeConfig<cr>', { noremap = true })
+vim.keymap.set('n', '<leader>ep', '<Plug>SlimeParagraphSend', { noremap = true })
 -- vim.keymap.set('n', '<leader>cc', '<Plug>SlimeSendCell', {noremap = true})
-vim.keymap.set('n', '<leader>ck', '<cmd>call search(g:slime_cell_delimiter, "b")<cr>', {noremap = true})
-vim.keymap.set('n', '<leader>cj', '<cmd>call search(g:slime_cell_delimiter)<cr>', {noremap = true})
-vim.keymap.set('n', '<leader>cv', ':SlimeConfig<cr>', {noremap = true})
-vim.keymap.set('n', '<leader>e',  ':SlimeSend<cr>', {noremap = true, desc = 'send line to tmux'})
-vim.keymap.set('x', '<leader>e', '<Plug>SlimeRegionSend', {noremap = true, desc = 'send line to tmux'})
+vim.keymap.set('n', '<leader>ck', '<cmd>call search(g:slime_cell_delimiter, "b")<cr>', { noremap = true })
+vim.keymap.set('n', '<leader>cj', '<cmd>call search(g:slime_cell_delimiter)<cr>', { noremap = true })
+vim.keymap.set('n', '<leader>cv', ':SlimeConfig<cr>', { noremap = true })
+vim.keymap.set('n', '<leader>e', ':SlimeSend<cr>', { noremap = true, desc = 'send line to tmux' })
+vim.keymap.set('x', '<leader>e', '<Plug>SlimeRegionSend', { noremap = true, desc = 'send line to tmux' })
 
-vim.keymap.set('n', '<leader>ep', '<Plug>SlimeParagraphSend', {noremap = true})
-vim.keymap.set('n', '<leader>cc', '<Plug>SlimeSendCell', {noremap = true})
-vim.keymap.set('n', '<leader>ck', '<cmd>call search(g:slime_cell_delimiter, "b")<cr>', {noremap = true})
-vim.keymap.set('n', '<leader>cj', '<cmd>call search(g:slime_cell_delimiter)<cr>', {noremap = true})
+vim.keymap.set('n', '<leader>ep', '<Plug>SlimeParagraphSend', { noremap = true })
+vim.keymap.set('n', '<leader>cc', '<Plug>SlimeSendCell', { noremap = true })
+vim.keymap.set('n', '<leader>ck', '<cmd>call search(g:slime_cell_delimiter, "b")<cr>', { noremap = true })
+vim.keymap.set('n', '<leader>cj', '<cmd>call search(g:slime_cell_delimiter)<cr>', { noremap = true })
 
 vim.g.slime_target = "neovim"
 
@@ -1406,59 +1417,61 @@ function ToggleNumbers()
   end
 end
 
-vim.keymap.set('n', 'gV', '`[v`]', {noremap = true, desc = 'select last visual selection' })
-vim.keymap.set('n', '<leader>s', ':%s/<C-r><C-w>/<C-r><C-w>/gI<left><left><left>', {noremap = true, desc = 'search and replace word under cursor' })
+vim.keymap.set('n', 'gV', '`[v`]', { noremap = true, desc = 'select last visual selection' })
+vim.keymap.set('n', '<leader>s', ':%s/<C-r><C-w>/<C-r><C-w>/gI<left><left><left>',
+{ noremap = true, desc = 'search and replace word under cursor' })
 -- vim.keymap.set('n', 'gs', ':%s//g<left><left>', {noremap = true, desc = 'search and replace' })
 
-vim.keymap.set('i', '<C-J>', '<esc>:.m+1 | startinsert<cr>', {noremap = true, desc = 'move line down' })
-vim.keymap.set('i', '<C-K>', '<esc>:.m-2 | startinsert<cr>', {noremap = true, desc = 'move line up' })
+vim.keymap.set('i', '<C-J>', '<esc>:.m+1 | startinsert<cr>', { noremap = true, desc = 'move line down' })
+vim.keymap.set('i', '<C-K>', '<esc>:.m-2 | startinsert<cr>', { noremap = true, desc = 'move line up' })
 
-vim.keymap.set('n', '<leader>k', ':m .-2<cr>==', {noremap = true, desc = 'move line up' })
-vim.keymap.set('n', '<leader>j', ':m .+1<cr>==', {noremap = true, desc = 'move line down' })
+vim.keymap.set('n', '<leader>k', ':m .-2<cr>==', { noremap = true, desc = 'move line up' })
+vim.keymap.set('n', '<leader>j', ':m .+1<cr>==', { noremap = true, desc = 'move line down' })
 
-vim.keymap.set('n', '<leader>cn', ':cnext<cr>', {noremap = true, desc = 'next error' })
-vim.keymap.set('n', '<leader>cp', ':cprev<cr>', {noremap = true, desc = 'previous error' })
+vim.keymap.set('n', '<leader>cn', ':cnext<cr>', { noremap = true, desc = 'next error' })
+vim.keymap.set('n', '<leader>cp', ':cprev<cr>', { noremap = true, desc = 'previous error' })
 
 
 vim.keymap.set('n', '<leader>gls',
-  function ()
+  function()
     Search_term = vim.fn.expand('%')
     vim.cmd('Gclog -- %')
     vim.cmd('call search("' .. Search_term .. '")')
   end,
-  {noremap = true, desc = 'git log search' }
+  { noremap = true, desc = 'git log search' }
 )
 
 vim.keymap.set('n', '<leader>gln',
-  function ()
+  function()
     vim.cmd('cnext')
     vim.fn.search(Search_term)
   end,
-  {noremap = true, desc = 'next git log search' }
+  { noremap = true, desc = 'next git log search' }
 )
 vim.keymap.set('n', '<leader>glp',
-  function ()
+  function()
     vim.cmd('cprev')
     vim.fn.search(Search_term)
   end,
-  {noremap = true, desc = 'previous git log search' }
+  { noremap = true, desc = 'previous git log search' }
 )
 
-vim.keymap.set('n', '<leader>sn', ':\'<,\'>!sort -n -k 2', {noremap = true, desc = 'sort lines numerically' })
-vim.keymap.set('v', '<leader>s', ':\'<,\'>!sort -f<cr>', {noremap = true, desc = 'sort lines' })
+vim.keymap.set('n', '<leader>sn', ':\'<,\'>!sort -n -k 2', { noremap = true, desc = 'sort lines numerically' })
+vim.keymap.set('v', '<leader>s', ':\'<,\'>!sort -f<cr>', { noremap = true, desc = 'sort lines' })
 -- vim.o.isfname:append('@-@')
 -- vim.keymap.set('v', '<leader>sf', ':!sqlformat -k upper -r -<cr>', {noremap = true})
-vim.keymap.set('v', '<leader>sf', ':!sqlformat  -k upper -r --indent_after_first --indent_columns -<cr>', {noremap = true})
+vim.keymap.set('v', '<leader>sf', ':!sqlformat  -k upper -r --indent_after_first --indent_columns -<cr>',
+{ noremap = true })
 
 -- to show hidden symbols characters in a file, :set list to show them.
-vim.o.listchars='tab:→\\ ,space:·,nbsp:␣,trail:•,eol:¶,precedes:«,extends:»'
+vim.o.listchars = 'tab:→\\ ,space:·,nbsp:␣,trail:•,eol:¶,precedes:«,extends:»'
 
 
-vim.keymap.set('n', '<leader>tu', 'yypvawr-', {noremap = true, desc = 'underline word under cursor'})
-vim.keymap.set('n', '<leader>tx', ':s/\\[\\s\\?\\]/[x]/<cr>', {noremap = true, desc = 'check a box in markdown'})
-vim.keymap.set('n', '<leader>t<space>', ':s/\\[x\\]/[ ]/<cr>', {noremap = true, desc = 'uncheck a box in markdown'})
-vim.keymap.set('n', '<leader>ta', 'I- [ ] <esc>', {noremap = true, desc = 'append empty checkbox in markdown'})
-vim.keymap.set('n', '<leader>m', ':MaximizerToggle<cr>', {noremap = true, desc = 'Maximize current window'})
+vim.keymap.set('n', '<leader>tu', 'yypvawr-', { noremap = true, desc = 'underline word under cursor' })
+vim.keymap.set('n', '<leader>tx', ':s/\\[\\s\\?\\]/[x]/<cr>', { noremap = true, desc = 'check a box in markdown' })
+vim.keymap.set('n', '<leader>t<space>', ':s/\\[x\\]/[ ]/<cr>', { noremap = true, desc = 'uncheck a box in markdown' })
+vim.keymap.set('n', '<leader>ta', 'I- [ ] <esc>', { noremap = true, desc = 'append empty checkbox in markdown' })
+vim.keymap.set('n', '<leader>m', ':MaximizerToggle<cr>', { noremap = true, desc = 'Maximize current window' })
 
 -- [[ checkbox ]]
 function Checkboxes()
@@ -1486,29 +1499,38 @@ function Checkboxes()
   end
 
   vim.api.nvim_input("vipo<esc>A (" .. checked .. "/" .. total .. ")<esc>")
-  return {checked, total}
+  return { checked, total }
 end
+
 -- vim.cmd('command! -nargs=0 Checkboxes lua Checkboxes()')
 
 
 -- [[ fugitive ]]
-vim.keymap.set("n", "<leader>w", ":Git<cr>", {noremap = true})
-vim.keymap.set('n', '<C-g>', ':GBrowse<cr>', {noremap = true, desc = 'browse current file on github'})
-vim.keymap.set('v', '<C-g>', ':GBrowse<cr>', {noremap = true, desc = 'browse current file and line on github'})
-vim.keymap.set('n', '<C-g><C-y>', ':GBrowse!<cr>', {noremap = true, desc = 'yank github url of the current file'})
-vim.keymap.set('v', '<C-g><C-y>', ':GBrowse!<cr>', {noremap = true, desc = 'yank github url of the current line'})
+vim.keymap.set("n", "<leader>w", ":Git<cr>", { noremap = true })
+vim.keymap.set('n', '<C-g>', ':GBrowse<cr>', { noremap = true, desc = 'browse current file on github' })
+vim.keymap.set('v', '<C-g>', ':GBrowse<cr>', { noremap = true, desc = 'browse current file and line on github' })
+vim.keymap.set('n', '<C-g><C-y>', ':GBrowse!<cr>', { noremap = true, desc = 'yank github url of the current file' })
+vim.keymap.set('v', '<C-g><C-y>', ':GBrowse!<cr>', { noremap = true, desc = 'yank github url of the current line' })
 
 
 -- [[ refactoring ]]
 -- https://github.com/ThePrimeagen/refactoring.nvim
-vim.api.nvim_set_keymap("v", "<leader>re", [[ <Esc><Cmd>lua require('refactoring').refactor('Extract Function')<CR>]], {noremap = true, silent = true, expr = false})
-vim.api.nvim_set_keymap("v", "<leader>rf", [[ <Esc><Cmd>lua require('refactoring').refactor('Extract Function To File')<CR>]], {noremap = true, silent = true, expr = false})
-vim.api.nvim_set_keymap("v", "<leader>rv", [[ <Esc><Cmd>lua require('refactoring').refactor('Extract Variable')<CR>]], {noremap = true, silent = true, expr = false})
-vim.api.nvim_set_keymap("v", "<leader>ri", [[ <Esc><Cmd>lua require('refactoring').refactor('Inline Variable')<CR>]], {noremap = true, silent = true, expr = false})
+vim.api.nvim_set_keymap("v", "<leader>re", [[ <Esc><Cmd>lua require('refactoring').refactor('Extract Function')<CR>]],
+{ noremap = true, silent = true, expr = false })
+vim.api.nvim_set_keymap("v", "<leader>rf",
+[[ <Esc><Cmd>lua require('refactoring').refactor('Extract Function To File')<CR>]],
+{ noremap = true, silent = true, expr = false })
+vim.api.nvim_set_keymap("v", "<leader>rv", [[ <Esc><Cmd>lua require('refactoring').refactor('Extract Variable')<CR>]],
+{ noremap = true, silent = true, expr = false })
+vim.api.nvim_set_keymap("v", "<leader>ri", [[ <Esc><Cmd>lua require('refactoring').refactor('Inline Variable')<CR>]],
+{ noremap = true, silent = true, expr = false })
 -- Extract block doesn't need visual mode
-vim.api.nvim_set_keymap("n", "<leader>rb", [[ <Cmd>lua require('refactoring').refactor('Extract Block')<CR>]], {noremap = true, silent = true, expr = false})
-vim.api.nvim_set_keymap("n", "<leader>rbf", [[ <Cmd>lua require('refactoring').refactor('Extract Block To File')<CR>]], {noremap = true, silent = true, expr = false})
-vim.api.nvim_set_keymap("n", "<leader>ri", [[ <Cmd>lua require('refactoring').refactor('Inline Variable')<CR>]], {noremap = true, silent = true, expr = false})
+vim.api.nvim_set_keymap("n", "<leader>rb", [[ <Cmd>lua require('refactoring').refactor('Extract Block')<CR>]],
+{ noremap = true, silent = true, expr = false })
+vim.api.nvim_set_keymap("n", "<leader>rbf", [[ <Cmd>lua require('refactoring').refactor('Extract Block To File')<CR>]],
+{ noremap = true, silent = true, expr = false })
+vim.api.nvim_set_keymap("n", "<leader>ri", [[ <Cmd>lua require('refactoring').refactor('Inline Variable')<CR>]],
+{ noremap = true, silent = true, expr = false })
 
 
 -- [[ copilot ]]
@@ -1529,7 +1551,7 @@ vim.api.nvim_set_keymap("n", "<leader>ri", [[ <Cmd>lua require('refactoring').re
 -- vim.keymap.set('n', '<leader>cp', ':lua toggle_copilot()<cr>', {noremap = true, desc = 'toggle copilot'})
 
 -- [[ tagbar ]]
-vim.keymap.set('n', '<leader>t', ':Tagbar<cr>', {noremap = true, desc = 'toggle tagbar'})
+vim.keymap.set('n', '<leader>t', ':Tagbar<cr>', { noremap = true, desc = 'toggle tagbar' })
 
 
 -- [[ dap ]]
@@ -1538,40 +1560,38 @@ require("nvim-dap-virtual-text").setup({})
 require("dap-python").setup(os.getenv('HOME') .. '/.virtualenvs/debugpy/bin/python')
 
 local dap = require('dap')
-vim.keymap.set('n', '<leader>B', function() dap.set_breakpoint(vim.fn.input("Breakpoint condition: ")) end, {noremap = true, desc = 'dap set breakpoint condition'})
-vim.keymap.set('n', '<leader>b', dap.toggle_breakpoint, {noremap = true, desc = 'dap toggle breakpoint'})
-vim.keymap.set('n', '<leader>dc', dap.continue, {noremap = true, desc = 'dap continue'})
+vim.keymap.set('n', '<leader>B', function() dap.set_breakpoint(vim.fn.input("Breakpoint condition: ")) end,
+{ noremap = true, desc = 'dap set breakpoint condition' })
+vim.keymap.set('n', '<leader>b', dap.toggle_breakpoint, { noremap = true, desc = 'dap toggle breakpoint' })
+vim.keymap.set('n', '<leader>dc', dap.continue, { noremap = true, desc = 'dap continue' })
 
-vim.keymap.set('n', '<leader>dh', dap.step_out, {noremap = true, desc = 'dap step out ←'})
-vim.keymap.set('n', '<leader>dl', dap.step_into, {noremap = true, desc = 'dap step into →'})
-vim.keymap.set('n', '<leader>dk', dap.step_back, {noremap = true, desc = 'dap step back ↑'})
-vim.keymap.set('n', '<leader>dj', dap.step_over, {noremap = true, desc = 'dap step over ↓'})
+vim.keymap.set('n', '<leader>dh', dap.step_out, { noremap = true, desc = 'dap step out ←' })
+vim.keymap.set('n', '<leader>dl', dap.step_into, { noremap = true, desc = 'dap step into →' })
+vim.keymap.set('n', '<leader>dk', dap.step_back, { noremap = true, desc = 'dap step back ↑' })
+vim.keymap.set('n', '<leader>dj', dap.step_over, { noremap = true, desc = 'dap step over ↓' })
 
-vim.keymap.set('n', '<leader>de', dap.repl.open, {noremap = true, desc = 'dap open repl'})
-vim.keymap.set('n', '<leader>dr', dap.run_last, {noremap = true, desc = 'dap run last'})
-vim.keymap.set('n', '<leader>dq', dap.disconnect, {noremap = true, desc = 'dap disconnect'})
+vim.keymap.set('n', '<leader>de', dap.repl.open, { noremap = true, desc = 'dap open repl' })
+vim.keymap.set('n', '<leader>dr', dap.run_last, { noremap = true, desc = 'dap run last' })
+vim.keymap.set('n', '<leader>dq', dap.disconnect, { noremap = true, desc = 'dap disconnect' })
 
 -- [[ dap:ui ]]
 local dapui = require('dapui')
-vim.keymap.set('n', '<leader>du', dapui.toggle, {noremap = true, desc = 'toggle dap ui'})
-vim.keymap.set('n', '<leader>do', dapui.open, {noremap = true, desc = 'toggle dap ui'})
-vim.keymap.set('n', '<leader>dx', dapui.close, {noremap = true, desc = 'toggle dap ui'})
+vim.keymap.set('n', '<leader>du', dapui.toggle, { noremap = true, desc = 'toggle dap ui' })
+vim.keymap.set('n', '<leader>do', dapui.open, { noremap = true, desc = 'toggle dap ui' })
+vim.keymap.set('n', '<leader>dx', dapui.close, { noremap = true, desc = 'toggle dap ui' })
 
 -- [[ luasnip ]]
 require("luasnip.loaders.from_vscode").lazy_load({ paths = { vim.fn.getenv("DOTFILES") .. "/vim/vsnip" } })
 
 local types = require('luasnip.util.types')
-luasnip.config.set_config ({
+luasnip.config.set_config({
   -- This tells LuaSnip to remember to keep around the last snippet.
   -- You can jump back into it even if you move outside of the selection
   history = false,
-
   -- This one is cool cause if you have dynamic snippets, it updates as you type!
   updateevents = "TextChanged,TextChangedI",
-
   -- Autosnippets:
   enable_autosnippets = true,
-
   -- Crazy highlights!!
   -- #vid3
   -- ext_opts = nil,
@@ -1590,18 +1610,18 @@ local ls = require("luasnip")
 local s = ls.snippet
 local t = ls.text_node
 ls.add_snippets('all', {
-    s('hola', t'hola mundo!')
+  s('hola', t 'hola mundo!')
 })
 
 ls.add_snippets('python', {
-    s('pdb', t'__import__("pdb").set_trace()')
+  s('pdb', t '__import__("pdb").set_trace()')
 })
 
 ls.add_snippets('python', {
-    s('pm', t'__import__("pdb").pm()')
+  s('pm', t '__import__("pdb").pm()')
 })
 
-vim.keymap.set('n', '<leader>zz', '<cmd>ZenMode<cr>', { noremap = true, desc = 'ZenMode toggle'})
+vim.keymap.set('n', '<leader>zz', '<cmd>ZenMode<cr>', { noremap = true, desc = 'ZenMode toggle' })
 
 
 
@@ -1623,38 +1643,38 @@ function SwapBool()
   vim.api.nvim_command("normal ciw" .. new)
 end
 
-vim.keymap.set('n', '<leader>sb', ':lua SwapBool()<cr>', {noremap = true, desc = 'swap boolean value'})
+vim.keymap.set('n', '<leader>sb', ':lua SwapBool()<cr>', { noremap = true, desc = 'swap boolean value' })
 
 -- common mistake: prevent create a file 2
 vim.api.nvim_command('cabbrev w2 w')
 
 -- function to convert table tab separetaed into a python dict
 function TabToDict()
-    vim.cmd[[:'<,'>s/\t/": "/]]
-    pcall(vim.cmd, [[:'<,'>s/\t/", "/g]])
-    vim.cmd[[:'<,'>s/^/"/g]]
-    vim.cmd[[:'<,'>s/$/",/g]]
-    pcall(vim.cmd, [[normal :'<,'>s/""/None/g']])
-    pcall(vim.cmd, [[normal :'<,'>s/"TRUE"/True/g']])
-    vim.api.nvim_command("normal gVVc{\r}")
-    vim.api.nvim_command("normal O")
-    vim.api.nvim_command("normal P}dd")
-    vim.api.nvim_command("normal vi{g=")
-    -- vim.api.nvim_command("normal! dd")
+  vim.cmd [[:'<,'>s/\t/": "/]]
+  pcall(vim.cmd, [[:'<,'>s/\t/", "/g]])
+  vim.cmd [[:'<,'>s/^/"/g]]
+  vim.cmd [[:'<,'>s/$/",/g]]
+  pcall(vim.cmd, [[normal :'<,'>s/""/None/g']])
+  pcall(vim.cmd, [[normal :'<,'>s/"TRUE"/True/g']])
+  vim.api.nvim_command("normal gVVc{\r}")
+  vim.api.nvim_command("normal O")
+  vim.api.nvim_command("normal P}dd")
+  vim.api.nvim_command("normal vi{g=")
+  -- vim.api.nvim_command("normal! dd")
 end
 
-vim.keymap.set('v', '<leader>td', ':lua TabToDict()<cr>', {noremap = true, desc = 'convert table to dict'})
+vim.keymap.set('v', '<leader>td', ':lua TabToDict()<cr>', { noremap = true, desc = 'convert table to dict' })
 
 
 
 function ToggleSlime(back)
   if back == 'harpoon' then
-    vim.keymap.set('n', '<leader>e', ':lua SendToHarpoon(1, 0)<CR>', {noremap = false})
-    vim.keymap.set('v', '<leader>e', ':lua SendToHarpoon(1, 1)<CR>', {noremap = false})
+    vim.keymap.set('n', '<leader>e', ':lua SendToHarpoon(1, 0)<CR>', { noremap = false })
+    vim.keymap.set('v', '<leader>e', ':lua SendToHarpoon(1, 1)<CR>', { noremap = false })
     print("Using harpoon")
   elseif back == 'slime' then
-    vim.keymap.set('n', '<leader>e',  ':SlimeSend<cr>', {noremap = false, desc = 'send line to tmux'})
-    vim.keymap.set('x', '<leader>e', '<Plug>SlimeRegionSend', {noremap = false, desc = 'send line to tmux'})
+    vim.keymap.set('n', '<leader>e', ':SlimeSend<cr>', { noremap = false, desc = 'send line to tmux' })
+    vim.keymap.set('x', '<leader>e', '<Plug>SlimeRegionSend', { noremap = false, desc = 'send line to tmux' })
     print("Using Slime")
   end
 end
@@ -1662,15 +1682,12 @@ end
 ToggleSlime('slime')
 
 
-require'nvim-treesitter.configs'.setup {
+require 'nvim-treesitter.configs'.setup {
   textobjects = {
-
     select = {
       enable = true,
-
       -- Automatically jump forward to textobj, similar to targets.vim
       lookahead = true,
-
       keymaps = {
         -- You can use the capture groups defined in textobjects.scm
         ["af"] = "@function.outer",
@@ -1689,7 +1706,7 @@ require'nvim-treesitter.configs'.setup {
       -- mapping query_strings to modes.
       selection_modes = {
         ['@parameter.outer'] = 'v', -- charwise
-        ['@function.outer'] = 'V', -- linewise
+        ['@function.outer'] = 'V',  -- linewise
         ['@class.outer'] = '<c-v>', -- blockwise
       },
       -- If you set this to `true` (default is `false`) then any textobject is
@@ -1703,7 +1720,6 @@ require'nvim-treesitter.configs'.setup {
       -- and should return true of false
       include_surrounding_whitespace = true,
     },
-
     swap = {
       enable = true,
       swap_next = {
@@ -1713,7 +1729,6 @@ require'nvim-treesitter.configs'.setup {
         ["<leader>A"] = "@parameter.inner",
       },
     },
-
     move = {
       enable = true,
       set_jumps = true, -- whether to set jumps in the jumplist
@@ -1752,7 +1767,6 @@ require'nvim-treesitter.configs'.setup {
         ["[d"] = "@conditional.outer",
       }
     },
-
   },
 }
 
@@ -1766,7 +1780,7 @@ function CreateScratch()
   end
   local num = 0
   local ext = '.py'
-  local file = function(n) return vim.fn.expand(parent..'/'..n..ext) end
+  local file = function(n) return vim.fn.expand(parent .. '/' .. n .. ext) end
 
   while (vim.fn.filereadable(file(num)) == 0) and (num <= 1000) do
     num = num + 1
@@ -1781,43 +1795,43 @@ function CreateScratch()
   vim.bo.textwidth = 0
 end
 
-vim.keymap.set('n', '<leader>ss', ':lua CreateScratch()<cr>', {noremap = true, desc = 'create scratch buffer'})
+vim.keymap.set('n', '<leader>ss', ':lua CreateScratch()<cr>', { noremap = true, desc = 'create scratch buffer' })
 
 -- [[ High-str ]]
 local high_str = require("high-str")
 
 high_str.setup({
-	verbosity = 0,
-	saving_path = "/tmp/highstr/",
-	highlight_colors = {
-		-- color_id = {"bg_hex_code",<"fg_hex_code"/"smart">}
-		color_0 = {"#0c0d0e", "smart"},	-- Cosmic charcoal
-		color_1 = {"#e5c07b", "smart"},	-- Pastel yellow
-		color_2 = {"#7FFFD4", "smart"},	-- Aqua menthe
-		color_3 = {"#8A2BE2", "smart"},	-- Proton purple
-		color_4 = {"#FF4500", "smart"},	-- Orange red
-		color_5 = {"#008000", "smart"},	-- Office green
-		color_6 = {"#0000FF", "smart"},	-- Just blue
-		color_7 = {"#FFC0CB", "smart"},	-- Blush pink
-		color_8 = {"#FFF9E3", "smart"},	-- Cosmic latte
-		color_9 = {"#7d5c34", "smart"},	-- Fallow brown
-	}
+  verbosity = 0,
+  saving_path = "/tmp/highstr/",
+  highlight_colors = {
+    -- color_id = {"bg_hex_code",<"fg_hex_code"/"smart">}
+    color_0 = { "#0c0d0e", "smart" }, -- Cosmic charcoal
+    color_1 = { "#e5c07b", "smart" }, -- Pastel yellow
+    color_2 = { "#7FFFD4", "smart" }, -- Aqua menthe
+    color_3 = { "#8A2BE2", "smart" }, -- Proton purple
+    color_4 = { "#FF4500", "smart" }, -- Orange red
+    color_5 = { "#008000", "smart" }, -- Office green
+    color_6 = { "#0000FF", "smart" }, -- Just blue
+    color_7 = { "#FFC0CB", "smart" }, -- Blush pink
+    color_8 = { "#FFF9E3", "smart" }, -- Cosmic latte
+    color_9 = { "#7d5c34", "smart" }, -- Fallow brown
+  }
 })
 
-vim.keymap.set("v", "<leader>h", ":<c-u>HSHighlight 2<cr>", {noremap = true, desc = 'high-str'})
+vim.keymap.set("v", "<leader>h", ":<c-u>HSHighlight 2<cr>", { noremap = true, desc = 'high-str' })
 -- vim.keymap.set("n", "<leader>h", ":<c-u>HSHighlight 2<cr>", {noremap = true, desc = 'high-str'})
 
-vim.keymap.set("v", "<C-c>", "\"0y", {noremap = true, desc = 'yank to clipboard'})
-vim.keymap.set("n", "<C-c>", "\"0yy", {noremap = true, desc = 'yank to clipboard'})
+vim.keymap.set("v", "<C-c>", "\"0y", { noremap = true, desc = 'yank to clipboard' })
+vim.keymap.set("n", "<C-c>", "\"0yy", { noremap = true, desc = 'yank to clipboard' })
 
 vim.keymap.set('n', '<C-v><C-v>', '"0p', { desc = 'Paste 0 register' })
 vim.keymap.set('i', '<C-v>', '<C-r>0', { desc = 'Paste 0 register' })
 
 vim.keymap.set('n', '<leader>p', '"+p', { desc = 'Paste clipboard register' })
 vim.keymap.set('v', '<leader>p', '"+p', { desc = 'Paste clipboard register' })
-vim.keymap.set('n', '<leader>y', '"+yy', {noremap = true, desc = 'copy to system clipboard'})
-vim.keymap.set('v', '<leader>y', '"+y', {noremap = true, desc = 'copy to system clipboard'})
-vim.keymap.set('n', '<leader>yf', ':let @+ = expand("%:p")<cr>', {noremap = true, desc = 'yank filename/buffer path'})
+vim.keymap.set('n', '<leader>y', '"+yy', { noremap = true, desc = 'copy to system clipboard' })
+vim.keymap.set('v', '<leader>y', '"+y', { noremap = true, desc = 'copy to system clipboard' })
+vim.keymap.set('n', '<leader>yf', ':let @+ = expand("%:p")<cr>', { noremap = true, desc = 'yank filename/buffer path' })
 
 -- local BigQuery = vim.api.nvim_create_augroup("BigQuery", {})
 -- vim.api.nvim_create_autocmd({"BufEnter"}, {
@@ -1862,30 +1876,29 @@ vim.keymap.set('n', '<leader>yf', ':let @+ = expand("%:p")<cr>', {noremap = true
 -- })
 
 -- sniprun
-require'sniprun'.setup({
-  selected_interpreters = {},     --# use those instead of the default for the current filetype
-  repl_enable = {},               --# enable REPL-like behavior for the given interpreters
-  repl_disable = {},              --# disable REPL-like behavior for the given interpreters
-
-  interpreter_options = {         --# interpreter-specific options, see docs / :SnipInfo <name>
+require 'sniprun'.setup({
+  selected_interpreters = {}, --# use those instead of the default for the current filetype
+  repl_enable = {},           --# enable REPL-like behavior for the given interpreters
+  repl_disable = {},          --# disable REPL-like behavior for the given interpreters
+  interpreter_options = {
+                              --# interpreter-specific options, see docs / :SnipInfo <name>
 
     --# use the interpreter name as key
     GFM_original = {
-      use_on_filetypes = {"markdown.pandoc"}    --# the 'use_on_filetypes' configuration key is
-                                                --# available for every interpreter
+      use_on_filetypes = { "markdown.pandoc" } --# the 'use_on_filetypes' configuration key is
+      --# available for every interpreter
     },
     Python3_original = {
-        error_truncate = "auto"         --# Truncate runtime errors 'long', 'short' or 'auto'
-                                        --# the hint is available for every interpreter
-                                        --# but may not be always respected
+      error_truncate = "auto"   --# Truncate runtime errors 'long', 'short' or 'auto'
+      --# the hint is available for every interpreter
+      --# but may not be always respected
     }
   },
-
   --# you can combo different display modes as desired and with the 'Ok' or 'Err' suffix
   --# to filter only sucessful runs (or errored-out runs respectively)
   display = {
-    "Classic",                    --# display results in the command-line  area
-    "VirtualTextOk",              --# display ok results as virtual text (multiline is shortened)
+    "Classic",       --# display results in the command-line  area
+    "VirtualTextOk", --# display ok results as virtual text (multiline is shortened)
 
     -- "VirtualText",             --# display results as virtual text
     -- "TempFloatingWindow",      --# display results in a floating window
@@ -1895,44 +1908,38 @@ require'sniprun'.setup({
     -- "NvimNotify",              --# display with the nvim-notify plugin
     -- "Api"                      --# return output to a programming interface
   },
-
   live_display = { "VirtualTextOk" }, --# display mode used in live_mode
-
   display_options = {
-    terminal_width = 45,       --# change the terminal display option width
-    notification_timeout = 5   --# timeout for nvim_notify output
+    terminal_width = 45,     --# change the terminal display option width
+    notification_timeout = 5 --# timeout for nvim_notify output
   },
-
   --# You can use the same keys to customize whether a sniprun producing
   --# no output should display nothing or '(no output)'
   show_no_output = {
     "Classic",
-    "TempFloatingWindow",      --# implies LongTempFloatingWindow, which has no effect on its own
+    "TempFloatingWindow", --# implies LongTempFloatingWindow, which has no effect on its own
   },
-
   --# customize highlight groups (setting this overrides colorscheme)
   snipruncolors = {
-    SniprunVirtualTextOk   =  {bg="#66eeff",fg="#000000",ctermbg="Cyan",cterfg="Black"},
-    SniprunFloatingWinOk   =  {fg="#66eeff",ctermfg="Cyan"},
-    SniprunVirtualTextErr  =  {bg="#881515",fg="#000000",ctermbg="DarkRed",cterfg="Black"},
-    SniprunFloatingWinErr  =  {fg="#881515",ctermfg="DarkRed"},
+    SniprunVirtualTextOk  = { bg = "#66eeff", fg = "#000000", ctermbg = "Cyan", cterfg = "Black" },
+    SniprunFloatingWinOk  = { fg = "#66eeff", ctermfg = "Cyan" },
+    SniprunVirtualTextErr = { bg = "#881515", fg = "#000000", ctermbg = "DarkRed", cterfg = "Black" },
+    SniprunFloatingWinErr = { fg = "#881515", ctermfg = "DarkRed" },
   },
-
-  live_mode_toggle='off',     --# live mode toggle, see Usage - Running for more info
-
+  live_mode_toggle = 'off', --# live mode toggle, see Usage - Running for more info
   --# miscellaneous compatibility/adjustement settings
-  inline_messages = 0,        --# inline_message (0/1) is a one-line way to display messages
-                              --# to workaround sniprun not being able to display anything
+  inline_messages = 0, --# inline_message (0/1) is a one-line way to display messages
+  --# to workaround sniprun not being able to display anything
 
-  borders = 'single',         --# display borders around floating windows
-                              --# possible values are 'none', 'single', 'double', or 'shadow'
+  borders = 'single', --# display borders around floating windows
+  --# possible values are 'none', 'single', 'double', or 'shadow'
 })
 
 -- print('SnipRun loaded')
 
-vim.api.nvim_set_keymap('v', 'f', '<Plug>SnipRun', {silent = true})
-vim.api.nvim_set_keymap('n', '<leader>f', '<Plug>SnipRunOperator', {silent = true})
-vim.api.nvim_set_keymap('n', '<leader>fl', '<Plug>SnipRun', {silent = true})
+vim.api.nvim_set_keymap('v', 'f', '<Plug>SnipRun', { silent = true })
+vim.api.nvim_set_keymap('n', '<leader>f', '<Plug>SnipRunOperator', { silent = true })
+vim.api.nvim_set_keymap('n', '<leader>fl', '<Plug>SnipRun', { silent = true })
 
 -- remap ESC to kj
 -- vim.api.nvim_set_keymap('i', 'hh', '<Esc>', {noremap = true})
@@ -1942,5 +1949,60 @@ vim.api.nvim_set_keymap('n', '<leader>fl', '<Plug>SnipRun', {silent = true})
 
 -- vim.api.nvim_set_keymap('n', ':', '<cmd>FineCmdline<CR>', {noremap = true})
 
+-- [[ formatter ]]
+-- Utilities for creating configurations
+local util = require "formatter.util"
+
+-- Provides the Format, FormatWrite, FormatLock, and FormatWriteLock commands
+require("formatter").setup {
+  -- Enable or disable logging
+  logging = true,
+  -- Set the log level
+  log_level = vim.log.levels.WARN,
+  -- All formatter configurations are opt-in
+  filetype = {
+    -- Formatter configurations for filetype "lua" go here
+    -- and will be executed in order
+    lua = {
+      -- "formatter.filetypes.lua" defines default configurations for the
+      -- "lua" filetype
+      require("formatter.filetypes.lua").stylua,
+
+      -- You can also define your own configuration
+      function()
+        -- Supports conditional formatting
+        if util.get_current_buffer_file_name() == "special.lua" then
+          return nil
+        end
+
+        -- Full specification of configurations is down below and in Vim help
+        -- files
+        return {
+          exe = "stylua",
+          args = {
+            "--search-parent-directories",
+            "--stdin-filepath",
+            util.escape_path(util.get_current_buffer_file_path()),
+            "--",
+            "-",
+          },
+          stdin = true,
+        }
+      end
+    },
+    -- Use the special "*" filetype for defining formatter configurations on
+    -- any filetype
+    ["*"] = {
+      -- "formatter.filetypes.any" defines default configurations for any
+      -- filetype
+      require("formatter.filetypes.any").remove_trailing_whitespace
+    }
+  }
+}
+
+
+-- [[ comment ]]
+local ft = require('Comment.ft')
+ft.set('mermaid', '%% %s')
 
 -- vim:ts=2 sts=2 sw=2 et
