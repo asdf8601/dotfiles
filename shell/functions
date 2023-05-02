@@ -190,6 +190,11 @@ fzfProjects () {
     selectProjectFzf $@
 }
 
+cdProjects () {
+    # Change directory to a project using fzf
+    cd $(fzfProjects $@)
+}
+
 nvp () {
     # neovim project
     query="${1}"
