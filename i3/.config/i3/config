@@ -423,7 +423,7 @@ mode "$mode_gaps_outer" {
 # for window /
 # ----------------------------------------------------------------------------
 
-assign [class=st] $ws1
+assign [class=xterm] $ws1
 assign [class=Brave-browser] $ws2
 assign [class=DBeaver] $ws3
 assign [class=slack|Slack] $ws4
