@@ -11,7 +11,7 @@ do
     source $hidden
 done
 
-[ ! -f ~/.bashrc ] && dotfiles link
+[ ! -f ~/.bashrc ] && mxm link
 
 # bin
 addToPath "/usr/local/bin"
