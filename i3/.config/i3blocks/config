@@ -51,7 +51,7 @@ border=#f2d93a
 # command=xterm -e "nvim ~/.dotfiles"
 # border=#f2d93a
 
-[todo]
+[countdown]
 full_text=⏱
 command=st -t "bar:countdown" -f "CaskaydiaCove Nerd Font:size=14"
 # use color green
