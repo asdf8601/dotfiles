@@ -20,7 +20,12 @@ alias ......="cd ../../../../.."
 # Editor
 alias nano='nano -W -m'
 alias edit='nvim'
-alias vim='nvim'
+
+# if neovim exists, create an alias for vim
+if command -v nvim &> /dev/null && [ ! -f /usr/bin/vim ]; then
+   alias vim='nvim'
+fi
+
 alias :e='edit'
 alias :q='exit'
 
