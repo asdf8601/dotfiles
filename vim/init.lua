@@ -57,14 +57,24 @@ require('packer').startup(function(use)
   use { 'mhartington/formatter.nvim' }
   use {
     "nvim-neorg/neorg",
-    run = ":Neorg sync-parsers", -- This is the important bit!
     config = function()
-      require("neorg").setup {
-        -- configuration here
+      require('neorg').setup {
+        load = {
+          ["core.defaults"] = {}, -- Loads default behaviour
+          ["core.concealer"] = {}, -- Adds pretty icons to your documents
+          ["core.dirman"] = { -- Manages Neorg workspaces
+            config = {
+              workspaces = {
+                notes = "~/notes",
+              },
+            },
+          },
+        },
       }
     end,
+    run = ":Neorg sync-parsers",
+    requires = "nvim-lua/plenary.nvim",
   }
-
 
   use({
     'jakewvincent/mkdnflow.nvim',
@@ -299,7 +309,6 @@ require('packer').startup(function(use)
 
   use 'nvim-lualine/lualine.nvim'           -- Fancier statusline
   use 'lukas-reineke/indent-blankline.nvim' -- Add indentation guides even on blank lines
-  use 'numToStr/Comment.nvim'               -- "gc" to comment visual regions/lines
   use {
     'numToStr/Comment.nvim',
     config = function()
