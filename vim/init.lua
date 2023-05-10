@@ -55,6 +55,15 @@ require('packer').startup(function(use)
   --
   --
   use { 'mhartington/formatter.nvim' }
+  use {
+    "nvim-neorg/neorg",
+    run = ":Neorg sync-parsers", -- This is the important bit!
+    config = function()
+      require("neorg").setup {
+        -- configuration here
+      }
+    end,
+  }
 
 
   use({
@@ -840,7 +849,7 @@ cmp.setup {
     { name = 'copilot' },
     { name = 'buffer' },
     { name = 'path' },
-    -- { name = 'neorg' },
+    { name = 'neorg' },
     { name = 'nvim_lsp_signature_help' },
     { name = 'orgmode' },
   },
