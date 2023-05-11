@@ -56,6 +56,13 @@ require('packer').startup(function(use)
   --
   use { 'mhartington/formatter.nvim' }
   use {
+    'nvim-orgmode/orgmode',
+    config = function()
+      require('orgmode').setup({})
+    end,
+    requires = 'nvim-treesitter/nvim-treesitter',
+  }
+  use {
     "nvim-neorg/neorg",
     config = function()
       require('neorg').setup {
@@ -1256,12 +1263,6 @@ vim.api.nvim_create_autocmd('FileType',
 -- [[ slime ]] {
 vim.g.slime_cell_delimiter = [[\s*#\s*%%]]
 vim.g.slime_paste_file = os.getenv("HOME") .. "/.slime_paste"
--- vim.g.slime_target = "tmux"
--- vim.g.slime_bracketed_paste = 1
--- vim.g.slime_dont_ask_default = 1
--- vim.g.slime_default_config = {socket_name="default", target_pane=":.2"}
-vim.g.slime_python_ipython = 1
-vim.g.slime_no_mappings = 1
 vim.keymap.set('n', '<leader>cv', ':SlimeConfig<cr>', { noremap = true })
 vim.keymap.set('n', '<leader>ep', '<Plug>SlimeParagraphSend', { noremap = true })
 -- vim.keymap.set('n', '<leader>cc', '<Plug>SlimeSendCell', {noremap = true})
@@ -1276,7 +1277,35 @@ vim.keymap.set('n', '<leader>cc', '<Plug>SlimeSendCell', { noremap = true })
 vim.keymap.set('n', '<leader>ck', '<cmd>call search(g:slime_cell_delimiter, "b")<cr>', { noremap = true })
 vim.keymap.set('n', '<leader>cj', '<cmd>call search(g:slime_cell_delimiter)<cr>', { noremap = true })
 
-vim.g.slime_target = "neovim"
+local function slime_use_tmux()
+  vim.g.slime_target = "tmux"
+  vim.g.slime_bracketed_paste = 1
+  vim.g.slime_python_ipython = 0
+  vim.g.slime_no_mappings = 1
+  vim.g.slime_default_config = {socket_name="default", target_pane=":.2"}
+  vim.g.slime_dont_ask_default = 1
+end
+
+local function slime_use_neovim()
+  vim.g.slime_target = "neovim"
+  vim.g.slime_python_ipython = 0
+  vim.g.slime_bracketed_paste = 1
+  vim.g.slime_default_config = {}
+  vim.g.slime_no_mappings = 1
+  vim.g.slime_dont_ask_default = 0
+end
+
+slime_use_neovim()
+
+local function toggle_slime_target()
+  if vim.g.slime_target == "neovim" then
+    slime_use_tmux()
+  else
+    slime_use_neovim()
+  end
+end
+vim.api.nvim_create_user_command('SlimeToggleTarget', toggle_slime_target, { nargs = 0 })
+
 
 -- local function get_open_terminals()
 --   local terminals = {}
@@ -1689,11 +1718,11 @@ function ToggleSlime(back)
   if back == 'harpoon' then
     vim.keymap.set('n', '<leader>e', ':lua SendToHarpoon(1, 0)<CR>', { noremap = false })
     vim.keymap.set('v', '<leader>e', ':lua SendToHarpoon(1, 1)<CR>', { noremap = false })
-    print("Using harpoon")
+    -- print("Using harpoon")
   elseif back == 'slime' then
     vim.keymap.set('n', '<leader>e', ':SlimeSend<cr>', { noremap = false, desc = 'send line to tmux' })
     vim.keymap.set('x', '<leader>e', '<Plug>SlimeRegionSend', { noremap = false, desc = 'send line to tmux' })
-    print("Using Slime")
+    -- print("Using Slime")
   end
 end
 
@@ -2022,5 +2051,23 @@ require("formatter").setup {
 -- [[ comment ]]
 local ft = require('Comment.ft')
 ft.set('mermaid', '%% %s')
+
+
+
+-- [[ orgmode ]] {
+require('orgmode').setup_ts_grammar()
+require('nvim-treesitter.configs').setup {
+  highlight = {
+    enable = true,
+    additional_vim_regex_highlighting = {'org'},
+  },
+  ensure_installed = {'org'}, -- Or run :TSUpdate org
+}
+
+require('orgmode').setup({
+  org_agenda_files = {'~/my-orgs/**/*'},
+  org_default_notes_file = '~/notes/todo.org',
+})
+-- }
 
 -- vim:ts=2 sts=2 sw=2 et
