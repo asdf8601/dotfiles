@@ -1295,8 +1295,8 @@ local function slime_use_neovim()
   vim.g.slime_dont_ask_default = 0
 end
 
--- slime_use_neovim()
-slime_use_tmux()
+slime_use_neovim()
+-- slime_use_tmux()
 
 local function toggle_slime_target()
   if vim.g.slime_target == "neovim" then
