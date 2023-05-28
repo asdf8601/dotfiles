@@ -19,7 +19,7 @@
     ~/.dotfiles: .
 
     # visidata
-    ~/.visidatarc: ./visidatarc
+    ~/.visidatarc: ./.visidatarc
     ~/.gitconfig: ./git/gitconfig
     ~/.docker/config.json: ./docker/.docker/config.json
 
