@@ -1,0 +1,51 @@
+- defaults:
+    link:
+      relink: true
+      force: true
+      create: true
+
+- clean:
+    ~/:
+      force: true
+    ~/.config:
+      recursive: true
+
+- link:
+    ~/.zshrc: macos/home/.zshrc
+    ~/.zprofile: macos/home/.zprofile
+    ~/.zsh_prompt: macos/home/.zsh_prompt
+    ~/.config/yabai/yabairc: macos/home/.config/yabai/yabairc
+
+    ~/.dotfiles: .
+
+    # visidata
+    ~/.visidatarc: ./visidatarc
+    ~/.gitconfig: ./git/gitconfig
+    ~/.docker/config.json: ./docker/.docker/config.json
+
+    # tmux
+    ~/.tmux.conf: ./tmux/tmux.conf
+
+    # shell
+    ~/.config/starship.toml: ./shell/.config/starship.toml
+
+    # terminal
+    ~/.config/kitty/kitty.conf: ./terminal/kitty.conf
+    ~/.config/alacritty/alacritty.yml: ./terminal/alacritty.yml
+
+    # vim
+    ~/.config/nvim/init.lua: ./vim/init.lua
+
+    # Python
+    ~/.condarc: ./conda/.condarc
+    ~/.pdbrc.py: ./python/pdbrc.py
+    ~/.config/pip/pip.conf: ./python/pip.conf
+    ~/.ipython/profile_default/ipython_config.py: ./python/ipython_config.py
+
+    # binaries / commands
+    ~/.local/bin/:
+        path: bin/*
+        glob: true
+
+    # text expander
+    ~/.config/espanso: ./espanso
