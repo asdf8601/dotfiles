@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+dir=/tmp/i3blocks
+[ -d $dir ] && rm -rf $dir
+git clone --depth 1 -b 1.5 https://github.com/vivien/i3blocks $dir
+pushd $dir >/dev/null
+./autogen.sh
+./configure
+make
+sudo make install

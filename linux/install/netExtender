@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+curl -O https://software.sonicwall.com/NetExtender/NetExtender.Linux-10.2.824.x86_64.tgz

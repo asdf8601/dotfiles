@@ -1,0 +1,398 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_OUTPUT_EXCMD	mixed	/number, pattern, mixed, or combineV2/
+!_TAG_OUTPUT_FILESEP	slash	/slash or backslash/
+!_TAG_OUTPUT_MODE	u-ctags	/u-ctags or e-ctags/
+!_TAG_PATTERN_LENGTH_LIMIT	96	/0 for no limit/
+!_TAG_PROC_CWD	/home/mgreco/github/mmngreco/dotfiles/vim/plugins/	//
+!_TAG_PROGRAM_AUTHOR	Universal Ctags Team	//
+!_TAG_PROGRAM_NAME	Universal Ctags	/Derived from Exuberant Ctags/
+!_TAG_PROGRAM_URL	https://ctags.io/	/official site/
+!_TAG_PROGRAM_VERSION	5.9.0	/5d506a1/
+.	netrw.vim	/^  nmap <buffer> . gh$/;"	m
+<C-W>J	yode.vim	/^map <C-W>J :YodeLayoutShiftWinBottom<CR>$/;"	m
+<C-W>K	yode.vim	/^map <C-W>K :YodeLayoutShiftWinTop<CR>$/;"	m
+<C-W>R	yode.vim	/^map <C-W>R :YodeLayoutShiftWinUp<CR>$/;"	m
+<C-W>r	yode.vim	/^map <C-W>r :YodeLayoutShiftWinDown<CR>$/;"	m
+<C-c><C-c>	dbee.vim	/^vnoremap <C-c><C-c> :DBeeSetConnection<cr><cr>$/;"	m
+<C-d>	pydocstring.vim	/^nmap <C-d> <Plug>(pydocstring)$/;"	m
+<C-f><C-g>	fterm.vim	/^nnoremap <C-f><C-g> :lua _G.__fterm_gitui()<CR>$/;"	m
+<C-f><C-i>	fterm.vim	/^nnoremap <C-f><C-i> :lua _G.__fterm_issues()<CR>$/;"	m
+<C-f><C-p>	fterm.vim	/^nnoremap <C-f><C-p> :lua _G.__fterm_pbSummary()<CR>$/;"	m
+<C-f><C-t>	fterm.vim	/^nnoremap <C-f><C-t> :lua require("FTerm").toggle()<CR>$/;"	m
+<C-g>	fugitive.vim	/^nnoremap <C-g> :GBrowse<cr>$/;"	m
+<C-g>	fugitive.vim	/^vnoremap <C-g> :GBrowse<cr>$/;"	m
+<C-g><C-b>	fugitive.vim	/^nnoremap <C-g><C-b> :Git pull<CR>$/;"	m
+<C-g><C-f>	fugitive.vim	/^nnoremap <C-g><C-f> :Git fetch<CR>$/;"	m
+<C-g><C-t>	fugitive.vim	/^nnoremap <C-g><C-t> :Git push<CR>$/;"	m
+<C-h>	harpoon.vim	/^nnoremap <C-h> :lua require("harpoon.ui").nav_file(1)<cr>$/;"	m
+<C-h><C-h>	harpoon.vim	/^nnoremap <C-h><C-h> :lua require("harpoon.term").gotoTerminal(1)<cr>i$/;"	m
+<C-j>	harpoon.vim	/^nnoremap <C-j> :lua require("harpoon.ui").nav_file(2)<cr>$/;"	m
+<C-j>	vsnip.vim	/^imap <expr> <C-j>   vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<C-j>'$/;"	m
+<C-j>	vsnip.vim	/^smap <expr> <C-j>   vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<C-j>'$/;"	m
+<C-j><C-j>	harpoon.vim	/^nnoremap <C-j><C-j> :lua require("harpoon.term").gotoTerminal(2)<cr>i$/;"	m
+<C-k>	harpoon.vim	/^nnoremap <C-k> :lua require("harpoon.ui").nav_file(3)<cr>$/;"	m
+<C-k><C-k>	harpoon.vim	/^nnoremap <C-k><C-k> :lua require("harpoon.term").gotoTerminal(3)<cr>i$/;"	m
+<C-l>	harpoon.vim	/^nnoremap <C-l> :lua require("harpoon.ui").nav_file(4)<cr>$/;"	m
+<C-l>	vsnip.vim	/^imap <expr> <C-l>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'$/;"	m
+<C-l>	vsnip.vim	/^smap <expr> <C-l>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'$/;"	m
+<C-l><C-l>	harpoon.vim	/^nnoremap <C-l><C-l> :lua require("harpoon.term").gotoTerminal(4)<cr>i$/;"	m
+<C-n>	nvim-tree.vim	/^nnoremap <C-n> :NvimTreeToggle<CR>$/;"	m
+<C-p>	telescope.vim	/^nnoremap <C-p> <cmd>lua require('telescope.builtin').git_files()<CR>$/;"	m
+<C-q>	dbee.vim	/^vnoremap <C-q> :DBeeQuery<cr>$/;"	m
+<C-t>	tagbar.vim	/^nnoremap <C-t> :set nosplitright<CR>:TagbarToggle<CR>:set splitright<CR>$/;"	m
+<C-t><C-h>	harpoon.vim	/^nnoremap <C-t><C-h> :lua require("harpoon.term").sendCommand(1, "pytest tests\\n")<cr>$/;"	m
+<C-t><C-j>	harpoon.vim	/^nnoremap <C-t><C-j> :lua require("harpoon.term").sendCommand(2, "pytest tests\\n")<cr>$/;"	m
+<C-t><C-k>	harpoon.vim	/^nnoremap <C-t><C-k> :lua require("harpoon.term").sendCommand(3, "pytest tests\\n")<cr>$/;"	m
+<C-t><C-l>	harpoon.vim	/^nnoremap <C-t><C-l> :lua require("harpoon.term").sendCommand(4, "pytest tests\\n")<cr>$/;"	m
+<CR>	netrw.vim	/^    cnoremap <buffer> <CR> rm -r<CR>$/;"	m
+<F3>	latex_unicoder.vim	/^inoremap <F3> <Esc>:call unicoder#start(1)<CR>$/;"	m
+<F3>	latex_unicoder.vim	/^nnoremap <F3> :call unicoder#start(0)<CR>$/;"	m
+<F3>	latex_unicoder.vim	/^vnoremap <F3> :<C-u>call unicoder#selection()<CR>$/;"	m
+<Leader><TAB>	netrw.vim	/^  nmap <buffer> <Leader><TAB> mu$/;"	m
+<Leader>da	netrw.vim	/^nnoremap <Leader>da :Lexplore<CR>$/;"	m
+<Leader>di	vimspector.vim	/^nmap <Leader>di <Plug>VimspectorBalloonEval$/;"	m
+<Leader>di	vimspector.vim	/^xmap <Leader>di <Plug>VimspectorBalloonEval$/;"	m
+<Leader>e	slimux.vim	/^nnoremap <Leader>e :SlimuxREPLSendLine<CR><esc>j$/;"	m
+<Leader>e	slimux.vim	/^vnoremap <Leader>e :SlimuxREPLSendSelection<CR><esc>`[v`]<cr><ESC>$/;"	m
+<Leader>ff	telescope.vim	/^nnoremap <Leader>ff <cmd>lua require('telescope').mmngreco.find_files()<CR>$/;"	m
+<Leader>nf	nerdtree.vim	/^nnoremap <silent> <Leader>nf :NERDTreeFind<cr>$/;"	m
+<Leader>r	slimux.vim	/^nnoremap <Leader>r :SlimuxGlobalConfigure<CR>$/;"	m
+<M-k>	dap.vim	/^vnoremap <M-k> :lua require("dapui").eval()<CR>$/;"	m
+<Plug>SendToHarpoon1	harpoon.vim	/^nnoremap <silent> <Plug>SendToHarpoon1 :let g:_cmd = (getline('.') . "\\n")<CR>:lua require("har/;"	m
+<Plug>SendToHarpoon2	harpoon.vim	/^nnoremap <silent> <Plug>SendToHarpoon2 :let g:_cmd = (getline('.') . "\\n")<CR>:lua require("har/;"	m
+<Plug>SendToHarpoon3	harpoon.vim	/^nnoremap <silent> <Plug>SendToHarpoon3 :let g:_cmd = (getline('.') . "\\n")<CR>:lua require("har/;"	m
+<Plug>SendToHarpoon4	harpoon.vim	/^nnoremap <silent> <Plug>SendToHarpoon4 :let g:_cmd = (getline('.') . "\\n")<CR>:lua require("har/;"	m
+<S-TAB>	netrw.vim	/^  nmap <buffer> <S-TAB> mF$/;"	m
+<S-Tab>	vsnip.vim	/^imap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'$/;"	m
+<TAB>	netrw.vim	/^  nmap <buffer> <TAB> mf$/;"	m
+<Tab>	vsnip.vim	/^imap <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'$/;"	m
+<Tab>	vsnip.vim	/^smap <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'$/;"	m
+<leader>*	grepper.vim	/^nnoremap <leader>* :Grepper -tool ag -cword -noprompt<cr>$/;"	m
+<leader>.	distant.vim	/^nnoremap <leader>. :DistantOpen .<cr>$/;"	m
+<leader><leader>w	hop.vim	/^nn <leader><leader>w :HopWord<cr>$/;"	m
+<leader>S	workspace.vim	/^nnoremap <leader>S :ToggleWorkspace<CR>$/;"	m
+<leader>a	harpoon.vim	/^nnoremap <leader>a :lua require("harpoon.ui").toggle_quick_menu()<cr>$/;"	m
+<leader>aa	harpoon.vim	/^nnoremap <leader>aa :lua require("harpoon.mark").add_file()<CR>$/;"	m
+<leader>aac	functions.vim	/^vnoremap <leader>aac :<c-u>call AsArgsClass()<CR>$/;"	m
+<leader>ae	functions.vim	/^nnoremap <leader>ae :call TurnOffGuides()<cr>$/;"	m
+<leader>akw	functions.vim	/^vnoremap <leader>akw :<c-u>call AsKwargs()<CR>$/;"	m
+<leader>ao	functions.vim	/^nnoremap <leader>ao :call TurnOnGuides()<cr>$/;"	m
+<leader>ba	harpoon.vim	/^nnoremap <leader>ba :call writefile(["break " . expand('%:p') . ":" . line('.')], $PWD . "\/.pdb/;"	m
+<leader>bb	harpoon.vim	/^nnoremap <leader>bb <cmd>ln -sf $PWD\/.pdbrc$/;"	m
+<leader>be	harpoon.vim	/^nnoremap <leader>be :edit $PWD\/.pdbrc<CR>$/;"	m
+<leader>bh	harpoon.vim	/^nnoremap <leader>bh :let g:_cmd = ("b " . expand('%:p') . ":" . line('.') . "\\n")<CR>:lua requi/;"	m
+<leader>bj	harpoon.vim	/^nnoremap <leader>bj :let g:_cmd = ("b " . expand('%:p') . ":" . line('.') . "\\n")<CR>:lua requi/;"	m
+<leader>bk	harpoon.vim	/^nnoremap <leader>bk :let g:_cmd = ("b " . expand('%:p') . ":" . line('.') . "\\n")<CR>:lua requi/;"	m
+<leader>bl	harpoon.vim	/^nnoremap <leader>bl :let g:_cmd = ("b " . expand('%:p') . ":" . line('.') . "\\n")<CR>:lua requi/;"	m
+<leader>by	harpoon.vim	/^nnoremap <leader>by :let @b=("b " . expand('%:p') . ":" . line('.') . "\\n")<CR>:echo @b<cr>$/;"	m
+<leader>c	functions.vim	/^nnoremap <leader>c :call ToggleColumnWidth()<cr>$/;"	m
+<leader>c-	slime.vim	/^nnoremap <leader>c- O<esc>77i-<esc>:norm gcc<cr>j$/;"	m
+<leader>c-	slimux.vim	/^nnoremap <leader>c- O<esc>77i-<esc>:norm gcc<cr>j$/;"	m
+<leader>cO	slime.vim	/^nnoremap <leader>cO O%%<esc>:norm gcc<cr>j$/;"	m
+<leader>cO	slimux.vim	/^nnoremap <leader>cO O%%<esc>:norm gcc<cr>j$/;"	m
+<leader>cc	slime.vim	/^nmap <leader>cc <Plug>SlimeCellsSendAndGoToNext$/;"	m
+<leader>cc	slimux.vim	/^nnoremap <leader>cc V\/%%<cr>k:'<,'>SlimuxREPLSendSelection<cr>$/;"	m
+<leader>cj	slime.vim	/^nmap <leader>cj <Plug>SlimeCellsNext$/;"	m
+<leader>cj	slimux.vim	/^nnoremap <leader>cj \/%%<cr>$/;"	m
+<leader>ck	slime.vim	/^nmap <leader>ck <Plug>SlimeCellsPrev$/;"	m
+<leader>ck	slimux.vim	/^nnoremap <leader>ck ?%%<cr>$/;"	m
+<leader>cl	slime.vim	/^xmap <leader>cl <Plug>SlimeRegionSend<cr>$/;"	m
+<leader>cl	slimux.vim	/^nnoremap <leader>cl V\/%%<cr>k:'<,'>SlimuxREPLSendSelection<cr>nn$/;"	m
+<leader>co	slime.vim	/^nnoremap <leader>co o%%<esc>:norm gcc<cr>k$/;"	m
+<leader>co	slimux.vim	/^nnoremap <leader>co o%%<esc>:norm gcc<cr>k$/;"	m
+<leader>cp	slime.vim	/^nmap <leader>cp <Plug>SlimeParagraphSend$/;"	m
+<leader>crn	carbon.vim	/^vnoremap <leader>crn :CarbonNowSh<CR>$/;"	m
+<leader>cv	slime.vim	/^nmap <leader>cv <Plug>SlimeConfig$/;"	m
+<leader>d<space>	vimspector.vim	/^nnoremap <leader>d<space> :call vimspector#Continue()<CR>$/;"	m
+<leader>d_	vimspector.vim	/^nmap <leader>d_ <Plug>VimspectorRestart$/;"	m
+<leader>db	dap.vim	/^nn <leader>db :lua require("dap").toggle_breakpoint()<cr>$/;"	m
+<leader>dbp	vimspector.vim	/^nmap <leader>dbp <Plug>VimspectorToggleBreakpoint$/;"	m
+<leader>dc	dap.vim	/^nn <leader>dc :lua require("dap").continue()<cr>$/;"	m
+<leader>dc	vimspector.vim	/^nnoremap <leader>dc :call GotoWindow(g:vimspector_session_windows.code)<CR>$/;"	m
+<leader>dcl	vimspector.vim	/^nnoremap <leader>dcl :call vimspector#CleanLineBreakpoint()<CR>$/;"	m
+<leader>dcp	vimspector.vim	/^nmap <leader>dcp <Plug>VimspectorToggleConditionalBreakpoint$/;"	m
+<leader>dd	netrw.vim	/^  nmap <buffer> <leader>dd :Lexplore<CR>$/;"	m
+<leader>dd	netrw.vim	/^nnoremap <leader>dd :Lexplore %:p:h<CR>$/;"	m
+<leader>dd	vimspector.vim	/^nnoremap <leader>dd :call vimspector#Launch()<CR>$/;"	m
+<leader>de	vimspector.vim	/^nnoremap <leader>de :call vimspector#Reset()<CR>$/;"	m
+<leader>di	drawit.vim	/^nnoremap <leader>di :call StartDrawit()<cr>$/;"	m
+<leader>dj	dap.vim	/^nn <leader>dj :lua require("dap").step_over()<cr>$/;"	m
+<leader>dj	vimspector.vim	/^nmap <leader>dj <Plug>VimspectorStepOver$/;"	m
+<leader>dk	vimspector.vim	/^nmap <leader>dk <Plug>VimspectorStepOut$/;"	m
+<leader>dl	dap.vim	/^nn <leader>dl :lua require("dap").step_into()<cr>$/;"	m
+<leader>dl	vimspector.vim	/^nmap <leader>dl <Plug>VimspectorStepInto$/;"	m
+<leader>dn	lsp.vim	/^nnoremap <leader>dn <cmd>lua vim.lsp.diagnostic.goto_next()<CR>$/;"	m
+<leader>do	dap.vim	/^nn <leader>do :lua require("dapui").open()<cr>$/;"	m
+<leader>do	vimspector.vim	/^nnoremap <leader>do :call GotoWindow(g:vimspector_session_windows.output)<CR>$/;"	m
+<leader>dot	telescope.vim	/^nnoremap <leader>dot <cmd>lua require('telescope').mmngreco.search_dotfiles()<CR>$/;"	m
+<leader>dp	lsp.vim	/^nnoremap <leader>dp <cmd>lua vim.lsp.diagnostic.goto_prev()<CR>$/;"	m
+<leader>dq	lsp.vim	/^nnoremap <leader>dq <cmd>lua vim.lsp.diagnostic.set_loclist()<CR>$/;"	m
+<leader>drc	vimspector.vim	/^nmap <leader>drc <Plug>VimspectorRunToCursor$/;"	m
+<leader>ds	vimspector.vim	/^nnoremap <leader>ds :call GotoWindow(g:vimspector_session_windows.stack_trace)<CR>$/;"	m
+<leader>dt	dap.vim	/^nn <leader>dt :lua require("dapui").toggle()<cr>$/;"	m
+<leader>dt	vimspector.vim	/^nnoremap <leader>dt :call GotoWindow(g:vimspector_session_windows.tagpage)<CR>$/;"	m
+<leader>dv	vimspector.vim	/^nnoremap <leader>dv :call GotoWindow(g:vimspector_session_windows.variables)<CR>$/;"	m
+<leader>dw	vimspector.vim	/^nnoremap <leader>dw :call GotoWindow(g:vimspector_session_windows.watches)<CR>$/;"	m
+<leader>dx	dap.vim	/^nn <leader>dx :lua require("dapui").close()<cr>$/;"	m
+<leader>dx	drawit.vim	/^nnoremap <leader>dx :call StopDrawit()<cr>$/;"	m
+<leader>e	slime.vim	/^map <leader>e :SlimeSend<cr>$/;"	m
+<leader>fb	telescope.vim	/^nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<cr>$/;"	m
+<leader>fg	telescope.vim	/^nnoremap <leader>fg <cmd>lua require('telescope').mmngreco.no_preview()<CR>$/;"	m
+<leader>fg	telescope.vim	/^nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>$/;"	m
+<leader>fh	telescope.vim	/^nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>$/;"	m
+<leader>fk	telescope.vim	/^nnoremap <leader>fk <cmd>lua require('telescope.builtin').keymaps()<cr>$/;"	m
+<leader>g	grepper.vim	/^nnoremap <leader>g :Grepper -tool ag<cr>$/;"	m
+<leader>ga	lsp.vim	/^nnoremap <leader>ga :lua vim.lsp.buf.code_action()<CR>$/;"	m
+<leader>gc	telescope.vim	/^nnoremap <leader>gc <cmd>lua require('telescope').mmngreco.git_branches()<CR>$/;"	m
+<leader>gd	lsp.vim	/^nnoremap <leader>gd :lua vim.lsp.buf.definition()<CR>$/;"	m
+<leader>gf	lsp.vim	/^nnoremap <leader>gf :lua vim.lsp.buf.references()<CR>$/;"	m
+<leader>gh	lsp.vim	/^nnoremap <leader>gh :lua vim.lsp.buf.signature_help()<CR>$/;"	m
+<leader>gi	lsp.vim	/^nnoremap <leader>gi :lua vim.lsp.buf.implementation()<CR>$/;"	m
+<leader>gwt	telescope.vim	/^nnoremap <leader>gwt <cmd>lua require('telescope').extensions.git_worktree.create_git_worktree()/;"	m
+<leader>h	navegation.vim	/^nnoremap <leader>h :wincmd h<CR>$/;"	m
+<leader>j	navegation.vim	/^nnoremap <leader>j :wincmd j<CR>$/;"	m
+<leader>k	navegation.vim	/^nnoremap <leader>k :wincmd k<CR>$/;"	m
+<leader>l	navegation.vim	/^nnoremap <leader>l :wincmd l<CR>$/;"	m
+<leader>lh	harpoon.vim	/^nmap <leader>lh  <Plug>SendToHarpoon1$/;"	m
+<leader>lj	harpoon.vim	/^nmap <leader>lj  <Plug>SendToHarpoon2$/;"	m
+<leader>lk	harpoon.vim	/^nmap <leader>lk  <Plug>SendToHarpoon3$/;"	m
+<leader>ll	harpoon.vim	/^nmap <leader>ll  <Plug>SendToHarpoon4$/;"	m
+<leader>m	arduino.vim	/^nnoremap <leader>m :make!<CR>$/;"	m
+<leader>mat	telescope.vim	/^nnoremap <leader>mat <cmd>lua require('telescope').mmngreco.search_matlab()<CR>$/;"	m
+<leader>n	nvim-tree.vim	/^nnoremap <leader>n :NvimTreeFindFile<CR>$/;"	m
+<leader>nt	chadtree.vim	/^nnoremap <leader>nt <cmd>CHADopen<cr>$/;"	m
+<leader>nt	nerdtree.vim	/^nnoremap <leader>nt :NERDTreeToggle<Enter>$/;"	m
+<leader>pb	telescope.vim	/^nnoremap <leader>pb <cmd>lua require('telescope.builtin').buffers()<CR>$/;"	m
+<leader>pip	fterm.vim	/^nnoremap <leader>pip :lua _G.__fterm_pipInstall()<CR>$/;"	m
+<leader>ps	telescope.vim	/^nnoremap <leader>ps <cmd>lua require('telescope.builtin').grep_string({ search = vim.fn.input("G/;"	m
+<leader>pw	telescope.vim	/^nnoremap <leader>pw <cmd>lua require('telescope.builtin').grep_string { search = vim.fn.expand("/;"	m
+<leader>r	nvim-tree.vim	/^nnoremap <leader>r :NvimTreeRefresh<CR>$/;"	m
+<leader>s	arduino.vim	/^nnoremap <leader>s :ArduinoSerial<CR>$/;"	m
+<leader>sc	telescope.vim	/^nnoremap <leader>sc <cmd>lua require('telescope').mmngreco.search_scio()<CR>$/;"	m
+<leader>shc	functions.vim	/^nnoremap <leader>shc :call ShowChars()<cr>$/;"	m
+<leader>ssh	distant.vim	/^nnoremap <leader>ssh :Distant 139.162.167.149 ssh.user=root ssh.port=22 mode=ssh<cr>$/;"	m
+<leader>ssh	distant.vim	/^nnoremap <leader>ssh :Distant do_etl ssh.user=mgreco ssh.port=22 mode=ssh<cr>$/;"	m
+<leader>swe	functions.vim	/^vnoremap <leader>swe :<c-u>call SwapEqual()<CR>$/;"	m
+<leader>tf	test.vim	/^nnoremap <silent> <leader>tf :TestFile<CR>$/;"	m
+<leader>tg	bujo.vim	/^nmap <leader>tg <cmd>Todo g<cr>$/;"	m
+<leader>tg	test.vim	/^nnoremap <silent> <leader>tg :TestVisit<CR>$/;"	m
+<leader>th	telescope.vim	/^nnoremap <leader>th <cmd>lua require('telescope.builtin').help_tags()<CR>$/;"	m
+<leader>tl	test.vim	/^nnoremap <silent> <leader>tl :TestLast<CR>$/;"	m
+<leader>tn	test.vim	/^nnoremap <silent> <leader>tn :TestNearest<CR>$/;"	m
+<leader>tnp:TestNearest	test.vim	/^nnoremap <silent> <leader>tnp:TestNearest --pdb<CR>$/;"	m
+<leader>tod	bujo.vim	/^nmap <leader>tod <cmd>Todo<cr>$/;"	m
+<leader>tpb	functions.vim	/^nnoremap <leader>tpb :silent !call OpenScrum()<cr>$/;"	m
+<leader>ts	test.vim	/^nnoremap <silent> <leader>ts :TestSuite<CR>$/;"	m
+<leader>ttd	functions.vim	/^nnoremap <leader>ttd :silent !call OpenTodo()<cr>$/;"	m
+<leader>w	fugitive.vim	/^nnoremap <leader>w :Git<cr>$/;"	m
+<leader>x	reply.vim	/^nnoremap <leader>x <cmd>ReplSend<cr>$/;"	m
+<leader>x	reply.vim	/^vnoremap <leader>x <cmd>ReplSend<cr>$/;"	m
+<leader>yc	yode.vim	/^nnoremap <leader>yc <cmd>YodeCreateSeditorFloating<CR>$/;"	m
+<leader>yc	yode.vim	/^vnoremap <leader>yc :YodeCreateSeditorFloating<CR>$/;"	m
+<leader>yg	fugitive.vim	/^nnoremap <leader>yg :GBrowse!<cr>$/;"	m
+<leader>yg	fugitive.vim	/^vnoremap <leader>yg :GBrowse!<cr>$/;"	m
+<leader>yr	yode.vim	/^map <leader>yr <cmd>YodeCreateSeditorReplace<CR>$/;"	m
+AsArgsClass	functions.vim	/^function! AsArgsClass()$/;"	f
+AsKwargs	functions.vim	/^function! AsKwargs()$/;"	f
+Bdi	functions.vim	/^command! Bdi :call DeleteInactiveBufs()$/;"	c
+BuildComposer	functions.vim	/^function! BuildComposer(info)$/;"	f
+DeleteInactiveBufs	functions.vim	/^function! DeleteInactiveBufs()$/;"	f
+FF	netrw.vim	/^  nmap <buffer> FF :call NetrwRemoveRecursive()<CR>$/;"	m
+GotoWindow	vimspector.vim	/^fun! GotoWindow(id)$/;"	f
+H	drawit.vim	/^    nnoremap <buffer> H :call DrawIt#DrawLeft()<cr>$/;"	m
+H	netrw.vim	/^  nmap <buffer> H u$/;"	m
+J	drawit.vim	/^    nnoremap <buffer> J :call DrawIt#DrawDown()<cr>$/;"	m
+JH	drawit.vim	/^    nnoremap <buffer> JH :call DrawIt#DrawSlantDownLeft()<cr>$/;"	m
+JL	drawit.vim	/^    nnoremap <buffer> JL :call DrawIt#DrawSlantDownRight()<cr>$/;"	m
+K	drawit.vim	/^    nnoremap <buffer> K :call DrawIt#DrawUp()<cr>$/;"	m
+K	lsp.vim	/^nnoremap K <cmd>lua vim.lsp.buf.hover()<CR>$/;"	m
+KH	drawit.vim	/^    nnoremap <buffer> KH :call DrawIt#DrawSlantUpLeft()<cr>$/;"	m
+KL	drawit.vim	/^    nnoremap <buffer> KL :call DrawIt#DrawSlantUpRight()<cr>$/;"	m
+L	drawit.vim	/^    nnoremap <buffer> L :call DrawIt#DrawRight()<cr>$/;"	m
+L	netrw.vim	/^  nmap <buffer> L <CR>:Lexplore<CR>$/;"	m
+Latexize	functions.vim	/^function! Latexize()$/;"	f
+NERDTreeHijackNetrw	nerdtree.vim	/^let NERDTreeHijackNetrw = 0$/;"	v
+NERDTreeIgnore	nerdtree.vim	/^let NERDTreeIgnore=['__pycache__']$/;"	v
+NERDTreeShowBookmarks	nerdtree.vim	/^let NERDTreeShowBookmarks = 1 " Display bookmarks on startup.$/;"	v
+NetrwMapping	netrw.vim	/^function! NetrwMapping()$/;"	f
+NetrwRemoveRecursive	netrw.vim	/^function! NetrwRemoveRecursive()$/;"	f
+OpenScrum	functions.vim	/^fun! OpenScrum()$/;"	f
+OpenTodo	functions.vim	/^fun! OpenTodo()$/;"	f
+P	netrw.vim	/^  nmap <buffer> P <C-w>z$/;"	m
+Q	functions.vim	/^        nnoremap <buffer> Q :bdelete!<cr>"$/;"	m
+ShowChars	functions.vim	/^function! ShowChars()$/;"	f
+ShowMaps	functions.vim	/^com! ShowMaps call s:ShowMaps()      " Enable :ShowMaps to call the function$/;"	c
+StartDrawit	drawit.vim	/^function StartDrawit()$/;"	f
+StopDrawit	drawit.vim	/^function StopDrawit()$/;"	f
+SwapEqual	functions.vim	/^function! SwapEqual()$/;"	f
+ToggleColumnWidth	functions.vim	/^function! ToggleColumnWidth()$/;"	f
+TurnOffGuides	functions.vim	/^fun! TurnOffGuides()$/;"	f
+TurnOnGuides	functions.vim	/^fun! TurnOnGuides()$/;"	f
+\\\\	functions.vim	/^nnoremap \\\\ :ShowMaps<CR>            " Map keys to call the function$/;"	m
+__fterm_gitui	fterm.lua	/^function _G.__fterm_gitui()$/;"	f	unknown:_G
+__fterm_issues	fterm.lua	/^function _G.__fterm_issues()$/;"	f	unknown:_G
+__fterm_pbSummary	fterm.lua	/^function _G.__fterm_pbSummary()$/;"	f	unknown:_G
+__fterm_pipInstall	fterm.lua	/^function _G.__fterm_pipInstall()$/;"	f	unknown:_G
+attach_mappings	telescope.lua	/^        attach_mappings = function(_, map)$/;"	f
+bb	netrw.vim	/^  nmap <buffer> bb mb$/;"	m
+bd	netrw.vim	/^  nmap <buffer> bd mB$/;"	m
+bl	netrw.vim	/^  nmap <buffer> bl gb$/;"	m
+expand	lsp.lua	/^      expand = function(args)$/;"	f
+f;	netrw.vim	/^  nmap <buffer> f; mx$/;"	m
+fC	netrw.vim	/^  nmap <buffer> fC mtmc$/;"	m
+fX	netrw.vim	/^  nmap <buffer> fX mtmm$/;"	m
+fc	firenvim.vim	/^let fc = g:firenvim_config['localSettings']$/;"	v
+fc	firenvim.vim	/^let fc['https:\/\/.*gmail.com.*'] = { 'takeover': 'never', 'priority': 1 }$/;"	v
+fc	firenvim.vim	/^let fc['https?:\/\/.*'] = { 'takeover': 'never', 'priority': 1 }$/;"	v
+fc	firenvim.vim	/^let fc['https?:\/\/.*twitch.tv.*'] = { 'takeover': 'never', 'priority': 1 }$/;"	v
+fc	firenvim.vim	/^let fc['https?:\/\/app.shortcut.com*'] = { 'takeover': 'never', 'priority': 1 }$/;"	v
+fc	firenvim.vim	/^let fc['https?:\/\/console.cloud.google.com\/bigquery*'] = { 'takeover': 'never', 'priority': 1 /;"	v
+fc	firenvim.vim	/^let fc['https?:\/\/instagram.com.*'] = { 'takeover': 'never', 'priority': 1 }$/;"	v
+fc	firenvim.vim	/^let fc['https?:\/\/twitter.com.*'] = { 'takeover': 'never', 'priority': 1 }$/;"	v
+fc	firenvim.vim	/^let fc['https?:\/\/writeandimprove.com.*'] = { 'takeover': 'never', 'priority': 1 }$/;"	v
+fc	netrw.vim	/^  nmap <buffer> fc mc$/;"	m
+fd	netrw.vim	/^  nmap <buffer> fd mtfq$/;"	m
+fe	netrw.vim	/^  nmap <buffer> fe R$/;"	m
+ff	netrw.vim	/^  nmap <buffer> ff %:w<CR>:buffer #<CR>$/;"	m
+find_files	telescope.lua	/^mmngreco.find_files = function()$/;"	f	unknown:mmngreco
+firenvim	firenvim.vim	/^augroup firenvim$/;"	a
+fl	netrw.vim	/^  nmap <buffer> fl :echo join(netrw#Expose("netrwmarkfilelist"), "\\n")<CR>$/;"	m
+fq	netrw.vim	/^  nmap <buffer> fq :echo 'Target:' . netrw#Expose("netrwmftgt")<CR>$/;"	m
+fx	netrw.vim	/^  nmap <buffer> fx mm$/;"	m
+g:airline_highlighting_cache	airline.vim	/^let g:airline_highlighting_cache = 1$/;"	v
+g:airline_skip_empty_sections	airline.vim	/^let g:airline_skip_empty_sections = 1$/;"	v
+g:arduino_args	arduino.vim	/^let g:arduino_args = '--verbose-upload'$/;"	v
+g:arduino_board	arduino.vim	/^let g:arduino_board = 'rduino:avr:mega:cpu=atmega2560'$/;"	v
+g:arduino_dir	arduino.vim	/^let g:arduino_dir=$ARDUINO_BIN$/;"	v
+g:arduino_serial_port	arduino.vim	/^let g:arduino_serial_port = '\/dev\/ttyACM0'$/;"	v
+g:arduino_serial_tmux	arduino.vim	/^let g:arduino_serial_tmux = ''$/;"	v
+g:arduino_serial_tmux	arduino.vim	/^let g:arduino_serial_tmux = 'split-window -d -p20'$/;"	v
+g:arduino_upload_tmux	arduino.vim	/^let g:arduino_upload_tmux = ''$/;"	v
+g:arduino_upload_tmux	arduino.vim	/^let g:arduino_upload_tmux = 'split-window -d -p20'$/;"	v
+g:arduino_use_slime	arduino.vim	/^let g:arduino_use_slime = 0$/;"	v
+g:bujo#todo_file_path	bujo.vim	/^let g:bujo#todo_file_path = environ()['HOME'] . '\/.cache\/bujo'$/;"	v
+g:bujo#window_width	bujo.vim	/^let g:bujo#window_width = 50$/;"	v
+g:carbon_now_sh_options	carbon.vim	/^let g:carbon_now_sh_options = {$/;"	v
+g:completion_enable_snippet	lsp.vim	/^let g:completion_enable_snippet = 'vim-vsnip'$/;"	v
+g:completion_matching_strategy_list	lsp.vim	/^let g:completion_matching_strategy_list = ['exact', 'substring', 'fuzzy']$/;"	v
+g:conda_startup_msg_suppress	conda.vim	/^let g:conda_startup_msg_suppress = 1$/;"	v
+g:conda_startup_wrn_suppress	conda.vim	/^let g:conda_startup_wrn_suppress = 1$/;"	v
+g:fastfold_fold_command_suffixes	fastfold.vim	/^let g:fastfold_fold_command_suffixes =  ['x','X','a','A','o','O','c','C']$/;"	v
+g:fastfold_fold_movement_commands	fastfold.vim	/^let g:fastfold_fold_movement_commands = [']z', '[z', 'zj', 'zk']$/;"	v
+g:fastfold_savehook	fastfold.vim	/^let g:fastfold_savehook = 0$/;"	v
+g:fastfold_savehook	fastfold.vim	/^let g:fastfold_savehook = 1$/;"	v
+g:firenvim_config	firenvim.vim	/^let g:firenvim_config = {$/;"	v
+g:grepper	grepper.vim	/^let g:grepper = {}$/;"	v
+g:grepper	grepper.vim	/^let g:grepper.jump = 1$/;"	v
+g:grepper	grepper.vim	/^let g:grepper.next_tool = '<leader>g'$/;"	v
+g:grepper	grepper.vim	/^let g:grepper.quickfix = 0$/;"	v
+g:grepper	grepper.vim	/^let g:grepper.simple_prompt = 1$/;"	v
+g:grepper	grepper.vim	/^let g:grepper.tools = ['ag', 'rg', 'git']$/;"	v
+g:impsort_skip_comments	impsort.vim	/^let g:impsort_skip_comments = 1$/;"	v
+g:impsort_start_nextline	impsort.vim	/^let g:impsort_start_nextline = 1$/;"	v
+g:indentLine_fileTypeExclude	indentlines.vim	/^let g:indentLine_fileTypeExclude = ['markdown']$/;"	v
+g:javaScript_fold	fastfold.vim	/^let g:javaScript_fold = 1$/;"	v
+g:jupytext_filetype_map	jupytext.vim	/^let g:jupytext_filetype_map = { 'py': 'python' }$/;"	v
+g:jupytext_fmt	jupytext.vim	/^let g:jupytext_fmt = 'py'$/;"	v
+g:lightline	airline.vim	/^let g:lightline = {$/;"	v
+g:markdown_fenced_languages	markdown.vim	/^let g:markdown_fenced_languages = ['html', 'python', 'bash=sh', 'sql']$/;"	v
+g:markdown_folding	fastfold.vim	/^let g:markdown_folding = 1$/;"	v
+g:markdown_minlines	markdown.vim	/^let g:markdown_minlines = 50$/;"	v
+g:mkdp_auto_close	markdown.vim	/^let g:mkdp_auto_close = 0$/;"	v
+g:mkdp_auto_start	markdown.vim	/^let g:mkdp_auto_start = 0$/;"	v
+g:mkdp_page_title	markdown.vim	/^let g:mkdp_page_title = "${name}"$/;"	v
+g:neoformat_basic_format_align	neoformat.vim	/^let g:neoformat_basic_format_align = 1$/;"	v
+g:neoformat_basic_format_retab	neoformat.vim	/^let g:neoformat_basic_format_retab = 0$/;"	v
+g:neoformat_basic_format_trim	neoformat.vim	/^let g:neoformat_basic_format_trim = 1$/;"	v
+g:neoformat_enabled_python	neoformat.vim	/^let g:neoformat_enabled_python = ['black']$/;"	v
+g:neoformat_python_black	neoformat.vim	/^let g:neoformat_python_black = {$/;"	v
+g:neoformat_try_node_exe	neoformat.vim	/^let g:neoformat_try_node_exe = 1$/;"	v
+g:netrw_banner	netrw.vim	/^let g:netrw_banner = 0$/;"	v
+g:netrw_browse_split	netrw.vim	/^let g:netrw_browse_split = 0$/;"	v
+g:netrw_browsex_viewer	netrw.vim	/^let g:netrw_browsex_viewer= 'xdg-open'$/;"	v
+g:netrw_hide	netrw.vim	/^let g:netrw_hide = 0$/;"	v
+g:netrw_keepdir	netrw.vim	/^let g:netrw_keepdir = 0$/;"	v
+g:netrw_list_hide	netrw.vim	/^let g:netrw_list_hide = '\\(^\\|\\s\\s\\)\\zs\\.\\S\\+'$/;"	v
+g:netrw_localcopydircmd	netrw.vim	/^let g:netrw_localcopydircmd = 'cp -r'$/;"	v
+g:netrw_localrmdir	netrw.vim	/^let g:netrw_localrmdir='rm -r'$/;"	v
+g:netrw_nogx	netrw.vim	/^let g:netrw_nogx = 1 " disable netrw's gx mapping.$/;"	v
+g:netrw_winsize	netrw.vim	/^  let g:netrw_winsize = 30$/;"	v
+g:netrw_winsize	netrw.vim	/^  let g:netrw_winsize = 50$/;"	v
+g:netrw_winsize	netrw.vim	/^let g:netrw_winsize = 25$/;"	v
+g:nvim_tree_add_trailing	nvim-tree.vim	/^let g:nvim_tree_add_trailing = 1 "0 by default, append a trailing slash to folder names$/;"	v
+g:nvim_tree_auto_ignore_ft	nvim-tree.vim	/^let g:nvim_tree_auto_ignore_ft = [ 'startify', 'dashboard' ] "empty by default, don't auto open /;"	v
+g:nvim_tree_git_hl	nvim-tree.vim	/^let g:nvim_tree_git_hl = 1 "0 by default, will enable file highlight for git attributes (can be /;"	v
+g:nvim_tree_group_empty	nvim-tree.vim	/^let g:nvim_tree_group_empty = 1 " 0 by default, compact folders that only contain a single folde/;"	v
+g:nvim_tree_hide_dotfiles	nvim-tree.vim	/^let g:nvim_tree_hide_dotfiles = 0 "0 by default, this option hides files and folders starting wi/;"	v
+g:nvim_tree_icon_padding	nvim-tree.vim	/^let g:nvim_tree_icon_padding = ''$/;"	v
+g:nvim_tree_icons	nvim-tree.vim	/^let g:nvim_tree_icons = {$/;"	v
+g:nvim_tree_ignore	nvim-tree.vim	/^let g:nvim_tree_ignore = [ '.git', 'node_modules', '.cache' , '.venv' ] "empty by default$/;"	v
+g:nvim_tree_indent_markers	nvim-tree.vim	/^let g:nvim_tree_indent_markers = 1 "0 by default, this option shows indent markers when folders /;"	v
+g:nvim_tree_quit_on_open	nvim-tree.vim	/^let g:nvim_tree_quit_on_open = 1 "0 by default, closes the tree when you open a file$/;"	v
+g:nvim_tree_root_folder_modifier	nvim-tree.vim	/^let g:nvim_tree_root_folder_modifier = ':~' "This is the default. See :help filename-modifiers f/;"	v
+g:nvim_tree_show_icons	nvim-tree.vim	/^let g:nvim_tree_show_icons = {$/;"	v
+g:nvim_tree_side	nvim-tree.vim	/^let g:nvim_tree_side = 'left' "left by default$/;"	v
+g:nvim_tree_special_files	nvim-tree.vim	/^let g:nvim_tree_special_files = [ 'src', 'tests', 'README.md', 'Makefile', 'MAKEFILE' ] " List o/;"	v
+g:nvim_tree_width	nvim-tree.vim	/^let g:nvim_tree_width = 40 "30 by default$/;"	v
+g:nvim_tree_width_allow_resize	nvim-tree.vim	/^let g:nvim_tree_width_allow_resize  = 1 "0 by default, will not resize the tree when opening a f/;"	v
+g:perl_fold	fastfold.vim	/^let g:perl_fold = 1$/;"	v
+g:perl_fold_blocks	fastfold.vim	/^let g:perl_fold_blocks = 1$/;"	v
+g:php_folding	fastfold.vim	/^let g:php_folding = 1$/;"	v
+g:pydocstring_doq_path	pydocstring.vim	/^let g:pydocstring_doq_path="$PYTHON_NEOVIM\/..\/doq"$/;"	v
+g:pydocstring_templates_dir	pydocstring.vim	/^let g:pydocstring_templates_dir="$HOME\/.config\/nvim\/plugged\/vim-pydocstring\/test\/templates/;"	v
+g:python_folding	fastfold.vim	/^let g:python_folding = 1$/;"	v
+g:r_syntax_folding	fastfold.vim	/^let g:r_syntax_folding = 1$/;"	v
+g:reply_repls	reply.vim	/^let g:reply_repls = {$/;"	v
+g:ruby_fold	fastfold.vim	/^let g:ruby_fold = 1$/;"	v
+g:rust_fold	fastfold.vim	/^let g:rust_fold = 1$/;"	v
+g:sh_fold_enabled	fastfold.vim	/^let g:sh_fold_enabled= 7$/;"	v
+g:slime_bracketed_paste	slime.vim	/^let g:slime_bracketed_paste = 1$/;"	v
+g:slime_cell_delimiter	slime.vim	/^let g:slime_cell_delimiter = "#\\\\s*%%"$/;"	v
+g:slime_default_config	slime.vim	/^let g:slime_default_config = {"socket_name": get(split($TMUX, ","), 0), "target_pane": ":.2"}$/;"	v
+g:slime_dont_ask_default	slime.vim	/^let g:slime_dont_ask_default = 1$/;"	v
+g:slime_no_mappings	slime.vim	/^let g:slime_no_mappings = 1$/;"	v
+g:slime_paste_file	slime.vim	/^let g:slime_paste_file='~\/.slime_paste'$/;"	v
+g:slime_target	slime.vim	/^let g:slime_target = "tmux"$/;"	v
+g:slime_target	slimux.vim	/^let g:slime_target="tmux"$/;"	v
+g:slimux_python_press_enter	slimux.vim	/^let g:slimux_python_press_enter = 1$/;"	v
+g:slimux_python_use_ipython	slimux.vim	/^let g:slimux_python_use_ipython=1$/;"	v
+g:slimux_select_from_current_window	slimux.vim	/^let g:slimux_select_from_current_window = 1$/;"	v
+g:slimux_tmux_path	slimux.vim	/^let g:slimux_tmux_path="\/usr\/local\/bin\/tmux"$/;"	v
+g:tex_fold_enabled	fastfold.vim	/^let g:tex_fold_enabled = 1$/;"	v
+g:unicoder_cancel_insert	latex_unicoder.vim	/^let g:unicoder_cancel_insert = 1$/;"	v
+g:unicoder_cancel_normal	latex_unicoder.vim	/^let g:unicoder_cancel_normal = 1$/;"	v
+g:unicoder_cancel_visual	latex_unicoder.vim	/^let g:unicoder_cancel_visual = 1$/;"	v
+g:vimsyn_folding	fastfold.vim	/^let g:vimsyn_folding = 'af'$/;"	v
+g:vsnip_snippet_dir	vsnip.vim	/^let g:vsnip_snippet_dir="$HOME\/.dotfiles\/vim\/vsnip"$/;"	v
+g:wide_column	functions.vim	/^        let g:wide_column = 0$/;"	v
+g:wide_column	functions.vim	/^        let g:wide_column = 1$/;"	v
+g:wide_column	functions.vim	/^let g:wide_column = 0$/;"	v
+g:workspace_autosave_always	workspace.vim	/^let g:workspace_autosave_always = 0$/;"	v
+g:workspace_persist_undo_history	workspace.vim	/^let g:workspace_persist_undo_history = 1  " enabled = 1 (default), disabled = 0$/;"	v
+g:workspace_session_disable_on_args	workspace.vim	/^let g:workspace_session_disable_on_args = 1$/;"	v
+g:workspace_session_name	workspace.vim	/^let g:workspace_session_name = 'Session.vim'$/;"	v
+g:workspace_undodir	workspace.vim	/^let g:workspace_undodir='.undodir'$/;"	v
+g:xml_syntax_folding	fastfold.vim	/^let g:xml_syntax_folding = 1$/;"	v
+git_branches	telescope.lua	/^mmngreco.git_branches = function()$/;"	f	unknown:mmngreco
+gr	lsp.vim	/^nnoremap gr <cmd>lua vim.lsp.buf.rename()<CR>$/;"	m
+grep_dotfiles	telescope.lua	/^mmngreco.grep_dotfiles = function()$/;"	f	unknown:mmngreco
+gx	netrw.vim	/^nmap gx <Plug>(openbrowser-smart-search)$/;"	m
+gx	netrw.vim	/^vmap gx <Plug>(openbrowser-smart-search)$/;"	m
+h	netrw.vim	/^  nmap <buffer> h -^$/;"	m
+l	netrw.vim	/^  nmap <buffer> l <CR>$/;"	m
+lualine_y	lualine.lua	/^        lualine_y = {function() return vim.fn.ObsessionStatus('Ob:ON', 'Ob:Off') end },$/;"	f
+minimal	functions.vim	/^augroup minimal$/;"	a
+netrw_mapping	netrw.vim	/^augroup netrw_mapping$/;"	a
+no_preview	telescope.lua	/^local no_preview = function()$/;"	f
+no_preview	telescope.lua	/^mmngreco.no_preview = function()$/;"	f	unknown:mmngreco
+on_attach	lsp.lua	/^local function on_attach()$/;"	f
+q	functions.vim	/^    nnoremap <buffer> q :w\\|bdelete!<CR>$/;"	m
+root_dir	lsp.lua	/^                    opts.root_dir = function() return vim.loop.cwd() end$/;"	f	unknown:opts
+s:ShowMaps	functions.vim	/^function! s:ShowMaps()$/;"	f
+search_dotfiles	telescope.lua	/^mmngreco.search_dotfiles = function()$/;"	f	unknown:mmngreco
+search_matlab	telescope.lua	/^mmngreco.search_matlab = function()$/;"	f	unknown:mmngreco
+search_scio	telescope.lua	/^mmngreco.search_scio = function()$/;"	f	unknown:mmngreco
+setup_server	lsp.lua	/^local function setup_server(server_name)$/;"	f
+test#python#pytest#options	test.vim	/^let test#python#pytest#options = '--ff -v -p no:warnings'$/;"	v
+zuz	fastfold.vim	/^nmap zuz <Plug>(FastFoldUpdate)$/;"	m

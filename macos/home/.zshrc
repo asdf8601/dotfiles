@@ -1,6 +1,7 @@
 #!/usr/bin/env zsh
 export DOTFILES=$HOME/.dotfiles
 source $DOTFILES/linux/shell/common
+source $DOTFILES/macos/home/.seedtag
 export ZSH=~/.oh-my-zsh
 
 

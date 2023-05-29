@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+sudo apt --yes install \
+    git \
+    net-tools \
+    ack \
+    bridge-utils \
+    curl \
+    gimp \
+    gawk \
+    network-manager\
+    volumeicon-alsa \
+    python3-dev \
+    ripgrep \
+    unixodbc-dev \
+    wget \
+    xclip \
+    light \
+    plocate \
+    bat \
+    lynx \
+    alacritty \
+    i3blocks \
+    thunar \
+    xbacklight \
+    toilet

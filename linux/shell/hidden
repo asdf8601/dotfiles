@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+for hidden in $(find $DOTFILES/ -name "*.hide" -type f)
+do
+    source $hidden
+done

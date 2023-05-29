@@ -1,0 +1,193 @@
+#!/usr/bin/env bash
+
+for hidden in $(find $DOTFILES/ -name "*.hide" -type f)
+do
+    source $hidden
+done
+
+# Files and directories
+alias mkdir='mkdir -p -v'
+
+# Navigation
+alias back='cd $OLDPWD'
+alias home='cd ~/'
+alias ..="cd .."
+alias ...="cd  ../.."
+alias ....="cd ../../.."
+alias .....="cd ../../../.."
+alias ......="cd ../../../../.."
+
+# Editor
+alias nano='nano -W -m'
+alias edit='nvim'
+
+# if neovim exists, create an alias for vim
+if command -v nvim &> /dev/null && [ ! -f /usr/bin/vim ]; then
+   alias vim='nvim'
+fi
+
+alias :e='edit'
+alias :q='exit'
+
+# Git
+alias g=git
+alias clab='PAGER=cat glab'
+# alias gcl='git clone'
+# alias gst='git status'
+# alias gb='git branch'
+# alias gco='git checkout'
+# alias gob='git checkout -b'
+# alias ga='git add'
+# alias gc='git commit'
+# alias gl='git pull'
+# alias gh='git push'
+# alias glom='git pull origin master'
+# alias ghom='git push origin master'
+# alias gg='git grep'
+# alias glg='git log --oneline --decorate --graph'
+
+# Output
+alias lcase="tr '[:upper:]' '[:lower:]'"
+alias ucase="tr '[:lower:]' '[:upper:]'"
+alias pbcopy='xclip -selection clipboard'
+alias pbpaste='xclip -selection clipboard -o'
+
+# System
+alias df="df -h"
+alias du="du -h"
+
+# Files
+alias lcf="rename 'y/A-Z/a-z/' "
+alias ucf="rename 'y/a-z/A-Z/' "
+
+# Tmux
+alias tn='tmux set -g mode-mouse on'
+alias tf='tmux set -g mode-mouse off'
+alias tmux='tmux -2'
+
+# Grep
+alias egrep='egrep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias grep='grep --color=auto'
+alias girn='grep -IRn --color=auto'
+
+# Wget
+alias wgetncc='wget --no-check-certificate'
+
+# Utils
+alias sitecopy='wget -k -K -E -r -l 10 -p -N -F -nH '
+alias ytmp3='youtube-dl --extract-audio --audio-format mp3 '
+alias pipclean='curl https://gist.githubusercontent.com/mmngreco/afafe8c37498f8185d25b2648c57f73a/raw/pip_clean.py > ~/pipclean.py; python ~/pipclean.py; rm ~/pipclean.py'
+
+
+# docker
+# alias dhere="bash ~/gitlab/COM/docker-base/docker_run.sh"
+alias dcrm='docker rm $(docker stop $(docker ps -qa))'
+alias datt='docker attach'
+alias dcb='docker-compose build'
+alias dclogs='docker-compose logs'
+alias dcu='docker-compose up'
+alias ddiff='docker diff'
+alias deb='dexbash'
+alias dimg='docker images'
+alias dins='docker inspect'
+alias dps='docker ps'
+alias drm='docker rm'
+alias drmi='docker rmi'
+# alias drun='docker run'
+alias dstart='docker start'
+alias dstop='docker stop'
+alias dclimg='docker rmi $(docker images --filter "dangling=true" -q --no-trunc)'
+alias drestartf='docker start $(docker ps -ql) && docker attach $(docker ps -ql)'
+
+# ls variants
+alias la='ls -A'
+alias l='ls -alFtr'
+alias lsd='ls -d .*'
+alias ll='ls -alF'
+
+# Various
+alias h='history | tail'
+alias hg='history | grep'
+alias mvi='mv -i'
+alias rmi='rm -i'
+alias ak='ack-grep'
+
+alias gist='xdg-open https://gist.github.com/'
+alias sgist="https://gist.github.com/search?q=user%3Ammngreco&ref=simplesearch"
+
+pushd_edit_pop () {
+    # Move to a directory $1
+    # edit a file $2
+    # return to the original directory
+    file="${2:-.}"
+    pushd $1 &> /dev/null \
+    && edit $file \
+    && popd &> /dev/null
+}
+
+alias snip='pushd_edit_pop ~/github/mmngreco/snippets'
+alias scio='pushd_edit_pop ~/github/mmngreco/scio'
+alias tasks='grep --exclude-dir=.git -rEIn "TODO|FIXME|XXX|\?\?\?|HACK|BUG" ./**/*.py 2>/dev/null'
+
+# tmux
+alias tx=tmuxinator
+alias tmuxlayout="tmux list-windows -F '#{window_layout}'"
+alias tks="tmux kill-session"
+alias tkill="tmux kill-server"
+
+# RC files
+alias tmuxrc="pushd_edit_pop $DOTFILES tmux/tmux.conf"
+alias vimrc="pushd_edit_pop $DOTFILES vim/init.lua"
+alias zshrc="pushd_edit_pop $DOTFILES shell/zshrc"
+alias bashrc="pushd_edit_pop $DOTFILES shell/bashrc"
+alias reload="exec $SHELL"
+
+# system
+alias sai="sudo apt install"
+alias sau="sudo apt update"
+alias sag="sudo apt upgrade"
+alias sas="sudo apt search"
+alias open='xdg-open'
+
+# conda
+alias cc="conda create -n"
+alias cel="conda env list"
+alias crm="conda remove -n"
+alias ca="conda activate"
+
+
+# export SERVER_IP=$(hostname -i)
+# export SERVER_IP=$(hostname -I | awk '{print $1}')
+# alias serve="browser-sync start --server --files . --no-notify --host $SERVER_IP --port 9000"
+
+
+# python
+alias pyServer='python -s -m http.server'
+# alias asdf='setxkbmap -rules evdev -model evdev -layout us -variant dvorak'
+alias kb-us='setxkbmap -rules evdev -model evdev -layout us -variant altgr-intl'
+alias kb-usnocaps='setxkbmap -rules evdev -model evdev -layout us -variant altgr-intl -option ctrl:nocaps'
+alias pipenv='pipx run pipenv'
+
+alias myip="ifconfig | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p'"
+alias mic_monitor='gst-launch-1.0 pulsesrc ! pulsesink'
+
+alias fd=fdfind
+alias easyeffects='flatpak run com.github.wwmm.easyeffects'
+alias ipy=ipython
+
+alias psql_catalog='psql $METADATA_DB_URL'
+alias psql_catalog_c='psql $METADATA_DB_URL -c'
+
+
+# alias bat=batcat
+# alias mount_etls='sshfs mgreco@35.225.183.218:/home/alejandrohall ~/mnt/do_etls/home/alejandrohall'
+# alias unmount_etls='fusermount -u ~/mnt/do_etls/home/alejandrohall'
+
+# kitty
+alias icat="kitty +kitten icat"
+alias s="kitty +kitten ssh"
+alias dataops='gcloud compute ssh --zone "us-central1-a" "do-etls"  --tunnel-through-iap --project "data-observatory-ops" --ssh-flag="-L 8081:localhost:8080 -L 5432:localhost:5432 -L 3000:localhost:3000 -X"'
+
+alias cd.='. mxm cd'
+alias blog='edit ~/github/mmngreco/mmngreco.github.io/'

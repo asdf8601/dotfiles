@@ -1,0 +1,42 @@
+#! header
+snippet def "def" b
+def ${1:foo}():
+	"""${1:foo} docstring.
+
+	Parameters
+	----------
+	${2:arg} : type
+
+	Returns
+	-------
+	out : type
+	"""
+	return out
+endsnippet
+
+snippet plt "plt" b
+from matplotlib import pyplot as plt
+endsnippet
+
+snippet importsci "importsci" b
+import numpy as np
+import pandas as pd
+from matplotlib import pyplot as plt
+endsnippet
+
+snippet pydoc "pydoc" b
+"""
+
+Parameters
+----------
+
+Returns
+-------
+
+Examples
+--------
+
+Notes
+-----
+"""
+endsnippet

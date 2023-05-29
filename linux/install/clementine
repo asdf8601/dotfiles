@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+sudo apt-get install -y cmake g++ git gettext \
+                libglib2.0-dev libdbus-1-dev \
+                libboost-dev libprotobuf-dev protobuf-compiler libsqlite3-dev sqlite3 libcrypto++-dev \
+                libasound2-dev libpulse-dev libtag1-dev \
+                qtbase5-dev qtbase5-dev-tools qtbase5-private-dev \
+                libqt5core5a libqt5gui5 libqt5widgets5 libqt5concurrent5 libqt5network5 libqt5sql5 \
+                libqt5x11extras5-dev libqt5dbus5 qttools5-dev \
+                libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libgstreamer-plugins-good1.0-dev \
+                gstreamer1.0-alsa gstreamer1.0-pulseaudio \
+                libgstreamer1.0-0 libgstreamer-plugins-base1.0-0 libgstreamer-plugins-good1.0-0 libgstreamer-plugins-bad1.0-0 \
+                libchromaprint-dev libfftw3-dev libsparsehash-dev libglew-dev \
+                libcdio-dev libmtp-dev libgpod-dev libplist-dev libusbmuxd-dev \
+                liblastfm5-dev
+
+clone_dir="/tmp/dotfiles/clementine"
+git clone --depth 1 https://github.com/clementine-player/Clementine.git $clone_dir
+set -e
+pushd $clone_dir &> /dev/null
+cd bin
+cmake ..
+make -j8
+sudo make install
+popd
+

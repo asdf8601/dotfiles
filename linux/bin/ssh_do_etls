@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+tmux has-session -t ssh_do_etls
+if [ $? != 0 ]
+then
+  tmux new-session -s ssh_do_etls "ssh do_etls"
+fi
+tmux attach -t ssh_do_etls

@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+# https://github.com/so-fancy/diff-so-fancy
+sudo add-apt-repository --yes ppa:aos1/diff-so-fancy
+sudo apt-get update
+sudo apt install --yes diff-so-fancy
+# git diff -u file_a file_b | diff-so-fancy
+# git config --global core.pager "diff-so-fancy | less --tabs=4 -RFX"
+# git config --global interactive.diffFilter "diff-so-fancy --patch"

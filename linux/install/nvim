@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+# https://github.com/neovim/neovim/wiki/Installing-Neovim#ubuntu
+NEOVIM_DIR="/tmp/dotfiles/neovim"
+NEOVIM_URL="https://github.com/neovim/neovim.git"
+NEOVIM_VER="${1:-stable}"
+
+if ! command -v sudo &> /dev/null
+then
+    # Define a function that simulates sudo behavior
+    sudo() {
+        if [ "$#" -eq 0 ]; then
+            echo "Usage: sudo command [arguments]"
+            return 1
+        fi
+        command="$1"
+        shift
+        echo "Running command as root: $command $@"
+        $command "$@"
+    }
+fi
+
+echo "========================================================="
+echo "Installing dependencies..."
+echo "========================================================="
+
+sudo apt remove --purge neovim --yes
+sudo apt-get install --yes ninja-build gettext libtool libtool-bin autoconf automake cmake g++ pkg-config unzip
+
+set -e
+
+echo "========================================================="
+echo "Installing neovim..."
+echo "========================================================="
+
+# NEOVIM_VER=$(git -c 'versionsort.suffix=-' \
+#     ls-remote --exit-code --refs --sort='version:refname' --tags $NEOVIM_URL '*.*.*' \
+#     | tail --lines=1 \
+#     | cut --delimiter='/' --fields=3)
+
+[ -d $NEOVIM_DIR ] && rm -rf $NEOVIM_DIR
+git clone --depth 1 -b $NEOVIM_VER $NEOVIM_URL $NEOVIM_DIR
+
+pushd  $NEOVIM_DIR
+    make CMAKE_BUILD_TYPE=Release -j4
+    sudo make install
+popd
+
+# PLUG_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/nvim/site/autoload/plug.vim"
+# PLUG_URL="https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
+#
+# curl -fLo $PLUG_DIR --create-dirs $PLUG_URL
+# bash -c "nvim --headless +PlugInstall +qall"

@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+sudo apt install -y ruby-full
+gem install tmuxinator -v 1.1.5

@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+curl -sS https://starship.rs/install.sh | sh -s -- --bin-dir /usr/local/bin/ -y
+
