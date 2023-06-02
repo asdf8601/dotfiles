@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 export DOTFILES=$HOME/.dotfiles
-source $DOTFILES/linux/shell/common
+source $DOTFILES/shell/common
 source $DOTFILES/macos/home/.seedtag
 export ZSH=~/.oh-my-zsh
 
@@ -12,7 +12,7 @@ export ZSH=~/.oh-my-zsh
 
 # source ~/.zsh/catppuccin-zsh-syntax-highlighting.zsh
 source $ZSH/oh-my-zsh.sh
-source $DOTFILES/linux/shell/zsh_prompt
+source $DOTFILES/shell/zsh_prompt
 # export TERM=xterm-kitty
 
 # always after any prompt changes

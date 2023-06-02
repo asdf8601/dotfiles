@@ -120,7 +120,7 @@ dotfiles() {
         pull)
             dotfilesPull ;;
         link)
-            dotfilesLink ;;
+            dotfilesLink ${@:2};;
         e)
             dotfiles edit ;;
         edit)

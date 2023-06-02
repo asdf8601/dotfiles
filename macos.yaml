@@ -14,7 +14,9 @@
     ~/.zshrc: macos/home/.zshrc
     ~/.zprofile: macos/home/.zprofile
     ~/.zsh_prompt: macos/home/.zsh_prompt
+    ~/.tmux.conf: macos/home/.tmux.conf
     ~/.config/yabai/yabairc: macos/home/.config/yabai/yabairc
+    ~/.config/skhd/skhdrc: macos/home/.config/skhd/skhdrc
 
     ~/.dotfiles: .
 
@@ -23,8 +25,6 @@
     ~/.gitconfig: ./git/gitconfig
     ~/.docker/config.json: ./docker/.docker/config.json
 
-    # tmux
-    ~/.tmux.conf: ./tmux/tmux.conf
 
     # shell
     ~/.config/starship.toml: ./shell/.config/starship.toml

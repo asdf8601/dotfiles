@@ -21,11 +21,6 @@ alias ......="cd ../../../../.."
 alias nano='nano -W -m'
 alias edit='nvim'
 
-# if neovim exists, create an alias for vim
-if command -v nvim &> /dev/null && [ ! -f /usr/bin/vim ]; then
-   alias vim='nvim'
-fi
-
 alias :e='edit'
 alias :q='exit'
 
@@ -77,8 +72,6 @@ alias wgetncc='wget --no-check-certificate'
 # Utils
 alias sitecopy='wget -k -K -E -r -l 10 -p -N -F -nH '
 alias ytmp3='youtube-dl --extract-audio --audio-format mp3 '
-alias pipclean='curl https://gist.githubusercontent.com/mmngreco/afafe8c37498f8185d25b2648c57f73a/raw/pip_clean.py > ~/pipclean.py; python ~/pipclean.py; rm ~/pipclean.py'
-
 
 # docker
 # alias dhere="bash ~/gitlab/COM/docker-base/docker_run.sh"
@@ -88,7 +81,6 @@ alias dcb='docker-compose build'
 alias dclogs='docker-compose logs'
 alias dcu='docker-compose up'
 alias ddiff='docker diff'
-alias deb='dexbash'
 alias dimg='docker images'
 alias dins='docker inspect'
 alias dps='docker ps'
@@ -126,9 +118,6 @@ pushd_edit_pop () {
     && popd &> /dev/null
 }
 
-alias snip='pushd_edit_pop ~/github/mmngreco/snippets'
-alias scio='pushd_edit_pop ~/github/mmngreco/scio'
-alias tasks='grep --exclude-dir=.git -rEIn "TODO|FIXME|XXX|\?\?\?|HACK|BUG" ./**/*.py 2>/dev/null'
 
 # tmux
 alias tx=tmuxinator
@@ -157,9 +146,7 @@ alias crm="conda remove -n"
 alias ca="conda activate"
 
 
-export SERVER_IP=$(hostname -i)
-alias serve="browser-sync start --server --files . --no-notify --host $SERVER_IP --port 9000"
-
+alias serve="browser-sync start --server --files . --no-notify --port 9000"
 
 # python
 alias pyServer='python -s -m http.server'
@@ -175,18 +162,15 @@ alias fd=fdfind
 alias easyeffects='flatpak run com.github.wwmm.easyeffects'
 alias ipy=ipython
 
-alias psql_catalog='psql $METADATA_DB_URL'
-alias psql_catalog_c='psql $METADATA_DB_URL -c'
-
-
-# alias bat=batcat
-# alias mount_etls='sshfs mgreco@35.225.183.218:/home/alejandrohall ~/mnt/do_etls/home/alejandrohall'
-# alias unmount_etls='fusermount -u ~/mnt/do_etls/home/alejandrohall'
-
-# kitty
+# kitty {
 alias icat="kitty +kitten icat"
 alias s="kitty +kitten ssh"
-alias dataops='gcloud compute ssh --zone "us-central1-a" "do-etls"  --tunnel-through-iap --project "data-observatory-ops" --ssh-flag="-L 8081:localhost:8080 -L 5432:localhost:5432 -L 3000:localhost:3000 -X"'
+# }
+
 
 alias cd.='. mxm cd'
+
 alias blog='edit ~/github/mmngreco/mmngreco.github.io/'
+alias snip='pushd_edit_pop ~/github/mmngreco/snippets'
+alias scio='pushd_edit_pop ~/github/mmngreco/scio'
+alias tasks='grep --exclude-dir=.git -rEIn "TODO|FIXME|XXX|\?\?\?|HACK|BUG" ./**/*.py 2>/dev/null'

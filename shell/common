@@ -5,6 +5,11 @@ source $DOTFILES/shell/functions
 source $DOTFILES/shell/aliases
 source $DOTFILES/shell/nnn
 
+for hidden in $(find $DOTFILES/ -name "*.secret" -type f)
+do
+    source $hidden
+done
+
 
 for hidden in $(find $DOTFILES/ -name "*.hide" -type f)
 do
