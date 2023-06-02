@@ -13,7 +13,7 @@ export ZSH=~/.oh-my-zsh
 # source ~/.zsh/catppuccin-zsh-syntax-highlighting.zsh
 source $ZSH/oh-my-zsh.sh
 source $DOTFILES/linux/shell/zsh_prompt
-export TERM=xterm-kitty
+# export TERM=xterm-kitty
 
 # always after any prompt changes
 [ -f $HOME/.autoenv/activate.sh ] && source $HOME/.autoenv/activate.sh

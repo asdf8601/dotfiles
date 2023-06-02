@@ -2072,4 +2072,10 @@ require('orgmode').setup({
 })
 -- }
 
+-- function go_to_previous_file()
+--   vim.cmd('b#')
+-- end
+--
+-- vim.api.nvim_set_keymap('n', '<M-6>', ':lua go_to_previous_file()<CR>', { noremap = true, silent = true })
+
 -- vim:ts=2 sts=2 sw=2 et
