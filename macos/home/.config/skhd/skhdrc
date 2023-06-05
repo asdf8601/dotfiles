@@ -1,20 +1,21 @@
+# vim: ft=conf
 # change window focus within space
 alt - j : yabai -m window --focus south
 alt - k : yabai -m window --focus north
 alt - h : yabai -m window --focus west
 alt - l : yabai -m window --focus east
 
-#change focus between external displays (left and right)
+# change focus between external displays (left and right)
 alt - s: yabai -m display --focus west
 alt - g: yabai -m display --focus east
 
 # rotate layout clockwise
 shift + alt - r : yabai -m space --rotate 270
 
-# flip along y-axis
+# flip along y-axis (vertical)
 shift + alt - y : yabai -m space --mirror y-axis
 
-# flip along x-axis
+# flip along x-axis (horizontal)
 shift + alt - x : yabai -m space --mirror x-axis
 
 # toggle window float
@@ -50,6 +51,6 @@ shift + alt - 6 : yabai -m window --space 6;
 shift + alt - 7 : yabai -m window --space 7;
 
 # stop/start/restart yabai
-ctrl + alt - q : brew services stop yabai
-ctrl + alt - s : brew services start yabai
-ctrl + alt - r : brew services restart yabai
+ctrl + alt - q : yabai --stop-service
+ctrl + alt - s : yabai --start-service
+ctrl + shift + alt - r : yabai --restart-service
