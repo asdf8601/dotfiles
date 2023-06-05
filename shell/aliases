@@ -137,7 +137,7 @@ alias sai="sudo apt install"
 alias sau="sudo apt update"
 alias sag="sudo apt upgrade"
 alias sas="sudo apt search"
-alias open='xdg-open'
+# alias open='xdg-open'
 
 # conda
 alias cc="conda create -n"

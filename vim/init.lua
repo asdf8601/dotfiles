@@ -1010,7 +1010,15 @@ telescope.load_extension('harpoon')
 vim.g.netrw_browse_split = 0
 vim.g.netrw_winsize = 25
 vim.g.netrw_localrmdir = 'rm -r'
-vim.g.netrw_browsex_viewer = 'xdg-open'
+-- if macos
+
+if vim.fn.has('mac') == 1 then
+  vim.g.netrw_browsex_viewer = 'open'
+else
+  -- Set the default viewer for other operating systems
+  vim.g.netrw_browsex_viewer = 'xdg-open'
+end
+
 vim.g.netrw_hide = 0
 
 vim.keymap.set('n', 'gx', '<Plug>(openbrowser-smart-search)')
@@ -1102,7 +1110,8 @@ vim.keymap.set('n', '<leader>dp', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>',
 
 -- [[ jupytext ]]
 vim.g.jupytext_filetype_map = { py = 'python' }
-vim.g.jupytext_fmt = 'py'
+vim.g.jupytext_fmt = 'py:percent'
+
 
 -- [[ harpoon ]]
 
@@ -1258,8 +1267,7 @@ vim.api.nvim_create_autocmd('FileType',
 vim.api.nvim_create_autocmd('TermOpen', { group = mmngreco, pattern = '*', command = 'setl nonumber norelativenumber' })
 vim.api.nvim_create_autocmd('FileType', { group = mmngreco, pattern = 'fugitive',
   command = 'setl nonumber norelativenumber' })
-vim.api.nvim_create_autocmd('FileType',
-{ group = mmngreco, pattern = 'python', command = 'nnoremap <buffer> <F8> :silent !black -l79 -S %<CR><CR>' })
+vim.api.nvim_create_autocmd('FileType', { group = mmngreco, pattern = 'python', command = 'nnoremap <buffer> <F8> :silent !black -l79 -S %<CR><CR>' })
 
 -- [[ slime ]] {
 vim.g.slime_cell_delimiter = [[\s*#\s*%%]]
@@ -1289,8 +1297,8 @@ end
 
 local function slime_use_neovim()
   vim.g.slime_target = "neovim"
+  vim.g.slime_bracketed_paste = 0
   vim.g.slime_python_ipython = 0
-  vim.g.slime_bracketed_paste = 1
   -- vim.g.slime_default_config = {}
   vim.g.slime_no_mappings = 1
   vim.g.slime_dont_ask_default = 0
@@ -2078,4 +2086,4 @@ require('orgmode').setup({
 --
 -- vim.api.nvim_set_keymap('n', '<M-6>', ':lua go_to_previous_file()<CR>', { noremap = true, silent = true })
 
--- vim:ts=2 sts=2 sw=2 et
+-- vim:ts=2 sts=2 sw=2 et tw=0
