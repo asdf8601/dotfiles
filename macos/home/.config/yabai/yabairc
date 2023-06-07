@@ -60,6 +60,7 @@ yabai -m rule --add app="^Karabiner-Elements$" manage=off
 yabai -m rule --add app="^Jiffy$" manage=off
 yabai -m rule --add app="^Krisp$" manage=off
 yabai -m rule --add app="^Huddle$" manage=off
+yabai -m rule --add app="^Calendar$" manage=off
 # }}}
 
 echo "yabai configuration loaded.."
