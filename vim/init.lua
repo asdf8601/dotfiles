@@ -462,10 +462,10 @@ function SetColorScheme(colorscheme)
   return colorscheme
 end
 
--- ColoringVim('modus-vivendi')
+SetColorScheme('modus-vivendi')
 -- SetColorScheme('tokyonight')
 -- SetColorScheme('onedark')
-SetColorScheme('catppuccin')
+-- SetColorScheme('catppuccin')
 
 -- Set completeopt to have a better completion experience
 vim.o.completeopt = 'menuone,noselect'

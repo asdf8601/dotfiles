@@ -2,6 +2,9 @@
 # Original file: user/emojis.yml
 
 matches:
+  - trigger: ":wand:"
+    replace: 🪄
+
   - trigger: ":roadwork:"
     replace: 🚧
 
