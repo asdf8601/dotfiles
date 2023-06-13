@@ -19,3 +19,4 @@ pipx install sqlparse
 pipx install trash-cli
 pipx install vdsql
 pipx install visidata
+pipx install nbdime
