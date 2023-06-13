@@ -2,12 +2,5 @@
 import string
 import random
 
-characterList = ""
-characterList += string.ascii_letters
-characterList += string.digits
-characterList += string.punctuation
-
-length = 16
-password = [random.choice(characterList) for _ in range(length)]
-
-print("".join(password))
+characterList = string.ascii_letters + string.digits + string.punctuation
+print("".join([random.choice(characterList) for _ in range(16)]))
