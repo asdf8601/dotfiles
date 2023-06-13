@@ -64,6 +64,9 @@ yabai -m rule --add app="^Calendar$" manage=off
 yabai -m rule --add app="^Alfred$" manage=off
 yabai -m rule --add app="^Photos$" manage=off
 yabai -m rule --add app="^istats$" manage=off
+yabai -m rule --add app="^Gimp.*script\-fu.*$" manage=off
+yabai -m rule --add app="^Pictures$" manage=off
+
 # }}}
 
 echo "yabai configuration loaded.."
