@@ -11,7 +11,7 @@ sudo yabai --load-sa
 
 # MOUSE CONFIGURATION {{{
 # center mouse on window with focus
-yabai -m config mouse_follows_focus on
+yabai -m config mouse_follows_focus off
 # modifier for clicking and dragging with mouse
 yabai -m config mouse_modifier alt
 # set modifier + left-click drag to move window
@@ -38,7 +38,7 @@ yabai -m config window_opacity               off
 yabai -m config insert_feedback_color        0xffd75f5f
 yabai -m config active_window_border_color   0xff775759
 yabai -m config normal_window_border_color   0xff555555
-yabai -m config window_border_width          4
+yabai -m config window_border_width          2
 yabai -m config window_border_radius         12
 yabai -m config window_border_blur           off
 yabai -m config window_border_hidpi          on
