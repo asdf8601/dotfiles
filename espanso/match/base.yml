@@ -5,7 +5,7 @@ matches:
     replace: "from matplotlib import pyplot as plt\nplt.show()\n"
 
   - trigger: ":pbcopy:"
-    replace: "import sys; sys.path.append('/home/mgreco/.dotfiles/python/scripts');from clipboard import pbcopy"
+    replace: "import sys; sys.path.append('~/.dotfiles/python/scripts');from clipboard import pbcopy"
 
   - trigger: ":pass:"
     replace: "{{output}}"
@@ -13,7 +13,7 @@ matches:
       - name: output
         type: shell
         params:
-          cmd: "/home/mgreco/.local/bin/passgen"
+          cmd: "passgen"
 
   - trigger: ":myip:"
     replace: "{{output}}"
@@ -55,7 +55,7 @@ matches:
         params:
           format: "## %A %Y-%m-%d"
 
-  - trigger: ":ddate:"
+  - trigger: ":Date:"
     replace: "{{mydate}}"
     vars:
       - name: mydate
@@ -107,4 +107,4 @@ matches:
       type: "clipboard"
 
   - trigger: ":md-code:"
-    replace: "```\n$|$\n```"
+    replace: "```python\n$|$\n```"
