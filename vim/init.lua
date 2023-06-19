@@ -1678,6 +1678,11 @@ ls.add_snippets('python', {
   s('pm', t '__import__("pdb").pm()')
 })
 
+-- date
+ls.add_snippets('all', {
+  s('date', t(os.date('%Y-%m-%d')))
+})
+
 vim.keymap.set('n', '<leader>zz', '<cmd>ZenMode<cr>', { noremap = true, desc = 'ZenMode toggle' })
 
 
