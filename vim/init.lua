@@ -1254,20 +1254,15 @@ vim.keymap.set('n', '<leader><cr>', ':source ~/.config/nvim/init.lua<cr>', { nor
 vim.keymap.set('n', '<leader>rc', ':new ~/.config/nvim/init.lua<cr>', { noremap = true })
 
 local mmngreco = vim.api.nvim_create_augroup('mmngreco', { clear = true })
--- vim.api.nvim_create_autocmd('BufWritePost', {group=mmngreco, pattern='~/.config/nvim/init.lua', command='source ~/.config/nvim/init.lua'})
--- execute '%!python -m json.tool' | w
-vim.api.nvim_create_autocmd('BufRead', { group = mmngreco, pattern = '*.json', command = '%!python -m json.tool' })
 vim.api.nvim_create_autocmd('BufWritePre', { group = mmngreco, pattern = '*', command = '%s/\\s\\+$//e' })
 vim.api.nvim_create_autocmd('BufWritePre', { group = mmngreco, pattern = '*.go', command = 'GoFmt' })
 vim.api.nvim_create_autocmd('BufEnter', { group = mmngreco, pattern = '*.dbout', command = 'norm zR' })
-vim.api.nvim_create_autocmd('FileType', { group = mmngreco, pattern = 'markdown', command =
-'setl conceallevel=2 spl=en,es' })
-vim.api.nvim_create_autocmd('FileType',
-{ group = mmngreco, pattern = 'make', command = 'setl noexpandtab shiftwidth=4 softtabstop=0' })
+vim.api.nvim_create_autocmd('FileType', { group = mmngreco, pattern = 'markdown', command = 'setl conceallevel=2 spl=en,es' })
+vim.api.nvim_create_autocmd('FileType', { group = mmngreco, pattern = 'make', command = 'setl noexpandtab shiftwidth=4 softtabstop=0' })
 vim.api.nvim_create_autocmd('TermOpen', { group = mmngreco, pattern = '*', command = 'setl nonumber norelativenumber' })
-vim.api.nvim_create_autocmd('FileType', { group = mmngreco, pattern = 'fugitive',
-  command = 'setl nonumber norelativenumber' })
+vim.api.nvim_create_autocmd('FileType', { group = mmngreco, pattern = 'fugitive', command = 'setl nonumber norelativenumber' })
 vim.api.nvim_create_autocmd('FileType', { group = mmngreco, pattern = 'python', command = 'nnoremap <buffer> <F8> :silent !black -l79 -S %<CR><CR>' })
+vim.api.nvim_create_autocmd({'BufNewFile', 'BufRead'}, { pattern = 'Jenkinsfile', group = mmngreco, command = 'setl ft=groovy' })
 
 -- [[ slime ]] {
 vim.g.slime_cell_delimiter = [[\s*#\s*%%]]
@@ -2085,10 +2080,11 @@ require('orgmode').setup({
 })
 -- }
 
--- function go_to_previous_file()
---   vim.cmd('b#')
--- end
---
--- vim.api.nvim_set_keymap('n', '<M-6>', ':lua go_to_previous_file()<CR>', { noremap = true, silent = true })
+
+-- {{ Create command to call jq '.' % and replace the buffer with the output
+vim.api.nvim_command('command! -buffer Jq %!jq "."')
+-- }}
+
+
 
 -- vim:ts=2 sts=2 sw=2 et tw=0
