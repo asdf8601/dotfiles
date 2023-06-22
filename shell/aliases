@@ -44,12 +44,6 @@ alias clab='PAGER=cat glab'
 # Output
 alias lcase="tr '[:upper:]' '[:lower:]'"
 alias ucase="tr '[:lower:]' '[:upper:]'"
-alias pbcopy='xclip -selection clipboard'
-alias pbpaste='xclip -selection clipboard -o'
-
-# System
-alias df="df -h"
-alias du="du -h"
 
 # Files
 alias lcf="rename 'y/A-Z/a-z/' "
@@ -75,7 +69,7 @@ alias ytmp3='youtube-dl --extract-audio --audio-format mp3 '
 
 # docker
 # alias dhere="bash ~/gitlab/COM/docker-base/docker_run.sh"
-alias dcrm='docker rm $(docker stop $(docker ps -qa))'
+alias dsrm='docker rm $(docker stop $(docker ps -qa))'
 alias datt='docker attach'
 alias dcb='docker-compose build'
 alias dclogs='docker-compose logs'
@@ -120,8 +114,6 @@ pushd_edit_pop () {
 
 
 # tmux
-alias tx=tmuxinator
-alias tmuxlayout="tmux list-windows -F '#{window_layout}'"
 alias tks="tmux kill-session"
 alias tkill="tmux kill-server"
 
@@ -137,7 +129,6 @@ alias sai="sudo apt install"
 alias sau="sudo apt update"
 alias sag="sudo apt upgrade"
 alias sas="sudo apt search"
-# alias open='xdg-open'
 
 # conda
 alias cc="conda create -n"
@@ -159,7 +150,6 @@ alias myip="ifconfig | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-
 alias mic_monitor='gst-launch-1.0 pulsesrc ! pulsesink'
 
 alias fd=fdfind
-alias easyeffects='flatpak run com.github.wwmm.easyeffects'
 alias ipy=ipython
 
 # kitty {
@@ -168,11 +158,27 @@ alias s="kitty +kitten ssh"
 # }
 
 
-alias cd.='. mxm cd'
+alias dotcmd='mxm'
+alias cd.='. dotcmd cd'
 
 alias blog='edit ~/github/mmngreco/mmngreco.github.io/'
 alias snip='pushd_edit_pop ~/github/mmngreco/snippets'
 alias scio='pushd_edit_pop ~/github/mmngreco/scio'
 alias tasks='grep --exclude-dir=.git -rEIn "TODO|FIXME|XXX|\?\?\?|HACK|BUG" ./**/*.py 2>/dev/null'
 alias nvim.='nvim .'
+
+# Linux specific {{
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+    alias open='xdg-open'
+    alias xclip='xclip -selection clipboard'
+    alias xclipc='xclip -selection clipboard -o'
+
+    # System
+    alias df="df -h"
+    alias du="du -h"
+
+    alias easyeffects='flatpak run com.github.wwmm.easyeffects'
+
+fi
+# }}
 
