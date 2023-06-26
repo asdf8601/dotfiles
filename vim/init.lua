@@ -1836,7 +1836,7 @@ function CreateScratch()
     parent = '.'
   end
   local num = 0
-  local ext = '.py'
+  local ext = vim.fn.input('Enter extension (.py)', '.py')
   local file = function(n) return vim.fn.expand(parent .. '/' .. n .. ext) end
 
   while (vim.fn.filereadable(file(num)) == 0) and (num <= 1000) do
