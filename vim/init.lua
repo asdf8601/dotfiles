@@ -83,6 +83,14 @@ require('packer').startup(function(use)
     requires = "nvim-lua/plenary.nvim",
   }
 
+  use({"mzlogin/vim-markdown-toc"})
+
+  use {
+    "windwp/nvim-autopairs",
+    config = function() require("nvim-autopairs").setup {} end
+  }
+
+
   use({
     'jakewvincent/mkdnflow.nvim',
     rocks = 'luautf8', -- Ensures optional luautf8 dependency is installed
