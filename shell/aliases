@@ -182,4 +182,4 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
 fi
 # }}
 
-alias gpt4='spgt --model gpt-4'
+alias gpt4='sgpt --model gpt-4'
