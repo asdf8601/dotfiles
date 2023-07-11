@@ -304,7 +304,7 @@ require('packer').startup(function(use)
       'williamboman/mason-lspconfig.nvim',
 
       -- Useful status updates for LSP
-      'j-hui/fidget.nvim',
+      {'j-hui/fidget.nvim', tag='legacy'},
     },
   }
 
@@ -886,6 +886,14 @@ cmp.setup {
     { name = 'orgmode' },
   },
 }
+
+-- [[ autopairs + cmp ]]
+local cmp_autopairs = require('nvim-autopairs.completion.cmp')
+local cmp = require('cmp')
+cmp.event:on(
+  'confirm_done',
+  cmp_autopairs.on_confirm_done()
+)
 
 
 require('illuminate').configure({
