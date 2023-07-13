@@ -66,6 +66,10 @@ yabai -m rule --add app="^Photos$" manage=off
 yabai -m rule --add app="^istats$" manage=off
 yabai -m rule --add app="^Gimp.*script\-fu.*$" manage=off
 yabai -m rule --add app="^Pictures$" manage=off
+yabai -m rule --add app="^Raycast$" manage=off
+yabai -m rule --add app="^Espanso$" manage=off
+yabai -m rule --add app="^CameraController$" manage=off
+
 
 # }}}
 
