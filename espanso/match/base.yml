@@ -2,7 +2,7 @@
 # Original file: default.yml
 matches:
   - trigger: ":today:"
-    replace: "# @today\n"
+    replace: "/heading 3\n@Today \n"
 
   - trigger: ":plt:"
     replace: "from matplotlib import pyplot as plt\nplt.show()\n"
