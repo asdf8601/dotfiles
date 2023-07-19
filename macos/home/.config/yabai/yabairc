@@ -71,6 +71,7 @@ yabai -m rule --add app="^Espanso$" manage=off
 yabai -m rule --add app="^CameraController$" manage=off
 yabai -m rule --add app="^Strongbox$" manage=off
 yabai -m rule --add app="^Messages$" manage=off
+yabai -m rule --add app="^Gifox$" manage=off
 
 
 # }}}
