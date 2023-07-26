@@ -1212,15 +1212,15 @@ vim.g.mkdp_page_title = "${name}"
 vim.g.mkdp_theme = 'light'
 
 --grepper
-vim.g.grepper = {}
-vim.g.grepper.tools = { 'ag', 'rg', 'git' }
-vim.g.grepper.jump = 1
-vim.g.grepper.next_tool = '<leader>g'
-vim.g.grepper.simple_prompt = 1
-vim.g.grepper.quickfix = 0
-
-vim.keymap.set('n', '<leader>*', ':Grepper -tool ag -cword -noprompt<cr>', { noremap = true })
-vim.keymap.set('n', '<leader>g', ':Grepper -tool ag<cr>', { noremap = true })
+-- vim.g.grepper = {}
+-- vim.g.grepper.tools = { 'ag', 'rg', 'git' }
+-- vim.g.grepper.jump = 1
+-- vim.g.grepper.next_tool = '<leader>g'
+-- vim.g.grepper.simple_prompt = 1
+-- vim.g.grepper.quickfix = 0
+--
+-- vim.keymap.set('n', '<leader>*', ':Grepper -tool ag -cword -noprompt<cr>', { noremap = true })
+-- vim.keymap.set('n', '<leader>g', ':Grepper -tool ag<cr>', { noremap = true })
 
 -- [[ fasfold ]]
 
