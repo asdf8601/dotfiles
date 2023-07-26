@@ -73,6 +73,7 @@ yabai -m rule --add app="^Strongbox$" manage=off
 yabai -m rule --add app="^Messages$" manage=off
 yabai -m rule --add app="^Gifox$" manage=off
 yabai -m rule --add app="^licecap$" manage=off
+yabai -m rule --add app="^Reminders$" manage=off
 
 
 # }}}
