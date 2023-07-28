@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+# Verifica los argumentos del script
+case $1 in
+    "show")
+        preview='echo {} | awk -F":" "{print \$1}" | xargs -I {} git stash show -p {}'
+        ;;
+    "ls")
+        preview='echo {} | awk -F":" "{print \$1}" | xargs -I {} git stash show --name-only {}'
+        ;;
+    *)
+        echo "Usage: $0 {show|ls}"
+        exit 1
+        ;;
+esac
+
+# Ejecuta fzf con la vista previa seleccionada
+git stash list | fzf --preview "$preview" --preview-window=right:70%:wrap
