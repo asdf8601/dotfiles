@@ -2,16 +2,18 @@
 
 # Verifica los argumentos del script
 case $1 in
-    "show")
+    show)
         preview='echo {} | awk -F":" "{print \$1}" | xargs -I {} git stash show -p {}'
         ;;
-    "ls")
+    ls)
         preview='echo {} | awk -F":" "{print \$1}" | xargs -I {} git stash show --name-only {}'
         ;;
-    *)
+    h|help)
         echo "Usage: $0 {show|ls}"
         exit 1
         ;;
+    *)
+        preview='echo {} | awk -F":" "{print \$1}" | xargs -I {} git stash show -p {}'
 esac
 
 # Ejecuta fzf con la vista previa seleccionada
