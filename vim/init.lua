@@ -2123,6 +2123,9 @@ require('orgmode').setup({
 vim.api.nvim_command('command! -buffer Jq %!jq "."')
 -- }}
 
+-- {{ grep program}}
+vim.o.grepprg = 'rg --vimgrep'
+vim.o.grepformat = '%f:%l:%c:%m'
 
 
 -- vim:ts=2 sts=2 sw=2 et tw=0
