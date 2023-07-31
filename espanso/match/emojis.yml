@@ -83,6 +83,9 @@ matches:
   - trigger: ":kiss"
     replace: ( ˘ ³˘)♥
 
+  - trigger: ":Fuck:"
+    replace: ┻━┻︵ \(°□°)/ ︵ ┻━┻
+
   - trigger: ":fuck:"
     replace: (┛ಠ_ಠ)┛彡┻━┻
 
