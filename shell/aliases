@@ -149,7 +149,6 @@ alias pipenv='pipx run pipenv'
 alias myip="ifconfig | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p'"
 alias mic_monitor='gst-launch-1.0 pulsesrc ! pulsesink'
 
-alias fd=fdfind
 alias ipy=ipython
 
 # kitty {
@@ -178,6 +177,7 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
     alias du="du -h"
 
     alias easyeffects='flatpak run com.github.wwmm.easyeffects'
+    alias fd=fdfind
 
 fi
 # }}
