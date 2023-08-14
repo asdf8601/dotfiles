@@ -477,8 +477,8 @@ function SetColorScheme(colorscheme)
   return colorscheme
 end
 
-SetColorScheme('modus-vivendi')
--- SetColorScheme('onedark')
+-- SetColorScheme('modus-vivendi')
+SetColorScheme('onedark')
 -- SetColorScheme('tokyonight')
 -- SetColorScheme('catppuccin')
 
