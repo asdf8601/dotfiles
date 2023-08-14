@@ -1,5 +1,5 @@
 #!/usr/bin/env zsh
-export DOTFILES=$HOME/.dotfiles
+export DOTFILES="$HOME/.dotfiles/ubuntu"
 source $DOTFILES/shell/common
 export ZSH=~/.oh-my-zsh
 
@@ -7,6 +7,21 @@ export ZSH=~/.oh-my-zsh
 plugins=(
     zsh-autosuggestions
 )
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/home/mgreco/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/home/mgreco/miniconda3/etc/profile.d/conda.sh" ]; then
+        . "/home/mgreco/miniconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/home/mgreco/miniconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
 
 # source ~/.zsh/catppuccin-zsh-syntax-highlighting.zsh
 source $ZSH/oh-my-zsh.sh
@@ -62,19 +77,4 @@ if [ -f '/home/mgreco/google-cloud-sdk/path.zsh.inc' ]; then . '/home/mgreco/goo
 
 # The next line enables shell command completion for gcloud.
 if [ -f '/home/mgreco/google-cloud-sdk/completion.zsh.inc' ]; then . '/home/mgreco/google-cloud-sdk/completion.zsh.inc'; fi
-
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/home/mgreco/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/home/mgreco/miniconda3/etc/profile.d/conda.sh" ]; then
-        . "/home/mgreco/miniconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="/home/mgreco/miniconda3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
 
