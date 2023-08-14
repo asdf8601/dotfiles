@@ -110,9 +110,6 @@ focus_on_window_activation urgent
 # Use Mouse+$super to drag floating windows to their wanted position
 floating_modifier $super
 
-gaps inner 1
-gaps outer 1
-gaps top 1
 
 # ----------------------------------------------------------------------------
 # key bindings
@@ -376,6 +373,8 @@ set $mode_gaps_inner inner gaps
 bindsym $super+Shift+Ctrl+o exec --no-start-up i3-msg "[class='.*'] floating enable, resize set 2560px 1440px, move position center"
 
 ## gaps mode:
+bindsym $super+Ctrl+0 mode "default", exec --no-startup-id i3-msg "gaps inner set 0" && i3-msg "gaps outer set 0"
+
 bindsym $super+Shift+g mode "$mode_gaps"
 mode "$mode_gaps" {
     bindsym o      mode "$mode_gaps_outer"
