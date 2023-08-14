@@ -373,7 +373,7 @@ set $mode_gaps_inner inner gaps
 bindsym $super+Shift+Ctrl+o exec --no-start-up i3-msg "[class='.*'] floating enable, resize set 2560px 1440px, move position center"
 
 ## gaps mode:
-bindsym $super+Ctrl+0 mode "default", exec --no-startup-id i3-msg "gaps inner set 0" && i3-msg "gaps outer set 0"
+bindsym $super+Ctrl+0 mode "default", exec --no-startup-id i3-msg "gaps inner all set 0" && i3-msg "gaps outer all set 0"
 
 bindsym $super+Shift+g mode "$mode_gaps"
 mode "$mode_gaps" {
