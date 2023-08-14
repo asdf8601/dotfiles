@@ -5,16 +5,9 @@ source $DOTFILES/shell/functions
 source $DOTFILES/shell/aliases
 source $DOTFILES/shell/nnn
 
-for hidden in $(find $DOTFILES/ -name "*.secret" -type f)
-do
-    source $hidden
-done
-
-
-for hidden in $(find $DOTFILES/ -name "*.hide" -type f)
-do
-    source $hidden
-done
+sourcePattern $DOTFILES "*.secret"
+sourcePattern $DOTFILES "*.hide"
+sourcePattern $DOTFILES_HOME/personal "*.hide"
 
 [ ! -f ~/.bashrc ] && mxm link
 

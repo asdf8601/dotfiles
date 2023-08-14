@@ -1,6 +1,15 @@
 #!/usr/bin/env bash
 source $DOTFILES/shell/carto
 
+sourcePattern() {
+    folder=$1
+    pattern=$2
+    for hidden in $(find $folder -name $pattern -type f)
+    do
+        source $hidden
+    done
+}
+
 addToMyGitProjects(){
     if [[ "$MYGITPROJECTS" != *"$1"*  ]]; then
         # only if exists the folder it will be exported
