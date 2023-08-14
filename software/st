@@ -6,9 +6,15 @@ git clone --depth 1 https://git.suckless.org/st $dir
 
 pushd $dir > /dev/null
 
-for patch in ~/.dotfiles/st-patches/*.diff; do
-    git apply $patch
-done
+
+ patch < ~/.dotfiles/linux/st-patches/alpha.diff
+ patch < ~/.dotfiles/linux/st-patches/catppuccin.diff
+ patch < ~/.dotfiles/linux/st-patches/defaultfont.diff
+ # patch < ~/.dotfiles/linux/st-patches/clipboard.diff
+ # patch < ~/.dotfiles/linux/st-patches/ligatures.diff
+ # patch < ~/.dotfiles/linux/st-patches/fix-keyboard-input.diff
+ make && sudo make install
+ git co -- . && git clean -f
 
 sudo make clean install
 popd > /dev/null
