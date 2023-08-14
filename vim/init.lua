@@ -441,7 +441,7 @@ function SetColorScheme(colorscheme)
     vim.g.modus_green_strings = 1
     vim.g.modus_yellow_comments = 0
     vim.g.modus_cursorline_intense = 1
-    vim.g.modus_termtrans_enable = 1
+    vim.g.modus_termtrans_enable = 0
     vim.cmd('colorscheme modus-vivendi')
   elseif colorscheme == 'catppuccin' then
     require("catppuccin").setup {
@@ -449,7 +449,7 @@ function SetColorScheme(colorscheme)
       term_colors = true,
       transparent_background = true,
       no_italic = true,
-      no_bold = false,
+      no_bold = true,
       styles = {
         comments = {},
         conditionals = {},
@@ -463,23 +463,6 @@ function SetColorScheme(colorscheme)
         properties = {},
         types = {},
       },
-      -- color_overrides = {
-      --   mocha = {
-      --     base = "#000000",
-      --     mantle = "#000000",
-      --     crust = "#000000",
-      --   },
-      -- },
-      -- highlight_overrides = {
-      --   mocha = function(C)
-      --     return {
-      --       TabLineSel = { bg = C.pink },
-      --       CmpBorder = { fg = C.surface2 },
-      --       Pmenu = { bg = C.none },
-      --       TelescopeBorder = { link = "FloatBorder" },
-      --     }
-      --   end,
-      -- },
     }
     vim.cmd.colorscheme "catppuccin"
   elseif colorscheme == 'tokyonight' then
@@ -518,7 +501,7 @@ function SetColorScheme(colorscheme)
       ---@param colors ColorScheme
       on_highlights = function(highlights, colors) end,
     })
-    vim.cmd [[colorscheme tokyonight]]
+    vim.cmd('colorscheme tokyonight')
   elseif colorscheme == 'enfocado' then
     vim.g.enfocado_style = 'nature' -- Available: `nature` or `neon`.
     vim.cmd('colorscheme enfocado')
