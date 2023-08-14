@@ -110,6 +110,9 @@ focus_on_window_activation urgent
 # Use Mouse+$super to drag floating windows to their wanted position
 floating_modifier $super
 
+gaps inner 0
+gaps outer 0
+gaps top 0
 
 # ----------------------------------------------------------------------------
 # key bindings
@@ -474,7 +477,7 @@ exec --no-startup-id xsettingsd &
 exec --no-startup-id nm-applet &
 exec --no-startup-id blueman-applet &
 exec --no-startup-id volumeicon &
-exec --no-startup-id picom -b --experimental-backends
+# exec --no-startup-id picom -b --experimental-backends
 # exec --no-startup-id picom -b
 # exec --no-startup-id slimbookbattery &
 # exec --no-startup-id caffeine-indicator &

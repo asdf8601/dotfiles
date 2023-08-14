@@ -6,12 +6,12 @@ git clone --depth 1 https://git.suckless.org/st $dir
 
 pushd $dir > /dev/null
 
-patch < ~/.dotfiles/linux/st-patches/alpha.diff
-patch < ~/.dotfiles/linux/st-patches/catppuccin.diff
+# patch < ~/.dotfiles/linux/st-patches/alpha.diff
+# patch < ~/.dotfiles/linux/st-patches/catppuccin.diff
+patch < ~/.dotfiles/linux/st-patches/clipboard.diff
 patch < ~/.dotfiles/linux/st-patches/defaultfont.diff
-# patch < ~/.dotfiles/linux/st-patches/clipboard.diff
-# patch < ~/.dotfiles/linux/st-patches/ligatures.diff
-# patch < ~/.dotfiles/linux/st-patches/fix-keyboard-input.diff
+patch < ~/.dotfiles/linux/st-patches/ligatures.diff
+patch < ~/.dotfiles/linux/st-patches/fix-keyboard-input.diff
 
 sudo make clean install
 popd > /dev/null
