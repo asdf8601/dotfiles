@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-sudo apt install tlp tlp-rdw
-# https://askubuntu.com/questions/1309396/how-to-increase-battery-life-on-ubuntu-20-04-and-what-power-saving-software-shou

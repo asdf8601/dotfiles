@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-# sudo apt-get install python3-gi gir1.2-gtk-3.0
-# sudo apt-get install python3-gi-cairo python3-cairo
-# sudo apt-get install python3-setuptools python3-babel
-# sudo apt-get install python3-dbus fonts-font-awesome slop
-pipx install git+https://gitlab.com/screenkey/screenkey
-

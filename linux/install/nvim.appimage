@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-curl -L -O https://github.com/neovim/neovim/releases/download/stable/nvim.appimage
-mv nvim.appimage /usr/local/bin/nvim
-chmod +x /usr/local/bin/nvim

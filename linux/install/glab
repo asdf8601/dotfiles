@@ -1,2 +1,0 @@
-#!/usr/bin/env bash
-curl -sL https://j.mp/glab-cli | sudo sh

@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+
+export GITLAB_PERSONAL_URI='gitlab.com'
+export GITLAB_PERSONAL_TOKEN='***REMOVED***'
+export GIT_SECRET_PASS='***REMOVED***'
+
+function setGitlab() {
+    case $1 in
+        mine)
+            export GITLAB_HOST=$GITLAB_PERSONAL_URI
+            export GITLAB_URI=$GITLAB_PERSONAL_URI
+            export GITLAB_TOKEN=$GITLAB_PERSONAL_TOKEN
+            ;;
+    esac
+}
+
+setGitlab mine
+
+export IMGUR_ID=***REMOVED***

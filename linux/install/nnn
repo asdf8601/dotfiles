@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-sudo apt install nnn
-curl -Ls https://raw.githubusercontent.com/jarun/nnn/master/plugins/getplugs | sh

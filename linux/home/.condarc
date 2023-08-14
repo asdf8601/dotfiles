@@ -1,5 +1,0 @@
-env_prompt: '($(basename {default_env})) '
-changeps1: False
-ssl_verify: False
-auto_activate_base: False
-auto_stack: 0

@@ -1,4 +1,0 @@
-import numpy as np
-
-vd.aggregator('irr', np.irr, type=float)
-vd.aggregator('meang', lambda x: np.exp(np.log(x).mean()), type=float)

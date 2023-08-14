@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+dir=~/st
+[ -d $dir ] && rm -rf $dir
+git clone --depth 1 https://git.suckless.org/st $dir
+
+pushd $dir > /dev/null
+
+# patch -i ~/.dotfiles/linux/st-patches/alpha.diff
+# patch < ~/.dotfiles/linux/st-patches/catppuccin.diff
+# patch -i ~/.dotfiles/linux/st-patches/clipboard.diff
+# patch -i ~/.dotfiles/linux/st-patches/fix-keyboard-input.diff
+patch -i ~/.dotfiles/linux/st-patches/defaultfont.diff
+patch -i ~/.dotfiles/linux/st-patches/ligatures.diff
+
+sudo make clean install
+popd > /dev/null
