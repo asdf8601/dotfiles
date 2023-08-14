@@ -1,0 +1,16 @@
+diff --git i/config.def.h w/config.def.h
+index 91ab8ca..be8c73d 100644
+--- i/config.def.h
++++ w/config.def.h
+@@ -5,7 +5,10 @@
+  *
+  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
+  */
+-static char *font = "Liberation Mono:pixelsize=12:antialias=true:autohint=true";
++static char *font = "Caskaydia Nerd Font:pixelsize=16:antialias=true:autohint=true";
++static char *font2[] = {
++	"Symbola:pixelsize=12:antialias=true:autohint=true",
++};
+ static int borderpx = 2;
+
+ /*

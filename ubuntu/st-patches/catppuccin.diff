@@ -2,22 +2,10 @@ diff --git i/config.def.h w/config.def.h
 index 91ab8ca..be8c73d 100644
 --- i/config.def.h
 +++ w/config.def.h
-@@ -5,7 +5,10 @@
-  *
-  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
-  */
--static char *font = "Liberation Mono:pixelsize=12:antialias=true:autohint=true";
-+static char *font = "Caskaydia Nerd Font:pixelsize=16:antialias=true:autohint=true";
-+static char *font2[] = {
-+	"Symbola:pixelsize=12:antialias=true:autohint=true",
-+};
- static int borderpx = 2;
- 
- /*
 @@ -93,46 +96,87 @@ char *termname = "st-256color";
   */
  unsigned int tabspaces = 8;
- 
+
 +// --------------------------------------------------------------------------
 +// colorscheme catppuccin
  /* Terminal colors (16 first used in escape sequence) */
@@ -39,7 +27,7 @@ index 91ab8ca..be8c73d 100644
 +	"#F5C2E7",
 +	"#94E2D5",
 +	"#BAC2DE",
- 
+
  	/* 8 bright colors */
 -	"gray50",
 -	"red",
@@ -71,8 +59,8 @@ index 91ab8ca..be8c73d 100644
 +[258] = "#F5E0DC", /*575268*/
 +
  };
- 
- 
+
+
  /*
 - * Default colors (colorname index)
   * foreground, background, cursor, reverse cursor
@@ -128,6 +116,6 @@ index 91ab8ca..be8c73d 100644
 +// unsigned int defaultbg = 259;
 +// unsigned int defaultcs = 256;
 +// static unsigned int defaultrcs = 257;
- 
+
  /*
   * Default shape of cursor
