@@ -160,7 +160,6 @@ alias s="kitty +kitten ssh"
 alias dotcmd='mxm'
 alias cd.='. dotcmd cd'
 
-alias blog='edit ~/github/mmngreco/mmngreco.github.io/'
 alias snip='pushd_edit_pop ~/github/mmngreco/snippets'
 alias scio='pushd_edit_pop ~/github/mmngreco/scio'
 alias tasks='grep --exclude-dir=.git -rEIn "TODO|FIXME|XXX|\?\?\?|HACK|BUG" ./**/*.py 2>/dev/null'

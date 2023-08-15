@@ -1,6 +1,29 @@
 #!/usr/bin/env bash
 source $DOTFILES/shell/carto
 
+blog() {
+    cd ~/github/mmngreco/mmngreco.github.io/
+    case $1 in
+        new)
+            new_post="$(date +"%Y-%m-%d")-post.md"
+            file=content/posts/$new_post
+            hugo new content posts/$new_post
+            $EDITOR $file
+            git add $file
+            git commit -m "enh(content): Add $new_post"
+            ;;
+        serve)
+            hugo server -D
+            ;;
+        edit)
+            file=$(find . -type f | fzf --preview 'bat --color=always {}')
+            $EDITOR $file
+            git add $file && git commit -m "enh: update $file"
+            ;;
+    esac
+    cd -
+}
+
 sourcePattern() {
     folder=$1
     pattern=$2
