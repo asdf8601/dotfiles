@@ -34,13 +34,19 @@ fi
 # if tmux is not running, start it
 tmux_running=$(pgrep tmux)
 if [[ -z $TMUX ]] && [[ -z $tmux_running ]]; then
-    tmux new-session -s $session_name -c $directory $cmd
+    tmux new-session -s $session_name -c $directory
+    tmux send-keys -t $session_name "$cmd" C-m
     exit 0
 fi
 
-# if tmux is running, check if the session already exists
+# if tmux is running, check if the session already exists if not create it
 if ! tmux has-session -t $session_name 2> /dev/null; then
-    tmux new-session -ds $session_name -c $directory $cmd
+    # echo tmux new-session -ds $session_name -c "$directory"
+    tmux new-session -ds $session_name -c "$directory"
+fi
+
+if [[ -n $cmd ]]; then
+    tmux send-keys -t $session_name "$cmd" C-m
 fi
 
 # if the session exists, attach to it

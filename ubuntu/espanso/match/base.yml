@@ -2,7 +2,12 @@
 # Original file: default.yml
 matches:
   - trigger: ":draft:"
-    replace: "---\ntitle: \"Using Hugo for my website\"\ndate: :date:\ndraft: false\n---\n"
+    replace: "---\ntitle: \"$|$\"\ndate: {{date}}\ndraft: false\n---\n\n"
+    vars:
+      - name: date
+        type: match
+        params:
+          trigger: ":date:"
 
   - trigger: ":today:"
     replace: "/heading 3\n@Today \n"
