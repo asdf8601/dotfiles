@@ -35,10 +35,24 @@ command=bash -c '[[ -z "$(iwgetid -r)" ]] && echo "睊 " || echo "  $(iwgetid
 interval=2
 border=#98971a
 
+# [calendar]
+# full_text= Cal
+# command=gsimplecal &
+# border=#b63cc1
+
+# [colorpicker]
+# command=bash /home/mgreco/rofi-colorpicker.sh
+# format=json
+# interval=1
+# #IDLE_TEXT=CPICK
+# #IDLE_TEXT_COLOR=#FFFFFF
+
 [calendar]
 full_text= Cal
-command=gsimplecal &
+command=bash /home/mgreco/rofi-calendar.sh
+interval=3600
 border=#b63cc1
+BAR_POSITION=top
 
 [vim]
 full_text= vim
@@ -65,7 +79,7 @@ border=#f2d93a
 
 [time]
 # label=
-command=echo " `date +'%a %d %b'` <b> `date +'%T'`</b> "
+command=echo " `date +'%T'`"
 interval=5
 markup=pango
 border=#928374

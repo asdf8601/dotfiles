@@ -329,12 +329,12 @@ require('packer').startup(function(use)
       'hrsh7th/cmp-cmdline' },
   }
 
-  use { -- Highlight, edit, and navigate code
-    'nvim-treesitter/nvim-treesitter',
-    run = function()
-      pcall(require('nvim-treesitter.install').update { with_sync = true })
-    end,
-  }
+  -- use { -- Highlight, edit, and navigate code
+  --   'nvim-treesitter/nvim-treesitter',
+  --   run = function()
+  --     pcall(require('nvim-treesitter.install').update { with_sync = true })
+  --   end,
+  -- }
 
   use { -- Additional text objects via treesitter
     'nvim-treesitter/nvim-treesitter-textobjects',
