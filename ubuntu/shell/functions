@@ -50,6 +50,7 @@ blog() {
             echo "  new      Create a new post"
             echo "  serve    Serve the blog"
             echo "  edit     Edit a post"
+            ;;
         *)
             blog session
             ;;
