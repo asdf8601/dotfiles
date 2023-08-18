@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 source $DOTFILES/shell/carto
 
+kx() {
+    export KUBECONFIG=$(find ~/.kube/configs/ | fzf --height 10 --layout reverse)
+}
+
 blog() {
     case $1 in
         session)

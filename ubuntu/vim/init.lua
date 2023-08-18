@@ -56,13 +56,6 @@ require('packer').startup(function(use)
   --
   use { 'mhartington/formatter.nvim' }
   use {
-    'nvim-orgmode/orgmode',
-    config = function()
-      require('orgmode').setup({})
-    end,
-    requires = 'nvim-treesitter/nvim-treesitter',
-  }
-  use {
     "nvim-neorg/neorg",
     config = function()
       require('neorg').setup {
@@ -217,7 +210,6 @@ require('packer').startup(function(use)
   }
 
   use 'lewis6991/impatient.nvim'
-  use 'nvim-treesitter/playground'
 
   -- [[ dap ]]
   use 'mfussenegger/nvim-dap'
@@ -329,12 +321,22 @@ require('packer').startup(function(use)
       'hrsh7th/cmp-cmdline' },
   }
 
-  -- use { -- Highlight, edit, and navigate code
-  --   'nvim-treesitter/nvim-treesitter',
-  --   run = function()
-  --     pcall(require('nvim-treesitter.install').update { with_sync = true })
-  --   end,
-  -- }
+  use {
+    'nvim-orgmode/orgmode',
+    config = function()
+      require('orgmode').setup({})
+    end,
+    requires = 'nvim-treesitter/nvim-treesitter',
+  }
+
+  use 'nvim-treesitter/playground'
+
+  use { -- Highlight, edit, and navigate code
+    'nvim-treesitter/nvim-treesitter',
+    run = function()
+      pcall(require('nvim-treesitter.install').update { with_sync = true })
+    end,
+  }
 
   use { -- Additional text objects via treesitter
     'nvim-treesitter/nvim-treesitter-textobjects',
@@ -637,7 +639,7 @@ local ignore_patterns = { "venv/", ".venv/", ".git/", "node_modules/", "*.pyc", 
 local function search_dotfiles()
   require("telescope.builtin").find_files({
     prompt_title = "< dotfiles >",
-    cwd = "$DOTFILES",
+    cwd = "$DOTFILES_HOME",
     hidden = true,
     no_ignore = true,
   })

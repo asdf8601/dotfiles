@@ -160,8 +160,8 @@ bindsym $super+Ctrl+Shift+e exec --no-startup-id feh -D 3600 --randomize --bg-fi
 bindsym $super+Ctrl+Shift+w exec --no-startup-id feh --randomize --bg-fill $HOME/github/mmngreco/wallpapers/*
 
 # Screenshots
-bindsym $alt+Ctrl+f exec img=$HOME/Pictures/ScreenShot_$(date +%Y-%m-%d_%H%M%S).png && maim $img && viewnior $img
-bindsym --release $alt+Ctrl+s exec img="${HOME}/Pictures/ScreenShot_$(date +%Y-%m-%d_%H%M%S).png" && maim -s $img && xclip -selection clipboard -t image/png -i $img
+bindsym $alt+Shift+f exec img=$HOME/Pictures/ScreenShot_$(date +%Y-%m-%d_%H%M%S).png && maim $img && viewnior $img
+bindsym --release $alt+Shift+s exec img="${HOME}/Pictures/ScreenShot_$(date +%Y-%m-%d_%H%M%S).png" && maim -s $img && xclip -selection clipboard -t image/png -i $img
 # bindsym $alt+Shift+Ctrl+v exec "i3-nagbar -t warning -m 'Screen Recording?' -b 'Start' 'rec_screen &' -b 'Stop' 'pkill ffmpeg'"
 
 # define lock screen
