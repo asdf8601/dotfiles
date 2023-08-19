@@ -11,13 +11,13 @@ else
 fi
 
 case $1 in
-    show)
+    s|show)
         preview=${show_preview}
         ;;
-    ls)
+    ls|list)
         preview="${list_preview}"
         ;;
-    diff)
+    d|diff)
         if [ -z "$2" ]; then
             echo "Usage: $0 diff <branch>"
             exit 1
@@ -26,7 +26,12 @@ case $1 in
         preview=${diff_preview}
         ;;
     h|help)
-        echo "Usage: $0 {show|ls}"
+        echo "Usage: $0 <command>"
+        echo "Commands:"
+        echo "  h, help               show this help"
+        echo "  s, show (or empty)    show stash diff"
+        echo "  ls, list              list stash files"
+        echo "  d, diff <commit-ref>  diff stash with branch"
         exit 1
         ;;
     *)
