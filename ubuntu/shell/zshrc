@@ -82,3 +82,6 @@ if [ -f '/home/mgreco/google-cloud-sdk/completion.zsh.inc' ]; then . '/home/mgre
 
 # Generated for envman. Do not edit.
 [ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
+
+# always use US keyboard layout with no capslock (switched to ctrl)
+kb-usnocaps
