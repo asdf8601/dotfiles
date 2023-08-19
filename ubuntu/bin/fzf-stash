@@ -1,13 +1,15 @@
 #!/usr/bin/env bash
 
 if command -v bat >/dev/null 2>&1; then
+    # use bat
     show_preview='echo {} | awk -F":" "{print \$1}" | xargs -I {} sh -c "git stash show -p {} > /tmp/stash-preview && bat --color=always /tmp/stash-preview"'
     list_preview='echo {} | awk -F":" "{print \$1}" | xargs -I {} sh -c "git stash show --name-only {} > /tmp/stash-preview && bat --color=always /tmp/stash-preview"'
     diff_preview='echo {} | awk -F":" "{print \$1}" | xargs -I {} sh -c "git diff $FZF_STASH_DIFF {} > /tmp/stash-preview && bat --color=always /tmp/stash-preview"'
 else
+    # not use bat
     show_preview='echo {} | awk -F":" "{print \$1}" | xargs -I {} git stash show -p {}'
     list_preview='echo {} | awk -F":" "{print \$1}" | xargs -I {} git stash show --name-only {}'
-    diff_preview='echo {} | awk -F":" "{print \$1}" | xargs -I {} sh -c "git diff $FZF_STASH_DIFF {} > /tmp/stash-diff && cat /tmp/stash-diff"'
+    diff_preview='echo {} | awk -F":" "{print \$1}" | xargs -I {} git diff $FZF_STASH_DIFF {}'
 fi
 
 case $1 in
