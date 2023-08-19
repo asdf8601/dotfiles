@@ -2,7 +2,7 @@
 # Original file: default.yml
 matches:
   - trigger: ":draft:"
-    replace: "---\ntitle: \"$|$\"\ndate: {{date}}\ndraft: false\n---\n\n"
+    replace: "---\ntitle: \"$|$\"\ndate: {{date}}\ndraft: false\ncategories: []\nlabels: []\n---\n\n"
     vars:
       - name: date
         type: match
