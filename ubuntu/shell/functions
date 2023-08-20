@@ -1,6 +1,12 @@
 #!/usr/bin/env bash
 source $DOTFILES/shell/carto
 
+translate_post() {
+    file=/tmp/gpt4-translate.md
+    gpt4 --chat blog "translate to english and fix grammar from this markdown: \n\n$1" | tee $file
+    echo File: $file
+}
+
 kx() {
     export KUBECONFIG=$(find ~/.kube/configs/ | fzf --height 10 --layout reverse)
 }
