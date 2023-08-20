@@ -3,7 +3,7 @@ source $DOTFILES/shell/carto
 
 translate_post() {
     file=/tmp/gpt4-translate.md
-    sgpt --model gpt-4 --chat blog "translate to english and fix grammar from this markdown: \n\n$1" | tee $file
+    sgpt --model gpt-4 --chat blog "translate to english and fix grammar from this markdown: \n\n $(cat $1)" | tee $file
     echo File: $file
 }
 
