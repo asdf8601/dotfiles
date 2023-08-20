@@ -182,3 +182,4 @@ fi
 # }}
 
 alias gpt4='sgpt --model gpt-4'
+alias printJson='python -c "from rich import print; import sys; print(sys.stdin.buffer.read())"'
