@@ -15,10 +15,10 @@ dir=/tmp/rofi
 git clone --depth 1 https://github.com/davatorium/rofi $dir
 
 pushd $dir
+git submodule update --init
 meson setup build
 ninja -C build
 sudo ninja -C build install
-
 
 [ ! -d "~/rofi/kaomoji-rofi" ] && git clone https://gitlab.com/ceda_ei/kaomoji-rofi ~/rofi/kaomoji-rofi
 [ ! -d "~/rofi/splatmoji" ] && git clone https://github.com/cspeterson/splatmoji.git ~/rofi/splatmoji
