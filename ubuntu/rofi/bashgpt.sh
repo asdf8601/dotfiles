@@ -8,7 +8,7 @@ model="gpt-3.5-turbo"
 temperature="0.7"
 
 prompt() {
-    selected=$(rofi -theme $DOTFILES/rofi/onedark.rasi -dmenu -p "$model")
+    selected=$(rofi -dmenu -config /home/mgreco/github/mmngreco/dotfiles/ubuntu/rofi/bashgpt.rasi -p "$model")
     echo "$selected"
 }
 
@@ -17,16 +17,14 @@ query=$( echo "$query" | tr '\"' '`' )
 
 [[ -z "$query" ]] && exit 1
 
-echo "$query" >> "$history_file"
-
 result=$(curl -s https://api.openai.com/v1/chat/completions \
     -H "Content-Type: application/json" \
     -H "Authorization: Bearer $OPENAI_API_KEY" \
     -d "{
         \"model\": \"$model\",
-        \"messages\": [{ \"role\": \"user\", \"content\": \"${query}\" }],
+        \"messages\": [{ \"role\": \"user\", \"content\": \"Avoid giving answers with triple backsticks. You answer should not be in markdown, nor should it include backsticks. Be concinse. Follow the Intructions: ${query}\" }],
         \"temperature\": $temperature
-    }" | jq '.choices[0].message.content' | sed 's/\\n//g' )
+    }" | jq '.choices[0].message.content' | sed 's/\\n//g' | sed 's/"//g' )
 
 [[ -z "$1" ]] && rofi -e "$result" "${theme_options[@]}"
-echo "$result" | xclip -selection clipboard
+echo $result | xclip -selection clipboard

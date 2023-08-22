@@ -14,68 +14,6 @@ end
 require('packer').startup(function(use)
   -- Package manager
 
-
-  -- use {
-  --   "jcdickinson/wpm.nvim",
-  --   config = function()
-  --     require("wpm").setup({
-  --     })
-  --   end
-  -- }
-  -- Packer
-
-  -- use {
-  --   'kdheepak/tabline.nvim',
-  --   config = function()
-  --     require'tabline'.setup {
-  --       -- Defaults configuration options
-  --       enable = true,
-  --       options = {
-  --         -- If lualine is installed tabline will use separators configured in lualine by default.
-  --         -- These options can be used to override those settings.
-  --         section_separators = {'', ''},
-  --         component_separators = {'', ''},
-  --         max_bufferline_percent = 66, -- set to nil by default, and it uses vim.o.columns * 2/3
-  --         show_tabs_always = false, -- this shows tabs only when there are more than one tab or if the first tab is named
-  --         show_devicons = true, -- this shows devicons in buffer section
-  --         show_bufnr = false, -- this appends [bufnr] to buffer section,
-  --         show_filename_only = true, -- shows base filename only instead of relative path in filename
-  --         modified_icon = "+ ", -- change the default modified icon
-  --         modified_italic = false, -- set to true by default; this determines whether the filename turns italic if modified
-  --         show_tabs_only = false, -- this shows only tabs instead of tabs + buffers
-  --       }
-  --     }
-  --     vim.cmd[[
-  --     set guioptions-=e " Use showtabline in gui vim
-  --     set sessionoptions+=tabpages,globals " store tabpages and globals in session
-  --     ]]
-  --   end,
-  --   requires = { { 'hoob3rt/lualine.nvim', opt=true }, {'kyazdani42/nvim-web-devicons', opt = true} }
-  -- }
-  --
-  --
-  use { 'mhartington/formatter.nvim' }
-  use {
-    "nvim-neorg/neorg",
-    config = function()
-      require('neorg').setup {
-        load = {
-          ["core.defaults"] = {}, -- Loads default behaviour
-          ["core.concealer"] = {}, -- Adds pretty icons to your documents
-          ["core.dirman"] = { -- Manages Neorg workspaces
-            config = {
-              workspaces = {
-                notes = "~/notes",
-              },
-            },
-          },
-        },
-      }
-    end,
-    run = ":Neorg sync-parsers",
-    requires = "nvim-lua/plenary.nvim",
-  }
-
   use({"mzlogin/vim-markdown-toc"})
 
   use {
@@ -98,6 +36,17 @@ require('packer').startup(function(use)
     run = "cd app && npm install",
     setup = function() vim.g.mkdp_filetypes = { "markdown" } end,
     ft = { "markdown" },
+  })
+
+  use({
+    "dpayne/CodeGPT.nvim",
+    requires = {
+      "MunifTanjim/nui.nvim",
+      "nvim-lua/plenary.nvim",
+    },
+    config = function()
+      require("codegpt.config")
+    end
   })
 
   use({
@@ -946,6 +895,9 @@ require('illuminate').configure({
 })
 
 -- local wpm = require("wpm")
+
+-- {{ lualine
+local CodeGPTModule = require("codegpt")
 require('lualine').setup({
   options = {
     -- theme = 'onedark',
@@ -964,6 +916,7 @@ require('lualine').setup({
     lualine_c = { { 'filename', path = 1 } },
     -- lualine_c = {'filename'},
     lualine_x = {
+      CodeGPTModule.get_status,
       'encoding',
       'fileformat',
       'filetype',
@@ -984,6 +937,8 @@ require('lualine').setup({
   tabline = {},
   extensions = {}
 })
+
+-- }}
 
 local augroup = vim.api.nvim_create_augroup
 Mgreco = augroup('mgreco', {})
@@ -2113,6 +2068,59 @@ vim.api.nvim_command('command! -buffer Jq %!jq "."')
 -- {{ grep program}}
 vim.o.grepprg = 'rg --vimgrep'
 vim.o.grepformat = '%f:%l:%c:%m'
+
+
+-- {{ codegpt.nvim
+require("codegpt.config")
+
+-- vim.g["codegpt_commands_defaults"] = {
+--     ["model"] = "gpt-4"
+-- }
+vim.g["codegpt_openai_api_key"] = os.getenv("OPENAI_API_KEY")
+-- Override the default chat completions url, this is useful to override when testing custom commands
+-- vim.g["codegpt_chat_completions_url"] = "http://127.0.0.1:800/test"
+
+vim.g["codegpt_commands"] = {
+  ["tests"] = {
+    -- Language specific instructions for java filetype
+    language_instructions = {
+        python = "Use the pytest framework.",
+    },
+  },
+  ["doc"] = {
+    -- Language specific instructions for python filetype
+    language_instructions = {
+        python = "Use the NumPyDoc style docstrings."
+    },
+
+    -- Overrides the max tokens to be 1024
+    max_tokens = 1024,
+  },
+  ["code_edit"] = {
+    -- Overrides the system message template
+    system_message_template = "You are {{language}} developer.",
+
+    -- Overrides the user message template
+    user_message_template = "I have the following {{language}} code: ```{{filetype}}\n{{text_selection}}```\nEdit the above code. {{language_instructions}}",
+
+    -- Display the response in a popup window. The popup window filetype will be the filetype of the current buffer.
+    callback_type = "code_popup",
+  },
+  -- Custom command
+  ["modernize"] = {
+    user_message_template = "I have the following {{language}} code: ```{{filetype}}\n{{text_selection}}```\nModernize the above code. Use current best practices. Only return the code snippet and comments. {{language_instructions}}",
+    language_instructions = {
+      cpp = "Use modern C++ syntax. Use auto where possible. Do not import std. Use trailing return type. Use the c++11, c++14, c++17, and c++20 standards where applicable.",
+    },
+  },
+  ["grammar"] = {
+    user_message_template = "I have the following {{language}} code: ```{{filetype}}\n{{text_selection}}```\nFix grammar and understandable. {{language_instructions}}",
+    -- language_instructions = {
+    --     cpp = "Use modern C++ syntax. Use auto where possible. Do not import std. Use trailing return type. Use the c++11, c++14, c++17, and c++20 standards where applicable.",
+    -- },
+  },
+}
+-- }}
 
 
 -- vim:ts=2 sts=2 sw=2 et tw=0
