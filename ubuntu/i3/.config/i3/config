@@ -76,7 +76,6 @@ client.placeholder       $overlay0 $base  $text  $overlay0  $overlay0
 client.background        $base
 
 
-
 ## workspace definition
 set $ws1   "1:  "
 set $ws2   "2:  "
@@ -362,9 +361,6 @@ for_window [class=".*"] split toggle
 # should already exist but use if split orientation  messes up
 # bindsym $super+e layout toggle split
 
-
-
-
 set $mode_gaps gaps
 set $mode_gaps_outer outer gaps
 set $mode_gaps_inner inner gaps
@@ -374,6 +370,8 @@ bindsym $super+Shift+Ctrl+o exec --no-start-up i3-msg "[class='.*'] floating ena
 
 ## gaps mode:
 bindsym $super+Ctrl+0 mode "default", exec --no-startup-id i3-msg "gaps inner all set 0" && i3-msg "gaps outer all set 0"
+bindsym $super+Ctrl+9 mode "default", exec --no-startup-id i3-msg "gaps inner all set $default_gaps_inner" && i3-msg "gaps outer all set $default_gaps_outer"
+
 
 bindsym $super+Shift+g mode "$mode_gaps"
 mode "$mode_gaps" {
