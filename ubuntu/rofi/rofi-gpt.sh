@@ -45,7 +45,6 @@ get_answer() {
 
 if [[ -z "$1" ]]; then
     user_prompt=$(get_user_prompt)
-    noti -m "$user_prompt"
     [[ -z "$user_prompt" ]] && exit 1  # Exit if query is empty
     ask_this="$MOD_PROMPT $user_prompt"
     answer=$(get_answer "$ask_this")
