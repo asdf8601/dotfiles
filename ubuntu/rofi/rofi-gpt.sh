@@ -7,13 +7,14 @@ PROMPT1_FILE="$HOME/.bashgpt_prompts1"
 PROMPT2_FILE="$HOME/.bashgpt_prompts2"
 ANSWERS_FILE="$HOME/.bashgpt_answers"
 MOD_PROMPT="Avoid giving answers with triple backsticks. You answer should not be in markdown, nor should it include backsticks. Follow the Instructions:"
+MOD_PROMPT=""
 
 get_user_prompt() {
-    first_prompt=$(cat $PROMPT1_FILE | rofi -dmenu -p "$model:")
-    second_prompt=$(cat $PROMPT2_FILE | rofi -dmenu -p "$first_prompt")
-    update_file $PROMPT1_FILE "$first_prompt"
-    update_file $PROMPT2_FILE "$second_prompt"
-    echo "$first_prompt $second_prompt"
+    prompt1=$(cat $PROMPT1_FILE | rofi -dmenu -p "$model")
+    prompt2=$(cat $PROMPT2_FILE | rofi -dmenu -p "$prompt1")
+    update_file $PROMPT1_FILE "$prompt1"
+    update_file $PROMPT2_FILE "$prompt2"
+    echo "$prompt1 $prompt2"
 }
 
 update_file() {
@@ -44,9 +45,10 @@ get_answer() {
 
 if [[ -z "$1" ]]; then
     user_prompt=$(get_user_prompt)
+    noti -m "$user_prompt"
     [[ -z "$user_prompt" ]] && exit 1  # Exit if query is empty
-    content="$MOD_PROMPT $user_prompt"
-    answer=$(get_answer "$content")
+    ask_this="$MOD_PROMPT $user_prompt"
+    answer=$(get_answer "$ask_this")
     rofi -e "$answer"  # Display
     echo "$answer" | xclip -selection clipboard  # Copy to clipboard
 else
