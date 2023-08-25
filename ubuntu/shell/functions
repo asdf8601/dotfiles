@@ -12,9 +12,10 @@ kx() {
 }
 
 blog() {
+    blog_home="$HOME/github/mmngreco/mmngreco.github.io"
+    blog_home="$HOME/github/mmngreco/blog"
     case $1 in
         session)
-            blog_home="$HOME/github/mmngreco/mmngreco.github.io"
             tmux new-session -s blog -d -c $blog_home
 
             tmux new-window -t blog -n "edit" -c $blog_home
