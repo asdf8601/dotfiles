@@ -1,37 +1,46 @@
 #!/usr/bin/env python3
-
-import os
 import pathlib
 
-_dotfiles = os.getenv("DOTFILES", "")
-dotfiles = pathlib.Path(_dotfiles)
 
-i3config = dotfiles / "i3/.config/i3/config"
+def process_i3config(i3config_path):
+    """
+    Process the i3 config file and print out the keybindings and their
+    associated commands and comments.
 
-# if i3config.exists():
-#     print(f"reading {i3config}")
-# else:
-#     print("no content")
+    Parameters
+    ----------
+    i3config_path : str
 
-comment = None
-text = i3config.read_text().split("\n")
-for i, line in enumerate(text):
-    line = line.strip()
+    Examples
+    --------
+    >>> process_i3config("~/.config/i3/config")
+    """
+    i3config = pathlib.Path(i3config_path).expanduser().resolve()
+    comment = None
+    text = i3config.read_text().split("\n")
+    for i, line in enumerate(text):
+        # Remove leading and trailing whitespace
+        line = line.strip()
+        if line.startswith("##"):
+            # If the line is a comment, store it in the comment variable
+            comment = (i, line.strip("##").strip())
+        elif line.startswith("bindsym"):
+            # If the line is a bindsym command, process it
+            try:
+                # Split the line into parts
+                _, keymap, *cmd = line.split()
+                if comment and ((i - 1) == comment[0]):
+                    # If the previous line was a comment, print the keymap and
+                    # the comment
+                    print(f"{keymap} 👉️ {comment[1]}")
+                    comment = None
+                else:
+                    # Otherwise, print the keymap and the command
+                    print(f"{keymap} 👉️ {' '.join(cmd)}")
+            except ValueError:
+                print(f"Could not parse line {i}: {line}")
 
-    if line.startswith("##"):
-        comment = (i, line)
-        continue
-    elif line.startswith("bindsym"):
-        _, keymap, *cmd = line.split()
-        if comment and ((i-1) == comment[0]):
-            out = f"{keymap}: {comment[1]}"
-            comment = None
-        else:
-            out = f"{keymap}: {' '.join(cmd)}"
 
-        print(out)
-        continue
-
-
-
-# vim: ft=python ts=4 sts=4 sw=4 et:
+if __name__ == "__main__":
+    process_i3config("~/.config/i3/config")
+# vim: tw=80 ft=python
