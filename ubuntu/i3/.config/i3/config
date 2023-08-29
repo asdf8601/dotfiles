@@ -114,6 +114,8 @@ floating_modifier $super
 # key bindings
 # ----------------------------------------------------------------------------
 
+bindsym $super+o exec noti -t Takt -m "$(takt check)"
+
 # bindsym $super+g exec bash $DOTFILES/rofi/rofi-gpt.sh
 bindsym $super+g exec st -T "st:ChatGPT" -f "Caskaydia Cove Nerd Font:pixelsize=14" -e chatgpt
 ## Make the currently focused window a scratchpad
