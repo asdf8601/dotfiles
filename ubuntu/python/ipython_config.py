@@ -35,7 +35,8 @@ c.InteractiveShellApp.exec_lines = [
 # c.TerminalInteractiveShell.highlight_matching_brackets = True
 # c.PlainTextFormatter.newline = '\\n'
 # c.TerminalInteractiveShell.xmode = "Minimal"
-c.TerminalInteractiveShell.autoformatter = "black"
+# c.TerminalInteractiveShell.autoformatter = "black"
+c.TerminalInteractiveShell.autoformatter = None
 
 
 # ------------------------------------------------------------------------------
