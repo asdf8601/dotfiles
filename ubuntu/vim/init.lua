@@ -910,7 +910,7 @@ require('lualine').setup({
     -- separator = { left = '', right = ''},
     component_separators = { '', '' },
     section_separators = { '', '' },
-    disabled_filetypes = {}
+    disabled_filetypes = {"packer", "netrw", "chatgpt", "fugitive"}
   },
   sections = {
     lualine_a = { 'mode' },
