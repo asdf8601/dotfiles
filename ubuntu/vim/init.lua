@@ -1276,7 +1276,7 @@ end
 local function slime_use_neovim()
   vim.g.slime_target = "neovim"
   vim.g.slime_bracketed_paste = 0
-  vim.g.slime_python_ipython = 0
+  vim.g.slime_python_ipython = 1
   -- vim.g.slime_default_config = {}
   vim.g.slime_no_mappings = 1
   vim.g.slime_dont_ask_default = 0
