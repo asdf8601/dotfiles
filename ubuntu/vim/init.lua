@@ -371,8 +371,8 @@ vim.o.smartcase = true
 -- Decrease update time
 vim.o.updatetime = 250
 vim.wo.signcolumn = 'yes'
-vim.o.laststatus = 2
 vim.o.laststatus = 3
+vim.o.laststatus = 2
 
 -- Set colorscheme
 function SetColorScheme(colorscheme)
