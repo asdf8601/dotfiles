@@ -1983,7 +1983,8 @@ vim.api.nvim_set_keymap('n', '<leader>fl', '<Plug>SnipRun', { silent = true })
 
 -- bang chatgpt command
 vim.api.nvim_set_keymap('n', '<C-c><C-g>', ':!chatgpt -p "Avoid comments and explanaitions unless I ask for it. "<left>', { noremap = true, desc = 'chatgpt' })
-vim.api.nvim_set_keymap('v', '<C-c><C-g>', ':\'<,\'>!chatgpt -p "Avoid comments and explanaitions unless I ask for it. "<left>', { noremap = true, desc = 'chatgpt' })
+vim.api.nvim_set_keymap('n', '<C-c><C-.>', ':.!chatgpt -p "Avoid comments and explanaitions unless I ask for it. "<left>', { noremap = true, desc = 'chatgpt' })
+vim.api.nvim_set_keymap('v', '<C-c><C-g>', ':!chatgpt -p "Avoid comments and explanaitions unless I ask for it. "<left>', { noremap = true, desc = 'chatgpt' })
 
 -- remap ESC to kj
 -- vim.api.nvim_set_keymap('i', 'hh', '<Esc>', {noremap = true})
