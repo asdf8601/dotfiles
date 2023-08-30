@@ -13,6 +13,9 @@ end
 
 require('packer').startup(function(use)
   -- Package manager
+  --
+  -- use formatter
+  use 'mhartington/formatter.nvim'
 
   use({"mzlogin/vim-markdown-toc"})
 
@@ -832,7 +835,7 @@ cmp.setup {
     { name = 'copilot' },
     { name = 'buffer' },
     { name = 'path' },
-    { name = 'neorg' },
+    -- { name = 'neorg' },
     { name = 'nvim_lsp_signature_help' },
     { name = 'orgmode' },
   },
