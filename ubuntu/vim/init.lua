@@ -903,14 +903,14 @@ require('illuminate').configure({
 local CodeGPTModule = require("codegpt")
 require('lualine').setup({
   options = {
-    -- theme = 'onedark',
-    theme = 'catppuccin',
+    theme = 'onedark',
+    -- theme = 'catppuccin',
     icons_enabled = false,
     -- icons_enabled = true,
     -- separator = { left = '', right = ''},
     component_separators = { '', '' },
     section_separators = { '', '' },
-    disabled_filetypes = {"packer", "netrw", "chatgpt", "fugitive"}
+    disabled_filetypes = {"packer", "netrw", "chatgpt", "fugitive", "gitcommit"}
   },
   sections = {
     lualine_a = { 'mode' },
@@ -933,7 +933,8 @@ require('lualine').setup({
     lualine_a = {},
     lualine_b = { 'branch' },
     lualine_c = { 'filename' },
-    lualine_x = { 'location' },
+    -- lualine_x = { 'location' },
+    lualine_x = {},
     lualine_y = { '' },
     lualine_z = {}
   },
