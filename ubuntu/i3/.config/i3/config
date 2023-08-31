@@ -115,7 +115,9 @@ floating_modifier $super
 # ----------------------------------------------------------------------------
 
 ## time management
+bindsym $super+t exec --no-startup-id st -T "st:Takt" -f "Caskaydia Cove Nerd Font:pixelsize=18" -e vd ~/.takt_file.csv
 bindsym $super+o exec noti -t Takt -m "$(takt check)"
+bindsym $super+m exec noti -t Takt -m "$(takt summary)"
 ## emojis
 bindsym $super+e exec rofimoji
 # bindsym $super+e exec "/home/mgreco/rofi/splatmoji/splatmoji copy"
