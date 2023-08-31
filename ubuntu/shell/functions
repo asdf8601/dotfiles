@@ -14,6 +14,7 @@ kx() {
 blog() {
     blog_home="$HOME/github/mmngreco/mmngreco.github.io"
     blog_home="$HOME/github/mmngreco/blog"
+    EDITOR=nvim
     case $1 in
         session)
             tmux new-session -s blog -d -c $blog_home
