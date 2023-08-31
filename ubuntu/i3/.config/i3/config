@@ -123,7 +123,7 @@ bindsym $super+e exec rofimoji
 # bindsym $super+e exec "/home/mgreco/rofi/splatmoji/splatmoji copy"
 
 # bindsym $super+g exec bash $DOTFILES/rofi/rofi-gpt.sh
-bindsym $super+b exec blog
+bindsym $super+g exec st -T "st:ChatGPT" -f "Caskaydia Cove Nerd Font:pixelsize=14" -e blog
 bindsym $super+g exec st -T "st:ChatGPT" -f "Caskaydia Cove Nerd Font:pixelsize=14" -e nvim +"term chatgpt" +"nnoremap <Esc> :q!<CR>" +'vnoremap y "+y' +'nnoremap p "+p' +"norm i"
 ## Make the currently focused window a scratchpad
 bindsym $super+Shift+minus move scratchpad
