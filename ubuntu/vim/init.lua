@@ -1982,8 +1982,7 @@ vim.api.nvim_set_keymap('n', '<leader>f', '<Plug>SnipRunOperator', { silent = tr
 vim.api.nvim_set_keymap('n', '<leader>fl', '<Plug>SnipRun', { silent = true })
 
 -- bang chatgpt command
-vim.api.nvim_set_keymap('n', '<C-c><C-g>', ':!chatgpt -p "Avoid comments and explanaitions unless I ask for it. "<left>', { noremap = true, desc = 'chatgpt' })
-vim.api.nvim_set_keymap('n', '<C-c><C-.>', ':.!chatgpt -p "Avoid comments and explanaitions unless I ask for it. "<left>', { noremap = true, desc = 'chatgpt' })
+vim.api.nvim_set_keymap('n', '<C-c><C-g>', ':.!chatgpt -p "Avoid comments and explanaitions unless I ask for it. "<left>', { noremap = true, desc = 'chatgpt' })
 vim.api.nvim_set_keymap('v', '<C-c><C-g>', ':!chatgpt -p "Avoid comments and explanaitions unless I ask for it. "<left>', { noremap = true, desc = 'chatgpt' })
 
 -- remap ESC to kj
@@ -2078,12 +2077,12 @@ vim.o.grepprg = 'rg --vimgrep'
 vim.o.grepformat = '%f:%l:%c:%m'
 
 
--- {{ codegpt.nvim
+-- codegpt.nvim {{
 require("codegpt.config")
 
--- vim.g["codegpt_commands_defaults"] = {
---     ["model"] = "gpt-4"
--- }
+vim.g["codegpt_commands_defaults"] = {
+    ["model"] = "gpt-4"
+}
 vim.g["codegpt_openai_api_key"] = os.getenv("OPENAI_API_KEY")
 -- Override the default chat completions url, this is useful to override when testing custom commands
 -- vim.g["codegpt_chat_completions_url"] = "http://127.0.0.1:800/test"

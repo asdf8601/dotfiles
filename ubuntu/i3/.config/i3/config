@@ -130,7 +130,7 @@ bindsym $super+minus scratchpad show
 ## Show the sup-mail scratchpad window, if any.
 # bindsym $alt+s [title="^Sup ::"] scratchpad show
 
-bindsym $super+t exec xterm
+# bindsym $super+t exec xterm
 bindsym $super+Return exec st -f "CaskaydiaCove Nerd Font:size=14"
 
 # bindsym $super+Shift+Return workspace 1; focus; exec xterm
