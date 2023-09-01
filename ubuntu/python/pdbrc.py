@@ -62,3 +62,6 @@ def read_breakpoints():
     with open(pdb_bp, 'r') as f:
         contenido = f.read()
     exec(contenido)
+
+
+read_breakpoints()
