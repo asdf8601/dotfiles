@@ -11,13 +11,14 @@ try:
     import numpy as np
 
     np.set_printoptions(linewidth=120)
-except Exception:
+except ImportError:
     pass
 
 
 def addToClipBoard(text):
     command = 'echo %r | xclip -selection clipboard' % text
     os.system(command)
+
 
 def show_variables(variables):
     for k, v in variables.items():
@@ -26,10 +27,14 @@ def show_variables(variables):
         print(msj)
 
 
+def whose():
+    show_variables(pdb.globals)
+
+
 class Config(pdb.DefaultConfig):
 
     prompt = ">>> "
-    editor = 'e'
+    editor = 'nvim'
     stdin_paste = 'epaste'
     filename_color = pdb.Color.lightgray
     use_terminal256formatter = False
@@ -42,3 +47,7 @@ class Config(pdb.DefaultConfig):
         # make 'l' an alias to 'longlist'
         # Pdb.do_l = Pdb.do_longlist
         Pdb.do_st = Pdb.do_sticky
+
+
+def setup(self, pdb):
+    pass
