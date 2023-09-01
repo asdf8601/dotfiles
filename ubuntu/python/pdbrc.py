@@ -4,6 +4,7 @@ This is an example configuration file for pdb++.
 Actually, it is what the author uses daily :-). Put it into ~/.pdbrc.py to use
 it.
 """
+# flake8: noqa
 import pdb
 import os
 
@@ -51,3 +52,13 @@ class Config(pdb.DefaultConfig):
 
 def setup(self, pdb):
     pass
+
+
+def read_breakpoints():
+    pdb_bp = os.getenv("PDB_BP")
+    if pdb_bp is None:
+        return
+    print("rading breakpoints from", pdb_bp)
+    with open(pdb_bp, 'r') as f:
+        contenido = f.read()
+    exec(contenido)
