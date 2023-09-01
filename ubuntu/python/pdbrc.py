@@ -6,62 +6,45 @@ it.
 """
 # flake8: noqa
 import pdb
-import os
-
-try:
-    import numpy as np
-
-    np.set_printoptions(linewidth=120)
-except ImportError:
-    pass
-
-
-def addToClipBoard(text):
-    command = 'echo %r | xclip -selection clipboard' % text
-    os.system(command)
-
-
-def show_variables(variables):
-    for k, v in variables.items():
-        msj_fmt = "{k:>15} : {type(v)}, {getattr(v, 'shape', '')}"
-        msj = msj_fmt.format(k=k, v=v)
-        print(msj)
-
-
-def whose():
-    show_variables(pdb.globals)
 
 
 class Config(pdb.DefaultConfig):
-
-    prompt = ">>> "
-    editor = 'nvim'
+    # default
     stdin_paste = 'epaste'
     filename_color = pdb.Color.lightgray
     use_terminal256formatter = False
+    # current_line_color = 44  # Blue
+
+    # custom
+    prompt = ">>> "  # Ready to copy as an example
+    editor = 'nvim'  # I love it btw
     sticky_by_default = True
     line_number_color = pdb.Color.darkred
-    current_line_color = 44
+    truncate_long_lines = True  # Avoid ugly line wraps...
+    enable_hidden_frames = True  # Show hidden frames by default
+    exec_if_unfocused = None  # TODO: this is broken, open a issue.
 
     def setup(self, pdb):
         Pdb = pdb.__class__
-        # make 'l' an alias to 'longlist'
         # Pdb.do_l = Pdb.do_longlist
         Pdb.do_st = Pdb.do_sticky
-
 
 def setup(self, pdb):
     pass
 
-
-def read_breakpoints():
-    pdb_bp = os.getenv("PDB_BP")
-    if pdb_bp is None:
+def read_pdbrc():
+    # https://github.com/pdbpp/pdbpp/issues/497
+    import os
+    pdbrc = os.getenv("PDBRC")
+    print(f"Reading {pdbrc}")
+    if pdbrc is None:
         return
-    print("rading breakpoints from", pdb_bp)
-    with open(pdb_bp, 'r') as f:
-        contenido = f.read()
-    exec(contenido)
+    with open(pdbrc, 'r') as f:
+        # HACK: Unexpected side-effect, using try-except...  ¯\_ (ツ) _/¯
+        try:
+            exec(f.read())
+        except Exception as e:
+            pass
 
 
-read_breakpoints()
+read_pdbrc()
