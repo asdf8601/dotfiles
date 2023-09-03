@@ -16,16 +16,26 @@ blog() {
     blog_home="$HOME/github/mmngreco/blog"
     EDITOR=nvim
     case $1 in
+        help)
+            echo "Usage: blog <command>"
+            echo ""
+            echo "Commands:"
+            echo "  session  Create a new tmux session"
+            echo "  new      Create a new post"
+            echo "  serve    Serve the blog"
+            echo "  edit     Edit a post"
+            ;;
         session)
             # check if tmux server is running
-            tmux info &> /dev/null || tmux start-server
             tmux has-session -t blog && tmux kill-session -t blog
-
+            tmux info &> /dev/null || tmux start-server \; new-session -d
             tmux new-session -s blog -d -c $blog_home
+            tmux new-window -a -t blog -c $blog_home
+            tmux new-window -a -t blog -c $blog_home
 
-            tmux new-window -t blog -n "edit" -c $blog_home
-            tmux new-window -t blog -n "new" -c $blog_home
-            tmux new-window -t blog -n "server" -c $blog_home
+            tmux rename-window -t blog:1 "server"
+            tmux rename-window -t blog:2 "edit"
+            tmux rename-window -t blog:3 "new"
 
             tmux send-keys -t blog:edit "blog edit" C-m
             tmux send-keys -t blog:new "blog new" C-m
@@ -46,22 +56,16 @@ blog() {
             # git add $file
             # git commit -m "enh(content): Add $new_post"
             ;;
-        serve)
-            hugo server -D
-            ;;
         edit)
             file=$(find . -type f | fzf --preview 'bat --color=always {}')
             $EDITOR $file
             # git add $file && git commit -m "enh: update $file"
             ;;
-        help)
-            echo "Usage: blog <command>"
-            echo ""
-            echo "Commands:"
-            echo "  session  Create a new tmux session"
-            echo "  new      Create a new post"
-            echo "  serve    Serve the blog"
-            echo "  edit     Edit a post"
+        serve)
+            hugo server -D
+            ;;
+        open)
+            open http://localhost:1313 &
             ;;
         *)
             blog session
