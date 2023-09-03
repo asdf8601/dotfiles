@@ -66,6 +66,7 @@ set $surface0  #313244
 set $base      #1e1e2e
 set $mantle    #181825
 set $crust     #11111b
+
 # target                 title     bg     text   indicator  border
 client.focused           $pink     $base  $text  $rosewater $pink
 client.focused_inactive  $mauve    $base  $text  $rosewater $black
@@ -198,6 +199,8 @@ bindsym $super+k focus up
 bindsym $super+l focus right
 
 
+# ============================================================================
+# move windows
 # avoid using alt+{hjkl} as it's used in tmux
 # move focused window
 bindsym Ctrl+Shift+h move left
@@ -206,7 +209,7 @@ bindsym Ctrl+Shift+k move up
 bindsym Ctrl+Shift+l move right
 
 # ============================================================================
-# splits / layout
+# splits / layout / resize / move / fullscreen
 
 # split in vertical orientation
 # bindsym $super+Shift+r split h
@@ -273,7 +276,6 @@ bindsym $super+Shift+r mode "resize"
 
 # =============================================================================
 # Focus
-
 
 set $monitor_secondary eDP-1
 workspace $ws6 output $monitor_secondary
@@ -378,8 +380,8 @@ set $mode_gaps_inner inner gaps
 bindsym $super+Shift+Ctrl+o exec --no-start-up i3-msg "[class='.*'] floating enable, resize set 2560px 1440px, move position center"
 
 ## gaps mode:
-bindsym $super+Ctrl+0 mode "default", exec --no-startup-id i3-msg "gaps inner all set 0" && i3-msg "gaps outer all set 0"
-bindsym $super+Ctrl+9 mode "default", exec --no-startup-id i3-msg "gaps inner all set $default_gaps_inner" && i3-msg "gaps outer all set $default_gaps_outer"
+bindsym $super+Shift+Ctrl+0 mode "default", exec --no-startup-id i3-msg "gaps inner all set 0" && i3-msg "gaps outer all set 0"
+bindsym $super+Shift+Ctrl+9 mode "default", exec --no-startup-id i3-msg "gaps inner all set $default_gaps_inner" && i3-msg "gaps outer all set $default_gaps_outer"
 
 
 bindsym $super+Shift+g mode "$mode_gaps"

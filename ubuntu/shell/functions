@@ -17,6 +17,10 @@ blog() {
     EDITOR=nvim
     case $1 in
         session)
+            # check if tmux server is running
+            tmux info &> /dev/null || tmux start-server
+            tmux has-session -t blog && tmux kill-session -t blog
+
             tmux new-session -s blog -d -c $blog_home
 
             tmux new-window -t blog -n "edit" -c $blog_home
