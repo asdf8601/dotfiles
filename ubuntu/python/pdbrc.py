@@ -32,19 +32,19 @@ class Config(pdb.DefaultConfig):
 def setup(self, pdb):
     pass
 
-def read_pdbrc():
-    # https://github.com/pdbpp/pdbpp/issues/497
-    import os
-    pdbrc = os.getenv("PDBRC")
-    print(f"Reading {pdbrc}")
-    if pdbrc is None:
-        return
-    with open(pdbrc, 'r') as f:
-        # HACK: Unexpected side-effect, using try-except...  ¯\_ (ツ) _/¯
-        try:
-            exec(f.read())
-        except Exception as e:
-            pass
-
-
-read_pdbrc()
+# def read_pdbrc():
+#     # https://github.com/pdbpp/pdbpp/issues/497
+#     import os
+#     pdbrc = os.getenv("PDBRC")
+#     print(f"Reading {pdbrc}")
+#     if pdbrc is None:
+#         return
+#     with open(pdbrc, 'r') as f:
+#         # HACK: Unexpected side-effect, using try-except...  ¯\_ (ツ) _/¯
+#         try:
+#             exec(f.read())
+#         except Exception as e:
+#             pass
+#
+#
+# read_pdbrc()

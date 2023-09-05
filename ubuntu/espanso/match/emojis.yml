@@ -584,8 +584,8 @@ matches:
   - trigger: ":game:"
     replace: 👾
 
-  - trigger: ":retro:"
-    replace: 👾
+  # - trigger: ":retro:"
+  #   replace: 👾
 
   - trigger: ":robot:"
     replace: 🤖

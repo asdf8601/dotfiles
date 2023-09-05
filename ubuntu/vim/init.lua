@@ -15,6 +15,14 @@ require('packer').startup(function(use)
   -- Package manager
   --
   -- use formatter
+
+  use {
+    "klen/nvim-test",
+    config = function()
+      require('nvim-test').setup()
+    end
+  }
+
   use 'mhartington/formatter.nvim'
 
   use({"mzlogin/vim-markdown-toc"})
@@ -187,7 +195,6 @@ require('packer').startup(function(use)
       require("copilot_cmp").setup()
     end,
   }
-
 
   -- Github integration
   use { "pwntester/octo.nvim", disable = not executable "gh" }
@@ -453,6 +460,7 @@ vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 -- Remap for dealing with word wrap
 vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
+
 
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
@@ -910,7 +918,7 @@ require('lualine').setup({
     -- separator = { left = '', right = ''},
     component_separators = { '', '' },
     section_separators = { '', '' },
-    disabled_filetypes = {"packer", "netrw", "chatgpt", "fugitive", "gitcommit"}
+    disabled_filetypes = {"packer", "netrw", "chatgpt", "gitcommit",}
   },
   sections = {
     lualine_a = { 'mode' },
@@ -1541,15 +1549,15 @@ end
 -- vim.cmd('command! -nargs=0 Checkboxes lua Checkboxes()')
 
 
--- [[ fugitive ]]
-vim.keymap.set("n", "<leader>w", ":Git<cr>", { noremap = true })
+-- [[ fugitive
+vim.keymap.set("n", "<leader>w", ":Git|10wincmd_<cr>", { noremap = true })
 vim.keymap.set('n', '<C-g>', ':GBrowse<cr>', { noremap = true, desc = 'browse current file on github' })
 vim.keymap.set('v', '<C-g>', ':GBrowse<cr>', { noremap = true, desc = 'browse current file and line on github' })
-vim.keymap.set('n', '<C-g><C-y>', ':GBrowse!<cr>', { noremap = true, desc = 'yank github url of the current file' })
-vim.keymap.set('v', '<C-g><C-y>', ':GBrowse!<cr>', { noremap = true, desc = 'yank github url of the current line' })
+vim.keymap.set('n', '<C-G>', ':GBrowse!<cr>', { noremap = true, desc = 'yank github url of the current file' })
+vim.keymap.set('v', '<C-G>', ':GBrowse!<cr>', { noremap = true, desc = 'yank github url of the current line' })
+-- ]]
 
-
--- [[ refactoring ]]
+-- [[ refactoring
 -- https://github.com/ThePrimeagen/refactoring.nvim
 vim.api.nvim_set_keymap("v", "<leader>re", [[ <Esc><Cmd>lua require('refactoring').refactor('Extract Function')<CR>]],
 { noremap = true, silent = true, expr = false })
@@ -1567,7 +1575,7 @@ vim.api.nvim_set_keymap("n", "<leader>rbf", [[ <Cmd>lua require('refactoring').r
 { noremap = true, silent = true, expr = false })
 vim.api.nvim_set_keymap("n", "<leader>ri", [[ <Cmd>lua require('refactoring').refactor('Inline Variable')<CR>]],
 { noremap = true, silent = true, expr = false })
-
+-- ]]
 
 -- [[ copilot ]]
 -- https://github.com/github/copilot.vim
@@ -1590,7 +1598,7 @@ vim.api.nvim_set_keymap("n", "<leader>ri", [[ <Cmd>lua require('refactoring').re
 vim.keymap.set('n', '<leader>t', ':Tagbar<cr>', { noremap = true, desc = 'toggle tagbar' })
 
 
--- [[ dap ]]
+-- [[ dap
 require("dapui").setup()
 require("nvim-dap-virtual-text").setup({})
 require("dap-python").setup(os.getenv('HOME') .. '/.virtualenvs/debugpy/bin/python')
@@ -1615,6 +1623,8 @@ local dapui = require('dapui')
 vim.keymap.set('n', '<leader>du', dapui.toggle, { noremap = true, desc = 'toggle dap ui' })
 vim.keymap.set('n', '<leader>do', dapui.open, { noremap = true, desc = 'toggle dap ui' })
 vim.keymap.set('n', '<leader>dx', dapui.close, { noremap = true, desc = 'toggle dap ui' })
+
+-- ]]
 
 -- [[ luasnip ]]
 require("luasnip.loaders.from_vscode").lazy_load({ paths = { vim.fn.getenv("DOTFILES") .. "/vim/vsnip" } })
@@ -1986,6 +1996,9 @@ vim.api.nvim_set_keymap('n', '<leader>fl', '<Plug>SnipRun', { silent = true })
 vim.api.nvim_set_keymap('n', '<C-c><C-g>', ':.!chatgpt -p "Avoid comments and explanaitions unless I ask for it. "<left>', { noremap = true, desc = 'chatgpt' })
 vim.api.nvim_set_keymap('v', '<C-c><C-g>', ':!chatgpt -p "Avoid comments and explanaitions unless I ask for it. "<left>', { noremap = true, desc = 'chatgpt' })
 
+-- Explore
+vim.keymap.set('n', '<leader>-', ':Ex %:h<cr>', { silent = false })
+
 -- remap ESC to kj
 -- vim.api.nvim_set_keymap('i', 'hh', '<Esc>', {noremap = true})
 -- vim.api.nvim_set_keymap('v', 'hh', '<Esc>', {noremap = true})
@@ -2130,5 +2143,39 @@ vim.g["codegpt_commands"] = {
 }
 -- }}
 
+
+-- nvim-test {{
+--
+require('nvim-test').setup {
+  run = true,                 -- run tests (using for debug)
+  commands_create = true,     -- create commands (TestFile, TestLast, ...)
+  filename_modifier = ":.",   -- modify filenames before tests run(:h filename-modifiers)
+  silent = true,             -- less notifications
+  term = "terminal",          -- a terminal to run ("terminal"|"toggleterm")
+  termOpts = {
+    direction = "vertical",   -- terminal's direction ("horizontal"|"vertical"|"float")
+    width = 96,               -- terminal's width (for vertical|float)
+    height = 24,              -- terminal's height (for horizontal|float)
+    go_back = true,          -- return focus to original window after executing
+    stopinsert = "auto",      -- exit from insert mode (true|false|"auto")
+    keep_one = true,          -- keep only one terminal for testing
+  },
+  runners = {               -- setup tests runners
+    cs = "nvim-test.runners.dotnet",
+    go = "nvim-test.runners.go-test",
+    haskell = "nvim-test.runners.hspec",
+    javascriptreact = "nvim-test.runners.jest",
+    javascript = "nvim-test.runners.jest",
+    lua = "nvim-test.runners.busted",
+    python = "nvim-test.runners.pytest",
+    ruby = "nvim-test.runners.rspec",
+    rust = "nvim-test.runners.cargo-test",
+    typescript = "nvim-test.runners.jest",
+    typescriptreact = "nvim-test.runners.jest",
+  }
+}
+vim.api.nvim_set_keymap('n', '<leader>t', ':TestFile<CR>', {noremap = true, silent = true})
+vim.api.nvim_set_keymap('n', '<leader>tn', ':TestNearest<CR>', {noremap = true, silent = true})
+-- }}
 
 -- vim:ts=2 sts=2 sw=2 et tw=0
