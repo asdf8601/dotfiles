@@ -10,14 +10,14 @@ rofi-txls () {
     # select tmux session
     # (listing  all tmux sessions)
     tmux ls -F "#{session_name}" \
-    | rofi -dmenu -p "Select Tmux Session:" -a 0 -no-custom  \
+    | rofi -dmenu -p "Select Tmux Session:" -a 0 -no-custom -matching fuzzy -sort-method fzf -sort \
     | awk '{print $1}'
 }
 
 rofi-txlw () {
     # select tmux window
     # (listing all projects)
-    listGitProjects | rofi -dmenu -p "Tmux New Window:" -a 0 -no-custom  | awk '{print $1}'
+    listGitProjects | rofi -dmenu -p "Tmux New Window:" -matching fuzzy -sort-method fzf -sort -a 0 -no-custom  | awk '{print $1}'
 }
 
 rofi-new-txw() {

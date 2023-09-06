@@ -7,4 +7,5 @@ rofi \
 	-drun-display-format "{name}" \
 	-no-drun-show-actions \
 	-terminal st \
+	-matching fuzzy \
 	-theme "$HOME"/.config/rofi/config/launcher.rasi
