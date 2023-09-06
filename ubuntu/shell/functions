@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-source $DOTFILES/shell/carto
 
 translate_post() {
     file=/tmp/gpt4-translate.md
@@ -449,7 +448,6 @@ todo() {
 
 pdbrc-here () {
     echo "# b $PWD/src/file.py:lineno, condition" > .pdbrc
-    ln -sf $PWD/.pdbrc $HOME/.pdbrc
 }
 
 
@@ -458,7 +456,6 @@ function jenkinsLint () {
     jfile=${1:-Jenkinsfile}
     curl --user "${JENKINS_USER_ID}:${JENKINS_API_TOKEN}" -X POST -F "jenkinsfile=<${jfile}" "${JENKINS_URL}/pipeline-model-converter/validate"
 }
-
 
 
 function gcloud_bucket_project() {

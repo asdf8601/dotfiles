@@ -2178,4 +2178,17 @@ vim.api.nvim_set_keymap('n', '<leader>t', ':TestFile<CR>', {noremap = true, sile
 vim.api.nvim_set_keymap('n', '<leader>tn', ':TestNearest<CR>', {noremap = true, silent = true})
 -- }}
 
+
+-- Create keybind to write the current file and line into a .pdbrc file
+function AddPdbrc()
+  vim.api.nvim_command("normal! :w .pdbrc<cr>")
+  local file = vim.fn.expand('%:p')
+  local line = vim.fn.line('.')
+  local cmd = "b "..file..":"..line
+  vim.api.nvim_command("normal! :r !echo '"..cmd.."' >> .pdbrc<cr>")
+end
+
+
+vim.api.nvim_set_keymap('n', '<C-b><C-b>', ':lua AddPdbrc()<CR>', {noremap = true, silent = true})
+
 -- vim:ts=2 sts=2 sw=2 et tw=0
