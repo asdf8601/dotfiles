@@ -1,3 +1,4 @@
+-- vim:ts=2 sts=2 sw=2 et tw=0
 -- Install packer
 local install_path = vim.fn.stdpath 'data' .. '/site/pack/packer/start/packer.nvim'
 local is_bootstrap = false
@@ -15,6 +16,42 @@ require('packer').startup(function(use)
   -- Package manager
   --
   -- use formatter
+
+  -- packer.nvim
+  use {
+    'folke/noice.nvim',
+    -- event = 'VimEnter', -- Packer no tiene un evento 'VeryLazy'. 'VimEnter' se usa comúnmente para cargar plugins de manera perezosa.
+    config = function()
+      return {
+        lsp = {
+          -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
+          override = {
+            ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+            ["vim.lsp.util.stylize_markdown"] = true,
+            ["cmp.entry.get_documentation"] = true,
+          },
+        },
+        -- you can enable a preset for easier configuration
+        presets = {
+          bottom_search = true, -- use a classic bottom cmdline for search
+          command_palette = true, -- position the cmdline and popupmenu together
+          long_message_to_split = true, -- long messages will be sent to a split
+          inc_rename = false, -- enables an input dialog for inc-rename.nvim
+          lsp_doc_border = false, -- add a border to hover docs and signature help
+        },
+      }
+    end,
+    requires = {
+      -- if you lazy-load any plugin below, make sure to add proper `module='...'` entries
+      'MunifTanjim/nui.nvim',
+      -- OPTIONAL:
+      --   `nvim-notify` is only needed, if you want to use the notification view.
+      --   If not available, we use `mini` as the fallback
+      'rcarriga/nvim-notify',
+    }
+  }
+
+  use { 'TobinPalmer/BetterGx.nvim' }
 
   use {
     "nvim-neotest/neotest",
@@ -37,7 +74,7 @@ require('packer').startup(function(use)
 
   use 'mhartington/formatter.nvim'
 
-  use({"mzlogin/vim-markdown-toc"})
+  use({ "mzlogin/vim-markdown-toc" })
 
   use {
     "windwp/nvim-autopairs",
@@ -282,7 +319,7 @@ require('packer').startup(function(use)
       'williamboman/mason-lspconfig.nvim',
 
       -- Useful status updates for LSP
-      {'j-hui/fidget.nvim', tag='legacy'},
+      { 'j-hui/fidget.nvim', tag = 'legacy' },
     },
   }
 
@@ -325,7 +362,7 @@ require('packer').startup(function(use)
       require('Comment').setup()
     end
   }
-  use 'tpope/vim-sleuth'                    -- Detect tabstop and shiftwidth automatically
+  use 'tpope/vim-sleuth' -- Detect tabstop and shiftwidth automatically
 
   -- Fuzzy Finder (files, lsp, etc)
   use { 'nvim-telescope/telescope.nvim', branch = '0.1.x', requires = { 'nvim-lua/plenary.nvim' } }
@@ -427,18 +464,18 @@ function SetColorScheme(colorscheme)
     vim.cmd.colorscheme "catppuccin"
   elseif colorscheme == 'tokyonight' then
     require("tokyonight").setup({
-      style = "night", -- The theme comes in three styles, `storm`, `moon`, a darker variant `night` and `day`
-      light_style = "day", -- The theme is used when the background is set to light
-      transparent = true, -- Enable this to disable setting the background color
+      style = "night",         -- The theme comes in three styles, `storm`, `moon`, a darker variant `night` and `day`
+      light_style = "day",     -- The theme is used when the background is set to light
+      transparent = true,      -- Enable this to disable setting the background color
       terminal_colors = false, -- Configure the colors used when opening a `:terminal` in Neovim
       styles = {
-        comments = { italic = false},
+        comments = { italic = false },
         keywords = { italic = false },
         functions = { italic = false },
         variables = { italic = false },
         -- Background styles. Can be "dark", "transparent" or "normal"
         sidebars = "dark", -- style for sidebars, see below
-        floats = "dark", -- style for floating windows
+        floats = "dark",   -- style for floating windows
       },
     })
     vim.cmd('colorscheme tokyonight')
@@ -930,7 +967,7 @@ require('lualine').setup({
     -- separator = { left = '', right = ''},
     component_separators = { '', '' },
     section_separators = { '', '' },
-    disabled_filetypes = {"packer", "netrw", "chatgpt", "gitcommit",}
+    disabled_filetypes = { "packer", "netrw", "chatgpt", "gitcommit", }
   },
   sections = {
     lualine_a = { 'mode' },
@@ -1261,12 +1298,17 @@ local mmngreco = vim.api.nvim_create_augroup('mmngreco', { clear = true })
 vim.api.nvim_create_autocmd('BufWritePre', { group = mmngreco, pattern = '*', command = '%s/\\s\\+$//e' })
 vim.api.nvim_create_autocmd('BufWritePre', { group = mmngreco, pattern = '*.go', command = 'GoFmt' })
 vim.api.nvim_create_autocmd('BufEnter', { group = mmngreco, pattern = '*.dbout', command = 'norm zR' })
-vim.api.nvim_create_autocmd('FileType', { group = mmngreco, pattern = 'markdown', command = 'setl conceallevel=2 spl=en,es' })
-vim.api.nvim_create_autocmd('FileType', { group = mmngreco, pattern = 'make', command = 'setl noexpandtab shiftwidth=4 softtabstop=0' })
+vim.api.nvim_create_autocmd('FileType',
+  { group = mmngreco, pattern = 'markdown', command = 'setl conceallevel=2 spl=en,es' })
+vim.api.nvim_create_autocmd('FileType',
+  { group = mmngreco, pattern = 'make', command = 'setl noexpandtab shiftwidth=4 softtabstop=0' })
 vim.api.nvim_create_autocmd('TermOpen', { group = mmngreco, pattern = '*', command = 'setl nonumber norelativenumber' })
-vim.api.nvim_create_autocmd('FileType', { group = mmngreco, pattern = 'fugitive', command = 'setl nonumber norelativenumber' })
-vim.api.nvim_create_autocmd('FileType', { group = mmngreco, pattern = 'python', command = 'nnoremap <buffer> <F8> :silent !black -l79 -S %<CR><CR>' })
-vim.api.nvim_create_autocmd({'BufNewFile', 'BufRead'}, { pattern = 'Jenkinsfile', group = mmngreco, command = 'setl ft=groovy' })
+vim.api.nvim_create_autocmd('FileType',
+  { group = mmngreco, pattern = 'fugitive', command = 'setl nonumber norelativenumber' })
+vim.api.nvim_create_autocmd('FileType',
+  { group = mmngreco, pattern = 'python', command = 'nnoremap <buffer> <F8> :silent !black -l79 -S %<CR><CR>' })
+vim.api.nvim_create_autocmd({ 'BufNewFile', 'BufRead' },
+  { pattern = 'Jenkinsfile', group = mmngreco, command = 'setl ft=groovy' })
 
 -- [[ slime ]] {
 vim.g.slime_cell_delimiter = [[\s*#\s*%%]]
@@ -1290,7 +1332,7 @@ local function slime_use_tmux()
   vim.g.slime_bracketed_paste = 1
   vim.g.slime_python_ipython = 0
   vim.g.slime_no_mappings = 1
-  vim.g.slime_default_config = {socket_name="default", target_pane=":.2"}
+  vim.g.slime_default_config = { socket_name = "default", target_pane = ":.2" }
   vim.g.slime_dont_ask_default = 1
 end
 
@@ -1475,7 +1517,7 @@ end
 
 vim.keymap.set('n', 'gV', '`[v`]', { noremap = true, desc = 'select last visual selection' })
 vim.keymap.set('n', '<leader>s', ':%s/<C-r><C-w>/<C-r><C-w>/gI<left><left><left>',
-{ noremap = true, desc = 'search and replace word under cursor' })
+  { noremap = true, desc = 'search and replace word under cursor' })
 -- vim.keymap.set('n', 'gs', ':%s//g<left><left>', {noremap = true, desc = 'search and replace' })
 
 vim.keymap.set('i', '<C-J>', '<esc>:.m+1 | startinsert<cr>', { noremap = true, desc = 'move line down' })
@@ -1517,7 +1559,7 @@ vim.keymap.set('v', '<leader>s', ':\'<,\'>!sort -f<cr>', { noremap = true, desc 
 -- vim.o.isfname:append('@-@')
 -- vim.keymap.set('v', '<leader>sf', ':!sqlformat -k upper -r -<cr>', {noremap = true})
 vim.keymap.set('v', '<leader>sf', ':!sqlformat  -k upper -r --indent_after_first --indent_columns -<cr>',
-{ noremap = true })
+  { noremap = true })
 
 -- to show hidden symbols characters in a file, :set list to show them.
 vim.o.listchars = 'tab:→\\ ,space:·,nbsp:␣,trail:•,eol:¶,precedes:«,extends:»'
@@ -1572,21 +1614,21 @@ vim.keymap.set('v', '<C-G>', ':GBrowse!<cr>', { noremap = true, desc = 'yank git
 -- [[ refactoring
 -- https://github.com/ThePrimeagen/refactoring.nvim
 vim.api.nvim_set_keymap("v", "<leader>re", [[ <Esc><Cmd>lua require('refactoring').refactor('Extract Function')<CR>]],
-{ noremap = true, silent = true, expr = false })
+  { noremap = true, silent = true, expr = false })
 vim.api.nvim_set_keymap("v", "<leader>rf",
-[[ <Esc><Cmd>lua require('refactoring').refactor('Extract Function To File')<CR>]],
-{ noremap = true, silent = true, expr = false })
+  [[ <Esc><Cmd>lua require('refactoring').refactor('Extract Function To File')<CR>]],
+  { noremap = true, silent = true, expr = false })
 vim.api.nvim_set_keymap("v", "<leader>rv", [[ <Esc><Cmd>lua require('refactoring').refactor('Extract Variable')<CR>]],
-{ noremap = true, silent = true, expr = false })
+  { noremap = true, silent = true, expr = false })
 vim.api.nvim_set_keymap("v", "<leader>ri", [[ <Esc><Cmd>lua require('refactoring').refactor('Inline Variable')<CR>]],
-{ noremap = true, silent = true, expr = false })
+  { noremap = true, silent = true, expr = false })
 -- Extract block doesn't need visual mode
 vim.api.nvim_set_keymap("n", "<leader>rb", [[ <Cmd>lua require('refactoring').refactor('Extract Block')<CR>]],
-{ noremap = true, silent = true, expr = false })
+  { noremap = true, silent = true, expr = false })
 vim.api.nvim_set_keymap("n", "<leader>rbf", [[ <Cmd>lua require('refactoring').refactor('Extract Block To File')<CR>]],
-{ noremap = true, silent = true, expr = false })
+  { noremap = true, silent = true, expr = false })
 vim.api.nvim_set_keymap("n", "<leader>ri", [[ <Cmd>lua require('refactoring').refactor('Inline Variable')<CR>]],
-{ noremap = true, silent = true, expr = false })
+  { noremap = true, silent = true, expr = false })
 -- ]]
 
 -- [[ copilot ]]
@@ -1617,7 +1659,7 @@ require("dap-python").setup(os.getenv('HOME') .. '/.virtualenvs/debugpy/bin/pyth
 
 local dap = require('dap')
 vim.keymap.set('n', '<leader>B', function() dap.set_breakpoint(vim.fn.input("Breakpoint condition: ")) end,
-{ noremap = true, desc = 'dap set breakpoint condition' })
+  { noremap = true, desc = 'dap set breakpoint condition' })
 vim.keymap.set('n', '<leader>b', dap.toggle_breakpoint, { noremap = true, desc = 'dap toggle breakpoint' })
 vim.keymap.set('n', '<leader>dc', dap.continue, { noremap = true, desc = 'dap continue' })
 
@@ -1944,7 +1986,7 @@ require 'sniprun'.setup({
   repl_enable = {},           --# enable REPL-like behavior for the given interpreters
   repl_disable = {},          --# disable REPL-like behavior for the given interpreters
   interpreter_options = {
-                              --# interpreter-specific options, see docs / :SnipInfo <name>
+    --# interpreter-specific options, see docs / :SnipInfo <name>
 
     --# use the interpreter name as key
     GFM_original = {
@@ -1952,7 +1994,7 @@ require 'sniprun'.setup({
       --# available for every interpreter
     },
     Python3_original = {
-      error_truncate = "auto"   --# Truncate runtime errors 'long', 'short' or 'auto'
+      error_truncate = "auto" --# Truncate runtime errors 'long', 'short' or 'auto'
       --# the hint is available for every interpreter
       --# but may not be always respected
     }
@@ -1973,8 +2015,8 @@ require 'sniprun'.setup({
   },
   live_display = { "VirtualTextOk" }, --# display mode used in live_mode
   display_options = {
-    terminal_width = 45,     --# change the terminal display option width
-    notification_timeout = 5 --# timeout for nvim_notify output
+    terminal_width = 45,              --# change the terminal display option width
+    notification_timeout = 5          --# timeout for nvim_notify output
   },
   --# You can use the same keys to customize whether a sniprun producing
   --# no output should display nothing or '(no output)'
@@ -1991,7 +2033,7 @@ require 'sniprun'.setup({
   },
   live_mode_toggle = 'off', --# live mode toggle, see Usage - Running for more info
   --# miscellaneous compatibility/adjustement settings
-  inline_messages = 0, --# inline_message (0/1) is a one-line way to display messages
+  inline_messages = 0,      --# inline_message (0/1) is a one-line way to display messages
   --# to workaround sniprun not being able to display anything
 
   borders = 'single', --# display borders around floating windows
@@ -2005,8 +2047,10 @@ vim.api.nvim_set_keymap('n', '<leader>f', '<Plug>SnipRunOperator', { silent = tr
 vim.api.nvim_set_keymap('n', '<leader>fl', '<Plug>SnipRun', { silent = true })
 
 -- bang chatgpt command
-vim.api.nvim_set_keymap('n', '<C-c><C-g>', ':.!chatgpt -p "Avoid comments and explanaitions unless I ask for it. "<left>', { noremap = true, desc = 'chatgpt' })
-vim.api.nvim_set_keymap('v', '<C-c><C-g>', ':!chatgpt -p "Avoid comments and explanaitions unless I ask for it. "<left>', { noremap = true, desc = 'chatgpt' })
+vim.api.nvim_set_keymap('n', '<C-c><C-g>', ':.!chatgpt -p "Avoid comments and explanaitions unless I ask for it. "<left>',
+  { noremap = true, desc = 'chatgpt' })
+vim.api.nvim_set_keymap('v', '<C-c><C-g>', ':!chatgpt -p "Avoid comments and explanaitions unless I ask for it. "<left>',
+  { noremap = true, desc = 'chatgpt' })
 
 -- Explore
 vim.keymap.set('n', '<leader>-', ':Ex %:h<cr>', { silent = false })
@@ -2082,13 +2126,13 @@ require('orgmode').setup_ts_grammar()
 require('nvim-treesitter.configs').setup {
   highlight = {
     enable = true,
-    additional_vim_regex_highlighting = {'org'},
+    additional_vim_regex_highlighting = { 'org' },
   },
-  ensure_installed = {'org'}, -- Or run :TSUpdate org
+  ensure_installed = { 'org' }, -- Or run :TSUpdate org
 }
 
 require('orgmode').setup({
-  org_agenda_files = {'~/my-orgs/**/*'},
+  org_agenda_files = { '~/my-orgs/**/*' },
   org_default_notes_file = '~/notes/todo.org',
 })
 -- }
@@ -2107,7 +2151,7 @@ vim.o.grepformat = '%f:%l:%c:%m'
 require("codegpt.config")
 
 vim.g["codegpt_commands_defaults"] = {
-    ["model"] = "gpt-4"
+  ["model"] = "gpt-4"
 }
 vim.g["codegpt_openai_api_key"] = os.getenv("OPENAI_API_KEY")
 -- Override the default chat completions url, this is useful to override when testing custom commands
@@ -2117,13 +2161,13 @@ vim.g["codegpt_commands"] = {
   ["tests"] = {
     -- Language specific instructions for java filetype
     language_instructions = {
-        python = "Use the pytest framework.",
+      python = "Use the pytest framework.",
     },
   },
   ["doc"] = {
     -- Language specific instructions for python filetype
     language_instructions = {
-        python = "Use the NumPyDoc style docstrings."
+      python = "Use the NumPyDoc style docstrings."
     },
 
     -- Overrides the max tokens to be 1024
@@ -2134,20 +2178,24 @@ vim.g["codegpt_commands"] = {
     system_message_template = "You are {{language}} developer.",
 
     -- Overrides the user message template
-    user_message_template = "I have the following {{language}} code: ```{{filetype}}\n{{text_selection}}```\nEdit the above code. {{language_instructions}}",
+    user_message_template =
+    "I have the following {{language}} code: ```{{filetype}}\n{{text_selection}}```\nEdit the above code. {{language_instructions}}",
 
     -- Display the response in a popup window. The popup window filetype will be the filetype of the current buffer.
     callback_type = "code_popup",
   },
   -- Custom command
   ["modernize"] = {
-    user_message_template = "I have the following {{language}} code: ```{{filetype}}\n{{text_selection}}```\nModernize the above code. Use current best practices. Only return the code snippet and comments. {{language_instructions}}",
+    user_message_template =
+    "I have the following {{language}} code: ```{{filetype}}\n{{text_selection}}```\nModernize the above code. Use current best practices. Only return the code snippet and comments. {{language_instructions}}",
     language_instructions = {
-      cpp = "Use modern C++ syntax. Use auto where possible. Do not import std. Use trailing return type. Use the c++11, c++14, c++17, and c++20 standards where applicable.",
+      cpp =
+      "Use modern C++ syntax. Use auto where possible. Do not import std. Use trailing return type. Use the c++11, c++14, c++17, and c++20 standards where applicable.",
     },
   },
   ["grammar"] = {
-    user_message_template = "I have the following {{language}} code: ```{{filetype}}\n{{text_selection}}```\nFix grammar and understandable. {{language_instructions}}",
+    user_message_template =
+    "I have the following {{language}} code: ```{{filetype}}\n{{text_selection}}```\nFix grammar and understandable. {{language_instructions}}",
     -- language_instructions = {
     --     cpp = "Use modern C++ syntax. Use auto where possible. Do not import std. Use trailing return type. Use the c++11, c++14, c++17, and c++20 standards where applicable.",
     -- },
@@ -2159,20 +2207,21 @@ vim.g["codegpt_commands"] = {
 -- nvim-test {{
 --
 require('nvim-test').setup {
-  run = true,                 -- run tests (using for debug)
-  commands_create = true,     -- create commands (TestFile, TestLast, ...)
-  filename_modifier = ":.",   -- modify filenames before tests run(:h filename-modifiers)
-  silent = true,             -- less notifications
-  term = "terminal",          -- a terminal to run ("terminal"|"toggleterm")
+  run = true,               -- run tests (using for debug)
+  commands_create = true,   -- create commands (TestFile, TestLast, ...)
+  filename_modifier = ":.", -- modify filenames before tests run(:h filename-modifiers)
+  silent = true,            -- less notifications
+  term = "terminal",        -- a terminal to run ("terminal"|"toggleterm")
   termOpts = {
-    direction = "vertical",   -- terminal's direction ("horizontal"|"vertical"|"float")
-    width = 96,               -- terminal's width (for vertical|float)
-    height = 24,              -- terminal's height (for horizontal|float)
-    go_back = true,          -- return focus to original window after executing
-    stopinsert = "auto",      -- exit from insert mode (true|false|"auto")
-    keep_one = true,          -- keep only one terminal for testing
+    direction = "vertical", -- terminal's direction ("horizontal"|"vertical"|"float")
+    width = 96,             -- terminal's width (for vertical|float)
+    height = 24,            -- terminal's height (for horizontal|float)
+    go_back = true,         -- return focus to original window after executing
+    stopinsert = "auto",    -- exit from insert mode (true|false|"auto")
+    keep_one = true,        -- keep only one terminal for testing
   },
-  runners = {               -- setup tests runners
+  runners = {
+    -- setup tests runners
     cs = "nvim-test.runners.dotnet",
     go = "nvim-test.runners.go-test",
     haskell = "nvim-test.runners.hspec",
@@ -2196,31 +2245,38 @@ function AddPdbrc()
   vim.api.nvim_command("normal! :w .pdbrc<cr>")
   local file = vim.fn.expand('%:p')
   local line = vim.fn.line('.')
-  local cmd = "b "..file..":"..line
-  vim.api.nvim_command("normal! :r !echo '"..cmd.."' >> .pdbrc<cr>")
+  local cmd = "b " .. file .. ":" .. line
+  vim.api.nvim_command("normal! :r !echo '" .. cmd .. "' >> .pdbrc<cr>")
 end
-vim.api.nvim_set_keymap('n', '<C-b><C-b>', ':lua AddPdbrc()<CR>', {noremap = true, silent = true})
+
+vim.api.nvim_set_keymap('n', '<C-b><C-b>', ':lua AddPdbrc()<CR>', { noremap = true, silent = true })
 -- }}
 
 -- neotest {{
 require("neotest").setup({
-    adapters = {
-        require("neotest-python")({
-            dap = { justMyCode = false },
-        }),
-        require("neotest-plenary"),
-        require("neotest-vim-test")({
-            ignore_file_types = { "python", "vim", "lua" },
-        }),
-    },
+  adapters = {
+    require("neotest-python")({
+      dap = { justMyCode = false },
+    }),
+    require("neotest-plenary"),
+    require("neotest-vim-test")({
+      ignore_file_types = { "python", "vim", "lua" },
+    }),
+  },
 })
 
 -- bind keys
-vim.keymap.set('n', '<leader>t', function() require("neotest").run.run(vim.fn.expand("%")) end, {noremap = true, silent = true})
-vim.keymap.set('n', '<leader>td',function() require("neotest").run.run({strategy = "dap"}) end, {noremap = true, silent = true})
-vim.keymap.set('n', '<leader>tn',function() require("neotest").run.run() end, {noremap = true, silent = true})
-vim.keymap.set('n', '<leader>ts',function() require("neotest").run.stop() end, {noremap = true, silent = true})
-vim.keymap.set('n', '<leader>ta',function() require("neotest").run.attach() end, {noremap = true, silent = true})
+vim.keymap.set('n', '<leader>t', function() require("neotest").run.run(vim.fn.expand("%")) end,
+  { noremap = true, silent = true })
+vim.keymap.set('n', '<leader>td', function() require("neotest").run.run({ strategy = "dap" }) end,
+  { noremap = true, silent = true })
+vim.keymap.set('n', '<leader>tn', function() require("neotest").run.run() end, { noremap = true, silent = true })
+vim.keymap.set('n', '<leader>ts', function() require("neotest").run.stop() end, { noremap = true, silent = true })
+vim.keymap.set('n', '<leader>ta', function() require("neotest").run.attach() end, { noremap = true, silent = true })
 -- }}
 
--- vim:ts=2 sts=2 sw=2 et tw=0
+-- betterGX {{
+vim.keymap.set('n', 'gx', ':lua require("better-gx").BetterGx()<CR>',
+{ noremap = true, silent = true, desc = 'better gx' })
+-- }}
+
