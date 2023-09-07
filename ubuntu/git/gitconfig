@@ -57,7 +57,7 @@ track = "!f() { git branch --set-upstream-to=origin/$(git rev-parse --abbrev-ref
 
 # https://github.com/dandavison/delta/tree/0.8.3#side-by-side-view
 delta  = "!f() { git diff $@ | DELTA_FEATURES='side-by-side line-numbers navigate' delta ; }; f"
-fdiff  = "!f() { git diff -u $@ | diff-so-fancy ; }; f"
+difff  = "!f() { git diff -u $@ | diff-so-fancy ; }; f"
 diff = diff --word-diff
 
 branch = branch -ra

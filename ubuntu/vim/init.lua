@@ -17,6 +17,18 @@ require('packer').startup(function(use)
   -- use formatter
 
   use {
+    "nvim-neotest/neotest",
+    requires = {
+      "nvim-neotest/neotest-vim-test",
+      "nvim-neotest/neotest-python",
+      "nvim-neotest/neotest-plenary",
+      "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
+      "antoinemadec/FixCursorHold.nvim"
+    }
+  }
+
+  use {
     "klen/nvim-test",
     config = function()
       require('nvim-test').setup()
@@ -2174,12 +2186,12 @@ require('nvim-test').setup {
     typescriptreact = "nvim-test.runners.jest",
   }
 }
-vim.api.nvim_set_keymap('n', '<leader>t', ':TestFile<CR>', {noremap = true, silent = true})
-vim.api.nvim_set_keymap('n', '<leader>tn', ':TestNearest<CR>', {noremap = true, silent = true})
+-- vim.api.nvim_set_keymap('n', '<leader>t', ':TestFile<CR>', {noremap = true, silent = true})
+-- vim.api.nvim_set_keymap('n', '<leader>tn', ':TestNearest<CR>', {noremap = true, silent = true})
 -- }}
 
 
--- Create keybind to write the current file and line into a .pdbrc file
+-- Create keybind to write the current file and line into a .pdbrc file {{
 function AddPdbrc()
   vim.api.nvim_command("normal! :w .pdbrc<cr>")
   local file = vim.fn.expand('%:p')
@@ -2187,8 +2199,28 @@ function AddPdbrc()
   local cmd = "b "..file..":"..line
   vim.api.nvim_command("normal! :r !echo '"..cmd.."' >> .pdbrc<cr>")
 end
-
-
 vim.api.nvim_set_keymap('n', '<C-b><C-b>', ':lua AddPdbrc()<CR>', {noremap = true, silent = true})
+-- }}
+
+-- neotest {{
+require("neotest").setup({
+    adapters = {
+        require("neotest-python")({
+            dap = { justMyCode = false },
+        }),
+        require("neotest-plenary"),
+        require("neotest-vim-test")({
+            ignore_file_types = { "python", "vim", "lua" },
+        }),
+    },
+})
+
+-- bind keys
+vim.keymap.set('n', '<leader>t', function() require("neotest").run.run(vim.fn.expand("%")) end, {noremap = true, silent = true})
+vim.keymap.set('n', '<leader>td',function() require("neotest").run.run({strategy = "dap"}) end, {noremap = true, silent = true})
+vim.keymap.set('n', '<leader>tn',function() require("neotest").run.run() end, {noremap = true, silent = true})
+vim.keymap.set('n', '<leader>ts',function() require("neotest").run.stop() end, {noremap = true, silent = true})
+vim.keymap.set('n', '<leader>ta',function() require("neotest").run.attach() end, {noremap = true, silent = true})
+-- }}
 
 -- vim:ts=2 sts=2 sw=2 et tw=0
