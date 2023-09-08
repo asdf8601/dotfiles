@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+function newExec() {
+    case $1 in
+        s|software)
+            file=$DOTFILES/software/$2
+            nvim $file
+            sudo chmod +x $file
+            ;;
+        b|bin)
+            file=$DOTFILES/bin/$2
+            nvim $file
+            sudo chmod +x $file
+            dotfiles link
+            ;;
+        *)
+            file=$1/$2
+            nvim $file
+            sudo chmod +x $file
+            ;;
+    esac
+}
+
+newExec ${@}

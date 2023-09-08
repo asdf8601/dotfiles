@@ -1,0 +1,31 @@
+configuration {
+    show-icons:                     true;
+    display-drun: 					"applications";
+    drun-display-format:            "{icon} {name}";
+    disable-history:                true;
+	click-to-exit: 					true;
+    location:                       0;
+    font:				 	        "Noto Sans 10";
+}
+
+window {
+    transparency:                   "real";
+    background-color:               @BG;
+    text-color:                     @FG;
+    border:                  	    2px;
+    border-color:                   @BGA;
+    border-radius:                  10px;
+    x-offset:                       -1%;
+    y-offset:                       0;
+}
+
+prompt {
+    enabled: 			            true;
+    margin: 			            0px 0px 0px 8px;
+    padding: 			            8px;
+    background-color: 		        @BG;
+    text-color: 		            @FG;
+    border:                  	    0px 0px 2px 0px;
+    border-color:                   @BDR;
+    border-radius:                  10px;
+}

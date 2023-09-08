@@ -1,0 +1,193 @@
+[user]
+name = Maximiliano Greco
+email = mmngreco@gmail.com
+
+[core]
+editor = nvim
+excludesfile = /Users/np/.gitignore_global
+
+[include]
+path = ~/.git-sendemail
+
+[color]
+branch = auto
+diff = auto
+status = auto
+
+[color "branch"]
+current = red reverse
+local = blue
+remote = green
+
+[color "diff"]
+meta = yellow
+frag = magenta
+old = red bold
+new = green
+plain = white
+
+[color "status"]
+added = yellow
+changed = green
+untracked = cyan
+
+[push]
+default = current
+
+[pull]
+default = current
+
+[branch]
+autosetuprebase = always
+
+[apply]
+whitespace = nowarn
+
+[alias]
+st = status -s
+cl = clone
+ci = commit
+co = checkout
+br = branch
+r = reset
+cp = cherry-pick
+gr = grep -Ii
+
+track = "!f() { git branch --set-upstream-to=origin/$(git rev-parse --abbrev-ref HEAD) $(git rev-parse --abbrev-ref HEAD); }; f"
+
+# https://github.com/dandavison/delta/tree/0.8.3#side-by-side-view
+delta  = "!f() { git diff $@ | DELTA_FEATURES='side-by-side line-numbers navigate' delta ; }; f"
+difff  = "!f() { git diff -u $@ | diff-so-fancy ; }; f"
+diff = diff --word-diff
+
+branch = branch -ra
+bra = branch -ra
+ai = add --interactive
+
+f = "!git ls-files | grep -i"
+
+cm = commit -m
+cma = commit -a -m
+ca = commit --amend
+amend = commit --amend
+caa = commit -a --amend -C HEAD
+
+lg1 = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all
+lg2 = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all
+lg = !"git lg1"
+ls = log --pretty=format:"%C(green)%h\\ %C(yellow)[%ci]%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=relative
+ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
+lc  = "!f() { git ll "$1"^.."$1"; }; f"
+lnc = log --pretty=format:"%h\\ %s\\ [%cn]"
+fl = log -u
+filelog = log -u
+
+d = diff --word-diff
+dc = diff --cached
+
+dlc = diff --cached HEAD^
+dr  = "!f() { git diff -w "$1"^.."$1"; }; f"
+diffr  = "!f() { git diff "$1"^.."$1"; }; f"
+
+r1 = reset HEAD^
+r2 = reset HEAD^^
+rh = reset --hard
+rh1 = reset HEAD^ --hard
+rh2 = reset HEAD^^ --hard
+
+svnr = svn rebase
+svnd = svn dcommit
+svnl = svn log --oneline --show-commit
+
+sl = stash list
+sa = stash apply
+ss = stash save
+
+assume = update-index --assume-unchanged
+unassume = update-index --no-assume-unchanged
+# show assumed files
+assumed = "!git ls-files -v | grep ^h | cut -c 3-"
+
+# unassume all the assumed files
+unassumeall = "!git assumed | xargs git update-index --no-assume-unchanged"
+assumeall = "!git status -s | awk {'print $2'} | xargs git assume"
+
+sba = "!f() { git subtree add --prefix $2 $1 master --squash; }; f"
+#   update/pull
+sbu = "!f() { git subtree pull --prefix $2 $1 master --squash; }; f"
+
+lasttag = describe --tags --abbrev=0
+lt = describe --tags --abbrev=0
+aliases=config --get-regexp '^alias\\.'
+
+# conflict/merges
+ours = "!f() { git co --ours $@ && git add $@; }; f"
+theirs = "!f() { git co --theirs $@ && git add $@; }; f"
+
+#list remotes
+rem="!git config -l | grep remote.*url | tail -n +2"
+
+#apply patch from other local repo
+lap = "!f() { git --git-dir=$1 format-patch -k -1 --stdout $2 | git am -3 -k; }; f"
+
+#open markdown files edited in last commit
+last = "!gvim $(git show HEAD --format="" --name-only | grep -e .*md$ | xargs)"
+#open just created markdown in working directory
+newmd = "!gvim $(git status -s | awk {'print $2'})"
+
+# initial empty commit
+empty = "!git commit -am\"[empty] Initial commit\" --allow-empty"
+
+# list all aliases
+la = "!git config -l | grep alias | cut -c 7-"
+# }}}
+#
+# convoluted aliases {{{
+# grep from root folder
+gra = "!f() { A=$(pwd) && TOPLEVEL=$(git rev-parse --show-toplevel) && cd $TOPLEVEL && git grep --full-name -In $1 | xargs -I{} echo $TOPLEVEL/{} && cd $A; }; f"
+#rename branch tree to done-
+done = "!f() { git branch | grep "$1" | cut -c 3- | grep -v done | xargs -I{} git branch -m {} done-{}; }; f"
+#add bitbucket remote
+ra = "!f() { git remote add $1 https://bitbucket.org/$2.git; }; f"
+# }}}
+# worktree list {{{
+wl = worktree list
+# undo from here http://megakemp.com/2016/08/25/git-undo/
+undo = "!f() { git reset --hard $(git rev-parse --abbrev-ref HEAD)@{${1-1}}; }; f"
+conflicts = "diff --name-only --diff-filter=U"
+
+mr = "!sh -c 'git fetch $1 merge-requests/$2/head:mr-$1-$2 && git checkout mr-$1-$2' -"
+
+[rerere]
+enabled = false
+
+[rebase]
+autosquash = true
+
+[github]
+user = mmngreco
+
+[merge]
+tool = nvimdiff4
+
+[mergetool "nvimdiff4"]
+cmd = nvim -d $LOCAL $BASE $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
+
+[mergetool "nfugitive"]
+cmd = nvim -f -c "Gdiff" "$MERGED"
+
+[diff]
+mnemonicprefix = true
+tool = nvimdiff2
+
+[difftool "nvimdiff2"]
+cmd = nvim -d $LOCAL $REMOTE
+
+[pager]
+branch = false
+
+[filter "lfs"]
+clean = git-lfs clean -- %f
+smudge = git-lfs smudge -- %f
+process = git-lfs filter-process
+required = true

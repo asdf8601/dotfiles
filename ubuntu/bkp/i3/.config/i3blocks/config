@@ -1,0 +1,95 @@
+# vim:filetype=config:fileencoding=utf-8:ft=conf:fdm=marker:fdl=0:fdc=1:
+separator=false
+separator_block_width=8
+border_top=0
+border_left=0
+border_right=0
+border_bottom=3
+# color=#000000
+color=#FFFFFF
+
+
+[logout]
+full_text="  "
+command=i3-msg -q exit
+border=#d84949
+
+[lock]
+full_text="  "
+command=i3lock -i /home/mgreco/github/mmngreco/wallpapers/0011.png
+border=#d84949
+
+[shutdoown]
+full_text="   "
+command=exec systemctl poweroff -i
+border=#d84949
+
+[brightness]
+command=echo " $(printf "%.0f" $(light -G))"
+interval=10
+signal=2
+border=#d79921
+
+[wireless]
+command=bash -c '[[ -z "$(iwgetid -r)" ]] && echo "睊 " || echo "  $(iwgetid -r)"'
+interval=2
+border=#98971a
+
+# [calendar]
+# full_text= Cal
+# command=gsimplecal &
+# border=#b63cc1
+
+# [colorpicker]
+# command=bash /home/mgreco/rofi-colorpicker.sh
+# format=json
+# interval=1
+# #IDLE_TEXT=CPICK
+# #IDLE_TEXT_COLOR=#FFFFFF
+
+[calendar]
+full_text= Cal
+command=bash /home/mgreco/rofi-calendar.sh
+interval=3600
+border=#b63cc1
+BAR_POSITION=top
+
+[vim]
+full_text= vim
+# command=xterm -e "nvim"
+command=st -t "bar:nvim" -f "CaskaydiaCove Nerd Font:size=14" nvim
+border=#f2d93a
+
+# [dotfiles]
+# full_text= Dotfiles
+# command=xterm -e "nvim ~/.dotfiles"
+# border=#f2d93a
+
+[countdown]
+full_text=⏱
+command=st -t "bar:countdown" -f "CaskaydiaCove Nerd Font:size=14"
+# use color green
+border=#f2d93a
+
+[todo]
+full_text= todo
+# command=xterm -e "nvim ~/MyTODO.md"
+command=st -t "bar:todo" -f "CaskaydiaCove Nerd Font:size=14" nvim ~/MyTODO.md
+border=#f2d93a
+
+[time]
+# label=
+command=echo " `date +'%T'`"
+interval=5
+markup=pango
+border=#928374
+
+# [weather]
+# command=echo "`curl -Ss 'https://wttr.in/?0&T&Q&format=1'`"
+# interval=3600
+# border=#A4C2F4
+
+[battery]
+command=bash $DOTFILES/scripts/battery.sh
+interval=10
+border=#3ec98f

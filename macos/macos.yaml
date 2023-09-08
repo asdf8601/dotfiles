@@ -21,31 +21,31 @@
     ~/.dotfiles: .
 
     # visidata
-    ~/.visidatarc: ./.visidatarc
-    ~/.gitconfig: ./git/gitconfig
-    ~/.docker/config.json: ./docker/.docker/config.json
+    ~/.visidatarc: ubuntu/.visidatarc
+    ~/.gitconfig: ubuntu/git/gitconfig
+    ~/.docker/config.json: ubuntu/docker/.docker/config.json
 
 
     # shell
-    ~/.config/starship.toml: ./shell/.config/starship.toml
+    ~/.config/starship.toml: ubuntu/shell/.config/starship.toml
 
     # terminal
-    ~/.config/kitty/kitty.conf: ./terminal/kitty.conf
-    ~/.config/alacritty/alacritty.yml: ./terminal/alacritty.yml
+    ~/.config/kitty/kitty.conf: ubuntu/terminal/kitty.conf
+    ~/.config/alacritty/alacritty.yml: ubuntu/terminal/alacritty.yml
 
     # vim
-    ~/.config/nvim/init.lua: ./vim/init.lua
+    ~/.config/nvim/init.lua: ubuntu/vim/init.lua
 
     # Python
-    ~/.condarc: ./conda/.condarc
-    ~/.pdbrc.py: ./python/pdbrc.py
-    ~/.config/pip/pip.conf: ./python/pip.conf
-    ~/.ipython/profile_default/ipython_config.py: ./python/ipython_config.py
+    ~/.condarc: ubuntu/conda/.condarc
+    ~/.pdbrc.py: ubuntu/python/pdbrc.py
+    ~/.config/pip/pip.conf: ubuntu/python/pip.conf
+    ~/.ipython/profile_default/ipython_config.py: ubuntu/python/ipython_config.py
 
     # binaries / commands
     ~/.local/bin/:
-        path: bin/*
+        path: ubuntu/bin/*
         glob: true
 
     # text expander
-    ~/.config/espanso: ./espanso
+    ~/.config/espanso: ubuntu/espanso

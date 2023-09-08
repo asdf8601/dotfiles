@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+maim $HOME/Pictures/ScreenShot_$(date +%Y-%m-%d_%H%M%S).png -s | xclip -selection clipboard -t image/png

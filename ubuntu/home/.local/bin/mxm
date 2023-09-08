@@ -1,0 +1,164 @@
+#!/usr/bin/env bash
+
+goDotfiles() {
+    pushd $DOTFILES > /dev/null
+}
+
+
+dotfilesCommit() {
+    pushd $DOTFILES > /dev/null
+    case $1 in
+        all)
+            dotfilesCommit && \
+            echo "" && \
+            dotfilesCommit personal
+            ;;
+        personal)
+            echo -e "${COLOR_RED}Commiting submodules dotfiles.${COLOR_NC}"
+            echo
+            dotfilesSubmodulesCmd 'git commit -am "update"'
+            echo
+            git add . && git commit -m "auto commit" && git push
+            ;;
+        *)
+            echo -e "${COLOR_RED}Commiting dotfiles.${COLOR_NC}"
+            git add . && git commit -m "auto commit" && git push
+            ;;
+    esac
+    popd > /dev/null
+}
+
+dotfilesSubmodulesCmd() {
+    local command="$@"
+    git submodule foreach "if [ \"\$path\" != \"dotbot\" ]; then echo '====\n';$command; fi"
+}
+
+dotfilesPull () {
+
+    pushd $DOTFILES > /dev/null
+    git fetch && git pull
+    echo
+    dotfilesSubmodulesCmd 'git pull'
+    popd > /dev/null
+
+}
+
+
+dotfilesPush () {
+
+    pushd $DOTFILES > /dev/null
+    git fetch && git push
+    dotfilesSubmodulesCmd 'git fetch && git push'
+    popd > /dev/null
+
+}
+
+
+dotfilesStatus() {
+    git status
+    dotfilesSubmodulesCmd 'git status'
+}
+
+
+dotfilesSource() {
+    if [[ -z "$DOTFILES" ]]; then
+        export DOTFILES="${1:-$HOME/.dotfiles}"
+    fi
+    source ~/.common.sh
+}
+
+
+dotfilesLink() {
+    so=${1-ubuntu}
+    config="$DOTFILES_SRC/$so/$so.yaml"
+    echo "Linking dotfiles using $config"
+    pushd $DOTFILES_SRC > /dev/null && ./install -Q -c $config ; popd > /dev/null
+}
+
+
+dotfilesInstall() {
+    if [[ -z "$@" ]]
+    then
+        echo Here is the list of available scripts:
+        find $DOTFILES/install/ \
+            | fzf --select-1 --height 50% --layout reverse --multi --bind "space:toggle" \
+            | xargs -I FILES bash -c "FILES"
+    else
+        echo "$@"
+        for pkg in "$@"
+        do
+            echo Installing $pkg
+            bash $DOTFILES/install/$pkg
+        done
+    fi
+}
+
+
+dotfiles() {
+    case $1 in
+        install)
+            dotfilesInstall ${@:2} ;;
+        i)
+            dotfilesInstall ${@:2} ;;
+        cd)
+            goDotfiles ;;
+        go)
+            goDotfiles ;;
+        cm)
+            dotfilesCommit ;;
+        commit)
+            dotfilesCommit ;;
+        ca)
+            dotfilesCommit all ;;
+        cs)
+            dotfilesCommit personal ;;
+        source)
+            dotfilesSource ;;
+        status|st)
+            dotfilesStatus ;;
+        push)
+            dotfilesPush ;;
+        pull)
+            dotfilesPull ;;
+        link)
+            dotfilesLink ${@:2};;
+        e)
+            dotfiles edit ;;
+        edit)
+            pushd $DOTFILES > /dev/null
+            nvim .
+            popd > /dev/null
+            ;;
+        ec)
+            dotfiles edit
+            echo
+            dotfiles commit
+            ;;
+
+        new)
+            newExecutable $2 $3
+            ;;
+        *)
+            echo
+            echo "Usage: "
+            echo
+            echo "$ dotfiles <cmd> <args>"
+            echo
+            echo "Commands: "
+            echo
+            echo "                     go, cd : go to dotfiles' folder"
+            echo "                 commit, cm : commit files automatically"
+            echo "                         cs : commit personals only"
+            echo "                         ca : commit all (files and personals) files automatically"
+            echo "                     source : reload dotfiles"
+            echo "                       pull : pull dotfiles changes"
+            echo "                       link : (re)create symlinks of dotfiles"
+            echo "                    edit, e : edit dotfiles"
+            echo "                         ec : edit and commit dotfiles"
+            echo " install, i <name or names> : install using software's folder"
+            echo "          new <path> <name> : new executable in <path>/<name>"
+            ;;
+    esac
+}
+
+dotfiles ${@}
