@@ -22,9 +22,9 @@
     ~/.profile                                   : ./ubuntu/home/.profile
     ~/.tmux.conf                                 : ./ubuntu/home/.tmux.conf
     ~/.visidatarc                                : ./ubuntu/home/.visidatarc
-    ~/.docker/                                   :
-        path: ./ubuntu/home/.docker/*
-        glob: true
+    # ~/.docker/:
+    #     path: ./ubuntu/home/.docker/*
+    #     glob: true
     # local
     ~/.local/bin/                                :
         path: ./ubuntu/home/.local/bin/*
