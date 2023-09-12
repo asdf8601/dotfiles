@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-# list devices
-# v4l-ctl --list-devices
-sudo modprobe v4l2loopback devices=1 max_buffers=2 exclusive_caps=1 card_label="VirtualCam"
-pushd /home/mgreco/github/floe/backscrub
-./build/backscrub -c /dev/video2 -v /dev/video4 -m ./models/selfiesegmentation_mlkit-256x256-2021_01_19-v1215.f16.tflite
-popd

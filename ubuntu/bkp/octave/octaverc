@@ -1,4 +1,0 @@
-addpath(genpath(getenv("ETS_TOOLBOX")))
-% PS1('[\u@\H] \W \# ·>>> ')
-PS1('·>>> ')
-clc

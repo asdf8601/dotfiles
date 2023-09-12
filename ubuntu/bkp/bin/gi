@@ -1,2 +1,0 @@
-#/usr/bin/env bash
-curl -sL "https://www.toptal.com/developers/gitignore/api/$@"
