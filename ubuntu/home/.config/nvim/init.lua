@@ -91,16 +91,16 @@ require('packer').startup(function(use)
     ft = { "markdown" },
   })
 
-  use({
-    "dpayne/CodeGPT.nvim",
-    requires = {
-      "MunifTanjim/nui.nvim",
-      "nvim-lua/plenary.nvim",
-    },
-    config = function()
-      require("codegpt.config")
-    end
-  })
+  -- use({
+  --   "dpayne/CodeGPT.nvim",
+  --   requires = {
+  --     "MunifTanjim/nui.nvim",
+  --     "nvim-lua/plenary.nvim",
+  --   },
+  --   config = function()
+  --     require("codegpt.config")
+  --   end
+  -- })
 
   use({
     "jackMort/ChatGPT.nvim",
