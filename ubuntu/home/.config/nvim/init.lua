@@ -292,13 +292,13 @@ require('packer').startup(function(use)
   -- use 'gyim/vim-boxdraw'
   use 'fatih/vim-go'
 
-  use {
-    "rawnly/gist.nvim",
-    config = function() require("gist").setup() end,
-    -- `GistsList` opens the selected gif in a terminal buffer,
-    -- this plugin uses neovim remote rpc functionality to open the gist in an actual buffer and not have buffer inception
-    requires = { "samjwill/nvim-unception", setup = function() vim.g.unception_block_while_host_edits = true end }
-  }
+  -- use {
+  --   "rawnly/gist.nvim",
+  --   config = function() require("gist").setup() end,
+  --   -- `GistsList` opens the selected gif in a terminal buffer,
+  --   -- this plugin uses neovim remote rpc functionality to open the gist in an actual buffer and not have buffer inception
+  --   requires = { "samjwill/nvim-unception", setup = function() vim.g.unception_block_while_host_edits = true end }
+  -- }
 
   use { -- LSP Configuration & Plugins
     'neovim/nvim-lspconfig',
@@ -308,7 +308,7 @@ require('packer').startup(function(use)
       'williamboman/mason-lspconfig.nvim',
 
       -- Useful status updates for LSP
-      { 'j-hui/fidget.nvim', tag = 'legacy' },
+      {'j-hui/fidget.nvim', tag='legacy'},
     },
   }
 
@@ -794,13 +794,13 @@ require('mason').setup()
 -- Enable the following language servers
 -- Feel free to add/remove any LSPs that you want here. They will automatically be installed
 local servers = {
-  -- 'clangd',
-  -- 'rust_analyzer',
   'pyright',
   'ruff_lsp',
   'bashls',
   'dockerls',
   'efm',
+  -- 'clangd',
+  -- 'rust_analyzer',
   -- 'tsserver',
   -- 'lua_ls',
   -- 'gopls'
@@ -946,7 +946,7 @@ require('illuminate').configure({
 -- local wpm = require("wpm")
 
 -- {{ lualine
-local CodeGPTModule = require("codegpt")
+-- local CodeGPTModule = require("codegpt")
 require('lualine').setup({
   options = {
     theme = 'onedark',
@@ -965,7 +965,7 @@ require('lualine').setup({
     lualine_c = { { 'filename', path = 1 } },
     -- lualine_c = {'filename'},
     lualine_x = {
-      CodeGPTModule.get_status,
+      -- CodeGPTModule.get_status,
       'encoding',
       'fileformat',
       'filetype',
@@ -2136,61 +2136,61 @@ vim.o.grepprg = 'rg --vimgrep'
 vim.o.grepformat = '%f:%l:%c:%m'
 
 
--- codegpt.nvim {{
-require("codegpt.config")
-
-vim.g["codegpt_commands_defaults"] = {
-  ["model"] = "gpt-4"
-}
-vim.g["codegpt_openai_api_key"] = os.getenv("OPENAI_API_KEY")
--- Override the default chat completions url, this is useful to override when testing custom commands
--- vim.g["codegpt_chat_completions_url"] = "http://127.0.0.1:800/test"
-
-vim.g["codegpt_commands"] = {
-  ["tests"] = {
-    -- Language specific instructions for java filetype
-    language_instructions = {
-      python = "Use the pytest framework.",
-    },
-  },
-  ["doc"] = {
-    -- Language specific instructions for python filetype
-    language_instructions = {
-      python = "Use the NumPyDoc style docstrings."
-    },
-
-    -- Overrides the max tokens to be 1024
-    max_tokens = 1024,
-  },
-  ["code_edit"] = {
-    -- Overrides the system message template
-    system_message_template = "You are {{language}} developer.",
-
-    -- Overrides the user message template
-    user_message_template =
-    "I have the following {{language}} code: ```{{filetype}}\n{{text_selection}}```\nEdit the above code. {{language_instructions}}",
-
-    -- Display the response in a popup window. The popup window filetype will be the filetype of the current buffer.
-    callback_type = "code_popup",
-  },
-  -- Custom command
-  ["modernize"] = {
-    user_message_template =
-    "I have the following {{language}} code: ```{{filetype}}\n{{text_selection}}```\nModernize the above code. Use current best practices. Only return the code snippet and comments. {{language_instructions}}",
-    language_instructions = {
-      cpp =
-      "Use modern C++ syntax. Use auto where possible. Do not import std. Use trailing return type. Use the c++11, c++14, c++17, and c++20 standards where applicable.",
-    },
-  },
-  ["grammar"] = {
-    user_message_template =
-    "I have the following {{language}} code: ```{{filetype}}\n{{text_selection}}```\nFix grammar and understandable. {{language_instructions}}",
-    -- language_instructions = {
-    --     cpp = "Use modern C++ syntax. Use auto where possible. Do not import std. Use trailing return type. Use the c++11, c++14, c++17, and c++20 standards where applicable.",
-    -- },
-  },
-}
--- }}
+-- -- codegpt.nvim {{
+-- require("codegpt.config")
+--
+-- vim.g["codegpt_commands_defaults"] = {
+--   ["model"] = "gpt-4"
+-- }
+-- vim.g["codegpt_openai_api_key"] = os.getenv("OPENAI_API_KEY")
+-- -- Override the default chat completions url, this is useful to override when testing custom commands
+-- -- vim.g["codegpt_chat_completions_url"] = "http://127.0.0.1:800/test"
+--
+-- vim.g["codegpt_commands"] = {
+--   ["tests"] = {
+--     -- Language specific instructions for java filetype
+--     language_instructions = {
+--       python = "Use the pytest framework.",
+--     },
+--   },
+--   ["doc"] = {
+--     -- Language specific instructions for python filetype
+--     language_instructions = {
+--       python = "Use the NumPyDoc style docstrings."
+--     },
+--
+--     -- Overrides the max tokens to be 1024
+--     max_tokens = 1024,
+--   },
+--   ["code_edit"] = {
+--     -- Overrides the system message template
+--     system_message_template = "You are {{language}} developer.",
+--
+--     -- Overrides the user message template
+--     user_message_template =
+--     "I have the following {{language}} code: ```{{filetype}}\n{{text_selection}}```\nEdit the above code. {{language_instructions}}",
+--
+--     -- Display the response in a popup window. The popup window filetype will be the filetype of the current buffer.
+--     callback_type = "code_popup",
+--   },
+--   -- Custom command
+--   ["modernize"] = {
+--     user_message_template =
+--     "I have the following {{language}} code: ```{{filetype}}\n{{text_selection}}```\nModernize the above code. Use current best practices. Only return the code snippet and comments. {{language_instructions}}",
+--     language_instructions = {
+--       cpp =
+--       "Use modern C++ syntax. Use auto where possible. Do not import std. Use trailing return type. Use the c++11, c++14, c++17, and c++20 standards where applicable.",
+--     },
+--   },
+--   ["grammar"] = {
+--     user_message_template =
+--     "I have the following {{language}} code: ```{{filetype}}\n{{text_selection}}```\nFix grammar and understandable. {{language_instructions}}",
+--     -- language_instructions = {
+--     --     cpp = "Use modern C++ syntax. Use auto where possible. Do not import std. Use trailing return type. Use the c++11, c++14, c++17, and c++20 standards where applicable.",
+--     -- },
+--   },
+-- }
+-- -- }}
 
 
 -- nvim-test {{
