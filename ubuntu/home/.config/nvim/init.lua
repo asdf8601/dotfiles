@@ -61,7 +61,7 @@ require('packer').startup(function(use)
   use {
     "klen/nvim-test",
     config = function()
-      require('nvim-test').setup()
+      require('nvim-test').setup({})
     end
   }
 
@@ -79,7 +79,7 @@ require('packer').startup(function(use)
     'jakewvincent/mkdnflow.nvim',
     rocks = 'luautf8', -- Ensures optional luautf8 dependency is installed
     config = function()
-      require('mkdnflow').setup()
+      require('mkdnflow').setup({})
     end
   })
 
@@ -211,14 +211,11 @@ require('packer').startup(function(use)
     end,
   }
 
-  use 'lewis6991/impatient.nvim'
-
   -- [[ dap ]]
   use 'mfussenegger/nvim-dap'
   use 'mfussenegger/nvim-dap-python'
   use 'rcarriga/nvim-dap-ui'
   use 'theHamsta/nvim-dap-virtual-text'
-
   use 'majutsushi/tagbar'
 
   -- [[ copilot ]]
@@ -239,18 +236,17 @@ require('packer').startup(function(use)
   }
 
   -- Github integration
-  use { "pwntester/octo.nvim", disable = not executable "gh" }
-
-  -- Sweet message committer
-  use "rhysd/committia.vim"
-  use "sindrets/diffview.nvim"
-
-  -- Floating windows are awesome :)
   use {
-    "rhysd/git-messenger.vim",
-    keys = "<Plug>(git-messenger)",
+    "pwntester/octo.nvim",
+    disable = not executable "gh",
+    config = function ()
+      require("octo").setup()
+    end
   }
 
+  -- use "sindrets/diffview.nvim"
+
+  -- Floating windows are awesome :)
   use 'nvie/vim-flake8'
 
   use 'jpalardy/vim-slime'
@@ -293,7 +289,7 @@ require('packer').startup(function(use)
   use 'tyru/open-browser.vim'
   use 'godlygeek/tabular'
   use 'goerz/jupytext.vim'
-  use 'gyim/vim-boxdraw'
+  -- use 'gyim/vim-boxdraw'
   use 'fatih/vim-go'
 
   use {
@@ -372,7 +368,7 @@ require('packer').startup(function(use)
   end
 end)
 
-require('impatient')
+vim.loader.enable()
 
 -- When we are bootstrapping a configuration, it doesn't
 -- make sense to execute the rest of the init.lua.
@@ -421,7 +417,7 @@ vim.o.smartcase = true
 vim.o.updatetime = 250
 vim.wo.signcolumn = 'yes'
 vim.o.laststatus = 3
-vim.o.laststatus = 2
+vim.o.laststatus = 2  -- I like see the file name of each win
 
 -- Set colorscheme
 function SetColorScheme(colorscheme)
@@ -2320,14 +2316,15 @@ vim.keymap.set('n', 'gx', ':lua require("better-gx").BetterGx()<CR>',
 --   },
 -- })
 -- -- }}
--- {{ vim-gist
+
+-- [[ vim-gist ]] {{
 vim.cmd[[
   let g:gist_clip_command = 'xclip -selection clipboard'
   let g:gist_detect_filetype = 1
   let g:gist_open_browser_after_post = 1
   let g:gist_show_privates = 1
   let g:gist_user = "mmngreco"
-  let g:gist_token = $GH_TOKEN
+  let g:gist_token = $GH_GIST_TOKEN
 ]]
 -- }}
 
