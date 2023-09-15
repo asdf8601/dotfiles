@@ -34,6 +34,7 @@
     ~/.local/share/applications/st.desktop       : ./ubuntu/home/.local/share/applications/st.desktop
     # config
     ~/.config/rofi                               : ./ubuntu/home/.config/rofi
+    ~/.config/espanso                            : ./ubuntu/home/.config/espanso
     ~/.config/pip.conf                           : ./ubuntu/home/.config/pip.conf
     ~/.config/i3/config                          : ./ubuntu/home/.config/i3/config
     ~/.config/nvim/init.lua                      : ./ubuntu/home/.config/nvim/init.lua
