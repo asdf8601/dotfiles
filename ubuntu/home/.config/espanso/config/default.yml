@@ -2,5 +2,7 @@
 # Original file: default.yml
 # backend: Clipboard
 backend: auto
-search_shortcut: ctrl+shift+s,
+search_shortcut: ALT+SHIFT+SPACE
 show_icon: true
+search_trigger: ";search"
+
