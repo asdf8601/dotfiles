@@ -88,3 +88,8 @@ if [ -f '/home/mgreco/google-cloud-sdk/completion.zsh.inc' ]; then . '/home/mgre
 # always use US keyboard layout with no capslock (switched to ctrl)
 kb-usnocaps
 
+
+autoload -Uz compinit
+zstyle ':completion:*' menu select
+fpath+=~/.zfunc
+
