@@ -91,9 +91,9 @@ set $ws10 "10:  "
 
 set $default_gaps_inner 8
 set $default_gaps_outer 24
-gaps inner $default_gaps_inner
-gaps outer $default_gaps_outer
-gaps top 10
+gaps inner 0
+gaps outer 0
+gaps top 0
 # gaps bottom 30
 
 workspace $ws9 gaps inner 1
@@ -430,11 +430,6 @@ mode "$mode_gaps_outer" {
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }
-
-
-# no gaps
-gaps inner all set 0
-gaps outer all set 0
 
 # ----------------------------------------------------------------------------
 # for window /
