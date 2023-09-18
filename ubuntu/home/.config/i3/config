@@ -431,6 +431,11 @@ mode "$mode_gaps_outer" {
     bindsym Escape mode "default"
 }
 
+
+# no gaps
+gaps inner all set 0
+gaps outer all set 0
+
 # ----------------------------------------------------------------------------
 # for window /
 # ----------------------------------------------------------------------------
@@ -480,7 +485,7 @@ for_window [title="st:ChatGPT"] floating enable, resize set 600 px 600 px, move 
 # autostart
 # pipx install i3-layouts
 # exec --no-startup-id i3-layouts
-exec --no-startup-id xrandr --output DP-3 --left-of eDP-1 --auto --primary
+exec --no-startup-id xrandr --output DP-1 --left-of eDP-1 --auto --primary
 exec --no-startup-id feh --bg-fill $HOME/github/mmngreco/wallpapers/WallpaperDog-10941700.jpg
 exec --no-startup-id dunst &
 exec --no-startup-id xsettingsd &
