@@ -16,6 +16,7 @@
 # export TERM=xterm
 
 # dotfiles
+export DOTFILES_SRC="$HOME/.dotfiles"
 export DOTFILES_HOME="$HOME/.dotfiles"
 export DOTFILES="$HOME/.dotfiles/ubuntu"
 export DEFAULT_PROMPT=0

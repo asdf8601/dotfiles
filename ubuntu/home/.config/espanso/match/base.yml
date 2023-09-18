@@ -7,7 +7,7 @@ matches:
       - name: out
         type: shell
         params:
-          cmd: "xdotool key ctrl+a && xdotool key ctrl+x && xdotool key ctrl+shift+v | chatgpt -p \'fix grammar, be consice\' "
+          cmd: "sleep 0.5 && xdotool key ctrl+a && xdotool key ctrl+x && /home/mgreco/.local/bin/pbpaste | espanso_gpt"
 
   - trigger: ":retro:"
     replace: "1. Max 🔴🟡🟢\n    - 🔁 \n    - ✅ \n🧩🧩 "
@@ -33,6 +33,14 @@ matches:
         type: shell
         params:
           cmd: "xdotool key ctrl+v"
+
+  - trigger: ":cut:"
+    replace: "{{out}}"
+    vars:
+      - name: out
+        type: shell
+        params:
+          cmd: "xdotool key ctrl+x"
 
   - trigger: ":copy:"
     replace: "{{out}}"

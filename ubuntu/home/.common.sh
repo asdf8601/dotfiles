@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 [ ! -f ~/.bashrc ] && mxm link
 
+export DOTFILES_SRC="$HOME/.dotfiles"
+export DOTFILES_HOME="$HOME/.dotfiles"
+
 
 # variable {{{
 export SSH_KEY_PATH="~/.ssh/rsa_id"
@@ -735,6 +738,6 @@ addToMyGitProjects $HOME/gitlab
 # source {{{
 sourcePattern $DOTFILES "*.secret"
 sourcePattern $DOTFILES "*.hide"
-sourcePattern $DOTFILES_HOME/personal "*.hide"
+sourcePattern $DOTFILES_SRC/personal "*.hide"
 # }}}
 
