@@ -66,8 +66,10 @@ ai = add --interactive
 
 f = "!git ls-files | grep -i"
 
+fix = commit --fixup
+camp = "!f() { git commit -am \"$1\" && git push; }; f"
 cm = commit -m
-cma = commit -a -m
+cam = commit -a -m
 ca = commit --amend
 amend = commit --amend
 caa = commit -a --amend -C HEAD
