@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -e
 
 goDotfiles() {
     pushd $DOTFILES > /dev/null
@@ -6,7 +7,7 @@ goDotfiles() {
 
 
 dotfilesCommit() {
-    pushd $DOTFILES > /dev/null
+    cd $DOTFILES
     case $1 in
         all)
             dotfilesCommit && \
@@ -34,8 +35,7 @@ dotfilesSubmodulesCmd() {
 }
 
 dotfilesPull () {
-
-    pushd $DOTFILES > /dev/null
+    cd $DOTFILES_SRC
     git fetch && git pull
     echo
     dotfilesSubmodulesCmd 'git pull'
@@ -46,7 +46,7 @@ dotfilesPull () {
 
 dotfilesPush () {
 
-    pushd $DOTFILES > /dev/null
+    cd $DOTFILES_SRC
     git fetch && git push
     dotfilesSubmodulesCmd 'git fetch && git push'
     popd > /dev/null
@@ -55,6 +55,7 @@ dotfilesPush () {
 
 
 dotfilesStatus() {
+    cd $DOTFILES_SRC
     git status
     dotfilesSubmodulesCmd 'git status'
 }
@@ -72,7 +73,8 @@ dotfilesLink() {
     so=${1-ubuntu}
     config="$DOTFILES_SRC/$so/$so.yaml"
     echo "Linking dotfiles using $config"
-    pushd $DOTFILES_SRC > /dev/null && ./install -Q -c $config ; popd > /dev/null
+    cd $DOTFILES_SRC
+    ./install -Q -c $config
 }
 
 
