@@ -7,7 +7,7 @@ matches:
       - name: out
         type: shell
         params:
-          cmd: "sleep 0.5 && xdotool key ctrl+a && xdotool key ctrl+x && /home/mgreco/.local/bin/pbpaste | espanso_gpt"
+          cmd: "xdotool key ctrl+a && xdotool key ctrl+x && /home/mgreco/.local/bin/pbpaste | sed 's/:gpt://' | espanso_gpt"
 
   - trigger: ":retro:"
     replace: "1. Max 🔴🟡🟢\n    - 🔁 \n    - ✅ \n🧩🧩 "
