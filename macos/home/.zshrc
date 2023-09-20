@@ -1,9 +1,9 @@
 #!/usr/bin/env zsh
 export DOTFILES=$HOME/.dotfiles/macos/home
 export DOTFILES_HOME=$HOME/.dotfiles
-export DOTFILES_UBUNTU=$HOME/.dotfiles/ubuntu/
+export DOTFILES_UBUNTU=$HOME/.dotfiles/ubuntu
 
-source $DOTFILES_HOME/ubuntu/shell/common
+source $DOTFILES_HOME/ubuntu/home/.common.sh
 source $DOTFILES/.seedtag
 export ZSH=~/.oh-my-zsh
 
@@ -30,7 +30,7 @@ unset __conda_setup
 
 # source ~/.zsh/catppuccin-zsh-syntax-highlighting.zsh
 source $ZSH/oh-my-zsh.sh
-source $DOTFILES_UBUNTU/shell/zsh_prompt
+source $DOTFILES_UBUNTU/home/.prompt.zsh
 # export TERM=xterm-kitty
 
 # always after any prompt changes

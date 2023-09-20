@@ -5,47 +5,43 @@
       create: true
 
 - clean:
-    ~/:
-      force: true
     ~/.config:
       recursive: true
 
 - link:
+    ~/.dotfiles: .
     ~/.zshrc: macos/home/.zshrc
     ~/.zprofile: macos/home/.zprofile
     ~/.zsh_prompt: macos/home/.zsh_prompt
     ~/.tmux.conf: macos/home/.tmux.conf
     ~/.config/yabai/yabairc: macos/home/.config/yabai/yabairc
     ~/.config/skhd/skhdrc: macos/home/.config/skhd/skhdrc
+    ~/.config/kitty/: macos/home/.config/kitty/
+    ~/.config/chatgpt/config.json: ubuntu/home/.config/chatgpt/config.json
 
-    ~/.dotfiles: .
 
     # visidata
-    ~/.visidatarc: ubuntu/.visidatarc
-    ~/.gitconfig: ubuntu/git/gitconfig
-    ~/.docker/config.json: ubuntu/docker/.docker/config.json
+    ~/.visidatarc: ubuntu/home/.visidatarc
+    ~/.gitconfig: ubuntu/home/.gitconfig
+    ~/.docker/config.json: ubuntu/home/.docker/config.json
 
 
     # shell
-    ~/.config/starship.toml: ubuntu/shell/.config/starship.toml
+    ~/.config/starship.toml: ubuntu/home/.config/starship.toml
 
     # terminal
-    ~/.config/kitty/kitty.conf: ubuntu/terminal/kitty.conf
-    ~/.config/alacritty/alacritty.yml: ubuntu/terminal/alacritty.yml
-
-    # vim
-    ~/.config/nvim/init.lua: ubuntu/vim/init.lua
+    # ~/.config/alacritty/: ubuntu/home/.config/alacritty
 
     # Python
-    ~/.condarc: ubuntu/conda/.condarc
-    ~/.pdbrc.py: ubuntu/python/pdbrc.py
-    ~/.config/pip/pip.conf: ubuntu/python/pip.conf
-    ~/.ipython/profile_default/ipython_config.py: ubuntu/python/ipython_config.py
+    ~/.condarc: ubuntu/home/.condarc
+    ~/.pdbrc.py: ubuntu/home/.pdbrc.py
+    ~/.config/pip/pip.conf: ubuntu/home/.config/pip.conf
+    ~/.ipython/profile_default/ipython_config.py: ubuntu/home/.ipython/profile_default/ipython_config.py
 
     # binaries / commands
     ~/.local/bin/:
-        path: ubuntu/bin/*
+        path: ubuntu/home/.local/bin/*
         glob: true
 
     # text expander
-    ~/.config/espanso: ubuntu/espanso
+    ~/.config/espanso: ubuntu/home/.config/espanso
