@@ -22,9 +22,9 @@
     ~/.profile                                   : ./ubuntu/home/.profile
     ~/.tmux.conf                                 : ./ubuntu/home/.tmux.conf
     ~/.visidatarc                                : ./ubuntu/home/.visidatarc
-    ~/.docker/:
-        glob: true
-        path: ./ubuntu/home/.docker/*
+    # ~/.docker/:
+    #     glob: true
+    #     path: ./ubuntu/home/.docker/*
     # local
     ~/.local/bin/                                :
         glob: true
@@ -33,13 +33,17 @@
     ~/.local/share/applications/visidata.png     : ./ubuntu/home/.local/share/applications/visidata.png
     ~/.local/share/applications/st.desktop       : ./ubuntu/home/.local/share/applications/st.desktop
     # config
+    ~/.config/chatgpt/config.json                : ./ubuntu/home/.config/chatgpt/config.json
     ~/.config/rofi                               : ./ubuntu/home/.config/rofi
     ~/.config/espanso                            : ./ubuntu/home/.config/espanso
     ~/.config/pip.conf                           : ./ubuntu/home/.config/pip.conf
     ~/.config/i3/config                          : ./ubuntu/home/.config/i3/config
-    # ~/.config/nvim/init.lua                      : ./ubuntu/home/.config/nvim/init.lua
     ~/.config/picom.conf                         : ./ubuntu/home/.config/picom.conf
     ~/.config/starship.toml                      : ./ubuntu/home/.config/starship.toml
     ~/.config/i3blocks/config                    : ./ubuntu/home/.config/i3blocks/config
     ~/.config/mimeapps.list                      : ./ubuntu/home/.config/mimeapps.list
     ~/.ipython/profile_default/ipython_config.py : ./ubuntu/home/.ipython/profile_default/ipython_config.py
+
+- shell:
+  - [git submodule update --init --recursive, Installing submodules]
+  - [test -d ~/.config/nvim || git clone ssh://git@github.com/mmngreco/kickstart.nvim ~/.config/nvim, Installing neovim config]
