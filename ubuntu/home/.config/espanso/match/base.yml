@@ -10,7 +10,7 @@ matches:
       - name: out
         type: shell
         params:
-          cmd: "xdotool key ctrl+a && xdotool key ctrl+x && /home/mgreco/.local/bin/pbpaste | sed 's/:gpt://' | espanso_gpt"
+          cmd: "xdotool key ctrl+a && sleep 0.1 && xdotool key ctrl+x && sleep 0.1 && /home/mgreco/.local/bin/pbpaste | sed 's/:gpt://' | espanso_gpt"
 
   - trigger: ":trad:"
     replace: "{{out}}"
@@ -18,7 +18,7 @@ matches:
       - name: out
         type: shell
         params:
-          cmd: "xdotool key ctrl+a && xdotool key ctrl+x && /home/mgreco/.local/bin/pbpaste | sed 's/:trad://' | espanso_gpt_trad"
+          cmd: "xdotool key ctrl+a && sleep 0.1 && xdotool key ctrl+x && sleep 0.1 && /home/mgreco/.local/bin/pbpaste | sed 's/:trad://' | espanso_gpt_trad"
 
   - trigger: ":fix:"
     replace: "{{out}}"
@@ -26,7 +26,7 @@ matches:
       - name: out
         type: shell
         params:
-          cmd: "xdotool key ctrl+a && xdotool key ctrl+x && /home/mgreco/.local/bin/pbpaste | sed 's/:fix://' | espanso_gpt_fix"
+          cmd: "xdotool key ctrl+a && sleep 0.1 && xdotool key ctrl+x && sleep 0.1 && /home/mgreco/.local/bin/pbpaste | sed 's/:fix://' | espanso_gpt_fix"
 
   - trigger: ":retro:"
     replace: "1. Max 🔴🟡🟢\n    - 🔁 \n    - ✅ \n🧩🧩 "
