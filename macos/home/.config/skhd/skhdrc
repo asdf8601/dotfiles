@@ -1,4 +1,4 @@
-# vim: ft=conf
+# vim: ft=config tw=0
 # change window focus within space
 alt - j : yabai -m window --focus south
 alt - k : yabai -m window --focus north
@@ -68,5 +68,5 @@ ctrl + shift + cmd - p : yabai -m window --toggle sticky; \
 # stop/start/restart yabai
 ctrl + alt - q : yabai --stop-service
 ctrl + alt - s : yabai --start-service
-ctrl + shift + alt - r : yabai --restart-service
+ctrl + shift + cmd - r : yabai --restart-service
 

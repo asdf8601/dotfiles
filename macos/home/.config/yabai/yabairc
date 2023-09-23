@@ -66,33 +66,36 @@ yabai -m config layout                       bsp
 # RULES {{{
 # fix space number for the following applications
 yabai -m rule --add app="^Firefox$" space=2
-# yabai -m rule --add app="^Brave Browser$" space=2
+yabai -m rule --add app="^Brave$" space=2
 yabai -m rule --add app="^Slack$" space=3
 yabai -m rule --add app="^Telegram$" space=6
-yabai -m rule --add app="^Strongbox$" space=8
 
 
 # disable window management for the following applications
-yabai -m rule --add app="^System Settings$" manage=off
-yabai -m rule --add app="^Calculator$" manage=off
 yabai -m rule --add app="^Karabiner-Elements$" manage=off
 yabai -m rule --add app="^Jiffy$" manage=off
 yabai -m rule --add app="^Krisp$" manage=off
 yabai -m rule --add app="^Huddle$" manage=off
-yabai -m rule --add app="^Calendar$" manage=off
 yabai -m rule --add app="^Alfred$" manage=off
-yabai -m rule --add app="^Photos$" manage=off
 yabai -m rule --add app="^istats$" manage=off
-yabai -m rule --add app="^Gimp.*script\-fu.*$" manage=off space=8
-yabai -m rule --add app="^Pictures$" manage=off
 yabai -m rule --add app="^Raycast$" manage=off
 yabai -m rule --add app="^Espanso$" manage=off
 yabai -m rule --add app="^CameraController$" manage=off
-yabai -m rule --add app="^Strongbox$" manage=off sticky=on
-yabai -m rule --add app="^Messages$" manage=off
-yabai -m rule --add app="^Gifox$" manage=off
+yabai -m rule --add app="^Strongbox$" manage=off sticky=on space=8
 yabai -m rule --add app="^licecap$" manage=off
+yabai -m rule --add app="^kitty$" manage=on space=1
+yabai -m rule --add app="^Gimp.*script\-fu.*$" manage=off space=8
+
+# native macos apps
+yabai -m rule --add app="^Photos$" manage=off
+yabai -m rule --add app="^Pictures$" manage=off
+yabai -m rule --add app="^System Settings$" manage=off
+yabai -m rule --add app="^Calculator$" manage=off
+yabai -m rule --add app="^Calendar$" manage=off
+yabai -m rule --add app="^Messages$" manage=off
+yabai -m rule --add app="^FaceTime$" manage=off
 yabai -m rule --add app="^Reminders$" manage=off
+yabai -m rule --add app="^Gifox$" manage=off
 
 # Space names
 yabai -m space 1 --label term
