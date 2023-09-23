@@ -44,4 +44,6 @@
         glob: true
 
     # text expander
-    ~/.config/espanso: ubuntu/home/.config/espanso
+    ~/Library/Application Support/espanso/: ubuntu/home/.config/espanso
+
+    ~/.wezterm.lua: macos/home/.wezterm.lua
