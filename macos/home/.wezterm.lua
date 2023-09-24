@@ -13,11 +13,9 @@ end
 -- This is where you actually apply your config choices
 
 -- For example, changing the color scheme:
--- config.window.maximize(0)
 config.window_decorations = "RESIZE"
 config.hide_tab_bar_if_only_one_tab = true
 config.window_background_opacity = 1
-
 
 -- and finally, return the configuration to wezterm
 return config
