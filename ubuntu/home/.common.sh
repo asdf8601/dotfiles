@@ -59,7 +59,7 @@ translate_post() {
 }
 
 kx() {
-    export KUBECONFIG=$(ls ~/.kube/config* -type f | fzf --height 10 --layout reverse)
+    export KUBECONFIG=$(ls ~/.kube/config* | fzf --height 10 --layout reverse)
 }
 
 blog() {
