@@ -6,6 +6,7 @@ export DOTFILES_HOME="$HOME/.dotfiles"
 
 
 # variable {{{
+export DOCKER_DEFAULT_PLATFORM=linux/amd64
 export SSH_KEY_PATH="~/.ssh/rsa_id"
 export EDITOR="nvim"
 
@@ -543,6 +544,8 @@ pushd_edit_pop () {
 
 
 # aliases {{{
+
+alias k=kubectl
 
 # Files and directories
 alias mkdir='mkdir -p -v'
