@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
 export CLOUDSDK_PYTHON_SITEPACKAGES=1
-alias ssh-druid='gcloud compute ssh druid-sql-proxy --project=maximal-record-121815 --zone=europe-west1-b --tunnel-through-iap -- -N -L 8888:127.0.0.1:8888'
+alias ssh-druid='gcloud compute ssh druid-sql-proxy --project=maximal-record-121815 --zone=europe-west1-b --tunnel-through-iap -- -N -L 8887:127.0.0.1:8888'
 alias ssh-mlops='gcloud compute ssh --zone "europe-west1-b" "lannister-mlops" --project "maximal-record-121815" --tunnel-through-iap'
 alias ssh-ds='gcloud compute ssh --zone "europe-west1-b" "euw1-datascience-workspace" --tunnel-through-iap --project "maximal-record-121815"'
