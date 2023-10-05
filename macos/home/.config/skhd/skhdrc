@@ -39,16 +39,16 @@ shift + cmd - z : yabai -m window --space next; yabai -m space --focus next
 shift + cmd - 2 : yabai -m window --space  2; yabai -m space --focus 2
 
 # # focus
-# cmd - 1 : yabai -m space --focus 1
-# cmd - 2 : yabai -m space --focus 2
-# cmd - 3 : yabai -m space --focus 3
-# cmd - 4 : yabai -m space --focus 4
-# cmd - 5 : yabai -m space --focus 5
-# cmd - 6 : yabai -m space --focus 6
-# cmd - 7 : yabai -m space --focus 7
-# cmd - 8 : yabai -m space --focus 8
-# cmd - 9 : yabai -m space --focus 9
-# cmd - 0 : yabai -m space --focus 0
+alt + shift - 1 : yabai -m space --focus 1
+alt + shift - 2 : yabai -m space --focus 2
+alt + shift - 3 : yabai -m space --focus 3
+alt + shift - 4 : yabai -m space --focus 4
+alt + shift - 5 : yabai -m space --focus 5
+alt + shift - 6 : yabai -m space --focus 6
+alt + shift - 7 : yabai -m space --focus 7
+alt + shift - 8 : yabai -m space --focus 8
+alt + shift - 9 : yabai -m space --focus 9
+alt + shift - 0 : yabai -m space --focus 0
 
 # move window to space #
 cmd + shift + ctrl - 1 : yabai -m window --space 1;
@@ -68,7 +68,7 @@ ctrl + shift + cmd - p : yabai -m window --toggle sticky; \
 # stop/start/restart yabai
 ctrl + alt - q : noti yabai --stop-service
 ctrl + alt - s : noti yabai --start-service
-ctrl + shift + cmd - r : noti yabai --restart-service
+ctrl + shift + cmd - r : noti yabai --restart-service && noti skhd --restart-service
 
 cmd + ctrl + shift - o : noti -t "Takt: Check" -m "$(takt check)"
 cmd + ctrl + shift - m : noti -t "Takt: Check" -m "$(takt mtd)"
