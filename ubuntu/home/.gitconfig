@@ -45,6 +45,9 @@ whitespace = nowarn
 
 [alias]
 fixup = "!git log -n 50 --pretty=format:'%h %s' --no-merges | fzf | cut -c -7 | xargs -o git commit --fixup"
+# bsync = "!git branch -vv | grep ': gone]' | awk '{print $1}' | xargs -r git branch -D"
+bsync = "!git fetch -p && git branch -vv | awk '/: gone]/{print $1}' | xargs git branch -d"
+bclean = "!git branch --merged | grep -v '\\*' | xargs -r git branch -d"
 
 st = status -s
 cl = clone
@@ -61,6 +64,12 @@ track = "!f() { git branch --set-upstream-to=origin/$(git rev-parse --abbrev-ref
 delta  = "!f() { git diff $@ | DELTA_FEATURES='side-by-side line-numbers navigate' delta ; }; f"
 difff  = "!f() { git diff -u $@ | diff-so-fancy ; }; f"
 diff = diff --word-diff
+d = diff --word-diff
+dc = diff --cached
+
+dlc = diff --cached HEAD^
+dr  = "!f() { git diff -w "$1"^.."$1"; }; f"
+diffr  = "!f() { git diff "$1"^.."$1"; }; f"
 
 branch = branch -ra
 bra = branch -ra
@@ -69,6 +78,8 @@ ai = add --interactive
 f = "!git ls-files | grep -i"
 
 fix = commit --fixup
+fixh = commit --fixup HEAD
+fixhh = commit --fixup HEAD^
 camp = "!f() { git commit -am \"$1\" && git push; }; f"
 cm = commit -m
 cam = commit -a -m
@@ -86,12 +97,6 @@ lnc = log --pretty=format:"%h\\ %s\\ [%cn]"
 fl = log -u
 filelog = log -u
 
-d = diff --word-diff
-dc = diff --cached
-
-dlc = diff --cached HEAD^
-dr  = "!f() { git diff -w "$1"^.."$1"; }; f"
-diffr  = "!f() { git diff "$1"^.."$1"; }; f"
 
 r1 = reset HEAD^
 r2 = reset HEAD^^
@@ -151,15 +156,12 @@ la = "!git config -l | grep alias | cut -c 7-"
 gra = "!f() { A=$(pwd) && TOPLEVEL=$(git rev-parse --show-toplevel) && cd $TOPLEVEL && git grep --full-name -In $1 | xargs -I{} echo $TOPLEVEL/{} && cd $A; }; f"
 #rename branch tree to done-
 done = "!f() { git branch | grep "$1" | cut -c 3- | grep -v done | xargs -I{} git branch -m {} done-{}; }; f"
-#add bitbucket remote
-ra = "!f() { git remote add $1 https://bitbucket.org/$2.git; }; f"
 # }}}
 # worktree list {{{
 wl = worktree list
 # undo from here http://megakemp.com/2016/08/25/git-undo/
 undo = "!f() { git reset --hard $(git rev-parse --abbrev-ref HEAD)@{${1-1}}; }; f"
 conflicts = "diff --name-only --diff-filter=U"
-
 mr = "!sh -c 'git fetch $1 merge-requests/$2/head:mr-$1-$2 && git checkout mr-$1-$2' -"
 
 [rerere]
