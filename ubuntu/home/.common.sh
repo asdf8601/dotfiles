@@ -594,6 +594,7 @@ alias ucf="rename 'y/a-z/A-Z/' "
 alias tn='tmux set -g mode-mouse on'
 alias tf='tmux set -g mode-mouse off'
 alias tmux='tmux -2'
+alias t=txs
 
 # Grep
 alias egrep='egrep --color=auto'
