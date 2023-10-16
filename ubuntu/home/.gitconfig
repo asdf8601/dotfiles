@@ -36,6 +36,7 @@ default = current
 
 [pull]
 default = current
+autoStash = true
 
 [branch]
 autosetuprebase = always
@@ -52,11 +53,12 @@ bclean = "!git branch --merged | grep -v '\\*' | xargs -r git branch -d"
 st = status -s
 cl = clone
 ci = commit
-co = checkout
+co = checkout --autostash
 br = branch
 r = reset
 cp = cherry-pick
 gr = grep -Ii
+pp = pull --rebase --autostash
 
 track = "!f() { git branch --set-upstream-to=origin/$(git rev-parse --abbrev-ref HEAD) $(git rev-parse --abbrev-ref HEAD); }; f"
 
@@ -96,7 +98,6 @@ lc  = "!f() { git ll "$1"^.."$1"; }; f"
 lnc = log --pretty=format:"%h\\ %s\\ [%cn]"
 fl = log -u
 filelog = log -u
-
 
 r1 = reset HEAD^
 r2 = reset HEAD^^
