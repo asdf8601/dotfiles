@@ -35,10 +35,15 @@ command=bash -c '[[ -z "$(iwgetid -r)" ]] && echo "睊 " || echo "  $(iwgetid
 interval=2
 border=#98971a
 
-# [calendar]
-# full_text= Cal
-# command=gsimplecal &
-# border=#b63cc1
+[calendar]
+full_text= Cal
+command=gsimplecal &
+border=#b63cc1
+
+[google-meet]
+command=/home/mgreco/i3-agenda/.venv/bin/python -m i3_agenda.main -c /home/mgreco/.config/gcloud/sa.json -ttl 60
+interval=60
+border=#00FF00
 
 # [colorpicker]
 # command=bash /home/mgreco/rofi-colorpicker.sh
@@ -47,40 +52,38 @@ border=#98971a
 # #IDLE_TEXT=CPICK
 # #IDLE_TEXT_COLOR=#FFFFFF
 
-[calendar]
-full_text= Cal
-command=bash /home/mgreco/rofi-calendar.sh
-interval=3600
-border=#b63cc1
-BAR_POSITION=top
+# [calendar]
+# full_text= Cal
+# command=bash /home/mgreco/rofi-calendar.sh
+# interval=3600
+# border=#b63cc1
+# BAR_POSITION=top
 
 [vim]
 full_text= vim
 # command=xterm -e "nvim"
-command=st -t "bar:nvim" -f "CaskaydiaCove Nerd Font:size=14" nvim
+command=st -t "bar:nvim" -f "CaskaydiaCove Nerd Font:size=16" nvim
 border=#f2d93a
 
-# [dotfiles]
-# full_text= Dotfiles
-# command=xterm -e "nvim ~/.dotfiles"
-# border=#f2d93a
+[dotfiles]
+full_text= Dotfiles
+command=st -t "bar:dotfiles" -f "CaskaydiaCove Nerd Font:size=16" -e "nvim ~/.dotfiles"
+border=#f2d93a
 
 [countdown]
 full_text=⏱
-command=st -t "bar:countdown" -f "CaskaydiaCove Nerd Font:size=14"
-# use color green
+command=st -t "bar:countdown" -f "CaskaydiaCove Nerd Font:size=16"
 border=#f2d93a
 
 [todo]
 full_text= todo
-# command=xterm -e "nvim ~/MyTODO.md"
-command=st -t "bar:todo" -f "CaskaydiaCove Nerd Font:size=14" nvim ~/MyTODO.md
+command=st -t "bar:todo" -f "CaskaydiaCove Nerd Font:size=16" nvim ~/MyTODO.md
 border=#f2d93a
 
 [time]
 # label=
-command=echo " `date +'%T'`"
-interval=5
+command=echo "$(date +' %d  %T')"
+interval=10
 markup=pango
 border=#928374
 
@@ -91,5 +94,5 @@ border=#928374
 
 [battery]
 command=bash $DOTFILES/scripts/battery.sh
-interval=10
+interval=30
 border=#3ec98f
