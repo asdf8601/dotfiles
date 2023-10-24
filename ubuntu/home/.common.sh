@@ -6,6 +6,7 @@ export DOTFILES_HOME="$HOME/.dotfiles"
 
 
 # variable {{{
+export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 export SSH_KEY_PATH="~/.ssh/rsa_id"
 export EDITOR="nvim"
 

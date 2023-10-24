@@ -3,6 +3,7 @@ export CLOUDSDK_PYTHON_SITEPACKAGES=1
 alias ssh-druid='gcloud compute ssh druid-sql-proxy --project=maximal-record-121815 --zone=europe-west1-b --tunnel-through-iap -- -N -L 8887:127.0.0.1:8888'
 alias ssh-mlops='gcloud compute ssh --zone "europe-west1-b" "lannister-mlops" --project "maximal-record-121815" --tunnel-through-iap'
 alias ssh-ds='gcloud compute ssh --zone "europe-west1-b" "euw1-datascience-workspace" --tunnel-through-iap --project "maximal-record-121815"'
+alias ssh-mongo='gcloud compute ssh --zone "europe-west1-b" "euw1-mongo-db0-01" --tunnel-through-iap --project "maximal-record-121815" -- -N -L 27017:127.0.0.1:27017'
 
 function gci() {
     REPOSITORY=eu.gcr.io/maximal-record-121815
@@ -21,4 +22,5 @@ function gci() {
             ;;
     esac
 }
+
 

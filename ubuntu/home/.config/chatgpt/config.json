@@ -18,7 +18,7 @@
   "key_map": {
     "switch_multiline": ["ctrl+j"],
     "submit": ["enter"],
-    "multiline_submit": ["ctrl+d"],
+    "multiline_submit": ["ctrl+m"],
     "insert_newline": ["enter"],
     "multiline_insert_newline": ["ctrl+d"],
     "help": ["ctrl+k"],
