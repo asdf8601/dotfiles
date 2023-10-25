@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+curl -s -X GET https://api.themotivate365.com/stoic-quote | jq -r '"\(.quote) - \(.author)"'
