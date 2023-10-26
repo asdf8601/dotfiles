@@ -7,10 +7,13 @@ around=2
 while [[ "$#" -gt 0 ]]; do
     case $1 in
         -l|--lines) around="$2"; shift ;;
-        *) arg="$1" ;;
+        *) break ;;
     esac
     shift
 done
+
+# Concatena el resto de los argumentos en una sola cadena
+arg="$*"
 
 # Extrae archivo y línea del argumento
 file=$(echo "$arg" | cut -d ":" -f 1)
