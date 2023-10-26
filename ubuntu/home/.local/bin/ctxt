@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# Valor por defecto para el número de líneas a mostrar alrededor
+around=2
+
+# Procesa argumentos de línea de comandos
+while [[ "$#" -gt 0 ]]; do
+    case $1 in
+        -l|--lines) around="$2"; shift ;;
+        *) arg="$1" ;;
+    esac
+    shift
+done
+
+# Extrae archivo y línea del argumento
+file=$(echo "$arg" | cut -d ":" -f 1)
+line=$(echo "$arg" | cut -d ":" -f 2)
+
+# Calcula líneas de inicio y fin para el contexto
+start=$((line - around))
+end=$((line + around))
+
+# Muestra el contexto usando awk
+awk -v start="$start" -v end="$end" 'NR >= start && NR <= end { print }' "$file"
