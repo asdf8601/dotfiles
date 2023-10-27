@@ -9,3 +9,7 @@ test -r $HOME/.opam/opam-init/init.sh && . $HOME/.opam/opam-init/init.sh > /dev/
 #     export TERM=xterm-256color
 #     [ -f $HOME/.profile ] && source $HOME/.profile
 # fi
+
+# >>> coursier install directory >>>
+export PATH="$PATH:/home/mgreco/.local/share/coursier/bin"
+# <<< coursier install directory <<<

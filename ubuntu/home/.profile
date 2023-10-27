@@ -59,3 +59,7 @@ export PATH="$PYENV_ROOT/bin:$PATH"
 
 # Generated for envman. Do not edit.
 [ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
+
+# >>> coursier install directory >>>
+export PATH="$PATH:/home/mgreco/.local/share/coursier/bin"
+# <<< coursier install directory <<<
