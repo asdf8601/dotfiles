@@ -476,6 +476,8 @@ for_window [title="bar:countdown"] floating enable, resize set 700 px 200 px, mo
 for_window [title="bar:MyTODO.md"] floating enable, resize set 500 px 400 px, move position right
 for_window [title="st:ChatGPT"] floating enable, resize set 600 px 600 px, move position center
 
+# do not focus preview window on open
+no_focus [title="^Peek preview$"]
 
 # autostart
 # pipx install i3-layouts
