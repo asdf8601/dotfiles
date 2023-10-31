@@ -8,21 +8,21 @@ border_bottom=3
 # color=#000000
 color=#FFFFFF
 
-
-[logout]
-full_text="  "
-command=i3-msg -q exit
-border=#d84949
-
-[lock]
-full_text="  "
-command=i3lock -i /home/mgreco/github/mmngreco/wallpapers/0011.png
-border=#d84949
-
-[shutdoown]
-full_text="   "
-command=exec systemctl poweroff -i
-border=#d84949
+#
+# [logout]
+# full_text="  "
+# command=i3-msg -q exit
+# border=#d84949
+#
+# [lock]
+# full_text="  "
+# command=i3lock -i /home/mgreco/github/mmngreco/wallpapers/0011.png
+# border=#d84949
+#
+# [shutdoown]
+# full_text="   "
+# command=exec systemctl poweroff -i
+# border=#d84949
 
 [brightness]
 command=echo " $(printf "%.0f" $(light -G))"
@@ -57,7 +57,7 @@ command=st -t "bar:nvim" -f "CaskaydiaCove Nerd Font:size=16" nvim
 border=#f2d93a
 
 [dotfiles]
-full_text= Dotfiles
+full_text= dot
 command=st -t "bar:dotfiles" -f "CaskaydiaCove Nerd Font:size=16" -e "nvim ~/.dotfiles"
 border=#f2d93a
 
@@ -67,8 +67,8 @@ command=st -t "bar:countdown" -f "CaskaydiaCove Nerd Font:size=16"
 border=#f2d93a
 
 [todo]
-full_text= todo
-command=st -t "bar:todo" -f "CaskaydiaCove Nerd Font:size=16" nvim ~/MyTODO.md
+full_text=" "
+command=st -t "bar:todo" -f "CaskaydiaCove Nerd Font:size=16" -e nvim ~/todos/$(date '+%Y-%m-%d-%A.md' | tr '[:upper:]' '[:lower:]')
 border=#f2d93a
 
 [calendar]
@@ -76,8 +76,8 @@ full_text= Cal
 command=gsimplecal &
 border=#b63cc1
 
-[google-meet]
-command=/home/mgreco/i3-agenda/.venv/bin/python -m i3_agenda.main -c /home/mgreco/.config/gcloud/sa.json -ttl 60
+[google-cal]
+command=/home/mgreco/.local/bin/i3-agenda -c=/home/mgreco/.config/gcloud/sa.json -ttl=60 --limchar=10 -o -d
 interval=60
 border=#00FF00
 
@@ -88,10 +88,10 @@ interval=10
 markup=pango
 border=#928374
 
-# [weather]
-# command=echo "`curl -Ss 'https://wttr.in/?0&T&Q&format=1'`"
-# interval=3600
-# border=#A4C2F4
+[weather]
+command=echo "`curl -Ss 'https://wttr.in/?0&T&Q&format=1'`"
+interval=3600
+border=#A4C2F4
 
 [battery]
 command=bash $DOTFILES/scripts/battery.sh
