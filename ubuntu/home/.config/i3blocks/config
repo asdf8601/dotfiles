@@ -58,12 +58,12 @@ border=#f2d93a
 
 [dotfiles]
 full_text= dot
-command=st -t "bar:dotfiles" -f "CaskaydiaCove Nerd Font:size=16" -e "nvim ~/.dotfiles"
+command=st -t "bar:dotfiles" -f "CaskaydiaCove Nerd Font:size=16" -e nvim ~/.dotfiles
 border=#f2d93a
 
 [countdown]
 full_text=⏱
-command=st -t "bar:countdown" -f "CaskaydiaCove Nerd Font:size=16"
+command=st -t "bar:countdown" -f "CaskaydiaCove Nerd Font:size=14"
 border=#f2d93a
 
 [todo]
@@ -71,10 +71,10 @@ full_text=" "
 command=st -t "bar:todo" -f "CaskaydiaCove Nerd Font:size=16" -e nvim ~/todos/$(date '+%Y-%m-%d-%A.md' | tr '[:upper:]' '[:lower:]')
 border=#f2d93a
 
-[calendar]
-full_text= Cal
-command=gsimplecal &
-border=#b63cc1
+# [calendar]
+# full_text= Cal
+# command=gsimplecal &
+# border=#b63cc1
 
 [google-cal]
 command=/home/mgreco/.local/bin/i3-agenda -c=/home/mgreco/.config/gcloud/sa.json -ttl=60 --limchar=10 -o -d
@@ -89,7 +89,7 @@ markup=pango
 border=#928374
 
 [weather]
-command=echo "`curl -Ss 'https://wttr.in/?0&T&Q&format=1'`"
+command=curl -Ss "https://wttr.in/?format=1" | sed "s/   / /"
 interval=3600
 border=#A4C2F4
 
