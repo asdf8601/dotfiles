@@ -651,10 +651,10 @@ alias tks="tmux kill-session"
 alias tkill="tmux kill-server"
 
 # RC files
-alias trc="nvim ~/.tmux.conf"
-alias vrc="nvim ~/.config/nvim/init.lua"
-alias zrc="nvim ~/.zshrc"
-alias brc="nvim ~/.bashrc"
+alias trc="nvim ~/.tmux.conf +'cd ~/'"
+alias vrc="nvim ~/.config/nvim/init.lua +'cd %:h'"
+alias zrc="nvim ~/.zshrc +'cd ~/'"
+alias brc="nvim ~/.bashrc +'cd ~/'"
 alias reload="exec $SHELL"
 
 # system
@@ -735,6 +735,8 @@ addToPath "/opt/mssql-tools/bin"
 # ruby
 addToPathFront "$GEM_HOME/bin"
 # projects folders
+addToMyGitProjects $HOME/github.com
+addToMyGitProjects $HOME/gitlab.com
 addToMyGitProjects $HOME/github
 addToMyGitProjects $HOME/gitlab
 # }}}
