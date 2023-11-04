@@ -96,6 +96,7 @@ yabai -m rule --add app="^Messages$" manage=off
 yabai -m rule --add app="^FaceTime$" manage=off
 yabai -m rule --add app="^Reminders$" manage=off
 yabai -m rule --add app="^Gifox$" manage=off
+yabai -m rule --add app="^KeyboardCleanTool$" manage=off
 
 # Space names
 yabai -m space 1 --label term
