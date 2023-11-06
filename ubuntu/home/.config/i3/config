@@ -115,6 +115,9 @@ floating_modifier $super
 # key bindings
 # ----------------------------------------------------------------------------
 
+## volume: alasmixer
+bindsym $super+v exec --no-startup-id st -T "st:Mixer" -f "Caskaydia Cove Nerd Font:pixelsize=18" -e alsamixer -Vall -m
+
 ## time management
 bindsym $super+t exec --no-startup-id st -T "st:Takt" -f "Caskaydia Cove Nerd Font:pixelsize=18" -e nvim ~/.takt_file.csv
 bindsym $super+o exec noti -t Takt -m "$(takt check)"
@@ -475,6 +478,7 @@ for_window [title="bar:.*"] floating enable, move position center
 for_window [title="bar:countdown"] floating enable, resize set 700 px 200 px, move position center
 for_window [title="bar:MyTODO.md"] floating enable, resize set 500 px 400 px, move position right
 for_window [title="st:ChatGPT"] floating enable, resize set 600 px 600 px, move position center
+for_window [title="st:Mixer"] floating enable, resize set 600 px 600 px, move position center
 
 # do not focus preview window on open
 no_focus [title="^Peek preview$"]
