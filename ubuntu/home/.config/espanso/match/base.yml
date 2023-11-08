@@ -42,7 +42,7 @@ matches:
         params:
           cmd: "zen"
 
-  - trigger: ":lannister:"
+  - trigger: ":lannisterq:"
     replace: "{{quote}}"
     vars:
       - name: quote
