@@ -52,11 +52,10 @@ function git-br-clean {
     git branch -vv | grep 'origin/.*: gone]' | awk '{print $1}' | xargs git branch -d
 }
 
-
-translate_post() {
+gpt-trad-md() {
     file=/tmp/gpt4-translate.md
-    sgpt --model gpt-4 --chat blog "translate to english and fix grammar from this markdown: \n\n $(cat $1)" | tee $file
-    echo File: $file
+    sgpt --model gpt-4-1106-preview --chat blog "translate to english and fix grammar from this markdown: \n\n $(cat $1)" | tee $file
+    echo "File: $file"
 }
 
 kx() {
@@ -715,6 +714,7 @@ fi
 # }
 
 alias gpt4='sgpt --model gpt-4'
+alias gpt4p='sgpt --model gpt-4-1106-preview'
 alias printJson='python -c "from rich import print; import sys; print(sys.stdin.buffer.read())"'
 # }}}
 
