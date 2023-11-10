@@ -19,7 +19,11 @@
 export DOTFILES_SRC="$HOME/.dotfiles"
 export DOTFILES_HOME="$HOME/.dotfiles"
 export DOTFILES="$HOME/.dotfiles/ubuntu"
-export DEFAULT_PROMPT=1
+# export DEFAULT_PROMPT=0  # starship
+# export DEFAULT_PROMPT=1
+# export DEFAULT_PROMPT=2
+# export DEFAULT_PROMPT=3
+export DEFAULT_PROMPT=4  # user@host path branch \n $
 
 # if running bash
 if [ -n "$BASH_VERSION" ]; then
