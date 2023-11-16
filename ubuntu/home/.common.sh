@@ -1,11 +1,9 @@
 #!/usr/bin/env bash
-[ ! -f ~/.bashrc ] && mxm link
 
+# variables {{{
 export DOTFILES_SRC="$HOME/.dotfiles"
 export DOTFILES_HOME="$HOME/.dotfiles"
 
-
-# variable {{{
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 export SSH_KEY_PATH="~/.ssh/rsa_id"
 export EDITOR="nvim"
@@ -19,8 +17,6 @@ export MYGITPROJECTS="$HOME/github"
 export MYVIMRC="$HOME/.config/nvim/init.lua"
 export KITTY_LISTEN_ON=unix:/tmp/mykitty-$PPID
 
-# export MOIRA_HOURS_PER_DAY=6
-# if not in macos only linux
 if [[ "$OSTYPE" != "darwin"* ]]; then
     # linux config only
     export CONDA_DIR="$HOME/miniconda3"
@@ -511,14 +507,14 @@ pdbrc-here () {
 }
 
 
-function jenkinsLint () {
+jenkinsLint () {
     # https://www.jenkins.io/doc/book/pipeline/development/
     jfile=${1:-Jenkinsfile}
     curl --user "${JENKINS_USER_ID}:${JENKINS_API_TOKEN}" -X POST -F "jenkinsfile=<${jfile}" "${JENKINS_URL}/pipeline-model-converter/validate"
 }
 
 
-function gcloud_bucket_project() {
+gcloud_bucket_project() {
 	BUCKET_NAME=$1
 	PROJECT_NUMBER=$(curl -X GET \
 	-H "Authorization: Bearer $(gcloud auth application-default print-access-token)" \
@@ -698,7 +694,7 @@ alias tasks='grep --exclude-dir=.git -rEIn "TODO|FIXME|XXX|\?\?\?|HACK|BUG" ./**
 alias nvim.='nvim .'
 
 # Linux specific {
-if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+if [[ "$OSTYPE" == "linux"* ]]; then
     alias open='xdg-open'
     alias xclip='xclip -selection clipboard'
     alias xclipc='xclip -selection clipboard -o'
@@ -716,6 +712,7 @@ fi
 alias gpt4='sgpt --model gpt-4'
 alias gpt4p='sgpt --model gpt-4-1106-preview'
 alias printJson='python -c "from rich import print; import sys; print(sys.stdin.buffer.read())"'
+alias pprint='python -c "from rich import print; import sys; print(sys.stdin.buffer.read())"'
 # }}}
 
 # append to path {{{
