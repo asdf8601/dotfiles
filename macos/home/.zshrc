@@ -7,22 +7,6 @@ source $DOTFILES_HOME/ubuntu/home/.common.sh
 source $DOTFILES/.seedtag
 export ZSH=~/.oh-my-zsh
 
-
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/opt/homebrew/Caskroom/mambaforge/base/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/opt/homebrew/Caskroom/mambaforge/base/etc/profile.d/conda.sh" ]; then
-        . "/opt/homebrew/Caskroom/mambaforge/base/etc/profile.d/conda.sh"
-    else
-        export PATH="/opt/homebrew/Caskroom/mambaforge/base/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-#
-
 # define always before before sourcing oh-my-zsh.sh
 # plugins=(
 #     zsh-autosuggestions
@@ -77,3 +61,22 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 [[ $commands[kubectl] ]] && source <(kubectl completion zsh)
+
+# Created by `pipx` on 2023-11-13 21:27:13
+addToPathFront "/Users/mgreco/Library/Python/3.11/bin"
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/Users/mgreco/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/Users/mgreco/miniconda3/etc/profile.d/conda.sh" ]; then
+        . "/Users/mgreco/miniconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/Users/mgreco/miniconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+
