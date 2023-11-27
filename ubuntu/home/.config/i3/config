@@ -456,7 +456,9 @@ for_window [class=Viewnior|feh|File-roller|Lxappearance] floating enable
 # for_window [class=Org.gnome.Nautilus|Brave-browser|firefox|TelegramDesktop|Gimp*|Inkscape|Vlc] focus
 
 
-for_window [window_role="Settings"] floating enable
+for_window [class="Blueman-manager"] floating enable, resize set 600 px 600 px, move position center
+for_window [class="Gnome-control-center"] floating enable, resize set 600 px 600 px, move position center
+
 for_window [window_role="pop-up"] floating enable
 for_window [window_role="bubble"] floating enable
 for_window [window_role="task_dialog"] floating enable
@@ -467,9 +469,9 @@ for_window [instance="__scratchpad"] floating enable, resize set 900 px 500 px, 
 for_window [instance="__nmtui"] floating enable
 
 # twtich hack
-for_window [class="obs" title="Chat"] floating disable
-for_window [class="obs" title="Twitch Stats"] floating disable
-for_window [class="obs" title="OBS.*"] floating disable
+for_window [class="obs" title="Chat"] floating disable, split h, move right
+for_window [class="obs" title="Twitch Stats"] floating disable, split h, move right
+for_window [class="obs" title="OBS.*"] floating disable, move left
 
 for_window [title="alsamixer"] floating enable
 for_window [class="slack" title=".*Huddle"] floating enable
