@@ -2,12 +2,7 @@
 # Original file: default.yml
 matches:
   - trigger: ":setup:"
-    replace: "{{cmd}}"
-    vars:
-      - name: cmd
-        type: shell
-        params:
-          cmd: "apt update && apt install curl && curl https://gist.githubusercontent.com/mmngreco/ef7af0db1a9a70c0c73337f5788b0072/raw/setup.sh | sh"
+    replace: "apt update && apt install curl && curl https://gist.githubusercontent.com/mmngreco/ef7af0db1a9a70c0c73337f5788b0072/raw/setup.sh | sh"
 
   - trigger: ":toma:"
     replace: https://media.giphy.com/media/ejJclNX60XyEo555wW/giphy.gif
