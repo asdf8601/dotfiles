@@ -10,7 +10,7 @@ matches:
           cmd: "xdotool key ctrl+a && sleep 0.1 && xdotool key ctrl+x && sleep 0.1 && /home/mgreco/.local/bin/pbpaste > /tmp/espanso-nvim.txt && xterm -e nvim /tmp/espanso-nvim.txt && cat /tmp/espanso-nvim.txt"
 
   - trigger: ":setup:"
-    replace: "apt update && apt install curl && curl https://gist.githubusercontent.com/mmngreco/ef7af0db1a9a70c0c73337f5788b0072/raw/setup-container.sh | sh"
+    replace: "apt update && apt install --yes curl && curl https://gist.githubusercontent.com/mmngreco/ef7af0db1a9a70c0c73337f5788b0072/raw/setup-container.sh | sh"
 
   - trigger: ":toma:"
     replace: https://media.giphy.com/media/ejJclNX60XyEo555wW/giphy.gif
