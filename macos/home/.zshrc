@@ -62,9 +62,6 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 [[ $commands[kubectl] ]] && source <(kubectl completion zsh)
 
-# Created by `pipx` on 2023-11-13 21:27:13
-addToPathFront "/Users/mgreco/Library/Python/3.11/bin"
-
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
 __conda_setup="$('/Users/mgreco/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
@@ -80,3 +77,22 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
+alias pipx=/Users/mgreco/miniconda3/envs/pipx/bin/pipx
+
+
+takt-git() {
+  case $1 in
+    check)
+      takt check
+      cd $(dirname $TAKT_FILE)
+      git add $TAKT_FILE
+      git commit -m "check $(date +%Y-%m-%d)"
+      cd -
+      ;;
+    push)
+      cd $(dirname $TAKT_FILE)
+      git push
+      cd -
+      ;;
+  esac
+}
