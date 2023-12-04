@@ -16,7 +16,7 @@
 # export TERM=xterm
 
 # dotfiles
-export TAKT_FILE="~/.takt-log/seedtag.csv"
+export TAKT_FILE="$HOME/.takt-log/seedtag.csv"
 export DOTFILES_SRC="$HOME/.dotfiles"
 export DOTFILES_HOME="$HOME/.dotfiles"
 export DOTFILES="$HOME/.dotfiles/ubuntu"
