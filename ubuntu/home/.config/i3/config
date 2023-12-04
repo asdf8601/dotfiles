@@ -119,7 +119,7 @@ floating_modifier $super
 bindsym $super+v exec --no-startup-id st -T "st:Mixer" -f "Caskaydia Cove Nerd Font:pixelsize=18" -e alsamixer -Vall -m
 
 ## time management
-bindsym $super+t exec --no-startup-id st -T "st:Takt" -f "Caskaydia Cove Nerd Font:pixelsize=18" -e nvim ~/.takt_file.csv
+bindsym $super+t exec --no-startup-id st -T "st:Takt" -f "Caskaydia Cove Nerd Font:pixelsize=18" -e nvim $TAKT_FILE
 bindsym $super+o exec noti -t Takt -m "$(takt check)"
 bindsym $super+m exec noti -t Takt -m "$(takt summary)"
 bindsym $super+Shift+m exec noti -t Takt -m "$(takt wtd)"
