@@ -23,4 +23,4 @@ function gci() {
     esac
 }
 
-
+export NPM_TOKEN=***REMOVED***
