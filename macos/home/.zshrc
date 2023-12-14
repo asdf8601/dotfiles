@@ -96,3 +96,6 @@ takt-git() {
       ;;
   esac
 }
+
+
+alias duckgs="/Users/mgreco/github.com/seedtag/duckgs/.venv/bin/python -m duckgs"

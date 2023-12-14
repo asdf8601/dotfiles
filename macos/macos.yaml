@@ -19,12 +19,10 @@
     ~/.config/kitty/: macos/home/.config/kitty/
     ~/.config/chatgpt/config.json: ubuntu/home/.config/chatgpt/config.json
 
-
     # visidata
     ~/.visidatarc: ubuntu/home/.visidatarc
     ~/.gitconfig: ubuntu/home/.gitconfig
     ~/.docker/config.json: ubuntu/home/.docker/config.json
-
 
     # shell
     ~/.config/starship.toml: ubuntu/home/.config/starship.toml

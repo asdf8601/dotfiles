@@ -60,7 +60,7 @@ cmd + shift + ctrl - 6 : yabai -m window --space 6;
 cmd + shift + ctrl - 7 : yabai -m window --space 7;
 
 # toggle sticky, topmost and resize to picture-in-picture size
-ctrl + shift + cmd - p : yabai -m window --toggle sticky; \
+ctrl + shift + cmd - y : yabai -m window --toggle sticky; \
                          yabai -m window --toggle topmost; \
                          yabai -m window --grid 4:4:1:1:2:2
 
