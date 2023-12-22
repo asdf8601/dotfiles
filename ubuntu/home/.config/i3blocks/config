@@ -58,7 +58,7 @@ border=#f2d93a
 
 [dotfiles]
 full_text= dot
-command=st -t "bar:dotfiles" -f "CaskaydiaCove Nerd Font:size=16" -e nvim ~/.dotfiles
+command=st -t "bar:dotfiles" -f "CaskaydiaCove Nerd Font:size=16" -e bash -c "cd ~/.dotfiles && nvim ."
 border=#f2d93a
 
 [countdown]
