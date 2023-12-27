@@ -105,6 +105,14 @@ matches:
         params:
           cmd: "xdotool key ctrl+a && sleep 0.1 && xdotool key ctrl+x && sleep 0.1 && /home/mgreco/.local/bin/pbpaste | sed 's/:fix://' | espanso_gpt_fix"
 
+  - trigger: ":Fix:"
+    replace: "{{out}}"
+    vars:
+      - name: out
+        type: shell
+        params:
+          cmd: "pbpaste | /Users/mgreco/.dotfiles/personal/bin/espanso_gpt_fix"
+
   - trigger: ":retro:"
     replace: "1. Max 🔴🟡🟢\n    - 🔁 \n    - ✅ \n🧩🧩 "
 
