@@ -529,7 +529,7 @@ takt-git () {
 
 # kubernets
 alias k=kubectl
-alias fpods='kubectl get pods | fzf | awk "{print $1}"'
+alias fpods='kubectl get pods | fzf | awk "{print \$1}"'
 alias pods='kubectl get pods'
 
 # Files and directories
