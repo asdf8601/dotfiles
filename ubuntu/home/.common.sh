@@ -188,6 +188,7 @@ ipytdd ()  {
 }
 
 
+# conda {{
 conda-here () {
     # conda-here [prefix] [*conda-args]
     local prefix="${1:-$PWD/.venv/$(echo $pyver | tr -d = | tr -d .)}"
@@ -213,9 +214,10 @@ conda-activate() {
     local selected=$(find $prefix -maxdepth 1 -mindepth 1 -type d | fzf --select-1 --ansi -q "$1" --height 10%)
     conda activate $selected
 }
+# }}
 
 # =============================================================================
-# Docker
+# Docker {{
 
 dfix() {
     # see https://serverfault.com/a/642984/573706
@@ -295,6 +297,7 @@ dclean() {
     sudo systemctl start docker
 
 }
+# }}
 
 chown-here () {
     sudo chown -R $USERNAME:$USERNAME ./
@@ -356,36 +359,6 @@ txw() {
     fi
 }
 
-
-# txs() {
-#     case $1 in
-#         com)
-#             tmux new-session -d -s com -c ~/gitlab/COM
-#             tmux send-keys -t com "txw $2 && clear" Enter
-#             tmux attach -t com
-#             ;;
-#         vpn)
-#             tmux new-session -d -s vpn
-#             tmux send-keys -t vpn "ets-vpn" Enter
-#             ;;
-#         gitlab)
-#             tmux new-session -d -s "gitlab" -c ~/gitlab
-#             tmux send-keys -t gitlab "txw $2 && clear" Enter
-#             tmux attach -t gitlab
-#             ;;
-#         github)
-#             tmux new-session -d -s "github" -c ~/github
-#             tmux send-keys "txw $2 && clear" Enter
-#             tmux attach -t github
-#             ;;
-#         cancel)
-#             ;;
-#         *)
-#             tmux-sessionizer $1
-#             ;;
-#     esac
-# }
-#
 
 # =============================================================================
 # cheat sheet
@@ -554,7 +527,10 @@ takt-git () {
 
 # aliases {{{
 
+# kubernets
 alias k=kubectl
+alias fpods='kubectl get pods | fzf | awk "{print $1}"'
+alias pods='kubectl get pods'
 
 # Files and directories
 alias mkdir='mkdir -p -v'
@@ -577,7 +553,7 @@ alias :q='exit'
 
 # Git
 alias g=git
-alias clab='PAGER=cat glab'
+# alias clab='PAGER=cat glab'
 # alias gcl='git clone'
 # alias gst='git status'
 # alias gb='git branch'
@@ -600,11 +576,6 @@ alias ucase="tr '[:lower:]' '[:upper:]'"
 alias lcf="rename 'y/A-Z/a-z/' "
 alias ucf="rename 'y/a-z/A-Z/' "
 
-# Tmux
-alias tn='tmux set -g mode-mouse on'
-alias tf='tmux set -g mode-mouse off'
-alias tmux='tmux -2'
-alias t=txs
 
 # Grep
 alias egrep='egrep --color=auto'
@@ -621,22 +592,22 @@ alias ytmp3='youtube-dl --extract-audio --audio-format mp3 '
 
 # docker
 # alias dhere="bash ~/gitlab/COM/docker-base/docker_run.sh"
-alias dsrm='docker rm $(docker stop $(docker ps -qa))'
-alias datt='docker attach'
-alias dcb='docker-compose build'
-alias dclogs='docker-compose logs'
-alias dcu='docker-compose up'
-alias ddiff='docker diff'
-alias dimg='docker images'
-alias dins='docker inspect'
-alias dps='docker ps'
-alias drm='docker rm'
-alias drmi='docker rmi'
+# alias dsrm='docker rm $(docker stop $(docker ps -qa))'
+# alias datt='docker attach'
+# alias dcb='docker-compose build'
+# alias dclogs='docker-compose logs'
+# alias dcu='docker-compose up'
+# alias ddiff='docker diff'
+# alias dimg='docker images'
+# alias dins='docker inspect'
+# alias dps='docker ps'
+# alias drm='docker rm'
+# alias drmi='docker rmi'
 # alias drun='docker run'
-alias dstart='docker start'
-alias dstop='docker stop'
-alias dclimg='docker rmi $(docker images --filter "dangling=true" -q --no-trunc)'
-alias drestartf='docker start $(docker ps -ql) && docker attach $(docker ps -ql)'
+# alias dstart='docker start'
+# alias dstop='docker stop'
+# alias dclimg='docker rmi $(docker images --filter "dangling=true" -q --no-trunc)'
+# alias drestartf='docker start $(docker ps -ql) && docker attach $(docker ps -ql)'
 
 # ls variants
 alias la='ls -A'
@@ -651,11 +622,16 @@ alias mvi='mv -i'
 alias rmi='rm -i'
 alias ak='ack-grep'
 
+# github.com
 alias gist='xdg-open https://gist.github.com/'
 alias sgist="https://gist.github.com/search?q=user%3Ammngreco&ref=simplesearch"
 
 
 # tmux
+alias tn='tmux set -g mode-mouse on'
+alias tf='tmux set -g mode-mouse off'
+alias tmux='tmux -2'
+alias t=txs
 alias tks="tmux kill-session"
 alias tkill="tmux kill-server"
 
@@ -673,7 +649,7 @@ alias sag="sudo apt upgrade"
 alias sas="sudo apt search"
 
 # conda
-alias cc="conda create -n"
+alias ccn="conda create -n"
 alias cel="conda env list"
 alias crn="conda remove -n"
 alias ca="conda activate"
@@ -682,7 +658,8 @@ alias ca="conda activate"
 alias serve="browser-sync start --server --files . --no-notify --port 9000"
 
 # python
-alias pyServer='python -s -m http.server'
+alias ipy=ipython
+alias py-server='python -s -m http.server'
 # alias asdf='setxkbmap -rules evdev -model evdev -layout us -variant dvorak'
 alias kb-us='setxkbmap -rules evdev -model evdev -layout us -variant altgr-intl'
 alias kb-usnocaps='setxkbmap -rules evdev -model evdev -layout us -variant altgr-intl -option ctrl:nocaps'
@@ -691,7 +668,6 @@ alias pipenv='pipx run pipenv'
 alias myip="ifconfig | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p'"
 alias mic_monitor='gst-launch-1.0 pulsesrc ! pulsesink'
 
-alias ipy=ipython
 
 # kitty {
 alias icat="kitty +kitten icat"
@@ -725,8 +701,8 @@ fi
 
 alias gpt4='sgpt --model gpt-4'
 alias gpt4p='sgpt --model gpt-4-1106-preview'
-alias printJson='python -c "from rich import print; import sys; print(sys.stdin.buffer.read())"'
-alias pprint='python -c "from rich import print; import sys; print(sys.stdin.buffer.read())"'
+alias echo-json='python -c "from rich import print; import sys; print(sys.stdin.buffer.read())"'
+alias echo-print='python -c "from rich import print; import sys; print(sys.stdin.buffer.read())"'
 # }}}
 
 # append to path {{{
