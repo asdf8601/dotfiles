@@ -1,0 +1,70 @@
+#!/usr/bin/env bash
+
+# pytmp install names
+# pytmp inject pandas
+# pytmp list
+# pytmp run -c 'import sys; print(sys.version)'
+# pytmp run -m pip list
+
+check_names {
+    if [ ! -x "$(command -v names)" ]; then
+        # pipx install names
+        echo 'The `names` command could not be found.'
+        echo 'Install it with: pipx install names'
+        exit 1
+    fi
+}
+
+if [ -f .piptmp ]; then
+    venv=$(cat .piptmp)
+else
+    check_names
+    name=$(names | lcase | tr " " "-")
+    venv="/tmp/$name/venv"
+    echo $venv > .piptmp
+fi
+
+pip="$venv/bin/pip"
+python="$venv/bin/python"
+
+case $1 in
+    rm|remove)
+        [ -d $venv ] && rm -rf $venv
+        exit
+        ;;
+    i|install)
+        shift
+        if [ ! -d $venv ]; then
+            $python -m venv $venv
+        fi
+        $pip install $@
+        exit
+        ;;
+    ls|list)
+        shift
+        $pip list
+        exit
+        ;;
+    inject)
+        shift
+        $pip install $@
+        exit
+        ;;
+    run)
+        shift
+        $python $@
+        exit
+        ;;
+    *)
+        echo "Usage: pytmp <cmd>"
+        echo "Commands:"
+        echo "    rm|remove"
+        echo "    i|install"
+        echo "    ls|list"
+        echo "    inject"
+        echo "    run"
+        echo "    help"
+        exit
+        ;;
+    esac
+fi
