@@ -5,8 +5,12 @@
 # pytmp list
 # pytmp run -c 'import sys; print(sys.version)'
 # pytmp run -m pip list
+python="${PYTMP_PYBIN:-$(which python3)}"
 
-check_names {
+echo python: $python
+
+
+check_names() {
     if [ ! -x "$(command -v names)" ]; then
         # pipx install names
         echo 'The `names` command could not be found.'
@@ -15,55 +19,74 @@ check_names {
     fi
 }
 
-if [ -f .piptmp ]; then
-    venv=$(cat .piptmp)
-else
-    check_names
-    name=$(names | lcase | tr " " "-")
-    venv="/tmp/$name/venv"
-    echo $venv > .piptmp
-fi
+build-venv() {
+    if [ -f .pytmp ]; then
+        venv=$(cat .pytmp)
+    else
+        check_names
+        name="$(names | tr '[:upper:]' '[:lower:]' | tr ' ' '-')"
+        venv="/tmp/$name/venv"
+        echo $venv > .pytmp
+    fi
+    echo $venv
+}
 
-pip="$venv/bin/pip"
-python="$venv/bin/python"
+venv-pip() {
+    $venv/bin/pip $@
+}
+
+venv-python() {
+    $venv/bin/python $@
+}
 
 case $1 in
     rm|remove)
+        venv=$(build-venv)
+        echo "Removing $venv"
         [ -d $venv ] && rm -rf $venv
         exit
         ;;
     i|install)
         shift
+        venv=$(build-venv)
+        echo "Installing $@ in $venv"
         if [ ! -d $venv ]; then
-            $python -m venv $venv
+            ${python} -m venv $venv
         fi
-        $pip install $@
+        venv-pip install $@
         exit
         ;;
     ls|list)
         shift
-        $pip list
+        venv=$(build-venv)
+        echo "Listing $venv"
+        venv-pip list
         exit
         ;;
     inject)
         shift
-        $pip install $@
+        venv=$(build-venv)
+        echo "Injecting $@ in $venv"
+        venv-pip install $@
         exit
         ;;
     run)
         shift
-        $python $@
+        venv=$(build-venv)
+        echo "Running $@ in $venv"
+        "$venv/bin/$@"
         exit
         ;;
     *)
         echo "Usage: pytmp <cmd>"
         echo "Commands:"
-        echo "    rm|remove"
         echo "    i|install"
         echo "    ls|list"
         echo "    inject"
         echo "    run"
         echo "    help"
+        echo
+        echo " Use PYTMP_PYBIN envvar to specify a python binary. which python3 is used by default"
         exit
         ;;
     esac
