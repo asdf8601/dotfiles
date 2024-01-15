@@ -523,13 +523,13 @@ takt-git () {
 
 # }}}
 
-
-
 # aliases {{{
 
 # kubernets
+alias fkpod='kubectl get pods | fzf | awk "{print \$1}" | pbcopy && sleep 0.06 && pbpaste'
+alias fklog='fkpod | xargs -I{} kubectl logs {}'
+
 alias k=kubectl
-alias fpods='kubectl get pods | fzf | awk "{print \$1}" | pbcopy'
 alias pods='kubectl get pods'
 
 # Files and directories
