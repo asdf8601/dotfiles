@@ -155,12 +155,12 @@ matches:
           cmd: "xdotool key ctrl+a && xdotool key ctrl+c"
 
   - trigger: ":pass:"
-    replace: "{{output}}"
+    replace: "{{out}}"
     vars:
-      - name: output
+      - name: out
         type: shell
         params:
-          cmd: "passgen"
+          cmd: "python3 ~/.local/bin/passgen"
 
   - trigger: ":myip:"
     replace: "{{output}}"
