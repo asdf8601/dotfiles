@@ -317,7 +317,8 @@ bindsym $super+f fullscreen
 # bindsym $super+g fullscreen global
 bindsym $super+y fullscreen disable; floating enable; resize set 600 450; sticky enable; move window to position 1940 54
 
-bindsym $super+z layout stacking
+bindsym $super+z layout exec boomer
+# bindsym $super+z layout stacking
 bindsym $super+x layout tabbed
 bindsym $super+c layout toggle split
 

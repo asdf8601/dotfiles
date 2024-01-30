@@ -721,6 +721,9 @@ addToPathFront "/opt/mssql-tools/bin"
 addToPath "/opt/mssql-tools/bin"
 # ruby
 addToPathFront "$GEM_HOME/bin"
+# nim
+addToPathFront "/home/mgreco/.nimble/bin"
+
 # projects folders
 addToMyGitProjects $HOME/github.com
 addToMyGitProjects $HOME/gitlab.com
