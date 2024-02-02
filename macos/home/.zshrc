@@ -1,17 +1,23 @@
 #!/usr/bin/env zsh
+
+zstyle ':omz:plugins:nvm' lazy yes
 export DOTFILES=$HOME/.dotfiles/macos/home
 export DOTFILES_HOME=$HOME/.dotfiles
 export DOTFILES_UBUNTU=$HOME/.dotfiles/ubuntu
 
 source $DOTFILES_HOME/ubuntu/home/.common.sh
-source $DOTFILES/.seedtag
+source $DOTFILES_HOME/personal/seedtag.hide
 export ZSH=~/.oh-my-zsh
+
 
 # define always before before sourcing oh-my-zsh.sh
 # plugins=(
 #     zsh-autosuggestions
 # )
 
+plugins=(
+  nvm
+)
 # source ~/.zsh/catppuccin-zsh-syntax-highlighting.zsh
 source $ZSH/oh-my-zsh.sh
 source $DOTFILES_UBUNTU/home/.prompt.zsh
@@ -57,9 +63,10 @@ command -v pyenv > /dev/null 2>&1 && eval "$(pyenv init -)" 2> /dev/null
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 # source /usr/share/doc/fzf/examples/key-bindings.zsh
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+# export NVM_DIR="$HOME/.nvm"
+# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+# [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
 [[ $commands[kubectl] ]] && source <(kubectl completion zsh)
 
 # >>> conda initialize >>>
