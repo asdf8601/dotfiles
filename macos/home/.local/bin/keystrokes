@@ -1,0 +1,4 @@
+#!/bin/bash
+# https://gist.github.com/hofmannsven/ff21749b0e6afc50da458bebbd9989c5
+defaults write -g InitialKeyRepeat -int 16
+defaults write -g KeyRepeat -int 1
