@@ -59,8 +59,8 @@ kx() {
 }
 
 blog() {
-    blog_home="$HOME/github/mmngreco/mmngreco.github.io"
-    blog_home="$HOME/github/mmngreco/blog"
+    # blog_home="$HOME/github.com/mmngreco/mmngreco.github.io"
+    blog_home="$HOME/github.com/mmngreco/blog"
     EDITOR=nvim
     case $1 in
         help)
