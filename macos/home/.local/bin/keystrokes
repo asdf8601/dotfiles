@@ -1,4 +1,7 @@
 #!/bin/bash
 # https://gist.github.com/hofmannsven/ff21749b0e6afc50da458bebbd9989c5
+# simulate the keypress
+# https://mac-key-repeat.zaymon.dev/
 defaults write -g InitialKeyRepeat -int 16
 defaults write -g KeyRepeat -int 1
+defaults write -g ApplePressAndHoldEnabled -bool false
