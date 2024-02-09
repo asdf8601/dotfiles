@@ -128,7 +128,7 @@ bindsym $super+e exec rofimoji
 # bindsym $super+e exec "/home/mgreco/rofi/splatmoji/splatmoji copy"
 
 # bindsym $super+g exec bash $DOTFILES/rofi/rofi-gpt.sh
-bindsym $super+b exec st -T "st:Blog" -f "Caskaydia Cove Nerd Font:pixelsize=16" -e nvim ~/github/mmngreco/blog
+bindsym $super+b exec st -T "st:Blog" -f "Caskaydia Cove Nerd Font:pixelsize=16" -e nvim ~/github.com/mmngreco/blog
 bindsym $super+g exec st -T "st:ChatGPT" -f "Caskaydia Cove Nerd Font:pixelsize=14" -e nvim +"term chatgpt" +"nnoremap <Esc> :q!<CR>" +'vnoremap y "+y' +'nnoremap p "+p' +"norm i"
 ## Make the currently focused window a scratchpad
 bindsym $super+Shift+minus move scratchpad
@@ -169,8 +169,8 @@ bindsym XF86MonBrightnessUp exec --no-startup-id light -A 1 # increase screen br
 bindsym XF86MonBrightnessDown exec --no-startup-id light -U 1 # decrease screen brightness
 
 # change wallpaper
-bindsym $super+Ctrl+Shift+e exec --no-startup-id feh -D 3600 --randomize --bg-fill $HOME/github/mmngreco/wallpapers/*
-bindsym $super+Ctrl+Shift+w exec --no-startup-id feh --randomize --bg-fill $HOME/github/mmngreco/wallpapers/*
+bindsym $super+Ctrl+Shift+e exec --no-startup-id feh -D 3600 --randomize --bg-fill $HOME/github.com/mmngreco/wallpapers/*
+bindsym $super+Ctrl+Shift+w exec --no-startup-id feh --randomize --bg-fill $HOME/github.com/mmngreco/wallpapers/*
 
 # Screenshots
 bindsym $alt+Shift+f exec img=$HOME/Pictures/ScreenShot_$(date +%Y-%m-%d_%H%M%S).png && maim $img && viewnior $img
@@ -178,7 +178,7 @@ bindsym --release $alt+Shift+s exec img="${HOME}/Pictures/ScreenShot_$(date +%Y-
 # bindsym $alt+Shift+Ctrl+v exec "i3-nagbar -t warning -m 'Screen Recording?' -b 'Start' 'rec_screen &' -b 'Stop' 'pkill ffmpeg'"
 
 # define lock screen
-bindsym $super+Ctrl+l exec i3lock -i /home/mgreco/github/mmngreco/wallpapers/0007.png
+bindsym $super+Ctrl+l exec i3lock -i /home/mgreco/github.com/mmngreco/wallpapers/0007.png
 
 # browsers
 # bindsym $super+w exec brave-browser-stable
@@ -491,7 +491,7 @@ no_focus [title="^Peek preview$"]
 # pipx install i3-layouts
 # exec --no-startup-id i3-layouts
 exec --no-startup-id xrandr --output DP-1 --left-of eDP-1 --auto --primary
-exec --no-startup-id feh --bg-fill $HOME/github/mmngreco/wallpapers/WallpaperDog-10941700.jpg
+exec --no-startup-id feh --bg-fill $HOME/github.com/mmngreco/wallpapers/WallpaperDog-10941700.jpg
 exec --no-startup-id dunst &
 exec --no-startup-id xsettingsd &
 exec --no-startup-id nm-applet &
