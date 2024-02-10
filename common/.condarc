@@ -1,0 +1,6 @@
+env_prompt: '($(basename {default_env})) '
+changeps1: false
+ssl_verify: false
+auto_activate_base: false
+auto_stack: 0
+always_yes: false
