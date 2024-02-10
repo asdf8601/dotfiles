@@ -12,18 +12,17 @@ sudo apt install stow
 
 ```bash
 git clone --recurse-submodules ssh://git@gitlab.com/mmngreco/dotfiles ~/.dotfiles
+```
 
 
 ## Ubuntu
-```
+
 ```bash
-cd ubuntu/home
-stow -t ~/
+stow ~/.dotfiles/ubuntu/home/ -t ~/
 ```
 
 ## macOS
 
 ```bash
-cd macos/home
-stow -t ~/
+stow ~/.dotfiles/macos/home/ -t ~/
 ```
