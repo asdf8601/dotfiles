@@ -1,6 +1,3 @@
-[submodule "dotbot"]
-	path = dotbot
-	url = https://github.com/anishathalye/dotbot
 [submodule "personal"]
 	path = personal
 	url = ssh://git@github.com/mmngreco/personal
