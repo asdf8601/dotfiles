@@ -6,7 +6,7 @@ export DOTFILES_HOME=$HOME/.dotfiles
 export DOTFILES_UBUNTU=$HOME/.dotfiles/ubuntu
 
 source $DOTFILES_HOME/ubuntu/home/.common.sh
-source $DOTFILES_HOME/personal/seedtag.hide
+source $DOTFILES_HOME/personal/.seedtag.hide
 export ZSH=~/.oh-my-zsh
 
 
@@ -109,3 +109,4 @@ alias duckgs="/Users/mgreco/github.com/seedtag/duckgs/.venv/bin/python -m duckgs
 export DOCKER_BUILDKIT=1
 export COMPOSE_DOCKER_CLI_BUILD=1
 addToPath /opt/homebrew/bin
+addToPath /Users/mgreco/.local/bin
