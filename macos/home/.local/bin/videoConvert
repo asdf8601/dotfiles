@@ -1,0 +1,13 @@
+#!/bin/env bash
+[ -z "$1" ] && echo "Usage: video.mkv anim.gif"  && exit
+
+from=$(python3 -c "import pathlib; print(pathlib.Path(\"$1\").expanduser())")
+to=$(python3 -c "import pathlib; print(pathlib.Path(\"$2\").expanduser())")
+scale=${3:-320}
+fps=${4:-15}
+
+palette="/tmp/palette.png"
+filters="fps=${fps},scale=${scale}:-1:flags=lanczos"
+
+ffmpeg -v warning -i "$from" -vf "$filters,palettegen" -y $palette
+ffmpeg -v warning -i "$from" -i $palette -lavfi "$filters [x]; [x][1:v] paletteuse" -y "$to"

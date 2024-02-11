@@ -1,0 +1,93 @@
+#!/usr/bin/env python3
+"""
+Creates a new scratch file in the current git repository.
+
+If no git repository is found, it will create a scratch file in the default
+scratch directory ($HOME).
+
+Installation
+------------
+To install, copy this file to a directory in your path and make it executable.
+
+
+Examples
+--------
+$ skiz -h
+$ skiz -n scratch -e py
+"""
+from pathlib import Path
+import datetime
+
+p = Path('.').absolute().expanduser()
+default = Path.home() / ".scratches"
+
+
+def has_git(path: Path):
+    if path.joinpath('.git').exists():
+        return True
+    return False
+
+
+def find_git(path: Path, default: Path) -> Path:
+    p = path
+    if p == p.home():
+        return default
+    if has_git(p):
+        return p
+    for p in p.parents:
+        return find_git(p, default=default)
+    return default
+
+
+def create_scratch_dir(p: Path, default: Path, ignore: bool = False):
+    dir = find_git(p, default)
+    scratch = dir / ".scratches"
+    if not scratch.exists():
+        scratch.mkdir(exist_ok=True)
+    if ignore:
+        ignore_scratch(dir)
+    return scratch
+
+
+def ignore_scratch(p: Path):
+    if not has_git(p):
+        return
+    if gitignore_contains(".scratches", p):
+        return
+    gitignore_add(".scratches", p)
+
+
+def gitignore_contains(string: str, path: Path) -> bool:
+    ignore = path.joinpath(".gitignore").read_text()
+    if string in ignore:
+        return True
+    return False
+
+
+def gitignore_add(string: str, path: Path) -> None:
+    ignore = path.joinpath(".gitignore").read_text()
+    if string not in ignore:
+        ignore += string
+        path.joinpath(".gitignore").write_text(ignore)
+
+
+def new_scratch(name: str = "scratch", ext: str = "py") -> Path:
+    dir = create_scratch_dir(p, default)
+    date = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+    scratch = dir / f"{name}_{date}.{ext}"
+    scratch.touch()
+    return scratch
+
+
+def cli():
+    import argparse
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-n', '--name', default="scratch")
+    parser.add_argument('-e', '--ext', default="py")
+    args = parser.parse_args()
+    print(new_scratch(args.name, args.ext))
+
+
+if __name__ == "__main__":
+    cli()

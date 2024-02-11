@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+xterm -e /usr/bin/zsh -c tmux-sessionizer

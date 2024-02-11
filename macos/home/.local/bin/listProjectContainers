@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+listGitProjects () {
+    # find projects using .git folder as reference
+    for val in ${MYGITPROJECTS//:/ }; do
+        if [ -d "$val" ]; then
+            find $val -maxdepth 4 -mindepth 1 -type d -name '.git' -not -path "**/.git/*" | xargs -I FOLDER bash -c 'realpath "FOLDER/../.."' | sort -u
+        fi
+    done
+}
+
+listGitProjects

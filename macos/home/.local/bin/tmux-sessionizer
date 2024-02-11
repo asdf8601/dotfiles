@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+# taken from https://github.com/ThePrimeagen/.dotfiles/blob/master/bin/.local/bin/tmux-sessionizer
+#
+# if no directory is given, use the current directory
+# if no session name is given, use the current directory name
+# if no command is given, use the default command
+#
+# example:
+#  tmux-sessionizer ~/code/mgreco "mgreco" "nvim"
+#  tmux-sessionizer ~/code/mgreco "mgreco"
+#  tmux-sessionizer ~/code/mgreco
+#  tmux-sessionizer
+
+directory=$1
+session_name=$2
+cmd=$3
+
+
+# if no directory is given, use fzf to select one based on listProjects
+if [ -z "$directory" ]; then
+    directory=`listProjects | fzf --header=Projects --reverse --ansi --query "$1" --height 10% -m --header="Create a new tmux session"`
+fi
+
+# if no directory is given, exit
+if [[ -z $directory ]]; then
+    exit 0
+fi
+
+# if no session name is given, use the current directory name
+if [[ -z $session_name ]]; then
+    session_name=$(basename "$directory" | tr . _)
+fi
+
+# if tmux is not running, start it
+tmux_running=$(pgrep tmux)
+if [[ -z $TMUX ]] && [[ -z $tmux_running ]]; then
+    tmux new-session -s $session_name -c $directory
+    tmux send-keys -t $session_name "$cmd" C-m
+    exit 0
+fi
+
+# if tmux is running, check if the session already exists if not create it
+if ! tmux has-session -t $session_name 2> /dev/null; then
+    # echo tmux new-session -ds $session_name -c "$directory"
+    tmux new-session -ds $session_name -c "$directory"
+fi
+
+if [[ -n $cmd ]]; then
+    tmux send-keys -t $session_name "$cmd" C-m
+fi
+
+# if the session exists, attach to it
+if [[ -z $TMUX ]]; then
+    tmux attach-session -t $session_name
+else
+    tmux switch-client -t $session_name
+fi
+

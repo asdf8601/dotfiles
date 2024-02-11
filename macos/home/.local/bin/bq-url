@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# bq-url "project.dataset.table"
+
+full_table_id=$1
+
+project=$(echo $full_table_id | cut -d. -f1)
+dataset=$(echo $full_table_id | cut -d. -f2)
+table=$(echo $full_table_id | cut -d. -f3)
+
+# echo project $project
+# echo dataset $dataset
+# echo table $table
+
+xdg-open "https://console.cloud.google.com/bigquery?p=${project}&d=${dataset}&t=${table}&page=table"

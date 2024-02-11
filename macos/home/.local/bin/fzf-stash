@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+
+if command -v bat >/dev/null 2>&1; then
+    # use bat
+    show_preview='echo {} | awk -F":" "{print \$1}" | xargs -I {} sh -c "git stash show -p {} > /tmp/stash-preview && bat --color=always /tmp/stash-preview"'
+    list_preview='echo {} | awk -F":" "{print \$1}" | xargs -I {} sh -c "git stash show --name-only {} > /tmp/stash-preview && bat --color=always /tmp/stash-preview"'
+    diff_preview='echo {} | awk -F":" "{print \$1}" | xargs -I {} sh -c "git diff $FZF_STASH_DIFF {} > /tmp/stash-preview && bat --color=always /tmp/stash-preview"'
+else
+    # not use bat
+    show_preview='echo {} | awk -F":" "{print \$1}" | xargs -I {} git stash show -p {}'
+    list_preview='echo {} | awk -F":" "{print \$1}" | xargs -I {} git stash show --name-only {}'
+    diff_preview='echo {} | awk -F":" "{print \$1}" | xargs -I {} git diff $FZF_STASH_DIFF {}'
+fi
+
+case $1 in
+    s|show)
+        preview=${show_preview}
+        ;;
+    ls|list)
+        preview="${list_preview}"
+        ;;
+    d|diff)
+        if [ -z "$2" ]; then
+            echo "Usage: $0 diff <branch>"
+            exit 1
+        fi
+        export FZF_STASH_DIFF=$2
+        preview=${diff_preview}
+        ;;
+    h|help)
+        echo "Usage: $0 <command>"
+        echo "Commands:"
+        echo "  h, help               show this help"
+        echo "  s, show (or empty)    show stash diff"
+        echo "  ls, list              list stash files"
+        echo "  d, diff <commit-ref>  diff stash with branch"
+        exit 1
+        ;;
+    *)
+        preview=${show_preview}
+esac
+
+stashes=$(git stash list | fzf --multi --preview "$preview" --preview-window=right:70%:wrap)
+
+if [ -n "$stashes" ]; then
+    echo "$stashes" | awk -F: '{print $1}' | while read stash; do
+        git stash apply "$stash"
+    done
+fi

@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+cs () {
+    # cheat sheet
+    url="$(echo cht.sh/$@ | tr ' ' '+')"
+    echo $url
+    curl -s $url
+}
+
+cs ${@}
