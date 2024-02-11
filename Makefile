@@ -1,5 +1,9 @@
 OS := $(shell uname)
 
+.PHONY: stow
+stow:
+	[[ $(OS) == "Darwin" ]] && brew install stow || sudo apt-get install stow
+
 .PHONY: macos
 macos:
 	stow -d macos/home/ -t $(HOME)/ .

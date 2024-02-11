@@ -18,11 +18,11 @@ git clone --recurse-submodules ssh://git@gitlab.com/mmngreco/dotfiles ~/.dotfile
 ## Ubuntu
 
 ```bash
-stow ~/.dotfiles/ubuntu/home/ -t ~/
+make ubuntu
 ```
 
 ## macOS
 
 ```bash
-stow ~/.dotfiles/macos/home/ -t ~/
+make macos
 ```
