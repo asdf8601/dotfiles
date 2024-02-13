@@ -5,14 +5,16 @@ stow:
 	[[ $(OS) == "Darwin" ]] && brew install stow || sudo apt-get install stow
 
 .PHONY: macos
-macos:
+macos: personal
 	stow -d macos/home/ -t $(HOME)/ .
-	stow -d personal/ -t $(HOME)/ .
 
 .PHONY: ubuntu
-ubuntu:
+ubuntu: personal
 	stow -d ubuntu/home/ -t $(HOME)/ .
-	stow -d personal/ -t $(HOME)/ .
+
+.PHONY: personal
+personal:
+	stow --ignore ".git" -d personal/ -t $(HOME)/ .
 
 .PHONY: pushall
 pushall:
