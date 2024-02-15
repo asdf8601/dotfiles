@@ -528,6 +528,7 @@ takt-git () {
 # kubernets
 alias fkpod='kubectl get pods | fzf | awk "{print \$1}" | pbcopy && sleep 0.06 && pbpaste'
 alias fklog='fkpod | xargs -I{} kubectl logs {}'
+alias klog='kubectl logs'
 
 alias k=kubectl
 alias pods='kubectl get pods'
