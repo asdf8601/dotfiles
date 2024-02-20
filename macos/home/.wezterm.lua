@@ -20,8 +20,8 @@ config.font = wezterm.font(
     { stretch = 'Expanded', weight = 'Regular' }
   )
 
-config.color_scheme = 'iTerm2 Default'
--- config.color_scheme = 'Ibm 3270 (High Contrast) (Gogh)'
+-- config.color_scheme = 'iTerm2 Default'
+config.color_scheme = 'Ibm 3270 (High Contrast) (Gogh)'
 -- config.color_scheme = 'Wez'
 -- config.color_scheme = 'Vibrant Ink (Gogh)'
 -- config.color_scheme = 'tokyonight'
