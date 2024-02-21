@@ -73,8 +73,8 @@ ctrl + alt - q : noti yabai --stop-service
 ctrl + alt - s : noti yabai --start-service
 ctrl + shift + cmd - r : noti yabai --restart-service && noti skhd --restart-service
 
-cmd + ctrl + shift - o : noti -t "Takt: Check" -m "$(takt check)"
-cmd + ctrl + shift - w : kitty -o font_size=20 --hold -e takt wtd     | less
-cmd + ctrl + shift - m : kitty -o font_size=20 --hold -e takt mtd     | less
-cmd + ctrl + shift - u : kitty -o font_size=20 --hold -e takt summary | less
-cmd + ctrl + shift - t : kitty -o font_size=20 -e takt edit
+# cmd + ctrl + shift - o : noti -t "Takt: Check" -m "$(takt check)"
+# cmd + ctrl + shift - w : kitty -o font_size=20 --hold -e takt wtd     | less
+# cmd + ctrl + shift - m : kitty -o font_size=20 --hold -e takt mtd     | less
+# cmd + ctrl + shift - u : kitty -o font_size=20 --hold -e takt summary | less
+# cmd + ctrl + shift - t : kitty -o font_size=20 -e takt edit
