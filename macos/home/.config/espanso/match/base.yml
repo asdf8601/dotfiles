@@ -1,0 +1,255 @@
+matches:
+  - trigger: ":edit:"
+    replace: "{{output}}"
+    vars:
+      - name: output
+        type: shell
+        params:
+          cmd: "pbpaste > /tmp/espanso-nvim.txt && xterm -e zsh -c 'source ~/.profile && source ~/.zshrc && nvim /tmp/espanso-nvim.txt' && cat /tmp/espanso-nvim.txt"
+
+  - trigger: ":setup:"
+    replace: "apt update -qq && apt install -qq -y curl && curl -#fLo- 'https://gist.github.com/mmngreco/ef7af0db1a9a70c0c73337f5788b0072/raw/setup-container.sh' | sh"
+
+  - trigger: ":toma:"
+    replace: https://media.giphy.com/media/ejJclNX60XyEo555wW/giphy.gif
+
+  - trigger: ":crying:"
+    replace: https://media.giphy.com/media/gjZUmIYSb6bacxzVh2/giphy.gif
+
+  - trigger: ":rolling:"
+    replace: https://media.giphy.com/media/lcySndwSDLxC4eOU86/giphy.gif
+
+  - trigger: ":NOOO:"
+    replace: https://giphy.com/clips/theoffice-lkibHaGO1xmJXapEdq
+
+  - trigger: ":letsdothis:"
+    replace: https://media.giphy.com/media/BpGWitbFZflfSUYuZ9/giphy.gif
+
+  - trigger: ":apatico:"
+    replace: https://media.giphy.com/media/BY8ORoRpnJDXeBNwxg/giphy.gif
+
+  - trigger: ":dance:"
+    replace: https://media.giphy.com/media/l0amJzVHIAfl7jMDos/giphy.gif
+
+  - trigger: ":itstrue:"
+    replace: https://media.giphy.com/media/dXFKDUolyLLi8gq6Cl/giphy.gif
+
+  - trigger: ":tbd:"
+    replace: https://media.giphy.com/media/VmcGXVrh4dHFfjQzrI/giphy.gif
+
+  - trigger: ":awkward:"
+    replace: https://media.giphy.com/media/4ZMsXG1uh6cZTo1F9Y/giphy.gif
+
+  - trigger: ":warmup:"
+    replace: https://media.giphy.com/media/Yz0Gp8s9jKqRy/giphy.gif
+
+  - trigger: ":zen:"
+    replace: "{{quote}}"
+    vars:
+      - name: quote
+        type: shell
+        params:
+          cmd: "zen"
+
+  - trigger: ":lannisterq:"
+    replace: "{{quote}}"
+    vars:
+      - name: quote
+        type: shell
+        params:
+          cmd: "lannister"
+
+  - trigger: ":stoic:"
+    replace: "{{quote}}"
+    vars:
+      - name: quote
+        type: shell
+        params:
+          cmd: "stoic"
+
+  - trigger: ":>h:"
+    replace: "> # @today "
+
+  - trigger: ":>hh:"
+    replace: "> ## @today "
+
+  - trigger: ":h:"
+    replace: "# @today "
+
+  - trigger: ":hh:"
+    replace: "## @today "
+
+  - trigger: ":gpt:"
+    replace: "{{out}}"
+    vars:
+      - name: out
+        type: shell
+        params:
+          cmd: "xdotool key ctrl+a && sleep 0.1 && xdotool key ctrl+x && sleep 0.1 && /home/mgreco/.local/bin/pbpaste | sed 's/:gpt://' | espanso_gpt"
+
+  - trigger: ":trad:"
+    replace: "{{out}}"
+    vars:
+      - name: out
+        type: shell
+        params:
+          cmd: "xdotool key ctrl+a && sleep 0.1 && xdotool key ctrl+x && sleep 0.1 && /home/mgreco/.local/bin/pbpaste | sed 's/:trad://' | espanso_gpt_trad"
+
+  - trigger: ":fix:"
+    replace: "{{out}}"
+    vars:
+      - name: out
+        type: shell
+        params:
+          cmd: "xdotool key ctrl+a && sleep 0.1 && xdotool key ctrl+x && sleep 0.1 && /home/mgreco/.local/bin/pbpaste | sed 's/:fix://' | espanso_gpt_fix"
+
+  - trigger: ":Fix:"
+    replace: "{{out}}"
+    vars:
+      - name: out
+        type: shell
+        params:
+          cmd: "pbpaste | /Users/mgreco/.dotfiles/personal/bin/espanso_gpt_fix"
+
+  - trigger: ":retro:"
+    replace: "1. Max 🔴🟡🟢\n    - 🔁 \n    - ✅ \n🧩🧩 "
+
+  - trigger: ":draft:"
+    replace: "---\ntitle: \"$|$\"\ndate: {{date}}\ndraft: false\ncategories: []\nlabels: []\n---\n\n"
+    vars:
+      - name: date
+        type: match
+        params:
+          trigger: ":date:"
+
+  - trigger: ":today:"
+    replace: "/heading 3\n@Today \n"
+
+  - trigger: ":plt:"
+    replace: "from matplotlib import pyplot as plt\nplt.show()\n"
+
+  - trigger: ":paste:"
+    replace: "{{out}}"
+    vars:
+      - name: out
+        type: shell
+        params:
+          cmd: "xdotool key ctrl+v"
+
+  - trigger: ":cut:"
+    replace: "{{out}}"
+    vars:
+      - name: out
+        type: shell
+        params:
+          cmd: "xdotool key ctrl+x"
+
+  - trigger: ":copy:"
+    replace: "{{out}}"
+    vars:
+      - name: out
+        type: shell
+        params:
+          cmd: "xdotool key ctrl+a && xdotool key ctrl+c"
+
+  - trigger: ":pass:"
+    replace: "{{out}}"
+    vars:
+      - name: out
+        type: shell
+        params:
+          cmd: "python3 ~/.local/bin/passgen"
+
+  - trigger: ":myip:"
+    replace: "{{output}}"
+    vars:
+      - name: output
+        type: shell
+        params:
+          cmd: "curl 'https://api.ipify.org'"
+
+  # - trigger: "doops"
+  #   replace: "data-observatory-ops"
+
+  - trigger: ":details:"
+    replace: |-
+      <details><summary>Click to expand</summary>
+
+      </details>
+
+  - trigger: ":fold:"
+    replace: |-
+      <details><summary>Click to expand</summary>
+
+      </details>
+
+  - trigger: ":import:"
+    replace: |
+      import pandas as pd
+      import numpy as np
+      from matplotlib import pyplot as plt
+
+  - trigger: ":linestyle:"
+    replace: linkStyle default interpolate basis
+
+  - trigger: ":h2 date:"
+    replace: "{{mydate}}"
+    vars:
+      - name: mydate
+        type: date
+        params:
+          format: "## %A %Y-%m-%d"
+
+  - trigger: ":Date:"
+    replace: "{{mydate}}"
+    vars:
+      - name: mydate
+        type: date
+        params:
+          format: "%A %Y-%m-%d"
+
+  - trigger: ":date:"
+    replace: "{{mydate}}"
+    force_clipboard: true
+    vars:
+      - name: mydate
+        type: date
+        params:
+          format: "%Y-%m-%d"
+
+  - trigger: ":time:"
+    replace: "{{time}}"
+    vars:
+      - name: time
+        type: date
+        params:
+          format: "%H:%M"
+
+  - trigger: ":month:"
+    replace: "{{date}}"
+    vars:
+      - name: date
+        type: date
+        params:
+          format: "%B %Y"
+
+  - trigger: ":mail:"
+    replace: mmngreco@gmail.com
+
+  - trigger: ":name:"
+    replace: Maximiliano Greco
+
+  - trigger: ":link:"
+    replace: "[$|$]({{clipboard}})"
+    vars:
+    - name: "clipboard"
+      type: "clipboard"
+
+  - trigger: ":a:"
+    replace: "<a href=\"{{clipboard}}\" />$|$</a>"
+    vars:
+    - name: "clipboard"
+      type: "clipboard"
+
+  - trigger: ":code:"
+    replace: "```python\n$|$\n```"

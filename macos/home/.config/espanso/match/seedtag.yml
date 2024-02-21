@@ -1,0 +1,11 @@
+matches:
+  - trigger: ",smtt"
+    replace: "Smart Throttling"
+  - trigger: ",smttdc"
+    replace: "Smart Throttling Discrepancy"
+  - trigger: ",smttst"
+    replace: "Smart Throttling Standard"
+  - trigger: ",dp"
+    replace: "Dynamic Pricing"
+  - trigger: ",bfs"
+    replace: "Bid Floors Strategy"
