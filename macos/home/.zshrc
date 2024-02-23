@@ -1,11 +1,25 @@
 #!/usr/bin/env zsh
 
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/Users/mgreco/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/Users/mgreco/miniconda3/etc/profile.d/conda.sh" ]; then
+        . "/Users/mgreco/miniconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/Users/mgreco/miniconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+
+
 zstyle ':omz:plugins:nvm' lazy yes
 export DOTFILES=$HOME/.dotfiles/macos/home
 export DOTFILES_HOME=$HOME/.dotfiles
-export DOTFILES_UBUNTU=$HOME/.dotfiles/ubuntu
-
-source $DOTFILES_HOME/ubuntu/home/.common.sh
+source ~/.common.sh
 source $DOTFILES_HOME/personal/.seedtag.hide
 export ZSH=~/.oh-my-zsh
 
@@ -20,7 +34,7 @@ plugins=(
 )
 # source ~/.zsh/catppuccin-zsh-syntax-highlighting.zsh
 source $ZSH/oh-my-zsh.sh
-source $DOTFILES_UBUNTU/home/.prompt.zsh
+source ~/.prompt.zsh
 # export TERM=xterm-kitty
 
 # always after any prompt changes
@@ -68,21 +82,6 @@ command -v pyenv > /dev/null 2>&1 && eval "$(pyenv init -)" 2> /dev/null
 # [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 [[ $commands[kubectl] ]] && source <(kubectl completion zsh)
-
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/Users/mgreco/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/Users/mgreco/miniconda3/etc/profile.d/conda.sh" ]; then
-        . "/Users/mgreco/miniconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="/Users/mgreco/miniconda3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
 
 alias pipx=/Users/mgreco/miniconda3/envs/pipx/bin/pipx
 
