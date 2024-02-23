@@ -192,7 +192,7 @@ ipytdd ()  {
 conda-here () {
     # conda-here [prefix] [*conda-args]
     local prefix="${1:-$PWD/.venv/$(echo $pyver | tr -d = | tr -d .)}"
-    local pyver="python=3.7"
+    local pyver="python=3.10"
 
     if [ $# -eq 0 ]; then
         conda create --prefix $prefix $pyver pip -y
@@ -501,9 +501,7 @@ pushd_edit_pop () {
     # edit a file $2
     # return to the original directory
     file="${2:-.}"
-    pushd $1 &> /dev/null \
-    && edit $file \
-    && popd &> /dev/null
+    pushd $1 &> /dev/null  && edit $file && popd &> /dev/null
 }
 
 
@@ -700,8 +698,26 @@ if [[ "$OSTYPE" == "linux"* ]]; then
 fi
 # }
 
-alias gpt4='sgpt --model gpt-4'
-alias gpt4p='sgpt --model gpt-4-1106-preview'
+gpcode() {
+    echo $@ | sgpt --code --model gpt-4
+}
+
+gpt() {
+    echo $@ | sgpt --model=gpt-4
+}
+
+gptp() {
+    echo $@ | sgpt --model=gpt-4-1106-preview
+}
+
+
+pprint() {
+    echo $@ | python -c "import sys; print(eval(sys.stdin.buffer.read()))"
+}
+
+
+# alias gpt4='sgpt --model gpt-4'
+# alias gpt4p='sgpt --model gpt-4-1106-preview'
 alias echo-json='python -c "from rich import print; import sys; print(sys.stdin.buffer.read())"'
 alias echo-print='python -c "from rich import print; import sys; print(sys.stdin.buffer.read())"'
 # }}}
