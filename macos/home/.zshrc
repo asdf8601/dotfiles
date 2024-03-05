@@ -109,3 +109,9 @@ export DOCKER_BUILDKIT=1
 export COMPOSE_DOCKER_CLI_BUILD=1
 addToPath /opt/homebrew/bin
 addToPath /Users/mgreco/.local/bin
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/mgreco/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/mgreco/Downloads/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/mgreco/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/mgreco/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
