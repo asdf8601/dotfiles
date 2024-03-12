@@ -79,29 +79,13 @@ matches:
   - trigger: ":hh:"
     replace: "## @today "
 
-  - trigger: ":gpt:"
+  - trigger: ":Gpt:"
     replace: "{{out}}"
     vars:
       - name: out
         type: shell
         params:
-          cmd: "xdotool key ctrl+a && sleep 0.1 && xdotool key ctrl+x && sleep 0.1 && /home/mgreco/.local/bin/pbpaste | sed 's/:gpt://' | espanso_gpt"
-
-  - trigger: ":trad:"
-    replace: "{{out}}"
-    vars:
-      - name: out
-        type: shell
-        params:
-          cmd: "xdotool key ctrl+a && sleep 0.1 && xdotool key ctrl+x && sleep 0.1 && /home/mgreco/.local/bin/pbpaste | sed 's/:trad://' | espanso_gpt_trad"
-
-  - trigger: ":fix:"
-    replace: "{{out}}"
-    vars:
-      - name: out
-        type: shell
-        params:
-          cmd: "xdotool key ctrl+a && sleep 0.1 && xdotool key ctrl+x && sleep 0.1 && /home/mgreco/.local/bin/pbpaste | sed 's/:fix://' | espanso_gpt_fix"
+          cmd: "pbpaste | ~/.local/bin/espanso_gpt"
 
   - trigger: ":Fix:"
     replace: "{{out}}"
@@ -109,13 +93,26 @@ matches:
       - name: out
         type: shell
         params:
-          cmd: "pbpaste | /Users/mgreco/.dotfiles/personal/bin/espanso_gpt_fix"
+          cmd: "pbpaste | ~/.local/bin/espanso_gpt_fix"
 
   - trigger: ":retro:"
-    replace: "1. Max 🔴🟡🟢\n    - 🔁 \n    - ✅ \n🧩🧩 "
+    replace: |-
+      1. Max 🔴🟡🟢
+      🔁
+        - item
+      ✅
+        - item
+      🧩🧩
 
   - trigger: ":draft:"
-    replace: "---\ntitle: \"$|$\"\ndate: {{date}}\ndraft: false\ncategories: []\nlabels: []\n---\n\n"
+    replace: |-
+      ---
+      title: "Title"
+      date: {{date}}
+      draft: false
+      categories: ["programming"]
+      labels: ["spanish"]
+      ---
     vars:
       - name: date
         type: match
@@ -126,31 +123,9 @@ matches:
     replace: "/heading 3\n@Today \n"
 
   - trigger: ":plt:"
-    replace: "from matplotlib import pyplot as plt\nplt.show()\n"
-
-  - trigger: ":paste:"
-    replace: "{{out}}"
-    vars:
-      - name: out
-        type: shell
-        params:
-          cmd: "xdotool key ctrl+v"
-
-  - trigger: ":cut:"
-    replace: "{{out}}"
-    vars:
-      - name: out
-        type: shell
-        params:
-          cmd: "xdotool key ctrl+x"
-
-  - trigger: ":copy:"
-    replace: "{{out}}"
-    vars:
-      - name: out
-        type: shell
-        params:
-          cmd: "xdotool key ctrl+a && xdotool key ctrl+c"
+    replace: |-
+      from matplotlib import pyplot as plt
+      plt.show()
 
   - trigger: ":pass:"
     replace: "{{out}}"
@@ -252,4 +227,7 @@ matches:
       type: "clipboard"
 
   - trigger: ":code:"
-    replace: "```python\n$|$\n```"
+    replace: |-
+      ```python
+      $|$
+      ```

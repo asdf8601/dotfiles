@@ -3,7 +3,7 @@ matches:
     replace: "Smart Throttling"
   - trigger: ",smttdc"
     replace: "Smart Throttling Discrepancy"
-  - trigger: ",smttst"
+  - trigger: ",smttstd"
     replace: "Smart Throttling Standard"
   - trigger: ",dp"
     replace: "Dynamic Pricing"
