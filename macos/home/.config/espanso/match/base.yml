@@ -5,7 +5,7 @@ matches:
       - name: output
         type: shell
         params:
-          cmd: "pbpaste > /tmp/espanso-nvim.txt && xterm -e zsh -c 'source ~/.profile && source ~/.zshrc && nvim /tmp/espanso-nvim.txt' && cat /tmp/espanso-nvim.txt"
+          cmd: "pbpaste > /tmp/espanso-nvim.txt && wezterm -e zsh -c 'source ~/.profile && source ~/.zshrc && nvim /tmp/espanso-nvim.txt' && cat /tmp/espanso-nvim.txt"
 
   - trigger: ":setup:"
     replace: "apt update -qq && apt install -qq -y curl && curl -#fLo- 'https://gist.github.com/mmngreco/ef7af0db1a9a70c0c73337f5788b0072/raw/setup-container.sh' | sh"
@@ -43,7 +43,7 @@ matches:
   - trigger: ":warmup:"
     replace: https://media.giphy.com/media/Yz0Gp8s9jKqRy/giphy.gif
 
-  - trigger: ":zen:"
+  - trigger: ";zen"
     replace: "{{quote}}"
     vars:
       - name: quote
@@ -51,7 +51,7 @@ matches:
         params:
           cmd: "zen"
 
-  - trigger: ":lannisterq:"
+  - trigger: ";lannisterq"
     replace: "{{quote}}"
     vars:
       - name: quote
@@ -59,7 +59,7 @@ matches:
         params:
           cmd: "lannister"
 
-  - trigger: ":stoic:"
+  - trigger: ";stoic"
     replace: "{{quote}}"
     vars:
       - name: quote
@@ -67,19 +67,19 @@ matches:
         params:
           cmd: "stoic"
 
-  - trigger: ":>h:"
+  - trigger: ">h"
     replace: "> # @today "
 
-  - trigger: ":>hh:"
+  - trigger: ">hh"
     replace: "> ## @today "
 
-  - trigger: ":h:"
+  - trigger: ",h"
     replace: "# @today "
 
-  - trigger: ":hh:"
+  - trigger: ",hh"
     replace: "## @today "
 
-  - trigger: ":Gpt:"
+  - trigger: ";gp"
     replace: "{{out}}"
     vars:
       - name: out
@@ -87,7 +87,7 @@ matches:
         params:
           cmd: "pbpaste | ~/.local/bin/espanso_gpt"
 
-  - trigger: ":Fix:"
+  - trigger: ";fix"
     replace: "{{out}}"
     vars:
       - name: out
@@ -95,7 +95,7 @@ matches:
         params:
           cmd: "pbpaste | ~/.local/bin/espanso_gpt_fix"
 
-  - trigger: ":retro:"
+  - trigger: ";retro"
     replace: |-
       1. Max 🔴🟡🟢
       🔁
@@ -104,7 +104,7 @@ matches:
         - item
       🧩🧩
 
-  - trigger: ":draft:"
+  - trigger: ";draft"
     replace: |-
       ---
       title: "Title"
@@ -119,15 +119,15 @@ matches:
         params:
           trigger: ":date:"
 
-  - trigger: ":today:"
+  - trigger: ";today"
     replace: "/heading 3\n@Today \n"
 
-  - trigger: ":plt:"
+  - trigger: ";plt"
     replace: |-
       from matplotlib import pyplot as plt
       plt.show()
 
-  - trigger: ":pass:"
+  - trigger: ";pass"
     replace: "{{out}}"
     vars:
       - name: out
@@ -135,7 +135,7 @@ matches:
         params:
           cmd: "python3 ~/.local/bin/passgen"
 
-  - trigger: ":myip:"
+  - trigger: ";myip"
     replace: "{{output}}"
     vars:
       - name: output
@@ -143,22 +143,19 @@ matches:
         params:
           cmd: "curl 'https://api.ipify.org'"
 
-  # - trigger: "doops"
-  #   replace: "data-observatory-ops"
-
-  - trigger: ":details:"
+  - trigger: ";details"
     replace: |-
       <details><summary>Click to expand</summary>
 
       </details>
 
-  - trigger: ":fold:"
+  - trigger: ";fold"
     replace: |-
       <details><summary>Click to expand</summary>
 
       </details>
 
-  - trigger: ":import:"
+  - trigger: ";import"
     replace: |
       import pandas as pd
       import numpy as np
@@ -175,7 +172,7 @@ matches:
         params:
           format: "## %A %Y-%m-%d"
 
-  - trigger: ":Date:"
+  - trigger: ";Date"
     replace: "{{mydate}}"
     vars:
       - name: mydate
@@ -183,7 +180,7 @@ matches:
         params:
           format: "%A %Y-%m-%d"
 
-  - trigger: ":date:"
+  - trigger: ";date"
     replace: "{{mydate}}"
     force_clipboard: true
     vars:
@@ -192,7 +189,7 @@ matches:
         params:
           format: "%Y-%m-%d"
 
-  - trigger: ":time:"
+  - trigger: ";time"
     replace: "{{time}}"
     vars:
       - name: time
@@ -200,7 +197,7 @@ matches:
         params:
           format: "%H:%M"
 
-  - trigger: ":month:"
+  - trigger: ";month"
     replace: "{{date}}"
     vars:
       - name: date
@@ -208,25 +205,25 @@ matches:
         params:
           format: "%B %Y"
 
-  - trigger: ":mail:"
+  - trigger: ";mail"
     replace: mmngreco@gmail.com
 
-  - trigger: ":name:"
+  - trigger: ";name"
     replace: Maximiliano Greco
 
-  - trigger: ":link:"
+  - trigger: ";link"
     replace: "[$|$]({{clipboard}})"
     vars:
     - name: "clipboard"
       type: "clipboard"
 
-  - trigger: ":a:"
+  - trigger: ";a"
     replace: "<a href=\"{{clipboard}}\" />$|$</a>"
     vars:
     - name: "clipboard"
       type: "clipboard"
 
-  - trigger: ":code:"
+  - trigger: ";code"
     replace: |-
       ```python
       $|$

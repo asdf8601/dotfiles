@@ -1,3 +1,4 @@
+-- MacOS
 -- Pull in the wezterm API
 local wezterm = require 'wezterm'
 
@@ -13,7 +14,7 @@ end
 -- For example, changing the color scheme:
 config.window_decorations = "RESIZE"
 config.hide_tab_bar_if_only_one_tab = true
-config.window_background_opacity = 0.6
+config.window_background_opacity = 0.7
 
 config.font = wezterm.font(
     'CaskaydiaCove Nerd Font', { stretch = 'Expanded', weight = 'Bold' }
