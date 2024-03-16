@@ -87,6 +87,14 @@ matches:
         params:
           cmd: "pbpaste | ~/.local/bin/espanso_gpt"
 
+  - trigger: ";babel"
+    replace: "{{out}}"
+    vars:
+      - name: out
+        type: shell
+        params:
+          cmd: "pbpaste | ~/.local/bin/espanso_gpt_trad"
+
   - trigger: ";fix"
     replace: "{{out}}"
     vars:

@@ -523,6 +523,8 @@ takt-git () {
 
 # aliases {{{
 
+alias widgets='nvim "~/Library/Application Support/Übersicht/widgets/"'
+
 # kubernets
 alias fkpod='kubectl get pods | fzf | awk "{print \$1}" | pbcopy && sleep 0.06 && pbpaste'
 alias fklog='fkpod | xargs -I{} kubectl logs {}'
@@ -759,8 +761,10 @@ py-here() {
     mkdir -p  ${name}/{tests,docs}
     touch ${name}/{Makefile,pyproject.toml,${name}.py}
     # you can always make the following steps optionals
-    curl -sSL https://gist.githubusercontent.com/mmngreco/2a371093fcb704fbff771e39479e75dc/raw/pyproject.toml  | sed "s/\${name}/${name}/g" > ${name}/pyproject.toml
+    curl -sSL https://gist.githubusercontent.com/mmngreco/2a371093fcb704fbff771e39479e75dc/raw/pyproject.toml | sed "s/\${name}/${name}/g" > ${name}/pyproject.toml
     curl -sSL https://gist.githubusercontent.com/mmngreco/2a371093fcb704fbff771e39479e75dc/raw/Makefile > ${name}/Makefile
     curl -L -s https://www.gitignore.io/api/python > ${name}/.gitignore
     cd ${name} && git init && git add . && git commit -m "add files"
 }
+
+

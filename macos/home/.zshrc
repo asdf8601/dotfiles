@@ -107,6 +107,7 @@ takt-git() {
 alias duckgs="/Users/mgreco/github.com/seedtag/duckgs/.venv/bin/python -m duckgs"
 export DOCKER_BUILDKIT=1
 export COMPOSE_DOCKER_CLI_BUILD=1
+
 addToPath /opt/homebrew/bin
 addToPath /Users/mgreco/.local/bin
 
