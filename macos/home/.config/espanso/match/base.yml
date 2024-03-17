@@ -125,7 +125,7 @@ matches:
       - name: date
         type: match
         params:
-          trigger: ":date:"
+          trigger: ";date"
 
   - trigger: ";today"
     replace: "/heading 3\n@Today \n"
