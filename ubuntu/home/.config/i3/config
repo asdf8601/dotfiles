@@ -158,6 +158,7 @@ bindsym $super+Ctrl+Shift+k exec "i3bindings | rofi -dmenu -no-config -theme-str
 # bindsym $super+Shift+l exec "/home/mgreco/i3-layout-manager/layout_manager.sh"
 
 # monitor settings using rofi
+bindsym $super+Ctrl+Shift+v exec copyq show
 bindsym $super+Ctrl+Shift+m exec rofi-randr
 bindsym $super+Ctrl+Shift+t exec monitor_layout.sh
 bindsym $super+Ctrl+Shift+x exec xrandr --auto
@@ -468,6 +469,7 @@ for_window [window_type="dialog"] floating enable
 for_window [window_type="menu"] floating enable
 for_window [instance="__scratchpad"] floating enable, resize set 900 px 500 px, move position center
 for_window [instance="__nmtui"] floating enable
+for_window [class="copyq"] floating enable
 
 # twtich hack
 for_window [class="obs" title="Chat"] floating disable, split h, move right
