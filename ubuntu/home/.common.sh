@@ -54,6 +54,19 @@ gpt-trad-md() {
     echo "File: $file"
 }
 
+gpcode() {
+    echo $@ | sgpt --code --model gpt-4
+}
+
+gpt() {
+    echo $@ | sgpt --model=gpt-4
+}
+
+gptpp() {
+    echo $@ | sgpt --model=gpt-4-1106-preview
+}
+
+
 kx() {
     export KUBECONFIG=$(ls ~/.kube/config* | fzf --height 10 --layout reverse)
 }
