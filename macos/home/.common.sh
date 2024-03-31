@@ -768,3 +768,11 @@ py-here() {
 }
 
 
+mcn() {
+    folder=$1
+    file=$2
+    mkdir -p $folder
+    cd $folder
+    nvim $file
+}
+
