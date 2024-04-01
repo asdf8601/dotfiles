@@ -1,0 +1,88 @@
+#!python3
+"""
+PIPX-like tool for conda
+
+Examples
+--------
+cx install black
+cx install black -p 3.11
+cx install git+https://github.com/psf/black
+
+TODO
+----
+[ ] Implement `inject`
+[ ] Implement `run`
+
+"""
+import subprocess
+import argparse
+from pathlib import Path
+
+parser = argparse.ArgumentParser()
+parser.add_argument(
+    "cmd",
+    help="can be a URL or a package name",
+    default="install",
+    choices=["install", "inject", "run"],
+)
+parser.add_argument("dep", help="can be a URL or a package name")
+parser.add_argument("-p", "--pyver", help="python version to use", default="3.11")
+parser.add_argument("-f", "--force", help="Force", action="store_true")
+parser.add_argument("-v", "--verbose", help="Verbose", action="store_true")
+args = parser.parse_args()
+
+dep = args.dep
+pyver = args.pyver
+force = args.force
+cmd = args.cmd
+verbose = args.verbose
+
+# extract vname from dep
+vname = dep.split("/")[-1].split(".")[0]
+
+# define variables
+VENV = Path(f"~/.cx/venvs/{vname}").expanduser()
+BIN = Path(f"~/.cx/venvs/{vname}/bin").expanduser()
+PIP = Path(f"{BIN}/pip").expanduser()
+
+if verbose:
+    print(f"{VENV = }")
+    print(f"{BIN = }")
+    print(f"{PIP = }")
+
+if cmd != "install":
+    raise NotImplementedError
+
+# create venv
+venv_cmd = f"conda create -p {VENV} python={pyver} -y -q > /dev/null"
+
+if verbose:
+    print(f"{venv_cmd = }")
+
+subprocess.call(venv_cmd, shell=True)
+pre_binaries = set(BIN.glob("*"))
+
+# install dep
+pip_cmd = f"{PIP} install -q {dep}"
+
+if verbose:
+    print(f"{pip_cmd = }")
+
+subprocess.call(pip_cmd, shell=True)
+post_binaries = set(BIN.glob("*"))
+
+# find new binaries
+new_binaries = post_binaries - pre_binaries
+
+# create symlink in ~/.local/bin
+f = "-f" if force else ""
+for p in new_binaries:
+    link_cmd = f"ln {f} -s {p} ~/.local/bin"
+
+    if verbose:
+        print(f"{link_cmd = }")
+
+    subprocess.call(link_cmd, shell=True)
+
+
+# vim: tw=0
