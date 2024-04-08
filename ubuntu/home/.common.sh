@@ -761,3 +761,6 @@ py-here() {
     curl -L -s https://www.gitignore.io/api/python > ${name}/.gitignore
     cd ${name} && git init && git add . && git commit -m "add files"
 }
+
+
+addToPath "/opt/purevpn-cli/bin"
