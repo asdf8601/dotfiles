@@ -8,3 +8,4 @@ search_trigger: ",search"
 x11_use_xdotool_backend: true
 # disable_x11_fast_inject: true
 undo_backspace: true
+clipboard_threshold: 1000

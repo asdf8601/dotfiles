@@ -96,3 +96,5 @@ fpath+=~/.zfunc
 export DOCKER_BUILDKIT=1
 export COMPOSE_DOCKER_CLI_BUILD=1
 eval "$(~/.local/bin/mise activate zsh)"
+
+alias pipx='/home/mgreco/miniconda3/envs/pipx/bin/pipx'

@@ -30,10 +30,10 @@ function setPrompt() {
     input=${1:-$DEFAULT_PROMPT}
     case $input in
 
-        0|starship)
-            eval "$(starship init zsh)"
+        0)
+            PROMPT=''
+            PROMPT+='%(?:%{$fg[green]%}$:%{$fg[red]%}$)%{$reset_color%} '
             ;;
-
         1)
             PROMPT=''
             PROMPT+='%{$fg[magenta]%}${USER}%{$reset_color%}@%{$fg[green]%}${${(%):-%M}%.local}%{$reset_color%} '
@@ -67,6 +67,10 @@ function setPrompt() {
             PROMPT+=$'\n'
             PROMPT+='%(?:%{$fg[green]%}$:%{$fg[red]%}$)%{$reset_color%} '
             ;;
+        9|starship)
+            eval "$(starship init zsh)"
+            ;;
+
 
         help)
             echo '= Usage:'

@@ -538,6 +538,10 @@ takt-git () {
 
 # aliases {{{
 
+# mail
+alias mail-st='neomutt -F ~/.mutt/seedtag.muttrc'
+alias mail='neomutt -F ~/.mutt/personal.muttrc'
+
 # kubernets
 alias fkpod='kubectl get pods | fzf | awk "{print \$1}" | pbcopy && sleep 0.06 && pbpaste'
 alias fklog='fkpod | xargs -I{} kubectl logs {}'
@@ -751,6 +755,7 @@ sourcePattern $DOTFILES "*.hide"
 sourcePattern $DOTFILES_SRC/personal "*.hide"
 # }}}
 
+
 py-here() {
     name=$1
     mkdir -p  ${name}/{tests,docs}
@@ -761,6 +766,3 @@ py-here() {
     curl -L -s https://www.gitignore.io/api/python > ${name}/.gitignore
     cd ${name} && git init && git add . && git commit -m "add files"
 }
-
-
-addToPath "/opt/purevpn-cli/bin"
