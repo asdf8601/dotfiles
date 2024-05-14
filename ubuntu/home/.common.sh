@@ -542,6 +542,7 @@ takt-git () {
 alias mail-st='neomutt -F ~/.mutt/seedtag.muttrc'
 alias mail='neomutt -F ~/.mutt/personal.muttrc'
 
+
 # kubernets
 alias fkpod='kubectl get pods | fzf | awk "{print \$1}" | pbcopy && sleep 0.06 && pbpaste'
 alias fklog='fkpod | xargs -I{} kubectl logs {}'
@@ -765,4 +766,8 @@ py-here() {
     curl -sSL https://gist.githubusercontent.com/mmngreco/2a371093fcb704fbff771e39479e75dc/raw/Makefile > ${name}/Makefile
     curl -L -s https://www.gitignore.io/api/python > ${name}/.gitignore
     cd ${name} && git init && git add . && git commit -m "add files"
+}
+
+wacomfix() {
+    xsetwacom set $(xsetwacom list | grep stylus | awk '{print $8}\') MapToOutput "DP-1"
 }
