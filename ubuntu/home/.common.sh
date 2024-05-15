@@ -50,20 +50,20 @@ function git-br-clean {
 
 gpt-trad-md() {
     file=/tmp/gpt4-translate.md
-    sgpt --model gpt-4-1106-preview --chat blog "translate to english and fix grammar from this markdown: \n\n $(cat $1)" | tee $file
+    sgpt --model gpt-4o --chat blog "translate to english and fix grammar from this markdown: \n\n $(cat $1)" | tee $file
     echo "File: $file"
 }
 
 gpcode() {
-    echo $@ | sgpt --code --model gpt-4
+    echo $@ | sgpt --code --model gpt-4o
 }
 
 gpt() {
-    echo $@ | sgpt --model=gpt-4
+    echo $@ | sgpt --model=gpt-4o
 }
 
 gptpp() {
-    echo $@ | sgpt --model=gpt-4-1106-preview
+    echo $@ | sgpt --model=gpt-4o
 }
 
 
