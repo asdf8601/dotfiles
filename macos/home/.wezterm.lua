@@ -16,9 +16,9 @@ config.window_decorations = "RESIZE"
 config.hide_tab_bar_if_only_one_tab = true
 config.window_background_opacity = 0.8
 
-config.font = wezterm.font(
-    'CaskaydiaCove Nerd Font', { stretch = 'Expanded', weight = 'Bold' }
-  )
+-- config.font = wezterm.font(
+--     'CaskaydiaCove Nerd Font', { stretch = 'Expanded', weight = 'Bold' }
+--   )
 
 -- config.color_scheme = 'iTerm2 Default'
 -- config.color_scheme = 'Ibm 3270 (High Contrast) (Gogh)'

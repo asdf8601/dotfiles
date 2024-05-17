@@ -700,18 +700,6 @@ if [[ "$OSTYPE" == "linux"* ]]; then
 fi
 # }
 
-gpcode() {
-    echo $@ | sgpt --code --model gpt-4
-}
-
-gpt() {
-    echo $@ | sgpt --model=gpt-4
-}
-
-gptp() {
-    echo $@ | sgpt --model=gpt-4-1106-preview
-}
-
 
 pprint() {
     echo $@ | python -c "import sys; print(eval(sys.stdin.buffer.read()))"
@@ -776,3 +764,35 @@ mcn() {
     nvim $file
 }
 
+# gpt {{{
+
+function git-br-clean {
+    git fetch -p origin
+    git branch -vv | grep 'origin/.*: gone]' | awk '{print $1}' | xargs git branch -d
+}
+
+gpt-trad-md() {
+    file=/tmp/gpt4-translate.md
+    sgpt --model gpt-4o --chat blog "translate to english and fix grammar from this markdown: \n\n $(cat $1)" | tee $file
+    echo "File: $file"
+}
+
+gpcode() {
+    echo $@ | sgpt --code --model gpt-4o
+}
+
+gpt() {
+    echo $@ | sgpt --model=gpt-4o
+}
+
+gpt-pr() {
+    prompt=''
+    branch="${1:-main}"
+    altbr="${2:-master}"
+    git_diff_output="$(printf '%s\n' $(git diff $branch || git diff $altbr))"
+    echo $git_diff_output
+    prompt="$(printf '# Prompt\n%s\n# Git diff\n%s\n' "$prompt" "$git_diff_output")"
+    echo $prompt
+    sgpt --model gpt-4o --chat pr "$prompt"
+}
+# }}}
