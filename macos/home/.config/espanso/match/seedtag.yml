@@ -9,3 +9,7 @@ matches:
     replace: "Dynamic Pricing"
   - trigger: ",bfs"
     replace: "Bid Floors Strategy"
+  - trigger: ",adxdata"
+    replace: "ad-exchange-data"
+  - trigger: ",adxeng"
+    replace: "ad-exchange-engineering"
