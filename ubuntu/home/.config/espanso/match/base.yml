@@ -1,5 +1,8 @@
 matches:
 
+  - trigger: ";gpt-pr"
+    replace: "I want a summary for a PR body so you should describe the modifications made as shown in this git diff. Provide a summary of significant changes. Keep the description straightforward and use basic language. Avoid complex terminology. Return a markdown formatted text."
+
   - trigger: ";edit"
     replace: "{{output}}"
     vars:

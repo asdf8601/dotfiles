@@ -62,10 +62,11 @@ gpt() {
     echo $@ | sgpt --model=gpt-4o
 }
 
-gptpp() {
-    echo $@ | sgpt --model=gpt-4o
+gpt-pr() {
+    prompt="Describe the modifications made as shown in this git diff. Provide a summary of significant changes. Keep the description straightforward and use basic language. Avoid complex terminology."
+    branch=${1:-main}
+    spgt --model gpt-4o --chat pr "# Prompt\n$prompt\n# Git diff\n$(git diff $branch)"
 }
-
 
 kx() {
     export KUBECONFIG=$(ls ~/.kube/config* | fzf --height 10 --layout reverse)
