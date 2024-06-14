@@ -1,6 +1,7 @@
 [user]
 name = Maximiliano Greco
 email = mmngreco@gmail.com
+	signingkey = 853653F0A567856301362455DEAD1D445DF732E1
 
 [core]
 editor = nvim
