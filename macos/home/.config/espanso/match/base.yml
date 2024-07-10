@@ -81,6 +81,7 @@ matches:
 
   - trigger: ";gp"
     replace: "{{out}}"
+    force_clipboard: true
     vars:
       - name: out
         type: shell
@@ -89,6 +90,7 @@ matches:
 
   - trigger: ";babel"
     replace: "{{out}}"
+    force_clipboard: true
     vars:
       - name: out
         type: shell
@@ -97,6 +99,7 @@ matches:
 
   - trigger: ";fix"
     replace: "{{out}}"
+    force_clipboard: true
     vars:
       - name: out
         type: shell
@@ -104,6 +107,7 @@ matches:
           cmd: "pbpaste | ~/.local/bin/espanso_gpt_fix"
 
   - trigger: ";retro"
+    force_clipboard: true
     replace: |-
       1. Max 🔴🟡🟢
       🔁
@@ -231,7 +235,19 @@ matches:
     - name: "clipboard"
       type: "clipboard"
 
+  - trigger: ";mmd"
+    force_clipboard: true
+    replace: |-
+      ```mermaid
+      flowchart LR
+      a --> b --> c
+      $|$
+
+      %% linkStyle 0,2 stroke:none
+      ```
+
   - trigger: ";code"
+    force_clipboard: true
     replace: |-
       ```python
       $|$

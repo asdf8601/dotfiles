@@ -1,5 +1,6 @@
 #!/usr/bin/env zsh
 
+# conda {{{
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
 __conda_setup="$('/Users/mgreco/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
@@ -14,6 +15,7 @@ else
 fi
 unset __conda_setup
 # <<< conda initialize <<<
+# }}}
 
 
 zstyle ':omz:plugins:nvm' lazy yes
@@ -33,15 +35,16 @@ plugins=(
   nvm
 )
 # source ~/.zsh/catppuccin-zsh-syntax-highlighting.zsh
+export ZSH_THEME="robbyrussell"
 source $ZSH/oh-my-zsh.sh
-source ~/.prompt.zsh
+# source ~/.prompt.zsh
 # export TERM=xterm-kitty
 
 # always after any prompt changes
 [ -f $HOME/.autoenv/activate.sh ] && source $HOME/.autoenv/activate.sh
 [ -f $HOME/.fzf.zsh ] && source $HOME/.fzf.zsh
 
-# === shortcuts {
+# === shortcuts {{{
 join-lines() {
   local item
   while read item; do
@@ -62,7 +65,7 @@ unset -f bind-git-wrapper
 bindkey -s ^t^w "txw\n"
 bindkey -s ^t^s "txs\n"
 if [ -e $HOME/.nix-profile/etc/profile.d/nix.sh ]; then . /home/mgreco/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
-# }
+# }}}
 
 # Created by `pipx` on 2021-12-07 18:17:23 {
 export PATH="$PATH:$HOME/.local/bin"
@@ -117,3 +120,5 @@ if [ -f '/Users/mgreco/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/User
 # The next line enables shell command completion for gcloud.
 if [ -f '/Users/mgreco/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/mgreco/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
 export PATH=$PATH:/Users/mgreco/.pixi/bin
+
+# command -v oh-my-posh >/dev/null && eval "$(oh-my-posh init zsh -c ~/.ohmyposh-config.json)"

@@ -17,7 +17,7 @@ config.hide_tab_bar_if_only_one_tab = true
 config.window_background_opacity = 0.8
 
 -- config.font = wezterm.font(
---     'CaskaydiaCove Nerd Font', { stretch = 'Expanded', weight = 'Bold' }
+--     'CaskaydiaCove Nerd Font', { stretch = 'Expanded', weight = 'Regular' }
 --   )
 
 -- config.color_scheme = 'iTerm2 Default'

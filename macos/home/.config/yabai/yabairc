@@ -75,8 +75,7 @@ yabai -m rule --add app="^Telegram$" space=6
 
 
 # disable window management for the following applications
-yabai -m rule --add app="^Archive Utility$" manage=off
-yabai -m rule --add app="^Finder$" manage=off
+yabai -m rule --add app="^CopyQ$" manage=off
 yabai -m rule --add app="^Karabiner-Elements$" manage=off
 yabai -m rule --add app="^Jiffy$" manage=off
 yabai -m rule --add app="^Krisp$" manage=off
@@ -90,8 +89,12 @@ yabai -m rule --add app="^Strongbox$" manage=off sticky=on space=8
 yabai -m rule --add app="^licecap$" manage=off
 yabai -m rule --add app="^kitty$" manage=on space=1
 yabai -m rule --add app="^Gimp.*script\-fu.*$" manage=off space=8
+yabai -m rule --add app="^Obs.*$" manage=off space=9
+yabai -m rule --add app="^KeyboardCleanTool$" manage=off
 
 # native macos apps
+yabai -m rule --add app="^Archive Utility$" manage=off
+yabai -m rule --add app="^Finder$" manage=off
 yabai -m rule --add app="^Photos$" manage=off
 yabai -m rule --add app="^Pictures$" manage=off
 yabai -m rule --add app="^System Settings$" manage=off
@@ -101,7 +104,6 @@ yabai -m rule --add app="^Messages$" manage=off
 yabai -m rule --add app="^FaceTime$" manage=off
 yabai -m rule --add app="^Reminders$" manage=off
 yabai -m rule --add app="^Gifox$" manage=off
-yabai -m rule --add app="^KeyboardCleanTool$" manage=off
 
 # Space names
 yabai -m space 1 --label term
