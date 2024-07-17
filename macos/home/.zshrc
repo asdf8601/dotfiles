@@ -122,3 +122,4 @@ if [ -f '/Users/mgreco/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . 
 export PATH=$PATH:/Users/mgreco/.pixi/bin
 
 # command -v oh-my-posh >/dev/null && eval "$(oh-my-posh init zsh -c ~/.ohmyposh-config.json)"
+eval "$(mise activate zsh)"

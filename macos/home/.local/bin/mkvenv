@@ -1,0 +1,36 @@
+#!/usr/bin/env python3
+
+from pathlib import Path
+import argparse
+import subprocess
+
+parser = argparse.ArgumentParser()
+parser.add_argument('-v', '--version', type=str, default="3.11", help='Python version to use')
+parser.add_argument('-d', '--dir', type=str, default=".venv", help='Specify the directory of the venv')
+parser.add_argument('--no-autoenv', action='store_true', default=False, help='Enable auto environment setup')
+parser.add_argument('-e', '--dry-mode', action='store_true', default=False, help='Run in dry mode')
+
+
+args = parser.parse_args()
+
+venv = args.dir
+ver = args.version
+cmd = f"python{ver} -m venv {venv}"
+dry_mode = args.dry_mode
+
+if dry_mode:
+    print(cmd)
+else:
+    subprocess.run(cmd, shell=True)
+
+if not args.no_autoenv:
+    venv = Path(venv).expanduser().absolute()
+    line = f'{venv}/bin/activate'
+    autoenv = Path('.autoenv')
+
+    if dry_mode:
+        print(line)
+    else:
+        if not autoenv.exists():
+            autoenv.touch()
+        autoenv.write_text(line)
