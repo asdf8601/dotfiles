@@ -33,4 +33,7 @@ if not args.no_autoenv:
     else:
         if not autoenv.exists():
             autoenv.touch()
-        autoenv.write_text(line)
+
+        if line not in autoenv.read_text().split('\n'):
+            with autoenv.open('a') as file:
+                file.write(line + '\n')
