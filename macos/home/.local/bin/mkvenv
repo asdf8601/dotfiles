@@ -25,7 +25,7 @@ else:
 
 if not args.no_autoenv:
     venv = Path(venv).expanduser().absolute()
-    line = f'{venv}/bin/activate'
+    line = f'source {venv}/bin/activate'
     autoenv = Path('.autoenv')
 
     if dry_mode:
