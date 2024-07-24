@@ -86,25 +86,25 @@ command -v pyenv > /dev/null 2>&1 && eval "$(pyenv init -)" 2> /dev/null
 
 [[ $commands[kubectl] ]] && source <(kubectl completion zsh)
 
-alias pipx=/Users/mgreco/miniconda3/envs/pipx/bin/pipx
+# alias pipx=/Users/mgreco/miniconda3/envs/pipx/bin/pipx
 
 
-takt-git() {
-  case $1 in
-    check)
-      takt check
-      cd $(dirname $TAKT_FILE)
-      git add $TAKT_FILE
-      git commit -m "check $(date +%Y-%m-%d)"
-      cd -
-      ;;
-    push)
-      cd $(dirname $TAKT_FILE)
-      git push
-      cd -
-      ;;
-  esac
-}
+# takt-git() {
+#   case $1 in
+#     check)
+#       takt check
+#       cd $(dirname $TAKT_FILE)
+#       git add $TAKT_FILE
+#       git commit -m "check $(date +%Y-%m-%d)"
+#       cd -
+#       ;;
+#     push)
+#       cd $(dirname $TAKT_FILE)
+#       git push
+#       cd -
+#       ;;
+#   esac
+# }
 
 
 alias duckgs="/Users/mgreco/github.com/seedtag/duckgs/.venv/bin/python -m duckgs"
