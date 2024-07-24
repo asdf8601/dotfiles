@@ -82,6 +82,7 @@ yabai -m rule --add app="^Krisp$" manage=off
 yabai -m rule --add app="^Huddle$" manage=off
 yabai -m rule --add app="^Alfred$" manage=off
 yabai -m rule --add app="^istats$" manage=off
+yabai -m rule --add app="^Terminal$" manage=off
 yabai -m rule --add app="^Raycast$" manage=off
 yabai -m rule --add app="^Espanso$" manage=off
 yabai -m rule --add app="^CameraController$" manage=off
