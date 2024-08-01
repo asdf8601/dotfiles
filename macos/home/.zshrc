@@ -124,3 +124,7 @@ export PATH=$PATH:/Users/mgreco/.pixi/bin
 # command -v oh-my-posh >/dev/null && eval "$(oh-my-posh init zsh -c ~/.ohmyposh-config.json)"
 eval "$(mise activate zsh)"
 addToPath ~/.rye/shims
+addToPathFront /opt/homebrew/opt/gnu-sed/libexec/gnubin
+
+
+alias pyon='. ./.venv/bin/activate'
