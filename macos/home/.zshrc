@@ -128,3 +128,5 @@ addToPathFront /opt/homebrew/opt/gnu-sed/libexec/gnubin
 
 
 alias pyon='. ./.venv/bin/activate'
+
+. "$HOME/.cargo/env"
