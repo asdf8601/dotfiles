@@ -134,3 +134,11 @@ alias pyin='source ./.venv/bin/activate'
 alias pyout='deactivate'
 
 if [ -f "$HOME/.cargo/env" ]; then . "$HOME/.cargo/env"; fi
+
+
+function nvim-camp {
+  cd $HOME/.config/nvim && \
+  git commit -am "${1:-automatic commit}" && \
+  git push && \
+  cd -
+}
