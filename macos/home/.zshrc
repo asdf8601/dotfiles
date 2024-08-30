@@ -107,7 +107,7 @@ command -v pyenv > /dev/null 2>&1 && eval "$(pyenv init -)" 2> /dev/null
 # }
 
 
-alias duckgs="/Users/mgreco/github.com/seedtag/duckgs/.venv/bin/python -m duckgs"
+# alias duckgs="/Users/mgreco/github.com/seedtag/duckgs/.venv/bin/python -m duckgs"
 export DOCKER_BUILDKIT=1
 export COMPOSE_DOCKER_CLI_BUILD=1
 
@@ -119,14 +119,18 @@ if [ -f '/Users/mgreco/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/User
 
 # The next line enables shell command completion for gcloud.
 if [ -f '/Users/mgreco/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/mgreco/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
+
 export PATH=$PATH:/Users/mgreco/.pixi/bin
 
 # command -v oh-my-posh >/dev/null && eval "$(oh-my-posh init zsh -c ~/.ohmyposh-config.json)"
-eval "$(mise activate zsh)"
+command -v mise > /dev/null 2>&1 && eval "$(mise activate zsh)"
+
+
 addToPath ~/.rye/shims
 addToPathFront /opt/homebrew/opt/gnu-sed/libexec/gnubin
 
 
-alias pyon='. ./.venv/bin/activate'
+alias pyin='source ./.venv/bin/activate'
+alias pyout='deactivate'
 
-. "$HOME/.cargo/env"
+if [ -f "$HOME/.cargo/env" ]; then . "$HOME/.cargo/env"; fi
