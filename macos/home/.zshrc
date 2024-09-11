@@ -113,6 +113,7 @@ export COMPOSE_DOCKER_CLI_BUILD=1
 
 addToPath /opt/homebrew/bin
 addToPath ~/.local/bin
+addToPath ~/.pixi/bin
 
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f '/Users/mgreco/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/mgreco/Downloads/google-cloud-sdk/path.zsh.inc'; fi
@@ -120,7 +121,6 @@ if [ -f '/Users/mgreco/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/User
 # The next line enables shell command completion for gcloud.
 if [ -f '/Users/mgreco/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/mgreco/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
 
-export PATH=$PATH:/Users/mgreco/.pixi/bin
 
 # command -v oh-my-posh >/dev/null && eval "$(oh-my-posh init zsh -c ~/.ohmyposh-config.json)"
 command -v mise > /dev/null 2>&1 && eval "$(mise activate zsh)"

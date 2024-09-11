@@ -4,10 +4,14 @@ export DOTFILES_HOME=$HOME/.dotfiles
 source ~/.common.sh
 export ZSH=~/.oh-my-zsh
 
+function check_run {
+    command -v $1 > /dev/null 2>&1 && $2 2> /dev/null
+}
+
 # define always before before sourcing oh-my-zsh.sh
-plugins=(
-    zsh-autosuggestions
-)
+# plugins=(
+#     zsh-autosuggestions
+# )
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
@@ -65,7 +69,8 @@ export PATH="$PATH:/home/mgreco/.local/bin"
 
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
-command -v pyenv > /dev/null 2>&1 && eval "$(pyenv init -)" 2> /dev/null
+# command -v pyenv > /dev/null 2>&1 && eval "$(pyenv init -)" 2> /dev/null
+check_run pyevn 'eval "$(pyenv init -)"'
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 # source /usr/share/doc/fzf/examples/key-bindings.zsh
@@ -95,6 +100,18 @@ fpath+=~/.zfunc
 
 export DOCKER_BUILDKIT=1
 export COMPOSE_DOCKER_CLI_BUILD=1
-eval "$(~/.local/bin/mise activate zsh)"
 
-alias pipx='/home/mgreco/miniconda3/envs/pipx/bin/pipx'
+check_run mise 'eval "$(~/.local/bin/mise activate zsh)"'
+# command -v mise > /dev/null 2>&1 && eval "$(~/.local/bin/mise activate zsh)" 2> /dev/null
+
+alias pyin='source ./.venv/bin/activate'
+alias pyout='deactivate'
+
+if [ -f "$HOME/.cargo/env" ]; then . "$HOME/.cargo/env"; fi
+
+function nvim-camp {
+  cd $HOME/.config/nvim && \
+  git commit -am "${1:-automatic commit}" && \
+  git push && \
+  cd -
+}
