@@ -75,7 +75,8 @@ cmd + shift + ctrl - 6 : yabai -m window --space 6;
 cmd + shift + ctrl - 7 : yabai -m window --space 7;
 
 # stop/start/restart yabai
-ctrl + shift + cmd - r : noti yabai --restart-service && noti skhd --restart-service
+ctrl + shift + alt - r : noti yabai --restart-service && noti skhd --restart-service
+ctrl + shift + alt - x: noti yabai --stop-service
 
 # cmd + ctrl + shift - o : noti -t "Takt: Check" -m "$(takt check)"
 # cmd + ctrl + shift - w : kitty -o font_size=20 --hold -e takt wtd     | less
