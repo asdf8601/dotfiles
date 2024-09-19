@@ -37,7 +37,8 @@ plugins=(
 # source ~/.zsh/catppuccin-zsh-syntax-highlighting.zsh
 export ZSH_THEME="robbyrussell"
 source $ZSH/oh-my-zsh.sh
-# source ~/.prompt.zsh
+source ~/.prompt.zsh
+setPrompt 0
 # export TERM=xterm-kitty
 
 # always after any prompt changes

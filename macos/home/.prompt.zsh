@@ -68,7 +68,7 @@ function setPrompt() {
             PROMPT+='%(?:%{$fg[green]%}$:%{$fg[red]%}$)%{$reset_color%} '
             ;;
 
-        help)
+        h|help)
             echo '= Usage:'
             echo 'setPrompt [0, 1, 2, 3, 4, help]'
             echo ''
@@ -100,4 +100,3 @@ function setPrompt() {
         esac
     }
 
-setPrompt $DEFAULT_PROMPT
