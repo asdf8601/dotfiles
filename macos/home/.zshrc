@@ -19,6 +19,7 @@ unset __conda_setup
 
 
 zstyle ':omz:plugins:nvm' lazy yes
+export PIP_REQUIRE_VIRTUALENV=true
 export DOTFILES=$HOME/.dotfiles/macos/home
 export DOTFILES_HOME=$HOME/.dotfiles
 source ~/.common.sh
