@@ -144,3 +144,32 @@ function nvim-camp {
   git push && \
   cd -
 }
+
+function pyvenv {
+  shift 1
+  venv=$1
+  prefix=~/venvs
+  case $1 in
+    new)
+      shift 1
+      mkdir $prefix/$1
+      python3 -m venv $prefix/$1
+      return 0
+      ;;
+    install)
+      venv=$1
+      shift 1
+      $prefix/$venv/bin/python -m pip install $@
+      ;;
+    run)
+      $prefix/$venv/bin/$@
+      ;;
+    shell)
+      . $prefix/$venv/bin/activate
+      ;;
+    -h|--help)
+      echo "usage: pyvenv <name>"
+      return 0
+      ;;
+  esac
+}
