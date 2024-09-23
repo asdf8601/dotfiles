@@ -20,11 +20,11 @@ disabled = false
 
 
 [git_commit]
-disabled = false
+disabled = true
 tag_symbol = " tag "
 
 [git_status]
-disabled = false
+disabled = true
 ahead = ">"
 behind = "<"
 diverged = "<>"
