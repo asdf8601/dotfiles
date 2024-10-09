@@ -3,17 +3,17 @@
 # conda {{{
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/Users/mgreco/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/Users/mgreco/miniconda3/etc/profile.d/conda.sh" ]; then
-        . "/Users/mgreco/miniconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="/Users/mgreco/miniconda3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
+# __conda_setup="$('/Users/mgreco/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+# if [ $? -eq 0 ]; then
+#     eval "$__conda_setup"
+# else
+#     if [ -f "/Users/mgreco/miniconda3/etc/profile.d/conda.sh" ]; then
+#         . "/Users/mgreco/miniconda3/etc/profile.d/conda.sh"
+#     else
+#         export PATH="/Users/mgreco/miniconda3/bin:$PATH"
+#     fi
+# fi
+# unset __conda_setup
 # <<< conda initialize <<<
 # }}}
 
@@ -32,9 +32,9 @@ export ZSH=~/.oh-my-zsh
 #     zsh-autosuggestions
 # )
 
-plugins=(
-  nvm
-)
+# plugins=(
+#   nvm
+# )
 # source ~/.zsh/catppuccin-zsh-syntax-highlighting.zsh
 export ZSH_THEME="robbyrussell"
 source $ZSH/oh-my-zsh.sh
@@ -143,33 +143,4 @@ function nvim-camp {
   git commit -am "${1:-automatic commit}" && \
   git push && \
   cd -
-}
-
-function pyvenv {
-  shift 1
-  venv=$1
-  prefix=~/venvs
-  case $1 in
-    new)
-      shift 1
-      mkdir $prefix/$1
-      python3 -m venv $prefix/$1
-      return 0
-      ;;
-    install)
-      venv=$1
-      shift 1
-      $prefix/$venv/bin/python -m pip install $@
-      ;;
-    run)
-      $prefix/$venv/bin/$@
-      ;;
-    shell)
-      . $prefix/$venv/bin/activate
-      ;;
-    -h|--help)
-      echo "usage: pyvenv <name>"
-      return 0
-      ;;
-  esac
 }

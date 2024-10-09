@@ -5,7 +5,7 @@ $shell\
 $character"""
 
 # Wait 10 milliseconds for starship to check files under the current directory.
-scan_timeout = 10
+scan_timeout = 5
 
 # Disable the blank line at the start of the prompt
 add_newline = true
@@ -31,6 +31,15 @@ diverged = "<>"
 renamed = "r"
 deleted = "x"
 
+[git_branch]
+format = '[$symbol$branch]($style) '
+truncation_length = 10
+truncation_symbol = ''
+style = 'bold purple'
+# ignore_branches = ['master', 'main']
+symbol = ""
+disabled = false
+
 [aws]
 symbol = "aws:"
 
@@ -55,16 +64,7 @@ disabled = false
 
 [docker_context]
 symbol = "docker:"
-disabled = false
-
-[git_branch]
-format = '[$symbol$branch]($style) '
-truncation_length = 10
-truncation_symbol = ''
-style = 'bold purple'
-# ignore_branches = ['master', 'main']
-symbol = ""
-disabled = false
+disabled = true
 
 [nodejs]
 format = '[$symbol]($style) '
@@ -84,19 +84,19 @@ style = 'bold blue'
 project_aliases = { 'data-observatory-ops'='do-ops'}
 
 [golang]
-disabled = false
+disabled = true
 symbol = "go:"
 format = '[$symbol]($style)'
 
 [lua]
-disabled = false
+disabled = true
 symbol = "lua:"
 format = '[$symbol]($style)'
 
 [meson]
 symbol = "meson:"
 format = '[$symbol]($style)'
-disabled = false
+disabled = true
 
 [python]
 symbol = "py:"
@@ -107,13 +107,13 @@ disabled = true
 [rust]
 symbol = "rs:"
 format = '[$symbol]($style)'
-disabled = false
+disabled = true
 
 [username]
 style_user = 'white bold'
 style_root = 'black bold'
 format = '[$user]($style) '
-disabled = false
+disabled = true
 show_always = true
 
 [hostname]
