@@ -116,6 +116,8 @@ export COMPOSE_DOCKER_CLI_BUILD=1
 addToPath /opt/homebrew/bin
 addToPath ~/.local/bin
 addToPath ~/.pixi/bin
+addToPath "$HOMEBREW_PREFIX/opt/gnu-sed/libexec/gnubin"
+
 
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f '/Users/mgreco/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/mgreco/Downloads/google-cloud-sdk/path.zsh.inc'; fi
