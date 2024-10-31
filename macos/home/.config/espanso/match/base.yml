@@ -86,7 +86,7 @@ matches:
       - name: out
         type: shell
         params:
-          cmd: "pbpaste | tr -d ';gp' | ~/.local/bin/espanso_gpt"
+          cmd: "pbpaste | sed 's/;gp//' | ~/.local/bin/espanso_gpt"
 
   - trigger: ";babel"
     replace: "{{out}}"
@@ -95,7 +95,7 @@ matches:
       - name: out
         type: shell
         params:
-          cmd: "pbpaste | tr -d ';babel' | ~/.local/bin/espanso_gpt_trad"
+          cmd: "pbpaste | sed 's/;babel//' | ~/.local/bin/espanso_gpt_trad"
 
   - trigger: ";fix"
     replace: "{{out}}"
@@ -104,7 +104,7 @@ matches:
       - name: out
         type: shell
         params:
-          cmd: "pbpaste | tr -d ';fix' | ~/.local/bin/espanso_gpt_fix"
+          cmd: "pbpaste | sed 's/;fix//' | ~/.local/bin/espanso_gpt_fix"
 
   - trigger: ";retro"
     force_clipboard: true
