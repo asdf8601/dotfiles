@@ -75,6 +75,7 @@ yabai -m rule --add app="^Telegram$" space=6
 
 
 # disable window management for the following applications
+yabai -m rule --add app="^iTerm2$" manage=off
 yabai -m rule --add app="^PureVPN Beta$" manage=off
 yabai -m rule --add app="^Spotify$" manage=off
 yabai -m rule --add app="^CopyQ$" manage=off
