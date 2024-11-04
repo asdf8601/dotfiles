@@ -1,6 +1,6 @@
 [user]
 	name = Max G
-	email = mmngreco@gmail.com
+	email = 6231413+asdf8601@users.noreply.github.com
 	signingkey = 853653F0A567856301362455DEAD1D445DF732E1
 
 [includeIf "gitdir:~/github.com/"]
