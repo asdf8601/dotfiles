@@ -3,8 +3,8 @@
 # pytmp install names
 # pytmp inject pandas
 # pytmp list
-# pytmp run -c 'import sys; print(sys.version)'
-# pytmp run -m pip list
+# pytmp run python -c 'import sys; print(sys.version)'
+# pytmp run python -m pip list
 python="${PYTMP_PYBIN:-$(which python3)}"
 
 echo python: $python
