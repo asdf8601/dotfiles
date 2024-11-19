@@ -8,7 +8,7 @@ matches:
           cmd: "pbpaste > /tmp/espanso-nvim.txt && wezterm -e zsh -c 'source ~/.profile && source ~/.zshrc && nvim /tmp/espanso-nvim.txt' && cat /tmp/espanso-nvim.txt"
 
   - trigger: ":setup:"
-    replace: "apt update -qq && apt install -qq -y curl && curl -#fLo- 'https://gist.github.com/mmngreco/ef7af0db1a9a70c0c73337f5788b0072/raw/setup-container.sh' | sh"
+    replace: "apt update -qq && apt install -qq -y curl && curl -#fLo- 'https://gist.github.com/asdf8601/ef7af0db1a9a70c0c73337f5788b0072/raw/setup-container.sh' | sh"
 
   - trigger: ":toma:"
     replace: https://media.giphy.com/media/ejJclNX60XyEo555wW/giphy.gif
