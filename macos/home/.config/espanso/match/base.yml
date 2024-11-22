@@ -13,19 +13,19 @@ matches:
   - trigger: ":toma:"
     replace: https://media.giphy.com/media/ejJclNX60XyEo555wW/giphy.gif
 
-  - trigger: ":crying:"
+  - trigger: ":cry:"
     replace: https://media.giphy.com/media/gjZUmIYSb6bacxzVh2/giphy.gif
 
   - trigger: ":rolling:"
     replace: https://media.giphy.com/media/lcySndwSDLxC4eOU86/giphy.gif
 
-  - trigger: ":NOOO:"
+  - trigger: ":NO:"
     replace: https://giphy.com/clips/theoffice-lkibHaGO1xmJXapEdq
 
   - trigger: ":letsdothis:"
     replace: https://media.giphy.com/media/BpGWitbFZflfSUYuZ9/giphy.gif
 
-  - trigger: ":apatico:"
+  - trigger: ":meh:"
     replace: https://media.giphy.com/media/BY8ORoRpnJDXeBNwxg/giphy.gif
 
   - trigger: ":dance:"
@@ -88,7 +88,7 @@ matches:
         params:
           cmd: "pbpaste | sed 's/;gpt//' | ~/.local/bin/espanso_gpt"
 
-  - trigger: ";babel"
+  - trigger: ";tra"
     replace: "{{out}}"
     force_clipboard: true
     vars:
@@ -147,7 +147,7 @@ matches:
         params:
           cmd: "python3 ~/.local/bin/passgen"
 
-  - trigger: ";myip"
+  - trigger: ";ip"
     replace: "{{output}}"
     vars:
       - name: output
@@ -192,6 +192,15 @@ matches:
         params:
           format: "%A %Y-%m-%d"
 
+  - trigger: ";ts"
+    replace: "{{mydate}}"
+    force_clipboard: true
+    vars:
+      - name: mydate
+        type: date
+        params:
+          format: "%Y-%m-%d %H:%M:00"
+
   - trigger: ";date"
     replace: "{{mydate}}"
     force_clipboard: true
@@ -221,7 +230,7 @@ matches:
     replace: asdf8601@gmail.com
 
   - trigger: ";name"
-    replace: Maximiliano Greco
+    replace: Max G.
 
   - trigger: ";link"
     replace: "[$|$]({{clipboard}})"
@@ -249,6 +258,6 @@ matches:
   - trigger: ";code"
     force_clipboard: true
     replace: |-
-      ```python
+      ```
       $|$
       ```
