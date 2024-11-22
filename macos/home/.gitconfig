@@ -55,7 +55,7 @@
 
 	st = status -s
 	cl = clone
-	ci = "!f() { if [ $# -eq 0 ]; then gpt \"Generate commit message for: \n$(git diff --cached)\" | git commit -F -; else git commit $@; fi }; f"
+	ci = "!f() { if [ $# -eq 0 ]; then sgpt cm \"$(git diff --cached)\" | git commit -F -; else git commit $@; fi }; f"
 	co = "!f() { if [ $# -eq 0 ]; then git branch -a | grep -v HEAD | fzf | sed 's/.* //' | sed 's#remotes/[^/]*/##'; else git checkout $@; fi }; f"
 	br = branch
 	r = reset
