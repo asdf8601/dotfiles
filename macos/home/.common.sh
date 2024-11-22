@@ -617,9 +617,9 @@ alias nivm.='nvim .'
 function tasks() {
     ext=${1:-py}
     if command -v rg &> /dev/null; then
-        rg --hidden -g "*.$ext" "TODO|FIXME|XXX|\?\?\?|HACK|BUG" . 2>/dev/null
+        rg --hidden -g "*.$ext" "TODO:|FIXME:|XXX:|\?\?\?:|HACK:|BUG:" . 2>/dev/null
     else
-        grep --exclude-dir=.git -rEIn "TODO|FIXME|XXX|\?\?\?|HACK|BUG" ./**/*.$ext 2>/dev/null
+        grep --exclude-dir=.git -rEIn "TODO:|FIXME:|XXX:|\?\?\?:|HACK:|BUG:" ./**/*.$ext 2>/dev/null
     fi
 }
 
