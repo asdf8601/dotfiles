@@ -1,0 +1,254 @@
+matches:
+  - trigger: ":edit:"
+    replace: "{{output}}"
+    vars:
+      - name: output
+        type: shell
+        params:
+          cmd: "pbpaste > /tmp/espanso-nvim.txt && wezterm -e zsh -c 'source ~/.profile && source ~/.zshrc && nvim /tmp/espanso-nvim.txt' && cat /tmp/espanso-nvim.txt"
+
+  - trigger: ":setup:"
+    replace: "apt update -qq && apt install -qq -y curl && curl -#fLo- 'https://gist.github.com/asdf8601/ef7af0db1a9a70c0c73337f5788b0072/raw/setup-container.sh' | sh"
+
+  - trigger: ":toma:"
+    replace: https://media.giphy.com/media/ejJclNX60XyEo555wW/giphy.gif
+
+  - trigger: ":crying:"
+    replace: https://media.giphy.com/media/gjZUmIYSb6bacxzVh2/giphy.gif
+
+  - trigger: ":rolling:"
+    replace: https://media.giphy.com/media/lcySndwSDLxC4eOU86/giphy.gif
+
+  - trigger: ":NOOO:"
+    replace: https://giphy.com/clips/theoffice-lkibHaGO1xmJXapEdq
+
+  - trigger: ":letsdothis:"
+    replace: https://media.giphy.com/media/BpGWitbFZflfSUYuZ9/giphy.gif
+
+  - trigger: ":apatico:"
+    replace: https://media.giphy.com/media/BY8ORoRpnJDXeBNwxg/giphy.gif
+
+  - trigger: ":dance:"
+    replace: https://media.giphy.com/media/l0amJzVHIAfl7jMDos/giphy.gif
+
+  - trigger: ":itstrue:"
+    replace: https://media.giphy.com/media/dXFKDUolyLLi8gq6Cl/giphy.gif
+
+  - trigger: ":tbd:"
+    replace: https://media.giphy.com/media/VmcGXVrh4dHFfjQzrI/giphy.gif
+
+  - trigger: ":awkward:"
+    replace: https://media.giphy.com/media/4ZMsXG1uh6cZTo1F9Y/giphy.gif
+
+  - trigger: ":warmup:"
+    replace: https://media.giphy.com/media/Yz0Gp8s9jKqRy/giphy.gif
+
+  - trigger: ";zen"
+    replace: "{{quote}}"
+    vars:
+      - name: quote
+        type: shell
+        params:
+          cmd: "zen"
+
+  - trigger: ";lannisterq"
+    replace: "{{quote}}"
+    vars:
+      - name: quote
+        type: shell
+        params:
+          cmd: "lannister"
+
+  - trigger: ";stoic"
+    replace: "{{quote}}"
+    vars:
+      - name: quote
+        type: shell
+        params:
+          cmd: "stoic"
+
+  - trigger: ">h"
+    replace: "> # @today "
+
+  - trigger: ">hh"
+    replace: "> ## @today "
+
+  - trigger: ",h"
+    replace: "# @today "
+
+  - trigger: ",hh"
+    replace: "## @today "
+
+  - trigger: ";gp"
+    replace: "{{out}}"
+    force_clipboard: true
+    vars:
+      - name: out
+        type: shell
+        params:
+          cmd: "pbpaste | sed 's/;gpt//' | ~/.local/bin/espanso_gpt"
+
+  - trigger: ";babel"
+    replace: "{{out}}"
+    force_clipboard: true
+    vars:
+      - name: out
+        type: shell
+        params:
+          cmd: "pbpaste | sed 's/;babel//' | ~/.local/bin/espanso_gpt_trad"
+
+  - trigger: ";fix"
+    replace: "{{out}}"
+    force_clipboard: true
+    vars:
+      - name: out
+        type: shell
+        params:
+          cmd: "pbpaste | sed 's/;fix//' | ~/.local/bin/espanso_gpt_fix"
+
+  - trigger: ";retro"
+    force_clipboard: true
+    replace: |-
+      1. Max 🔴🟡🟢
+      🔁
+        - item
+      ✅
+        - item
+      🧩🧩
+
+  - trigger: ";draft"
+    replace: |-
+      ---
+      title: "Title"
+      date: {{date}}
+      draft: false
+      categories: ["programming"]
+      labels: ["spanish"]
+      ---
+    vars:
+      - name: date
+        type: match
+        params:
+          trigger: ";date"
+
+  - trigger: ";today"
+    replace: "/heading 3\n@Today \n"
+
+  - trigger: ";plt"
+    replace: |-
+      from matplotlib import pyplot as plt
+      plt.show()
+
+  - trigger: ";pass"
+    replace: "{{out}}"
+    vars:
+      - name: out
+        type: shell
+        params:
+          cmd: "python3 ~/.local/bin/passgen"
+
+  - trigger: ";myip"
+    replace: "{{output}}"
+    vars:
+      - name: output
+        type: shell
+        params:
+          cmd: "curl 'https://api.ipify.org'"
+
+  - trigger: ";details"
+    replace: |-
+      <details><summary>Click to expand</summary>
+
+      </details>
+
+  - trigger: ";fold"
+    replace: |-
+      <details><summary>Click to expand</summary>
+
+      </details>
+
+  - trigger: ";import"
+    replace: |
+      import pandas as pd
+      import numpy as np
+      from matplotlib import pyplot as plt
+
+  - trigger: ":linestyle:"
+    replace: linkStyle default interpolate basis
+
+  - trigger: ":h2 date:"
+    replace: "{{mydate}}"
+    vars:
+      - name: mydate
+        type: date
+        params:
+          format: "## %A %Y-%m-%d"
+
+  - trigger: ";Date"
+    replace: "{{mydate}}"
+    vars:
+      - name: mydate
+        type: date
+        params:
+          format: "%A %Y-%m-%d"
+
+  - trigger: ";date"
+    replace: "{{mydate}}"
+    force_clipboard: true
+    vars:
+      - name: mydate
+        type: date
+        params:
+          format: "%Y-%m-%d"
+
+  - trigger: ";time"
+    replace: "{{time}}"
+    vars:
+      - name: time
+        type: date
+        params:
+          format: "%H:%M"
+
+  - trigger: ";month"
+    replace: "{{date}}"
+    vars:
+      - name: date
+        type: date
+        params:
+          format: "%B %Y"
+
+  - trigger: ";mail"
+    replace: mmngreco@gmail.com
+
+  - trigger: ";name"
+    replace: Maximiliano Greco
+
+  - trigger: ";link"
+    replace: "[$|$]({{clipboard}})"
+    vars:
+    - name: "clipboard"
+      type: "clipboard"
+
+  - trigger: ";a"
+    replace: "<a href=\"{{clipboard}}\" />$|$</a>"
+    vars:
+    - name: "clipboard"
+      type: "clipboard"
+
+  - trigger: ";mmd"
+    force_clipboard: true
+    replace: |-
+      ```mermaid
+      flowchart LR
+      a --> b --> c
+      $|$
+
+      %% linkStyle 0,2 stroke:none
+      ```
+
+  - trigger: ";code"
+    force_clipboard: true
+    replace: |-
+      ```python
+      $|$
+      ```
