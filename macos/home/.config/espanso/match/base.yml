@@ -86,7 +86,7 @@ matches:
       - name: out
         type: shell
         params:
-          cmd: "pbpaste | sed 's/;gp//' | ~/.local/bin/espanso_gpt"
+          cmd: "pbpaste | sed 's/;gpt//' | ~/.local/bin/espanso_gpt"
 
   - trigger: ";babel"
     replace: "{{out}}"
@@ -218,7 +218,7 @@ matches:
           format: "%B %Y"
 
   - trigger: ";mail"
-    replace: mmngreco@gmail.com
+    replace: asdf8601@gmail.com
 
   - trigger: ";name"
     replace: Maximiliano Greco

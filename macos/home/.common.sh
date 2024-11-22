@@ -4,6 +4,9 @@
 export DOTFILES_SRC="$HOME/.dotfiles"
 export DOTFILES_HOME="$HOME/.dotfiles"
 
+export PIP_REQUIRE_VIRTUALENV=true
+export DOTFILES_ROOT=$HOME/.dotfiles
+
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 export SSH_KEY_PATH="~/.ssh/rsa_id"
 export EDITOR="nvim"
@@ -12,7 +15,7 @@ export AUTOENV_ENV_FILENAME=".autoenv"
 export AUTOENV_ASSUME_YES=1
 
 export GEM_HOME="$HOME/.gem"
-export DEFAULT_IMG=mmngreco/dev:latest
+export DEFAULT_IMG=asdf8601/dev:latest
 export MYGITPROJECTS="$HOME/github"
 export MYVIMRC="$HOME/.config/nvim/init.lua"
 export KITTY_LISTEN_ON=unix:/tmp/mykitty-$PPID
@@ -59,8 +62,8 @@ kx() {
 }
 
 blog() {
-    # blog_home="$HOME/github.com/mmngreco/mmngreco.github.io"
-    blog_home="$HOME/github.com/mmngreco/blog"
+    # blog_home="$HOME/github.com/asdf8601/asdf8601.github.io"
+    blog_home="$HOME/github.com/asdf8601/blog"
     EDITOR=nvim
     case $1 in
         help)
@@ -120,14 +123,14 @@ blog() {
     esac
 }
 
-sourcePattern() {
-    folder=$1
-    pattern=$2
-    for hidden in $(find $folder -name $pattern -type f)
-    do
-        source $hidden
-    done
-}
+# sourcePattern() {
+#     folder=$1
+#     pattern=$2
+#     for hidden in $(find $folder -name $pattern -type f)
+#     do
+#         source $hidden
+#     done
+# }
 
 addToMyGitProjects(){
     if [[ "$MYGITPROJECTS" != *"$1"*  ]]; then
@@ -162,7 +165,7 @@ recordingStop() {
 
 
 set_rand_wallpaper(){
-    find ~/github/mmngreco/wallpapers \
+    find ~/github.com/asdf8601/wallpapers \
         -type f \
         -not -name "README.md" \
         -not -path "*/.git/*" \
@@ -233,7 +236,7 @@ dfix() {
 drun() {
 
     DIR=$PWD
-    IMAGE_NAME=${1:-mmngreco/dev:0.3.2}
+    IMAGE_NAME=${1:-asdf8601/dev:0.3.2}
     echo Container name:
     echo $CONTAINER_NAME
 
@@ -625,7 +628,7 @@ alias ak='ack-grep'
 
 # github.com
 alias gist='xdg-open https://gist.github.com/'
-alias sgist="https://gist.github.com/search?q=user%3Ammngreco&ref=simplesearch"
+alias sgist="https://gist.github.com/search?q=user%3Aasdf8601&ref=simplesearch"
 
 
 # tmux
@@ -679,8 +682,8 @@ alias s="kitty +kitten ssh"
 alias dotcmd='mxm'
 alias cd.='. dotcmd cd'
 
-alias snip='pushd_edit_pop ~/github/mmngreco/snippets'
-alias scio='pushd_edit_pop ~/github/mmngreco/scio'
+alias snip='pushd_edit_pop ~/github/asdf8601/snippets'
+alias scio='pushd_edit_pop ~/github/asdf8601/scio'
 alias tasks='grep --exclude-dir=.git -rEIn "TODO|FIXME|XXX|\?\?\?|HACK|BUG" ./**/*.py 2>/dev/null'
 alias nvim.='nvim .'
 
@@ -739,9 +742,11 @@ addToMyGitProjects $HOME/gitlab
 # }}}
 
 # source {{{
-sourcePattern $DOTFILES "*.secret"
-sourcePattern $DOTFILES "*.hide"
-sourcePattern $DOTFILES_SRC/personal "*.hide"
+# sourcePattern $DOTFILES "*.secret"
+# sourcePattern $DOTFILES "*.hide"
+# sourcePattern $DOTFILES_SRC/personal "*.hide"
+source $DOTFILES_SRC/personal/.custom.hide
+source $DOTFILES_SRC/personal/.seedtag.hide
 # }}}
 
 py-here() {
@@ -749,8 +754,8 @@ py-here() {
     mkdir -p  ${name}/{tests,docs}
     touch ${name}/{Makefile,pyproject.toml,${name}.py}
     # you can always make the following steps optionals
-    curl -sSL https://gist.githubusercontent.com/mmngreco/2a371093fcb704fbff771e39479e75dc/raw/pyproject.toml | sed "s/\${name}/${name}/g" > ${name}/pyproject.toml
-    curl -sSL https://gist.githubusercontent.com/mmngreco/2a371093fcb704fbff771e39479e75dc/raw/Makefile > ${name}/Makefile
+    curl -sSL https://gist.githubusercontent.com/asdf8601/2a371093fcb704fbff771e39479e75dc/raw/pyproject.toml | sed "s/\${name}/${name}/g" > ${name}/pyproject.toml
+    curl -sSL https://gist.githubusercontent.com/asdf8601/2a371093fcb704fbff771e39479e75dc/raw/Makefile > ${name}/Makefile
     curl -L -s https://www.gitignore.io/api/python > ${name}/.gitignore
     cd ${name} && git init && git add . && git commit -m "add files"
 }
