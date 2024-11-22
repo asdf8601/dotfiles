@@ -50,9 +50,10 @@ command -v mise > /dev/null 2>&1 && eval "$(mise activate zsh)"
 
 addToPath /opt/homebrew/bin
 addToPath ~/.pixi/bin
-addToPath "$HOMEBREW_PREFIX/opt/gnu-sed/libexec/gnubin"
 addToPath ~/.rye/shims
-addToPathFront /opt/homebrew/opt/gnu-sed/libexec/gnubin
+
+addToPathFront $HOMEBREW_PREFIX/opt/gnu-sed/libexec/gnubin
+addToPathFront /opt/nvim/bin
 
 alias pyin='source ./.venv/bin/activate'
 alias pyout='deactivate'

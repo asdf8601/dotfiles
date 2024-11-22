@@ -326,18 +326,19 @@ newProject () {
     cd $dir/$prj
 }
 
-fzfProjects () {
+project () {
     # Print out the abslute path of every project (which has .git) at HOME dir.
     # query="${1:-tesser}"
     selectProjectFzf $@
 }
 
-cdProjects () {
+p () {
     # Change directory to a project using fzf
     cd $(fzfProjects $@)
 }
 
-nvp () {
+ep () {
+    # edit project
     # neovim project
     query="${1}"
     fzfProjects $query | xargs -I DIR bash -c "pushd DIR > /dev/null && nvim DIR && popd > /dev/null"
@@ -374,7 +375,7 @@ txw() {
 
 csl () {
     # cheat sheet pipe less
-    cs $@ | less
+    chsl $@ | less
 }
 
 function extract_and_remove {
@@ -382,86 +383,11 @@ function extract_and_remove {
   rm -f $1
 }
 
-# function abspath() {
-#     if [ -d "$1" ]; then
-#         echo "$(cd $1; pwd)"
-#     elif [ -f "$1" ]; then
-#         if [[ $1 == */* ]]; then
-#             echo "$(cd ${1%/*}; pwd)/${1##*/}"
-#         else
-#             echo "$(pwd)/$1"
-#         fi
-#     fi
-# }
-#
-
 function gi() { curl -L -s https://www.gitignore.io/api/$@ ;}
 
 
-# nq() { d=$(basename "$PWD"); nd=$(printf "../ex%02d*/" $((${d:2:2}+1))); cd $nd ; }
-
-# to go to directory of previous question
-# pq() { d=$(basename "$PWD"); pd=$(printf "../ex%02d*/" $((${d:2:2}-1))); cd $pd ; }
-
 # =============================================================================
 # Git
-
-is_in_git_repo() {
-  git rev-parse HEAD > /dev/null 2>&1
-}
-
-_gf() {
-  # Selects git file
-  is_in_git_repo &&
-    git -c color.status=always status --short |
-    fzf --height 40% -m --ansi --nth 2..,.. | awk '{print $2}'
-}
-
-_gb() {
-  # Selects git branch
-  is_in_git_repo &&
-    git branch -a -vv --color=always | grep -v '/HEAD\s' |
-    fzf --height 40% --ansi --multi --tac | sed 's/^..//' | awk '{print $1}' |
-    sed 's#^remotes/[^/]*/##'
-}
-
-_gt() {
-  # Selects git tag
-  is_in_git_repo &&
-    git tag --sort -version:refname |
-    fzf --height 40% --multi
-}
-
-_gh() {
-  # Select git commit from the history
-  is_in_git_repo &&
-    git log --date=short --format="%C(green)%C(bold)%cd %C(auto)%h%d %s (%an)" --graph |
-    fzf --height 40% --ansi --no-sort --reverse --multi | grep -o '[a-f0-9]\{7,\}'
-}
-
-_gr() {
-  # Select git remotes
-  is_in_git_repo &&
-    git remote -v | awk '{print $1 " " $2}' | uniq |
-    fzf --height 40% --tac | awk '{print $1}'
-}
-
-parse_git_branch () {
-    git name-rev HEAD 2> /dev/null | sed 's#HEAD\ \(.*\)# [git:\1]#'
-}
-
-parse_svn_branch() {
-    parse_svn_url | sed -e 's#^'"$(parse_svn_repository_root)"'##g' | awk -F / '{print " [svn:" $2 "]"}'
-}
-
-parse_svn_url() {
-    svn info 2>/dev/null | sed -ne 's#^URL: ##p'
-}
-
-parse_svn_repository_root() {
-    svn info 2>/dev/null | grep -e '^Repository Root:*' | sed -e 's#^Repository Root: *\(.*\)#\1\/#g '
-    #svn info 2>/dev/null | sed -ne 's#^Repository Root: ##p'
-}
 
 pyright-config-here() {
     cp $DOTFILES/python/pyrightconfig.json .
@@ -684,8 +610,18 @@ alias cd.='. dotcmd cd'
 
 alias snip='pushd_edit_pop ~/github/asdf8601/snippets'
 alias scio='pushd_edit_pop ~/github/asdf8601/scio'
-alias tasks='grep --exclude-dir=.git -rEIn "TODO|FIXME|XXX|\?\?\?|HACK|BUG" ./**/*.py 2>/dev/null'
 alias nvim.='nvim .'
+alias nivm.='nvim .'
+
+
+function tasks() {
+    ext=${1:-py}
+    if command -v rg &> /dev/null; then
+        rg --hidden -g "*.$ext" "TODO|FIXME|XXX|\?\?\?|HACK|BUG" . 2>/dev/null
+    else
+        grep --exclude-dir=.git -rEIn "TODO|FIXME|XXX|\?\?\?|HACK|BUG" ./**/*.$ext 2>/dev/null
+    fi
+}
 
 # Linux specific {
 if [[ "$OSTYPE" == "linux"* ]]; then
