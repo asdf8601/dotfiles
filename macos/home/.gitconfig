@@ -56,7 +56,7 @@
 	st = status -s
 	cl = clone
 	ci = "!f() { if [ $# -eq 0 ]; then sgpt cm \"$(git diff --cached)\" | git commit -F -; else git commit $@; fi }; f"
-	co = "!f() { if [ $# -eq 0 ]; then git branch -a | grep -v HEAD | fzf | sed 's/.* //' | sed 's#remotes/[^/]*/##'; else git checkout $@; fi }; f"
+	co = "!f() { if [ $# -eq 0 ]; then git branch -a | grep -v HEAD | fzf --height 5 | sed 's/.* //' | sed 's#remotes/[^/]*/##' | xargs -r git checkout ; else git checkout $@; fi }; f"
 	br = branch
 	r = reset
 	cp = cherry-pick

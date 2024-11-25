@@ -189,34 +189,6 @@ ipytdd ()  {
         ipytdd
     fi
 }
-
-
-# conda {{
-conda-here () {
-    # conda-here [prefix] [*conda-args]
-    local prefix="${1:-$PWD/.venv/$(echo $pyver | tr -d = | tr -d .)}"
-    local pyver="python=3.10"
-
-    if [ $# -eq 0 ]; then
-        conda create --prefix $prefix $pyver pip -y
-    else
-        conda create --prefix $prefix ${@:2}
-    fi
-
-    conda activate "$(abspath $prefix)"
-
-    if [ ! -f ./$AUTOENV_ENV_FILENAME ]; then
-        echo conda activate \""$(abspath $prefix)"\" >> $AUTOENV_ENV_FILENAME
-        echo $AUTOENV_ENV_FILENAME >> .gitignore
-    fi
-}
-
-
-conda-activate() {
-    local prefix="$PWD/.venv"
-    local selected=$(find $prefix -maxdepth 1 -mindepth 1 -type d | fzf --select-1 --ansi -q "$1" --height 10%)
-    conda activate $selected
-}
 # }}
 
 # =============================================================================
@@ -310,7 +282,7 @@ selectProjectFzf () {
     # Print out the abslute path of every project (which has .git) at HOME dir.
     # query="${1:-tesser}"
     query="${1}"
-    listProjects | fzf --select-1 --ansi -q "$query" --height 10% -m --bind "space:toggle"
+    project | fzf --select-1 --ansi -q "$query" --height 10% -m --bind "space:toggle"
 }
 
 
@@ -334,7 +306,7 @@ project () {
 
 p () {
     # Change directory to a project using fzf
-    cd $(fzfProjects $@)
+    cd $(project $@)
 }
 
 ep () {
