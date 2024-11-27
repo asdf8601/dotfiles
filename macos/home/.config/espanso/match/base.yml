@@ -79,7 +79,7 @@ matches:
   - trigger: ",hh"
     replace: "## @today "
 
-  - trigger: ";gp"
+  - trigger: ";gpt"
     replace: "{{out}}"
     force_clipboard: true
     vars:
@@ -95,7 +95,7 @@ matches:
       - name: out
         type: shell
         params:
-          cmd: "pbpaste | sed 's/;babel//' | ~/.local/bin/espanso_gpt_trad"
+          cmd: "pbpaste | sed 's/;tra//' | ~/.local/bin/espanso_gpt_trad"
 
   - trigger: ";fix"
     replace: "{{out}}"

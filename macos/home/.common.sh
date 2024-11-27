@@ -282,7 +282,7 @@ selectProjectFzf () {
     # Print out the abslute path of every project (which has .git) at HOME dir.
     # query="${1:-tesser}"
     query="${1}"
-    project | fzf --select-1 --ansi -q "$query" --height 10% -m --bind "space:toggle"
+    listProjectContainers | fzf --select-1 --ansi -q "$query" --height 10% -m --bind "space:toggle"
 }
 
 
@@ -298,22 +298,22 @@ newProject () {
     cd $dir/$prj
 }
 
-project () {
+lsp () {
     # Print out the abslute path of every project (which has .git) at HOME dir.
     # query="${1:-tesser}"
-    selectProjectFzf $@
+    listProjects | fzf --select-1 --ansi --height 10% -q "$1"
 }
 
-p () {
+cdp () {
     # Change directory to a project using fzf
-    cd $(project $@)
+    cd $(lsp $@)
 }
 
 ep () {
     # edit project
     # neovim project
     query="${1}"
-    fzfProjects $query | xargs -I DIR bash -c "pushd DIR > /dev/null && nvim DIR && popd > /dev/null"
+    lsp $query | xargs -I DIR bash -c "pushd DIR > /dev/null && nvim DIR && popd > /dev/null"
 }
 
 
