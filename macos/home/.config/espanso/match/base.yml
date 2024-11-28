@@ -227,7 +227,7 @@ matches:
           format: "%B %Y"
 
   - trigger: ";mail"
-    replace: asdf8601@gmail.com
+    replace: asdf0x2199@gmail.com
 
   - trigger: ";name"
     replace: Max G.

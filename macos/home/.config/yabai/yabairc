@@ -47,7 +47,7 @@ yabai -m config window_animation_frame_rate  0
 yabai -m config window_opacity_duration      0.0
 
 yabai -m config active_window_opacity        1.0
-yabai -m config normal_window_opacity        0.90
+yabai -m config normal_window_opacity        0.8
 yabai -m config window_opacity               off
 yabai -m config insert_feedback_color        0xffd75f5f
 yabai -m config active_window_border_color   0xff775759
@@ -83,7 +83,7 @@ yabai -m rule --add app="^kitty$" manage=off
 yabai -m rule --add app="^Telegram$" manage=off
 yabai -m rule --add app="^iTerm2$" manage=off
 yabai -m rule --add app="^PureVPN Beta$" manage=off
-yabai -m rule --add app="^Spotify$" manage=off space=7
+yabai -m rule --add app="Spotify" manage=off space=7
 yabai -m rule --add app="^Karabiner-Elements$" manage=off
 yabai -m rule --add app="^Jiffy$" manage=off
 yabai -m rule --add app="^Krisp$" manage=off
