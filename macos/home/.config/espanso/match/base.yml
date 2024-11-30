@@ -106,6 +106,18 @@ matches:
         params:
           cmd: "pbpaste | sed 's/;fix//' | ~/.local/bin/espanso_gpt_fix"
 
+  - trigger: ";issue;"
+    force_clipboard: true
+    replace: |-
+      ## Context
+      while x then y
+
+      ## Problem
+      y is a problem because of z
+
+      ## Solution
+      we can try to do a,b,c
+
   - trigger: ";retro"
     force_clipboard: true
     replace: |-
@@ -141,11 +153,12 @@ matches:
 
   - trigger: ";pass"
     replace: "{{out}}"
+    force_clipboard: true
     vars:
       - name: out
         type: shell
         params:
-          cmd: "python3 ~/.local/bin/passgen"
+          cmd: "python -c 'from random import choices as c; import string as s; print(\"\".join(c(s.ascii_letters, k=10) + c(s.digits, k=6) + c(s.punctuation, k=2)))'"
 
   - trigger: ";ip"
     replace: "{{output}}"
@@ -172,6 +185,7 @@ matches:
       import pandas as pd
       import numpy as np
       from matplotlib import pyplot as plt
+      plt.ion()
 
   - trigger: ":linestyle:"
     replace: linkStyle default interpolate basis
@@ -261,3 +275,27 @@ matches:
       ```
       $|$
       ```
+
+  - trigger: ";make;"
+    force_clipboard: true
+    replace: |-
+      ##@ Utility
+      .PHONY: help
+      help:  ## Display this help
+          @awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make <target>\033[36m\033[0m\n"} /^[a-zA-Z\._-]+:.*?##/ { printf "  \033[36m%-15s\033[0m %s\n", $$1, $$2 } /^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
+
+      ##@ dev
+      install:  ## create venv
+          uv venv
+          uv pip install .
+
+  - trigger: ";pyproject;"
+    force_clipboard: true
+    replace: |-
+      [project]
+      name = "test"
+      version = "0.1.0"
+      description = "Add your description here"
+      readme = "README.md"
+      requires-python = ">=3.11"
+      dependencies = []
