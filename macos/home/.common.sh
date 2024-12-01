@@ -621,6 +621,8 @@ pprint() {
 # alias gpt4p='sgpt --model gpt-4-1106-preview'
 alias echo-json='python -c "from rich import print; import sys; print(sys.stdin.buffer.read())"'
 alias echo-print='python -c "from rich import print; import sys; print(sys.stdin.buffer.read())"'
+
+alias rss-monthly='uv run https://gist.githubusercontent.com/asdf8601/60e05c74cd3906a1985b7e78a2224871/raw/rss-monthly.py'
 # }}}
 
 # append to path {{{
