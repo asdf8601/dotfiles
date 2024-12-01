@@ -75,3 +75,8 @@ fi
 calcpy () {
   python -c "print($@)"
 }
+
+
+pyvenv () {
+  python${2:-3} -m venv ${1:-.venv}
+}
