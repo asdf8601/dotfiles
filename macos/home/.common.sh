@@ -525,7 +525,7 @@ alias rmi='rm -i'
 alias ak='ack-grep'
 
 # github.com
-alias gist='xdg-open https://gist.github.com/'
+alias gist='open https://gist.github.com/'
 alias sgist="https://gist.github.com/search?q=user%3Aasdf8601&ref=simplesearch"
 
 
