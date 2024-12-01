@@ -4,7 +4,8 @@ listGitProjects () {
     # find projects using .git folder as reference
     for val in ${MYGITPROJECTS//:/ }; do
         if [ -d "$val" ]; then
-            fd -H -t d -d 4 -g .git /Users/mgreco/github.com -x abspath "{}/.." | sort -u
+            fd -H -t d -d 1 . $val
+            # fd -H -t d -d 4 -g .git $val -x abspath "{}/.." | sort -u
             # find -s $val -maxdepth 4 -mindepth 1 -type d -name '.git' -not -path "**/.git/*" -exec dirname {} \; -exec dirname {} \; | sort -u
         fi
     done
