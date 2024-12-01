@@ -1,2 +1,0 @@
-#!/usr/bin/env bash
-find ~/github/mmngreco/wallpapers -type f -not -name "README.md" -not -path "*/.git/*" | shuf -n1 | xargs -L1 -I IMG hsetroot -fill IMG
