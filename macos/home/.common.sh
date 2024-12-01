@@ -294,35 +294,35 @@ newProject () {
         echo "Enter project name: "
         read prj
     fi
-    mkdir $dir/$prj
-    cd $dir/$prj
+    mkdir -p $dir/$prj
     echo $dir/$prj
 }
 
-lsp () {
+lspjt () {
     # Print out the abslute path of every project (which has .git) at HOME dir.
     # query="${1:-tesser}"
     listProjects | fzf --select-1 --ansi --height 10% -q "$1"
 }
 
-mkp () {
+mkpjt () {
     # make project
     # create a new project using fzf
     # and open it in nvim
-    cd $(newProject $@)
+    pdir="$(newProject $1)"
+    cd $pdir
     nvim .
 }
 
-cdp () {
+cdpjt () {
     # Change directory to a project using fzf
-    cd $(lsp $@)
+    cd $(lspjt $@)
 }
 
 nvp () {
     # edit project
     # neovim project
     query="${1}"
-    lsp $query | xargs -I DIR bash -c "pushd DIR > /dev/null && nvim DIR && popd > /dev/null"
+    lspjt $query | xargs -I DIR bash -c "pushd DIR > /dev/null && nvim DIR && popd > /dev/null"
 }
 
 
