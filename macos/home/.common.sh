@@ -296,6 +296,7 @@ newProject () {
     fi
     mkdir $dir/$prj
     cd $dir/$prj
+    echo $dir/$prj
 }
 
 lsp () {
@@ -304,12 +305,20 @@ lsp () {
     listProjects | fzf --select-1 --ansi --height 10% -q "$1"
 }
 
+mkp {
+    # make project
+    # create a new project using fzf
+    # and open it in nvim
+    cd $(newProject $@)
+    nvim .
+}
+
 cdp () {
     # Change directory to a project using fzf
     cd $(lsp $@)
 }
 
-ep () {
+nvp () {
     # edit project
     # neovim project
     query="${1}"
