@@ -288,41 +288,47 @@ selectProjectFzf () {
 
 newProject () {
     # find projects using .git folder as reference
-    dir=$(listProjectContainers | fzf --select-1 --height 10%)
-    prj=$1
-    if [ -z $prj ]; then
-        echo "Enter project name: "
+    local dir=$(listProjectContainers | fzf --select-1 --height 10%)
+    local prj=$1
+    if [ -z "$prj" ]; then
+        echo -n "Enter project name: "
         read prj
     fi
     mkdir -p $dir/$prj
     echo $dir/$prj
 }
 
-lspjt () {
+lsps () {
     # Print out the abslute path of every project (which has .git) at HOME dir.
     # query="${1:-tesser}"
     listProjects | fzf --select-1 --ansi --height 10% -q "$1"
 }
 
-mkpjt () {
+mkps () {
     # make project
     # create a new project using fzf
     # and open it in nvim
-    pdir="$(newProject $1)"
-    cd $pdir
+    local dir=$(listProjectContainers | fzf --select-1 --height 10%)
+    local prj=$1
+    if [ -z "$prj" ]; then
+        echo -n "Enter project name: "
+        read prj
+    fi
+    mkdir -p $dir/$prj
+    cd $dir/$prj
     nvim .
 }
 
-cdpjt () {
+cdps () {
     # Change directory to a project using fzf
-    cd $(lspjt $@)
+    cd $(lsps $@)
 }
 
-nvp () {
+edps () {
     # edit project
     # neovim project
     query="${1}"
-    lspjt $query | xargs -I DIR bash -c "pushd DIR > /dev/null && nvim DIR && popd > /dev/null"
+    lsps $query | xargs -I DIR bash -c "pushd DIR > /dev/null && nvim DIR && popd > /dev/null"
 }
 
 
