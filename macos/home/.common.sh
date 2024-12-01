@@ -305,7 +305,7 @@ lsp () {
     listProjects | fzf --select-1 --ansi --height 10% -q "$1"
 }
 
-mkp {
+mkp () {
     # make project
     # create a new project using fzf
     # and open it in nvim
