@@ -99,7 +99,11 @@ blog() {
             tmux kill-session -t blog
             ;;
         new)
-            new_post="$(date +"%Y-%m-%d")-post.md"
+            if [ -z "$2" ]; then
+                new_post=$2
+            else
+                new_post="$(date +"%Y-%m-%d")-post.md"
+            fi
             file=content/posts/$new_post
             hugo new content posts/$new_post
             $EDITOR $file
