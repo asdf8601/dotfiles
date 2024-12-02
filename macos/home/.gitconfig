@@ -63,7 +63,9 @@
 	gr = grep -Ii
 	pp = pull --rebase --autostash
 
-	track = "!f() { git branch --set-upstream-to=origin/$(git rev-parse --abbrev-ref HEAD) $(git rev-parse --abbrev-ref HEAD); }; f"
+	here = rev-parse --abbrev-ref HEAD
+
+	track = "!f() { git branch --set-upstream-to=origin/$(git here) $(git here); }; f"
 
 # https://github.com/dandavison/delta/tree/0.8.3#side-by-side-view
 	delta  = "!f() { git diff $@ | DELTA_FEATURES='side-by-side line-numbers navigate' delta ; }; f"
