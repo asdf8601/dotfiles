@@ -159,9 +159,9 @@
 #
 # convoluted aliases {{{
 # grep from root folder
-	gra = "!f() { A=$(pwd) && TOPLEVEL=$(git rev-parse --show-toplevel) && cd $TOPLEVEL && git grep --full-name -In $1 | xargs -I{} echo $TOPLEVEL/{} && cd $A; }; f"
+	gra = "!f() { A=$(pwd) && TOPLEVEL=$(git rev-parse --show-toplevel) && cd $TOPLEVEL && git grep --full-name -In $1 | xargs -I{} echo \"$TOPLEVEL/{}\" && cd $A; }; f"
 #rename branch tree to done-
-	done = "!f() { git branch | grep "$1" | cut -c 3- | grep -v done | xargs -I{} git branch -m {} done-{}; }; f"
+	done = "!f() { git this | xargs -I{} git branch -m {} done-{}; }; f"
 # }}}
 # worktree list {{{
 	wl = worktree list
