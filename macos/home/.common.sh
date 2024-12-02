@@ -104,11 +104,10 @@ blog() {
             else
                 new_post="$(date +"%Y-%m-%d")-post.md"
             fi
-            file=content/posts/$new_post
             hugo new content posts/$new_post
+            file=$blog_home/posts/$new_post
             $EDITOR $file
-            # git add $file
-            # git commit -m "enh(content): Add $new_post"
+            git add $file
             ;;
         edit)
             file=$(find . -type f | fzf --preview 'bat --color=always {}')
