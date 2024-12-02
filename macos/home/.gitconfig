@@ -161,7 +161,7 @@
 # grep from root folder
 	gra = "!f() { A=$(pwd) && TOPLEVEL=$(git rev-parse --show-toplevel) && cd $TOPLEVEL && git grep --full-name -In $1 | xargs -I{} echo \"$TOPLEVEL/{}\" && cd $A; }; f"
 #rename branch tree to done-
-	done = "!f() { git this | xargs -I{} git branch -m {} done-{}; }; f"
+	done = "!f() { git here | xargs -I{} git branch -m {} done-{}; }; f"
 # }}}
 # worktree list {{{
 	wl = worktree list
