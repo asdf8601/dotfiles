@@ -2,12 +2,12 @@
 set -e
 
 goDotfiles() {
-    pushd $DOTFILES > /dev/null
+    pushd $DOTFILES_ROOT/macos/ > /dev/null
 }
 
 
 dotfilesCommit() {
-    cd $DOTFILES
+    cd $DOTFILES_ROOT/macos/
     case $1 in
         all)
             dotfilesCommit && \
@@ -35,7 +35,7 @@ dotfilesSubmodulesCmd() {
 }
 
 dotfilesPull () {
-    cd $DOTFILES_SRC
+    cd $DOTFILES_ROOT/macos/_SRC
     git fetch && git pull
     echo
     dotfilesSubmodulesCmd 'git pull'
@@ -46,7 +46,7 @@ dotfilesPull () {
 
 dotfilesPush () {
 
-    cd $DOTFILES_SRC
+    cd $DOTFILES_ROOT/macos/_SRC
     git fetch && git push
     dotfilesSubmodulesCmd 'git fetch && git push'
     popd > /dev/null
@@ -55,15 +55,15 @@ dotfilesPush () {
 
 
 dotfilesStatus() {
-    cd $DOTFILES_SRC
+    cd $DOTFILES_ROOT/macos/_SRC
     git status
     dotfilesSubmodulesCmd 'git status'
 }
 
 
 dotfilesSource() {
-    if [[ -z "$DOTFILES" ]]; then
-        export DOTFILES="${1:-$HOME/.dotfiles}"
+    if [[ -z "$DOTFILES_ROOT/macos/" ]]; then
+        export DOTFILES_ROOT/macos/="${1:-$HOME/.dotfiles}"
     fi
     source ~/.common.sh
 }
@@ -71,9 +71,9 @@ dotfilesSource() {
 
 dotfilesLink() {
     so=${1-ubuntu}
-    config="$DOTFILES_SRC/$so/$so.yaml"
+    config="$DOTFILES_ROOT/macos/_SRC/$so/$so.yaml"
     echo "Linking dotfiles using $config"
-    cd $DOTFILES_SRC
+    cd $DOTFILES_ROOT/macos/_SRC
     ./install -Q -c $config
 }
 
@@ -82,7 +82,7 @@ dotfilesInstall() {
     if [[ -z "$@" ]]
     then
         echo Here is the list of available scripts:
-        find $DOTFILES/install/ \
+        find $DOTFILES_ROOT/macos/install/ \
             | fzf --select-1 --height 50% --layout reverse --multi --bind "space:toggle" \
             | xargs -I FILES bash -c "FILES"
     else
@@ -90,7 +90,7 @@ dotfilesInstall() {
         for pkg in "$@"
         do
             echo Installing $pkg
-            bash $DOTFILES/install/$pkg
+            bash $DOTFILES_ROOT/macos/install/$pkg
         done
     fi
 }
@@ -127,7 +127,7 @@ dotfiles() {
         e)
             dotfiles edit ;;
         edit)
-            pushd $DOTFILES > /dev/null
+            pushd $DOTFILES_ROOT/macos/ > /dev/null
             nvim .
             popd > /dev/null
             ;;
