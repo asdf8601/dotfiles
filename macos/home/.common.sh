@@ -99,6 +99,7 @@ blog() {
             tmux kill-session -t blog
             ;;
         new)
+            cd $blog_home
             if [ -z "$2" ]; then
                 new_post=$2
             else
