@@ -106,7 +106,7 @@ blog() {
                 new_post="$(date +"%Y-%m-%d")-post.md"
             fi
             hugo new content posts/$new_post
-            file=$blog_home/posts/$new_post
+            file=$blog_home/content/posts/$new_post
             $EDITOR $file
             git add $file
             ;;
