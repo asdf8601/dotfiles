@@ -100,7 +100,7 @@ blog() {
             ;;
         new)
             cd $blog_home
-            if [ -z "$2" ]; then
+            if [ -n "$2" ]; then
                 new_post=$2
             else
                 new_post="$(date +"%Y-%m-%d")-post.md"
