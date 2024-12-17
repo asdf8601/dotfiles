@@ -443,12 +443,12 @@ takt-git () {
 
 # aliases {{{
 
+alias hadolint='docker run --rm -i hadolint/hadolint < '
 alias widgets='nvim "~/Library/Application Support/Übersicht/widgets/"'
 
 # kubernets
-alias fkpod='kubectl get pods | fzf | awk "{print \$1}" | pbcopy && sleep 0.06 && pbpaste'
-alias fklog='fkpod | xargs -I{} kubectl logs {}'
-alias klog='kubectl logs'
+alias kpod='kubectl get pods | fzf | awk "{print \$1}" | pbcopy && sleep 0.06 && pbpaste'
+alias klog='fkpod | xargs -I{} kubectl logs {}'
 
 alias k=kubectl
 alias pods='kubectl get pods'

@@ -299,3 +299,18 @@ matches:
       readme = "README.md"
       requires-python = ">=3.11"
       dependencies = []
+
+
+  - trigger: ";multithread;"
+    force_clipboard: true
+    replace: |-
+      from concurrent.futures import ThreadPoolExecutor
+      with ThreadPoolExecutor() as executor:
+          out = executor.map(func, files)
+
+  - trigger: ";multiprocess;"
+    force_clipboard: true
+    replace: |-
+      from concurrent.futures import ProcessPoolExecutor
+      with ProcessPoolExecutor() as executor:
+          out = executor.map(func, files)
