@@ -448,7 +448,7 @@ alias widgets='nvim "~/Library/Application Support/Übersicht/widgets/"'
 
 # kubernets
 alias kpod='kubectl get pods | fzf | awk "{print \$1}" | pbcopy && sleep 0.06 && pbpaste'
-alias klog='fkpod | xargs -I{} kubectl logs {}'
+alias klog='kpod | xargs -I{} kubectl logs {}'
 
 alias k=kubectl
 alias pods='kubectl get pods'
