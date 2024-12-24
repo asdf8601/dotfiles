@@ -443,6 +443,9 @@ takt-git () {
 
 # aliases {{{
 
+alias pyin='source ./.venv/bin/activate'
+alias pyout='deactivate'
+
 alias hadolint='docker run --rm -i hadolint/hadolint < '
 alias widgets='nvim "~/Library/Application Support/Übersicht/widgets/"'
 
@@ -690,7 +693,7 @@ py-here() {
 }
 
 
-mcn() {
+mkcdvim() {
     folder=$1
     file=$2
     mkdir -p $folder
@@ -729,4 +732,23 @@ gpt-pr() {
     echo $prompt
     sgpt --model gpt-4o --chat pr "$prompt"
 }
+
+
+vrcp () {
+  cd $HOME/.config/nvim && \
+  git commit -am "${1:-automatic commit}" && \
+  git push && \
+  cd -
+}
+
+
+calcpy () {
+  python -c "print($@)"
+}
+
+
+pyvenv () {
+  python${2:-3} -m venv ${1:-.venv}
+}
+
 # }}}
