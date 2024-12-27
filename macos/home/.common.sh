@@ -22,7 +22,6 @@ export KITTY_LISTEN_ON=unix:/tmp/mykitty-$PPID
 
 if [[ "$OSTYPE" != "darwin"* ]]; then
     # linux config only
-    export CONDA_DIR="$HOME/miniconda3"
     export GDK_BACKEND=x11
     export GTK_THEME=Materia:dark:compact
 fi
@@ -540,11 +539,11 @@ alias lsd='ls -d .*'
 alias ll='ls -alF'
 
 # Various
-alias h='history | tail'
-alias hg='history | grep'
-alias mvi='mv -i'
-alias rmi='rm -i'
-alias ak='ack-grep'
+# alias h='history | tail'
+# alias hg='history | grep'
+# alias mvi='mv -i'
+# alias rmi='rm -i'
+# alias ak='ack-grep'
 
 # github.com
 alias gist='open https://gist.github.com/'
@@ -552,11 +551,11 @@ alias sgist="https://gist.github.com/search?q=user%3Aasdf8601&ref=simplesearch"
 
 
 # tmux
-alias tn='tmux set -g mode-mouse on'
-alias tf='tmux set -g mode-mouse off'
+# alias tn='tmux set -g mode-mouse on'
+# alias tf='tmux set -g mode-mouse off'
+# alias tks="tmux kill-session"
 alias tmux='tmux -2'
 alias t=txs
-alias tks="tmux kill-session"
 alias tkill="tmux kill-server"
 
 # RC files
@@ -567,16 +566,16 @@ alias brc="nvim ~/.bashrc +'cd ~/'"
 alias reload="exec $SHELL"
 
 # system
-alias sai="sudo apt install"
-alias sau="sudo apt update"
-alias sag="sudo apt upgrade"
-alias sas="sudo apt search"
+# alias sai="sudo apt install"
+# alias sau="sudo apt update"
+# alias sag="sudo apt upgrade"
+# alias sas="sudo apt search"
 
 # conda
-alias ccn="conda create -n"
-alias cel="conda env list"
-alias crn="conda remove -n"
-alias ca="conda activate"
+# alias ccn="conda create -n"
+# alias cel="conda env list"
+# alias crn="conda remove -n"
+# alias ca="conda activate"
 
 
 alias serve="browser-sync start --server --files . --no-notify --port 9000"
@@ -643,40 +642,13 @@ pprint() {
 # alias gpt4p='sgpt --model gpt-4-1106-preview'
 alias echo-json='python -c "from rich import print; import sys; print(sys.stdin.buffer.read())"'
 alias echo-print='python -c "from rich import print; import sys; print(sys.stdin.buffer.read())"'
-
-alias rss-monthly='uv run https://gist.githubusercontent.com/asdf8601/60e05c74cd3906a1985b7e78a2224871/raw/rss-monthly.py'
+alias blog-monthly='uv run https://gist.githubusercontent.com/asdf8601/60e05c74cd3906a1985b7e78a2224871/raw/rss-monthly.py'
 # }}}
 
 # append to path {{{
-# bin
-addToPath "/usr/local/bin"
-addToPath "$HOME/bin"
-addToPath "$HOME/.cargo/bin"
-addToPath "$HOME/.local/bin"
-addToPath "$HOME/.deno/bin"
-# go
-addToPathFront "$HOME/go/bin"
-addToPathFront "/home/mgreco/.go/bin"
-addToPathFront "/usr/local/go/bin"
-# db
-addToPathFront "/opt/mssql-tools/bin"
-addToPath "/opt/mssql-tools/bin"
-# ruby
-addToPathFront "$GEM_HOME/bin"
-# nim
-addToPathFront "/home/mgreco/.nimble/bin"
-
-# projects folders
-addToMyGitProjects $HOME/github.com
-addToMyGitProjects $HOME/gitlab.com
-addToMyGitProjects $HOME/github
-addToMyGitProjects $HOME/gitlab
 # }}}
 
 # source {{{
-# sourcePattern $DOTFILES "*.secret"
-# sourcePattern $DOTFILES "*.hide"
-# sourcePattern $DOTFILES_SRC/personal "*.hide"
 source $DOTFILES_SRC/personal/.custom.hide
 source $DOTFILES_SRC/personal/.seedtag.hide
 # }}}
@@ -703,7 +675,7 @@ mkcdvim() {
 
 # gpt {{{
 
-function git-br-clean {
+git-br-clean() {
     git fetch -p origin
     git branch -vv | grep 'origin/.*: gone]' | awk '{print $1}' | xargs git branch -d
 }
