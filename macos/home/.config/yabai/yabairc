@@ -69,14 +69,14 @@ yabai -m config layout                       bsp
 
 # RULES {{{
 # fix space number for the following applications
-yabai -m rule --add app="^WezTerm$" space=1
+yabai -m rule --add app="^Ghostty$" space=1
+yabai -m rule --add app="^WezTerm$" manage=off
 yabai -m rule --add app="^Chrome$" space=2
 yabai -m rule --add app="^Brave$" space=4
 yabai -m rule --add app="^Firefox$" space=5
 
 
 # disable window management for the following applications
-yabai -m rule --add app="^Ghostty$" manage=off
 yabai -m rule --add app="^Slack$" space=3
 yabai -m rule --add app="^python3$" manage=off
 yabai -m rule --add app="^Notes$" manage=off
