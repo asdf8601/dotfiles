@@ -1,5 +1,6 @@
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
+source ~/.common.sh
 # >>> coursier install directory >>>
 export PATH="$PATH:/Users/mgreco/Library/Application Support/Coursier/bin"
 # <<< coursier install directory <<<
