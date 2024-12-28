@@ -78,7 +78,7 @@ yabai -m rule --add app="^Slack$" space=3
 
 
 # disable window management for the following applications
-yabai -m rule --add app="^*$" manage=off
+yabai -m rule --add app="^.*$" manage=off
 
 # Space names
 yabai -m space 1 --label term
