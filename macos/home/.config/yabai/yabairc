@@ -68,17 +68,16 @@ yabai -m config window_gap                    0
 yabai -m config layout                       bsp
 
 # RULES {{{
+# disable window management for the following applications
+yabai -m rule --add app="^.*$" manage=off
+
 # fix space number for the following applications
 yabai -m rule --add app="^Ghostty$" space=1
-yabai -m rule --add app="^WezTerm$" manage=off
 yabai -m rule --add app="^Chrome$" space=2
 yabai -m rule --add app="^Brave$" space=4
 yabai -m rule --add app="^Firefox$" space=5
 yabai -m rule --add app="^Slack$" space=3
 
-
-# disable window management for the following applications
-yabai -m rule --add app="^.*$" manage=off
 
 # Space names
 yabai -m space 1 --label term
