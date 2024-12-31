@@ -64,6 +64,7 @@
 	pp = pull --rebase --autostash
 
 	here = rev-parse --abbrev-ref HEAD
+	h = rev-parse --abbrev-ref HEAD
 
 	track = "!f() { git branch --set-upstream-to=origin/$(git here) $(git here); }; f"
 

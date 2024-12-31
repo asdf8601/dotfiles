@@ -16,7 +16,7 @@ export AUTOENV_ASSUME_YES=1
 
 export GEM_HOME="$HOME/.gem"
 export DEFAULT_IMG=asdf8601/dev:latest
-export MYGITPROJECTS="$HOME/github"
+export MYGITPROJECTS="$HOME/github.com:$HOME/gitlab.com"
 export MYVIMRC="$HOME/.config/nvim/init.lua"
 export KITTY_LISTEN_ON=unix:/tmp/mykitty-$PPID
 
@@ -186,6 +186,7 @@ pip-lastest() {
 ipytdd ()  {
     ipython
     echo "Restarting ipython, press a key to abort."
+    unset cancel
     read -t 1 cancel
     if [ -z "$cancel" ]
     then
@@ -379,11 +380,11 @@ function gi() { curl -L -s https://www.gitignore.io/api/$@ ;}
 # =============================================================================
 # Git
 
-pyright-config-here() {
+pyright-here() {
     cp $DOTFILES/python/pyrightconfig.json .
 }
 
-pip-dev-tools() {
+pip-rdev() {
     pip install -r $DOTFILES/python/requirements-dev.txt
 }
 
@@ -446,10 +447,9 @@ alias pyin='source ./.venv/bin/activate'
 alias pyout='deactivate'
 
 alias hadolint='docker run --rm -i hadolint/hadolint < '
-alias widgets='nvim "~/Library/Application Support/Übersicht/widgets/"'
 
 # kubernets
-alias kpod='kubectl get pods | fzf | awk "{print \$1}" | pbcopy && sleep 0.06 && pbpaste'
+alias kpod='kubectl get pods | fzf | awk "{print \$1}" | pbcopy && sleep 0.05 && pbpaste'
 alias klog='kpod | xargs -I{} kubectl logs {}'
 
 alias k=kubectl
@@ -463,12 +463,12 @@ alias back='cd $OLDPWD'
 alias home='cd ~/'
 alias ..="cd .."
 alias ...="cd  ../.."
-alias ....="cd ../../.."
-alias .....="cd ../../../.."
-alias ......="cd ../../../../.."
+# alias ....="cd ../../.."
+# alias .....="cd ../../../.."
+# alias ......="cd ../../../../.."
 
 # Editor
-alias nano='nano -W -m'
+# alias nano='nano -W -m'
 alias edit='nvim'
 
 alias :e='edit'
@@ -476,6 +476,7 @@ alias :q='exit'
 
 # Git
 alias g=git
+
 # alias clab='PAGER=cat glab'
 # alias gcl='git clone'
 # alias gst='git status'
@@ -653,7 +654,8 @@ source $DOTFILES_SRC/personal/.custom.hide
 source $DOTFILES_SRC/personal/.seedtag.hide
 # }}}
 
-py-here() {
+py-new() {
+    # create a python project skeleton
     name=$1
     mkdir -p  ${name}/{tests,docs}
     touch ${name}/{Makefile,pyproject.toml,${name}.py}
@@ -665,7 +667,7 @@ py-here() {
 }
 
 
-mkcdvim() {
+mkcd-vim() {
     folder=$1
     file=$2
     mkdir -p $folder
