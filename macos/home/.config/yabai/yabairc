@@ -72,9 +72,9 @@ yabai -m config layout                       bsp
 yabai -m rule --add app="^.*$" manage=off
 
 # fix space number for the following applications
-yabai -m rule --add app="^Ghostty$" space=1 manage=on
-yabai -m signal --add app='^Ghostty$' space=1 manage=on event=window_created action='yabai -m space --layout bsp'
-yabai -m signal --add app='^Ghostty$' space=1 manage=on event=window_destroyed action='yabai -m space --layout bsp'
+# yabai -m rule --add app="^Ghostty$" space=1 manage=on
+# yabai -m signal --add app='^Ghostty$' space=1 manage=on event=window_created action='yabai -m space --layout bsp'
+# yabai -m signal --add app='^Ghostty$' space=1 manage=on event=window_destroyed action='yabai -m space --layout bsp'
 
 yabai -m rule --add app="^Chrome$"  space=2 manage=on
 yabai -m rule --add app="^Brave$"   space=4 manage=on
