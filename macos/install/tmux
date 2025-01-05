@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+git clone https://github.com/tmux/tmux.git /tmp/tmux
+cd /tmp/tmux
+sh autogen.sh
+./configure --disable-utf8proc
+./configure --enable-utf8proc
+make && sudo make install
