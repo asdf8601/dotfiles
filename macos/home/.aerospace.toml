@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 # after-login-command = []
 # after-startup-command = []
 start-at-login = true
@@ -151,9 +152,7 @@ if.app-id = 'io.github.hluk.CopyQ'
 run = 'layout floating'
 
 [[on-window-detected]]
-if.app-id = 'com.apple.*'
-if.during-aerospace-startup = true
-check-further-callbacks = true
+if.app-id = 'com.daisydiskapp.DaisyDisk'
 run = 'layout floating'
 
 [[on-window-detected]]
@@ -166,3 +165,150 @@ run= [
   # 'layout tiling',
   # 'move-node-to-workspace 1',
 ]
+
+
+# make float all apple apps
+[[on-window-detected]]
+run = 'layout floating'
+if.app-id = 'com.apple.ActivityMonitor'
+[[on-window-detected]]
+run = 'layout floating'
+if.app-id = 'com.apple.AddressBook'
+[[on-window-detected]]
+run = 'layout floating'
+if.app-id = 'com.apple.AppStore'
+[[on-window-detected]]
+run = 'layout floating'
+if.app-id = 'com.apple.Automator'
+[[on-window-detected]]
+run = 'layout floating'
+if.app-id = 'com.apple.Chess'
+[[on-window-detected]]
+run = 'layout floating'
+if.app-id = 'com.apple.ColorSyncUtility'
+[[on-window-detected]]
+run = 'layout floating'
+if.app-id = 'com.apple.Console'
+[[on-window-detected]]
+run = 'layout floating'
+if.app-id = 'com.apple.Dictionary'
+[[on-window-detected]]
+run = 'layout floating'
+if.app-id = 'com.apple.DiskUtility'
+[[on-window-detected]]
+run = 'layout floating'
+if.app-id = 'com.apple.FaceTime'
+[[on-window-detected]]
+run = 'layout floating'
+if.app-id = 'com.apple.Home'
+[[on-window-detected]]
+run = 'layout floating'
+if.app-id = 'com.apple.Maps'
+[[on-window-detected]]
+run = 'layout floating'
+if.app-id = 'com.apple.MobileSMS'
+[[on-window-detected]]
+run = 'layout floating'
+if.app-id = 'com.apple.Music'
+[[on-window-detected]]
+run = 'layout floating'
+if.app-id = 'com.apple.Notes'
+[[on-window-detected]]
+run = 'layout floating'
+if.app-id = 'com.apple.PhotoBooth'
+[[on-window-detected]]
+run = 'layout floating'
+if.app-id = 'com.apple.Photos'
+[[on-window-detected]]
+run = 'layout floating'
+if.app-id = 'com.apple.Preview'
+[[on-window-detected]]
+run = 'layout floating'
+if.app-id = 'com.apple.QuickTimePlayerX'
+[[on-window-detected]]
+run = 'layout floating'
+if.app-id = 'com.apple.Safari'
+[[on-window-detected]]
+run = 'layout floating'
+if.app-id = 'com.apple.TV'
+[[on-window-detected]]
+run = 'layout floating'
+if.app-id = 'com.apple.Terminal'
+[[on-window-detected]]
+run = 'layout floating'
+if.app-id = 'com.apple.TextEdit'
+[[on-window-detected]]
+run = 'layout floating'
+if.app-id = 'com.apple.VoiceMemos'
+[[on-window-detected]]
+run = 'layout floating'
+if.app-id = 'com.apple.VoiceOverUtility'
+[[on-window-detected]]
+run = 'layout floating'
+if.app-id = 'com.apple.airport.airportutility'
+[[on-window-detected]]
+run = 'layout floating'
+if.app-id = 'com.apple.audio.AudioMIDISetup'
+[[on-window-detected]]
+run = 'layout floating'
+if.app-id = 'com.apple.backup.launcher'
+[[on-window-detected]]
+run = 'layout floating'
+if.app-id = 'com.apple.calculator'
+[[on-window-detected]]
+run = 'layout floating'
+if.app-id = 'com.apple.clock'
+[[on-window-detected]]
+run = 'layout floating'
+if.app-id = 'com.apple.dt.Xcode'
+[[on-window-detected]]
+run = 'layout floating'
+if.app-id = 'com.apple.finder'
+[[on-window-detected]]
+run = 'layout floating'
+if.app-id = 'com.apple.findmy'
+[[on-window-detected]]
+run = 'layout floating'
+if.app-id = 'com.apple.freeform'
+[[on-window-detected]]
+run = 'layout floating'
+if.app-id = 'com.apple.grapher'
+[[on-window-detected]]
+run = 'layout floating'
+if.app-id = 'com.apple.iBooksX'
+[[on-window-detected]]
+run = 'layout floating'
+if.app-id = 'com.apple.iCal'
+[[on-window-detected]]
+run = 'layout floating'
+if.app-id = 'com.apple.iMovieApp'
+[[on-window-detected]]
+run = 'layout floating'
+if.app-id = 'com.apple.iWork.Keynote'
+[[on-window-detected]]
+run = 'layout floating'
+if.app-id = 'com.apple.iWork.Pages'
+[[on-window-detected]]
+run = 'layout floating'
+if.app-id = 'com.apple.keychainaccess'
+[[on-window-detected]]
+run = 'layout floating'
+if.app-id = 'com.apple.mail'
+[[on-window-detected]]
+run = 'layout floating'
+if.app-id = 'com.apple.podcasts'
+[[on-window-detected]]
+run = 'layout floating'
+if.app-id = 'com.apple.reminders'
+[[on-window-detected]]
+run = 'layout floating'
+if.app-id = 'com.apple.shortcuts'
+[[on-window-detected]]
+run = 'layout floating'
+if.app-id = 'com.apple.stocks'
+[[on-window-detected]]
+run = 'layout floating'
+if.app-id = 'com.apple.systempreferences'
+[[on-window-detected]]
+run = 'layout floating'
+if.app-id = 'com.apple.weather'
