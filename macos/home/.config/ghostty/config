@@ -1,0 +1,32 @@
+# NOTE:
+# Community examples:
+#   https://github.com/search?q=path%3Aghostty%2Fconfig&type=code
+shell-integration-features = no-cursor
+cursor-style = block
+cursor-style-blink = false
+
+macos-titlebar-style = tabs
+macos-titlebar-proxy-icon = hidden
+macos-option-as-alt = true
+
+window-decoration = false
+# background-opacity = 0.9
+
+# NOTE:
+# Waiting for the following feature:
+#   https://github.com/ghostty-org/ghostty/issues/2384
+# quick-terminal-size = 20%
+# quick-terminal-position = top # center
+
+# keymaps {{{
+keybind = global:cmd+`=toggle_quick_terminal
+keybind = cmd+comma=text:nvim $HOME/.config/ghostty/config\n
+keybind = cmd+period=reload_config
+# }}}
+
+# NOTE:
+# Appendix: Detect ASCII Character Set
+#   https://www3.rocketsoftware.com/bluezone/help/v42/en/bzadmin/APPENDIX_C/ASCII_Character_Set.htm
+# on bash:
+#   $ sed -n -l
+#   $ xxd -r -p
