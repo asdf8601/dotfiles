@@ -312,3 +312,7 @@ if.app-id = 'com.apple.systempreferences'
 [[on-window-detected]]
 run = 'layout floating'
 if.app-id = 'com.apple.weather'
+
+[[on-window-detected]]
+run = 'layout floating'
+if.app-id = 'com.spotify.client'
