@@ -1,5 +1,5 @@
 matches:
-  - trigger: ":edit:"
+  - trigger: ";edit;"
     replace: "{{output}}"
     vars:
       - name: output
@@ -7,40 +7,40 @@ matches:
         params:
           cmd: "pbpaste > /tmp/espanso-nvim.txt && wezterm -e zsh -c 'source ~/.profile && source ~/.zshrc && nvim /tmp/espanso-nvim.txt' && cat /tmp/espanso-nvim.txt"
 
-  - trigger: ":setup:"
+  - trigger: ";setup;"
     replace: "apt update -qq && apt install -qq -y curl && curl -#fLo- 'https://gist.github.com/asdf8601/ef7af0db1a9a70c0c73337f5788b0072/raw/setup-container.sh' | sh"
 
-  - trigger: ":toma:"
+  - trigger: ";toma;"
     replace: https://media.giphy.com/media/ejJclNX60XyEo555wW/giphy.gif
 
-  - trigger: ":cry:"
+  - trigger: ";cry;"
     replace: https://media.giphy.com/media/gjZUmIYSb6bacxzVh2/giphy.gif
 
-  - trigger: ":rolling:"
+  - trigger: ";rolling;"
     replace: https://media.giphy.com/media/lcySndwSDLxC4eOU86/giphy.gif
 
-  - trigger: ":NO:"
+  - trigger: ";NO;"
     replace: https://giphy.com/clips/theoffice-lkibHaGO1xmJXapEdq
 
-  - trigger: ":letsdothis:"
+  - trigger: ";letsdothis;"
     replace: https://media.giphy.com/media/BpGWitbFZflfSUYuZ9/giphy.gif
 
-  - trigger: ":meh:"
+  - trigger: ";meh;"
     replace: https://media.giphy.com/media/BY8ORoRpnJDXeBNwxg/giphy.gif
 
-  - trigger: ":dance:"
+  - trigger: ";dance;"
     replace: https://media.giphy.com/media/l0amJzVHIAfl7jMDos/giphy.gif
 
-  - trigger: ":itstrue:"
+  - trigger: ";itstrue;"
     replace: https://media.giphy.com/media/dXFKDUolyLLi8gq6Cl/giphy.gif
 
-  - trigger: ":tbd:"
+  - trigger: ";tbd;"
     replace: https://media.giphy.com/media/VmcGXVrh4dHFfjQzrI/giphy.gif
 
-  - trigger: ":awkward:"
+  - trigger: ";awkward;"
     replace: https://media.giphy.com/media/4ZMsXG1uh6cZTo1F9Y/giphy.gif
 
-  - trigger: ":warmup:"
+  - trigger: ";warmup;"
     replace: https://media.giphy.com/media/Yz0Gp8s9jKqRy/giphy.gif
 
   - trigger: ";zen"
@@ -187,10 +187,10 @@ matches:
       from matplotlib import pyplot as plt
       plt.ion()
 
-  - trigger: ":linestyle:"
+  - trigger: ";linestyle;"
     replace: linkStyle default interpolate basis
 
-  - trigger: ":h2 date:"
+  - trigger: ";h2 date;"
     replace: "{{mydate}}"
     vars:
       - name: mydate
@@ -198,7 +198,7 @@ matches:
         params:
           format: "## %A %Y-%m-%d"
 
-  - trigger: ";Date"
+  - trigger: ";Date;"
     replace: "{{mydate}}"
     vars:
       - name: mydate
@@ -206,7 +206,7 @@ matches:
         params:
           format: "%A %Y-%m-%d"
 
-  - trigger: ";ts"
+  - trigger: ";ts;"
     replace: "{{mydate}}"
     force_clipboard: true
     vars:
@@ -215,7 +215,7 @@ matches:
         params:
           format: "%Y-%m-%d %H:%M:00"
 
-  - trigger: ";date"
+  - trigger: ";date;"
     replace: "{{mydate}}"
     force_clipboard: true
     vars:
@@ -224,7 +224,7 @@ matches:
         params:
           format: "%Y-%m-%d"
 
-  - trigger: ";time"
+  - trigger: ";time;"
     replace: "{{time}}"
     vars:
       - name: time
@@ -232,7 +232,7 @@ matches:
         params:
           format: "%H:%M"
 
-  - trigger: ";month"
+  - trigger: ";month;"
     replace: "{{date}}"
     vars:
       - name: date
@@ -240,25 +240,25 @@ matches:
         params:
           format: "%B %Y"
 
-  - trigger: ";mail"
+  - trigger: ";mail;"
     replace: asdf0x2199@gmail.com
 
-  - trigger: ";name"
+  - trigger: ";name;"
     replace: Max G.
 
-  - trigger: ";link"
+  - trigger: ";link;"
     replace: "[$|$]({{clipboard}})"
     vars:
     - name: "clipboard"
       type: "clipboard"
 
-  - trigger: ";a"
+  - trigger: ";a;"
     replace: "<a href=\"{{clipboard}}\" />$|$</a>"
     vars:
     - name: "clipboard"
       type: "clipboard"
 
-  - trigger: ";mmd"
+  - trigger: ";mmd;"
     force_clipboard: true
     replace: |-
       ```mermaid
@@ -269,7 +269,7 @@ matches:
       %% linkStyle 0,2 stroke:none
       ```
 
-  - trigger: ";code"
+  - trigger: ";code;"
     force_clipboard: true
     replace: |-
       ```
@@ -288,6 +288,14 @@ matches:
       install:  ## create venv
           uv venv
           uv pip install .
+
+  - trigger: ";uname;"
+    replace: "{{out}}"
+    vars:
+      - name: out
+        type: shell
+        params:
+          cmd: "/Users/mgreco/.local/bin/uvx names | tr '[A-Z]' '[a-z]' | tr ' ' '-'"
 
   - trigger: ";pyproject;"
     force_clipboard: true
