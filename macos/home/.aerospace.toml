@@ -24,7 +24,7 @@ outer.right = 0
 outer.top = 0
 
 [mode.main.binding]
-cmd-h = [] # Disable 'hide application'
+# cmd-h = [] # Disable 'hide application'
 cmd-alt-h = [] # Disable 'hide others'
 alt-f = 'fullscreen'
 alt-g = 'exec-and-forget open /System/Applications/Mission\ Control.app'
@@ -316,3 +316,16 @@ if.app-id = 'com.apple.weather'
 [[on-window-detected]]
 run = 'layout floating'
 if.app-id = 'com.spotify.client'
+
+[[on-window-detected]]
+run = 'layout floating'
+if.app-id = 'com.googlecode.iterm2'
+
+[[on-window-detected]]
+run = 'layout floating'
+if.app-id = 'com.github.wez.wezterm'
+
+[[on-window-detected]]
+run = 'layout floating'
+if.app-name-regex-substring = 'wezterm-gui'
+
