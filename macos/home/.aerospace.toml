@@ -329,3 +329,11 @@ if.app-id = 'com.github.wez.wezterm'
 run = 'layout floating'
 if.app-name-regex-substring = 'wezterm-gui'
 
+[[on-window-detected]]
+if.app-id = 'com.google.Chrome'
+if.window-title-regex-substring = '^about:blank - (?!Google Chrome).*$'
+run = ['layout floating']
+
+[[on-window-detected]]
+if.app-id = 'com.cockos.LICEcap'
+run = ['layout floating']
