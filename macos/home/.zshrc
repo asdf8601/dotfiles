@@ -291,7 +291,7 @@ nvimrc () {
 
 
 calcpy () {
-  python -c "print($@)"
+  python -c "from math import *; print(f'{$@:,.2f}')"
 }
 
 

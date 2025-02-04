@@ -135,13 +135,13 @@ check-further-callbacks = true
 run = ['layout floating']  # The callback itself
 
 
-[[on-window-detected]]
-if.app-id = 'org.alacritty'
-run = 'move-node-to-workspace 1'
+# [[on-window-detected]]
+# if.app-id = 'org.alacritty'
+# run = 'move-node-to-workspace 1'
 
-[[on-window-detected]]
-if.app-id = 'com.google.Chrome'
-run = 'move-node-to-workspace 2'
+# [[on-window-detected]]
+# if.app-id = 'com.google.Chrome'
+# run = 'move-node-to-workspace 2'
 
 [[on-window-detected]]
 if.app-id = 'com.markmcguill.strongbox'
@@ -157,14 +157,34 @@ run = 'layout floating'
 
 [[on-window-detected]]
 if.app-id = 'ru.keepcoder.Telegram'
-run = 'layout floating'
+run = [
+  'layout floating',
+  # 'layout tiling',
+  'move-node-to-workspace 6',
+]
 
 [[on-window-detected]]
 if.app-id='com.mitchellh.ghostty'
-run= [
+run = [
   # 'layout tiling',
-  # 'move-node-to-workspace 1',
+  'move-node-to-workspace 1',
 ]
+
+[[on-window-detected]]
+if.app-id='com.google.Chrome'
+run = [
+  # 'layout tiling',
+  'move-node-to-workspace 2',
+]
+
+[[on-window-detected]]
+if.app-id='com.tinyspeck.slackmacgap'
+run = [
+  # 'layout tiling',
+  'move-node-to-workspace 3',
+]
+
+
 
 
 # make float all apple apps

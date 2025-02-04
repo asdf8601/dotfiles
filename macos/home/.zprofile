@@ -5,7 +5,9 @@ export PATH="$PATH:/opt/homebrew/bin:$HOME/.pixi/bin:$HOMEBREW_PREFIX/opt/gnu-se
 # >>> coursier install directory >>>
 export PATH="$PATH:/Users/mgreco/Library/Application Support/Coursier/bin"
 # <<< coursier install directory <<<
+
 export TAKT_FILE="~/.takt-log/seedtag.csv"
+export TAKT_EDITOR="nvim"
 
 # zstyle ':omz:plugins:nvm' lazy yes
 export DOCKER_BUILDKIT=1
