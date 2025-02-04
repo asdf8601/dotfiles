@@ -1,6 +1,12 @@
 #!/usr/bin/env sh
 set -e -v
-curl -sL -o /tmp/nvim-macos-arm64.tar.gz https://github.com/neovim/neovim/releases/download/nightly/nvim-macos-arm64.tar.gz
-tar -xzf /tmp/nvim-macos-arm64.tar.gz -C /tmp/
+
+version=nightly
+version=stable
+
+echo "Installing neovim $version"
+curl -sL -o /tmp/nvim.tar.gz https://github.com/neovim/neovim/releases/download/$version/nvim-macos-arm64.tar.gz
+
+tar -xzf /tmp/nvim.tar.gz -C /tmp/
 sudo rm -rf /opt/nvim
 sudo cp -r /tmp/nvim-macos-arm64 /opt/nvim
