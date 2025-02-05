@@ -331,25 +331,31 @@ matches:
       #     "druidq",
       #     "trinoq",
       #     "pandas",
+      #     "dtale",
+      #     "ipython",
+      #     "pdbpp",
       # ]
       #
       # [tool.uv.sources]
       # druidq = { git = "https://github.com/asdf8601/druidq" }
       # trinoq = { git = "https://github.com/asdf8601/trinoq" }
       # ///
-      from druidq import druid
-      from trinoq import trino
+      from druidq import execute as druid
+      from trinoq import execute as trino
       import pandas as pd
-
+      import dtale
+      import sys
       query = """
-      select
-          *
-      from
-          "ssp-events-hourly"
-      limit 1
+      select 1
       """
+      df = trino(query, quiet=True, no_cache=True)
+      # df = druid(query, quiet=True, no_cache=True).T
+      if len(sys.argv) <= 1:
+          print(df.to_csv())
+      elif sys.argv[1] == "dtale":
+          dtale.show(df, subprocess=False)
+      else:
+          import IPython
+          IPython.embed()
 
-      df = druid(query, quiet=True, no_cache=True).T
-      df = trino(query, quiet=True, no_cache=True).T
-      print(df.to_csv())
 
