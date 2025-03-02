@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+sudo apt install libgtk-4-dev libadwaita-1-dev git blueprint-compiler
+git clone --depth 1 https://github.com/ghostty-org/ghostty /tmp/ghostty
+cd /tmp/ghostty
+git checkout v1.1.2
+sudo /opt/zig/zig build -p /usr -Doptimize=ReleaseFast
