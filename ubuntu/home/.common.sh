@@ -734,6 +734,7 @@ addToPath "$HOME/.local/bin"
 addToPath "$HOME/.deno/bin"
 # go
 addToPathFront "$HOME/go/bin"
+addToPathFront "/opt/zig"
 addToPathFront "/home/mgreco/.go/bin"
 addToPathFront "/usr/local/go/bin"
 # db
