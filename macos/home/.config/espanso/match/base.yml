@@ -79,6 +79,15 @@ matches:
   - trigger: ",hh"
     replace: "## @today "
 
+  - trigger: ";sum"
+    replace: "{{out}}"
+    force_clipboard: true
+    vars:
+      - name: out
+        type: shell
+        params:
+          cmd: "pbpaste | sed 's/;fix//' | ~/.local/bin/espanso_gpt_summarize.sh"
+
   - trigger: ";gpt"
     replace: "{{out}}"
     force_clipboard: true
@@ -86,7 +95,7 @@ matches:
       - name: out
         type: shell
         params:
-          cmd: "pbpaste | sed 's/;gpt//' | ~/.local/bin/espanso_gpt"
+          cmd: "pbpaste | sed 's/;gpt//' | ~/.local/bin/espanso_gpt.sh"
 
   - trigger: ";tra"
     replace: "{{out}}"
@@ -95,7 +104,7 @@ matches:
       - name: out
         type: shell
         params:
-          cmd: "pbpaste | sed 's/;tra//' | ~/.local/bin/espanso_gpt_trad"
+          cmd: "pbpaste | sed 's/;tra//' | ~/.local/bin/espanso_gpt_trad.sh"
 
   - trigger: ";fix"
     replace: "{{out}}"
@@ -104,7 +113,7 @@ matches:
       - name: out
         type: shell
         params:
-          cmd: "pbpaste | sed 's/;fix//' | ~/.local/bin/espanso_gpt_fix"
+          cmd: "pbpaste | sed 's/;fix//' | ~/.local/bin/espanso_gpt_fix.sh"
 
   - trigger: ";issue;"
     force_clipboard: true
@@ -323,7 +332,7 @@ matches:
       with ProcessPoolExecutor() as executor:
           out = executor.map(func, files)
 
-  - trigger: ";stsql;"
+  - trigger: ";query;"
     force_clipboard: true
     replace: |-
       # /// script
@@ -358,4 +367,72 @@ matches:
           import IPython
           IPython.embed()
 
+  - trigger: ";trinoq;"
+    force_clipboard: true
+    replace: |-
+      # /// script
+      # dependencies = [
+      #     "trinoq",
+      # ]
+      #
+      # [tool.uv.sources]
+      # trinoq = { git = "https://github.com/asdf8601/trinoq" }
+      # ///
+      from trinoq import execute as trino
+      query = """
+      select 1
+      """
+      df = trino(query, quiet=True, no_cache=True)
+      print(df)
+
+
+  - trigger: ";druidq;"
+    force_clipboard: true
+    replace: |-
+      # /// script
+      # dependencies = [
+      #     "druidq",
+      #     "dtale",
+      # ]
+      #
+      # [tool.uv.sources]
+      # druidq = { git = "https://github.com/asdf8601/druidq" }
+      # ///
+      from druidq import execute as druid
+      import pandas as pd
+      import dtale
+      import sys
+      query = """
+      select 1
+      """
+      df = druid(query, quiet=True, no_cache=True)
+      if len(sys.argv) <= 1:
+          print(df.to_csv())
+      elif sys.argv[1] == "dtale":
+          dtale.show(df, subprocess=False)
+
+  - trigger: ";ipy;"
+    force_clipboard: true
+    replace: |-
+      # /// script
+      # dependencies = [
+      #     "druidq",
+      #     "trinoq",
+      #     "pandas",
+      #     "dtale",
+      #     "ipython",
+      #     "pdbpp",
+      # ]
+      #
+      # [tool.uv.sources]
+      # druidq = { git = "https://github.com/asdf8601/druidq" }
+      # trinoq = { git = "https://github.com/asdf8601/trinoq" }
+      # ///
+      from trinoq import execute as trino
+      import IPython
+      query = """
+      select 1
+      """
+      df = trino(query, quiet=True, no_cache=True)
+      IPython.embed()
 

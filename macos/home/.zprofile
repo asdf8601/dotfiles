@@ -11,6 +11,7 @@ export TAKT_EDITOR="nvim"
 
 # zstyle ':omz:plugins:nvm' lazy yes
 export DOCKER_BUILDKIT=1
+export BUILDX_EXPERIMENTAL=1
 export COMPOSE_DOCKER_CLI_BUILD=1
 export DOTFILES=$HOME/.dotfiles/macos/home
 
