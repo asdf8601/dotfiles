@@ -56,17 +56,22 @@ fi
 
 # aliases {{{
 
+alias erc='nvim ~/.config/espanso/match/base.yml'
+alias dk='deepseek'
 alias pyin='source ./.venv/bin/activate'
 alias pyout='deactivate'
 
 alias hadolint='docker run --rm -i hadolint/hadolint < '
 
 # kubernets
-alias kpod='kubectl get pods | fzf | awk "{print \$1}" | pbcopy && sleep 0.05 && pbpaste'
-alias klog='kpod | xargs -I{} kubectl logs {}'
-
 alias k=kubectl
 alias pods='kubectl get pods'
+alias k-pod='kubectl get pods | fzf | awk "{print \$1}" | pbcopy && sleep 0.05 && pbpaste'
+alias k-service='kubectl get services | fzf | awk "{print \$1}" | pbcopy && sleep 0.05 && pbpaste'
+alias k-deployment='kubectl get deployments | fzf | awk "{print \$1}" | pbcopy && sleep 0.05 && pbpaste'
+alias k-hpa='kubectl get hpa | fzf | awk "{print \$1}" | pbcopy && sleep 0.05 && pbpaste'
+alias k-exec='kubectl exec -it $(pbpaste) -- bash'
+alias k-log='kubectl logs $(pbpaste) -f'
 
 # Files and directories
 alias mkdir='mkdir -p -v'
@@ -118,7 +123,7 @@ alias ucf="rename 'y/a-z/A-Z/' "
 alias egrep='egrep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias grep='grep --color=auto'
-alias girn='grep -IRn --color=auto'
+alias grin='grep -IRn --color=auto'
 
 # Wget
 alias wgetncc='wget --no-check-certificate'
@@ -166,6 +171,7 @@ alias sgist="https://gist.github.com/search?q=user%3Aasdf8601&ref=simplesearch"
 
 # tmux
 alias tmux='tmux -2'
+alias ta='tmux a'
 alias t=txs
 alias tkill="tmux kill-server"
 
