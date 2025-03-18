@@ -8,6 +8,8 @@ fi
 
 # variables {{{
 export MYGITPROJECTS="$HOME/github.com:$HOME/gitlab.com"
+export PKG_CONFIG_PATH="/opt/homebrew/opt/openblas/lib/pkgconfig"
+
 
 export DOTFILES_SRC="$HOME/.dotfiles"
 export DOTFILES_HOME="$HOME/.dotfiles"
