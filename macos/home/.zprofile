@@ -28,4 +28,4 @@ if [ -f "$HOME/.cargo/env" ]; then . "$HOME/.cargo/env"; fi
 
 
 # command -v oh-my-posh >/dev/null && eval "$(oh-my-posh init zsh -c ~/.ohmyposh-config.json)"
-command -v mise > /dev/null 2>&1 && eval "$(mise activate zsh)"
+# command -v mise > /dev/null 2>&1 && eval "$(mise activate zsh)"

@@ -5,11 +5,15 @@ shell-integration-features = no-cursor
 cursor-style = block
 cursor-style-blink = false
 
-macos-titlebar-style = tabs
 macos-titlebar-proxy-icon = hidden
 macos-option-as-alt = true
+# macos-titlebar-style = tabs
+macos-titlebar-style = hidden
+window-padding-x = 2
+window-padding-balance = true
 
-window-decoration = false
+# window-decoration = false
+window-decoration = auto
 # background-opacity = 0.9
 
 # NOTE:
