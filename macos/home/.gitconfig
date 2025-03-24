@@ -81,7 +81,7 @@
 
 	branch = branch -ra
 	bra = branch -ra
-	ai = add --interactive
+	; ai = add --interactive
 
 	f = "!git ls-files | grep -i"
 
