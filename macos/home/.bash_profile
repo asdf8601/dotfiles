@@ -15,3 +15,5 @@ test -r $HOME/.opam/opam-init/init.sh && . $HOME/.opam/opam-init/init.sh > /dev/
 export PATH="$PATH:/Users/mgreco/Library/Application Support/Coursier/bin"
 # <<< coursier install directory <<<
 
+
+. "$HOME/.atuin/bin/env"

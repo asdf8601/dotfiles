@@ -718,3 +718,7 @@ if [ -n "${ZSH_DEBUGRC+1}" ]; then
 fi
 
 
+
+. "$HOME/.atuin/bin/env"
+
+eval "$(atuin init zsh)"

@@ -355,5 +355,10 @@ if.window-title-regex-substring = '^about:blank - (?!Google Chrome).*$'
 run = ['layout floating']
 
 [[on-window-detected]]
+if.app-id = 'com.electron.goose'
+run = ['layout floating']
+
+[[on-window-detected]]
 if.app-id = 'com.cockos.LICEcap'
 run = ['layout floating']
+
