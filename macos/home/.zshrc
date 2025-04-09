@@ -31,7 +31,7 @@ export KITTY_LISTEN_ON=unix:/tmp/mykitty-$PPID
 
 export AWS_CONFIG_FILE=$HOME/.aws/credentials
 
-# Prompt
+# Prompts
 # export PS1="%F{magenta}%n%f@%F{green}%M%f:%F{cyan}%~%f %F{magenta}(%T)%f %F{green}\$%f "
 # export PS1="%F{magenta}%n%f@%F{green}%m%f:%F{cyan}%1d%f %F{magenta}(%D{%L:%M:%S})%f %F{green}\$%f "
 export PS1="%F{cyan}%1d%f %F{magenta}(%D{%X})%f %F{green}\$%f "
@@ -55,13 +55,25 @@ fi
 # }}}
 
 
+function venv() {
+    if [[ -n "$VIRTUAL_ENV" ]]; then
+        deactivate
+        echo "Virtual environment deactivated"
+    else
+        if [[ -d ./.venv ]]; then
+            source ./.venv/bin/activate
+            echo "Virtual environment activated"
+        else
+            echo "No .venv directory found in current directory"
+        fi
+    fi
+}
+
 
 # aliases {{{
 
 alias erc='nvim ~/.config/espanso/match/base.yml'
 alias dk='deepseek'
-alias pyin='source ./.venv/bin/activate'
-alias pyout='deactivate'
 
 alias hadolint='docker run --rm -i hadolint/hadolint < '
 
@@ -217,6 +229,7 @@ alias nivm.='nvim .'
 alias echo-json='python -c "from rich import print; import sys; print(sys.stdin.buffer.read())"'
 alias echo-print='python -c "from rich import print; import sys; print(sys.stdin.buffer.read())"'
 alias blog-monthly='uv run https://gist.githubusercontent.com/asdf8601/60e05c74cd3906a1985b7e78a2224871/raw/rss-monthly.py'
+alias zperf='time ZSH_DEBUGRC=1 zsh -i -c exit'
 # }}}
 
 
@@ -712,13 +725,14 @@ source $DOTFILES_SRC/personal/.custom.hide
 source $DOTFILES_SRC/personal/.seedtag.hide
 # }}}
 
+# plugins=()
+# source $ZSH/oh-my-zsh.sh
 
 if [ -n "${ZSH_DEBUGRC+1}" ]; then
     zprof
 fi
 
 
-
-. "$HOME/.atuin/bin/env"
-
-eval "$(atuin init zsh)"
+# started to hate the UI
+# . "$HOME/.atuin/bin/env"
+# eval "$(atuin init zsh)"
