@@ -6,36 +6,34 @@ if [ -n "${ZSH_DEBUGRC+1}" ]; then
     zmodload zsh/zprof
 fi
 
-# variables {{{
 export MYGITPROJECTS="$HOME/github.com:$HOME/gitlab.com"
 export PKG_CONFIG_PATH="/opt/homebrew/opt/openblas/lib/pkgconfig"
-
-
-export DOTFILES_SRC="$HOME/.dotfiles"
-export DOTFILES_HOME="$HOME/.dotfiles"
 #
 export PIP_REQUIRE_VIRTUALENV=true
-export DOTFILES_ROOT=$HOME/.dotfiles
 #
-export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$HOME/go/bin:$HOME/.go/bin:/usr/local/go/bin:/opt/mssql-tools/bin:$GEM_HOME/bin:$PATH:/usr/local/bin:$HOME/bin:$HOME/.cargo/bin:$HOME/.local/bin"
-export SSH_KEY_PATH="~/.ssh/rsa_id"
-
-export AUTOENV_ENV_FILENAME=".autoenv"
-export AUTOENV_ASSUME_YES=1
-
 export GEM_HOME="$HOME/.gem"
-export DEFAULT_IMG=asdf8601/dev:latest
-export MYGITPROJECTS="$HOME/github.com:$HOME/gitlab.com"
 export MYVIMRC="$HOME/.config/nvim/init.lua"
+export SSH_KEY_PATH="~/.ssh/rsa_id"
 export KITTY_LISTEN_ON=unix:/tmp/mykitty-$PPID
-
 export AWS_CONFIG_FILE=$HOME/.aws/credentials
+export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$HOME/go/bin:$HOME/.go/bin:/usr/local/go/bin:/opt/mssql-tools/bin:$GEM_HOME/bin:$PATH:/usr/local/bin:$HOME/bin:$HOME/.cargo/bin:$HOME/.local/bin"
 
-# Prompts
+# Prompts {{{
 # export PS1="%F{magenta}%n%f@%F{green}%M%f:%F{cyan}%~%f %F{magenta}(%T)%f %F{green}\$%f "
 # export PS1="%F{magenta}%n%f@%F{green}%m%f:%F{cyan}%1d%f %F{magenta}(%D{%L:%M:%S})%f %F{green}\$%f "
-export PS1="%F{cyan}%1d%f %F{magenta}(%D{%X})%f %F{green}\$%f "
+# export PS1="%F{cyan}%1d%f %F{magenta}(%D{%X})%f %F{green}\$%f "
+export PS1="%F{cyan}%~%f %F{magenta}(%D{%H:%M})%f %F{green}\$%f "
 
+setps() {
+    case $1 in
+        1)
+            export PS1="%F{green}\$%f "
+        ;;
+        *)
+            export PS1="%F{cyan}%~%f %F{magenta}(%D{%H:%M})%f %F{green}\$%f "
+        ;;
+    esac
+}
 
 # }}}
 
@@ -43,22 +41,28 @@ export PS1="%F{cyan}%1d%f %F{magenta}(%D{%X})%f %F{green}\$%f "
 # hardware {{{
 # fast keyboard delay (ms) and speed (keys by sec)
 # keyboard typing speed
-if [ -x "$(command -v xset)" ]; then
-    echo "xset"
-    [ -z ${IS_DOCKER+x} ] && xset r rate 250 60 &> /dev/null
-fi
+# if [ -x "$(command -v xset)" ]; then
+#     echo "Setting keyboard repeat rate with xset"
+#     [ -z ${IS_DOCKER+x} ] && xset r rate 250 60 &> /dev/null
+# fi
 
-if [ -x "$(command -v setxkbmap)" ]; then
-    echo "setxbmap"
-    setxkbmap -rules evdev -model evdev -layout us -variant altgr-intl
-fi
+# if [[ "$OSTYPE" == "darwin"* ]]; then
+#     echo "Setting keyboard layout for macOS"
+#     defaults write NSGlobalDomain AppleKeyboardUIMode -int 2
+# fi
 # }}}
 
 
 function venv() {
-    if [[ -n "$VIRTUAL_ENV" ]]; then
-        deactivate
-        echo "Virtual environment deactivated"
+    if [[ -n "${VIRTUAL_ENV:+x}" ]]; then
+        if type deactivate &>/dev/null; then
+            deactivate
+            echo "Virtual environment deactivated"
+        else
+            echo "deactivate function not found, but VIRTUAL_ENV is set"
+            unset VIRTUAL_ENV
+            echo "VIRTUAL_ENV variable unset"
+        fi
     else
         if [[ -d ./.venv ]]; then
             source ./.venv/bin/activate
@@ -75,9 +79,9 @@ function venv() {
 alias erc='nvim ~/.config/espanso/match/base.yml'
 alias dk='deepseek'
 
-alias hadolint='docker run --rm -i hadolint/hadolint < '
 
 # kubernets
+alias hadolint='docker run --rm -i hadolint/hadolint < '
 alias k=kubectl
 alias pods='kubectl get pods'
 alias k-pod='kubectl get pods | fzf | awk "{print \$1}" | pbcopy && sleep 0.05 && pbpaste'
@@ -95,9 +99,6 @@ alias back='cd $OLDPWD'
 alias home='cd ~/'
 alias ..="cd .."
 alias ...="cd  ../.."
-# alias ....="cd ../../.."
-# alias .....="cd ../../../.."
-# alias ......="cd ../../../../.."
 
 # Editor
 # alias nano='nano -W -m'
@@ -204,10 +205,9 @@ alias py-server='python -s -m http.server'
 # alias asdf='setxkbmap -rules evdev -model evdev -layout us -variant dvorak'
 alias kb-us='setxkbmap -rules evdev -model evdev -layout us -variant altgr-intl'
 alias kb-usnocaps='setxkbmap -rules evdev -model evdev -layout us -variant altgr-intl -option ctrl:nocaps'
-alias pipenv='pipx run pipenv'
 
 # alias myip="ifconfig | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p'"
-alias mic_monitor='gst-launch-1.0 pulsesrc ! pulsesink'
+# alias mic_monitor='gst-launch-1.0 pulsesrc ! pulsesink'
 
 
 # kitty {{{{
@@ -217,17 +217,18 @@ alias mic_monitor='gst-launch-1.0 pulsesrc ! pulsesink'
 
 
 alias dotcmd='mxm'
-alias cd.='. dotcmd cd'
+alias cd.='. mxm cd'
 
 alias snip='pushd_edit_pop ~/github/asdf8601/snippets'
 alias scio='pushd_edit_pop ~/github/asdf8601/scio'
+alias nvim.='nvim .'
 alias nvim.='nvim .'
 alias nivm.='nvim .'
 
 # alias gpt4='sgpt --model gpt-4'
 # alias gpt4p='sgpt --model gpt-4-1106-preview'
-alias echo-json='python -c "from rich import print; import sys; print(sys.stdin.buffer.read())"'
-alias echo-print='python -c "from rich import print; import sys; print(sys.stdin.buffer.read())"'
+alias pjson='python -c "from rich import print; import sys; print(sys.stdin.buffer.read())"'
+alias pprint='python -c "from rich import print; import sys; print(sys.stdin.buffer.read())"'
 alias blog-monthly='uv run https://gist.githubusercontent.com/asdf8601/60e05c74cd3906a1985b7e78a2224871/raw/rss-monthly.py'
 alias zperf='time ZSH_DEBUGRC=1 zsh -i -c exit'
 # }}}
@@ -244,9 +245,9 @@ tasks() {
 }
 
 
-pprint() {
-    echo $@ | python -c "import sys; print(eval(sys.stdin.buffer.read()))"
-}
+# pprint() {
+#     echo $@ | python -c "import sys; print(eval(sys.stdin.buffer.read()))"
+# }
 
 py-new() {
     # create a python project skeleton
@@ -262,6 +263,8 @@ py-new() {
 
 
 mkcd-vim() {
+    # mkcd-vim folder file
+    # mcv folder file
     folder=$1
     file=$2
     mkdir -p $folder
@@ -518,6 +521,8 @@ drun() {
 }
 
 
+export DEFAULT_IMG=asdf8601/dev:latest
+
 ddev() {
     # reusing a docker container
     DIR=$PWD
@@ -721,6 +726,10 @@ takt-git () {
 
 
 # source {{{
+export DOTFILES_SRC="$HOME/.dotfiles"
+export DOTFILES_HOME="$HOME/.dotfiles"
+export DOTFILES_ROOT=$HOME/.dotfiles
+
 source $DOTFILES_SRC/personal/.custom.hide
 source $DOTFILES_SRC/personal/.seedtag.hide
 # }}}
@@ -736,3 +745,10 @@ fi
 # started to hate the UI
 # . "$HOME/.atuin/bin/env"
 # eval "$(atuin init zsh)"
+#
+
+export AUTOENV_ENV_FILENAME=".autoenv"
+export AUTOENV_ASSUME_YES=1
+source ~/.autoenv/activate.sh
+
+source $(brew --prefix)/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
