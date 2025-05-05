@@ -4,6 +4,7 @@ matches:
   - trigger: ";prompt-rephrase;"
     replace: |
       I would like you to act as a language assistant who specializes in rephrasing with obfuscation. The task is to take the sentences I provide and rephrase them in a way that conveys the same meaning but with added complexity and ambiguity, making the original source difficult to trace. This should be achieved while maintaining coherence and readability. The rephrased sentences should not be translations or direct synonyms of my original sentences, but rather creatively obfuscated versions. Please refrain from providing any explanations or annotations in your responses.
+
   - trigger: ";prompt-english-improver;"
     replace: |
       I want you to act as an English translator, spelling corrector and improver. I will speak to you in any language and you will detect the language, translate it and answer in the corrected and improved version of my text, in English. I want you to replace my simplified A0-level words and sentences with more beautiful and elegant, upper level English words and sentences. Keep the meaning same, but make them more literary. I want you to only reply the correction, the improvements and nothing else, do not write explanations.
