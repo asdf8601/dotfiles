@@ -362,3 +362,12 @@ run = ['layout floating']
 if.app-id = 'com.cockos.LICEcap'
 run = ['layout floating']
 
+[[on-window-detected]]
+if.app-id = 'org.m0k.transmission'
+run = ['layout floating']
+
+[[on-window-detected]]
+if.app-id = 'com.openai.chat'
+run = ['layout floating']
+
+# aerospace list-apps
