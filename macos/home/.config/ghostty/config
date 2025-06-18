@@ -14,7 +14,8 @@ window-padding-balance = true
 
 # window-decoration = false
 window-decoration = auto
-# background-opacity = 0.9
+# background-opacity = 0.80
+# background-opacity = 0.70
 
 # NOTE:
 # Waiting for the following feature:
