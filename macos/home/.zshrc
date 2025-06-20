@@ -109,6 +109,7 @@ alias :q='exit'
 
 # Git
 alias g=git
+alias g.='git here'
 
 # alias clab='PAGER=cat glab'
 # alias gcl='git clone'
