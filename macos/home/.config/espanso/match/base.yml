@@ -1,15 +1,36 @@
 matches:
+  # prometheus
+  - trigger: ";median;"
+    replace: "quantile_over_time(0.5,{{out}}[3h$|$])"
+    vars:
+      - name: out
+        type: clipboard
+
+  - trigger: ";avg;"
+    replace: "avg_over_time({{out}}[1d$|$])"
+    vars:
+      - name: out
+        type: clipboard
+
+  - trigger: ";am;"
+    replace: "avg_over_time(quantile_over_time(0.5,{{out}}[3h])[1d$|$])"
+    vars:
+      - name: out
+        type: clipboard
+
+  # vim
   - trigger: ";edit;"
     replace: "{{output}}"
     vars:
       - name: output
         type: shell
         params:
-          cmd: "pbpaste > /tmp/espanso-nvim.txt && wezterm -e zsh -c 'source ~/.profile && source ~/.zshrc && nvim /tmp/espanso-nvim.txt' && cat /tmp/espanso-nvim.txt"
+          cmd: "sleep 0.1 && pbpaste > /tmp/espanso-nvim.txt && wezterm -e zsh -c 'source ~/.profile && source ~/.zshrc && nvim /tmp/espanso-nvim.txt' && sleep 0.2 && cat /tmp/espanso-nvim.txt"
 
   - trigger: ";setup;"
     replace: "apt update -qq && apt install -qq -y curl && curl -#fLo- 'https://gist.github.com/asdf8601/ef7af0db1a9a70c0c73337f5788b0072/raw/setup-container.sh' | sh"
 
+  # memes
   - trigger: ";toma;"
     replace: https://media.giphy.com/media/ejJclNX60XyEo555wW/giphy.gif
 
@@ -86,7 +107,7 @@ matches:
       - name: out
         type: shell
         params:
-          cmd: "pbpaste | sed 's/;fix//' | ~/.local/bin/espanso_gpt_summarize.sh"
+          cmd: "pbpaste | sed 's/;sum//' | ~/.local/bin/espanso_gpt_summarize.sh"
 
   - trigger: ";gpt"
     replace: "{{out}}"
@@ -137,7 +158,7 @@ matches:
         - item
       🧩🧩
 
-  - trigger: ";draft"
+  - trigger: ";draft;"
     replace: |-
       ---
       title: "Title"
@@ -152,15 +173,15 @@ matches:
         params:
           trigger: ";date"
 
-  - trigger: ";today"
+  - trigger: ";today;"
     replace: "/heading 3\n@Today \n"
 
-  - trigger: ";plt"
+  - trigger: ";plt;"
     replace: |-
       from matplotlib import pyplot as plt
       plt.show()
 
-  - trigger: ";pass"
+  - trigger: ";pass;"
     replace: "{{out}}"
     force_clipboard: true
     vars:
@@ -214,6 +235,15 @@ matches:
         type: date
         params:
           format: "%A %Y-%m-%d"
+
+  - trigger: ";datetime;"
+    replace: "{{mydate}}"
+    force_clipboard: true
+    vars:
+      - name: mydate
+        type: date
+        params:
+          format: "%Y-%m-%d %H:%M:00"
 
   - trigger: ";ts;"
     replace: "{{mydate}}"
@@ -318,21 +348,21 @@ matches:
       dependencies = []
 
 
-  - trigger: ";multithread;"
+  - trigger: ";py-multithreading;"
     force_clipboard: true
     replace: |-
       from concurrent.futures import ThreadPoolExecutor
       with ThreadPoolExecutor() as executor:
           out = executor.map(func, files)
 
-  - trigger: ";multiprocess;"
+  - trigger: ";py-multiprocessing;"
     force_clipboard: true
     replace: |-
       from concurrent.futures import ProcessPoolExecutor
       with ProcessPoolExecutor() as executor:
           out = executor.map(func, files)
 
-  - trigger: ";query;"
+  - trigger: ";py-query;"
     force_clipboard: true
     replace: |-
       # /// script
