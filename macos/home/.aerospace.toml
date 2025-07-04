@@ -14,6 +14,10 @@ key-mapping.preset = 'qwerty'
 
 # on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
 # on-focus-changed = ['move-mouse window-lazy-center']
+exec-on-workspace-change = [
+    '/bin/bash', '-c',
+    '~/.config/aerospace/pip-move.sh',
+]
 
 [gaps]
 inner.horizontal = 0
@@ -28,6 +32,7 @@ outer.top = 0
 cmd-alt-h = [] # Disable 'hide others'
 alt-f = 'fullscreen'
 alt-g = 'exec-and-forget open /System/Applications/Mission\ Control.app'
+
 
 # ctrl-g = '''exec-and-forget osascript -e '
 # tell application 'Safari'
@@ -108,11 +113,11 @@ g = ['layout floating tiling', 'mode main']
 minus = 'resize smart -100'
 equal = 'resize smart +100'
 
-[mode.service.binding]
+alt-shift-semicolon = 'mode service'
 
+[mode.service.binding]
 # NOTE: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
 # 'service' binding mode declaration.
-
 esc = ['reload-config', 'mode main']
 r = ['flatten-workspace-tree', 'mode main'] # reset layout
 f = ['layout floating tiling', 'mode main'] # Toggle between floating and tiling layout

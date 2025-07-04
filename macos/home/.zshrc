@@ -727,8 +727,8 @@ takt-git () {
 
 
 # source {{{
-export DOTFILES_SRC="$HOME/.dotfiles"
-export DOTFILES_HOME="$HOME/.dotfiles"
+export DOTFILES_SRC=$HOME/.dotfiles
+export DOTFILES_HOME=$HOME/.dotfiles
 export DOTFILES_ROOT=$HOME/.dotfiles
 
 source $DOTFILES_SRC/personal/.custom.hide
@@ -759,3 +759,15 @@ source $(brew --prefix)/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
 alias aider-pro='aider --model gemini/gemini-2.5-pro --architect --no-gitignore --no-attribute-author'
 alias aider-flash='aider --model gemini/gemini-2.5-flash --architect --no-gitignore --no-attribute-author'
 alias aider-lite='aider --model gemini/gemini-2.5-flash-lite-preview-06-17 --architect --no-gitignore --no-attribute-author'
+
+gh () {
+    (
+        unset GH_TOKEN GITHUB_TOKEN
+        command gh "$@"
+    )
+}
+
+# opencode
+export PATH=/Users/mgreco/.opencode/bin:$PATH
+
+alias restish="noglob restish"
