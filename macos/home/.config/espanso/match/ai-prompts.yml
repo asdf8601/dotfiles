@@ -1,6 +1,483 @@
 name: ai-prompt-list
 parent: default
 matches:
+  - trigger: ";ai-pr;"
+    replace: |
+      <system>
+      You’re an assistant that takes a Git diff and writes a short, casual PR
+      description without jargon.
+
+      Output format:
+      1. **Quick summary**: one sentence.
+      2. **Main changes**: bullet list grouped by file or feature.
+      3. **Optional details**: for anything special.
+      4. **How to test**: quick commands or steps.
+
+      Example:
+
+      Given this diff:
+
+      ```diff
+      diff --git c/.gitignore w/.gitignore
+      index f0b4eed..ae2dc49 100644
+      --- c/.gitignore
+      +++ w/.gitignore
+      @@ -1,2 +1,179 @@
+       .autoenv
+       .venv
+      +
+      +### Python ###
+      +# Byte-compiled / optimized / DLL files
+      +__pycache__/
+      +
+      +
+      +# Distribution / packaging
+      +.Python
+      +build/
+      +develop-eggs/
+      +dist/
+      +downloads/
+      +eggs/
+      +.eggs/
+      +lib/
+      +lib64/
+      +parts/
+      +sdist/
+      +var/
+      +wheels/
+      +share/python-wheels/
+      +*.egg-info/
+      +.installed.cfg
+      +*.egg
+      +MANIFEST
+      +
+      +# Unit test / coverage reports
+      +.coverage
+      +.coverage.*
+      +.cache
+      +nosetests.xml
+      +coverage.xml
+      +*.cover
+      +*.py,cover
+      +.hypothesis/
+      +.pytest_cache/
+      +cover/
+      +
+      +# Environments
+      +.env
+      +.venv
+      +env/
+      +venv/
+      +ENV/
+      +env.bak/
+      +venv.bak/
+      +# mkdocs documentation
+      +/site
+      +
+      +# mypy
+      +.mypy_cache/
+      +.dmypy.json
+      +dmypy.json
+      +
+      +# Pyre type checker
+      +.pyre/
+      +
+      +# pytype static type analyzer
+      +.pytype/
+      +
+      +# Cython debug symbols
+      +cython_debug/
+      +# ruff
+      +.ruff_cache/
+      +
+      +# LSP config files
+      +pyrightconfig.json
+      +
+      +# End of https://www.toptal.com/developers/gitignore/api/python
+      diff --git c/README.md w/README.md
+      index f6c373c..c4e95ae 100644
+      --- c/README.md
+      +++ w/README.md
+      @@ -1,23 +1,56 @@
+       # Agora.sh
+
+      -This project contains bunch of useful scripts that can be helpful to interact
+      -with the Seedtag infraestructure or local enviroment.
+      -
+      -The name comes from Agora and `.sh` meaning that this is public place where you
+      -can share scripts.
+      -
+      -The main idea is to have a collection of snippets that can run independently
+      -with minimal dependencies, ideally with just one command.
+      -
+      -
+      -## How to use it
+      -
+      -
+      -As this is just a collection of scripts, you can find and run any script you need.
+      -It's recommended to review the code before running anything.
+      -
+      -We have 3 main folders:
+      -
+      -- `  install/`: Contains scripts that install or configure programs.
+      -- `  scripts/`: Contains scripts that are intended to solve specific problems.
+      -- `  seedlings/`: Contains prototype projects and POCs.
+      \ No newline at end of file
+      +A collection of scripts and tools for interacting with Seedtag infrastructure and local environments. Named after the ancient Greek agora (public gathering place) + `.sh` (shell scripts).
+      +
+      +## Quick Start
+      +
+      +### Option 1: Direct execution (simplest)
+      +```bash
+      +# Run any script directly
+      +bash scripts/kubernetes/k_list_logs.sh
+      +python scripts/google/gcs_find_missing_hours_from_bucket.py
+      +
+      +# Install tools
+      +bash install/fzf.sh
+      +```
+      +
+      +### Option 2: Interactive manager (recommended)
+      +```bash
+      +# Setup once
+      +./agora.sh setup
+      +alias ash="$(pwd)/agora.sh"
+      +
+      +# Use interactively
+      +ash run     # Browse and execute scripts
+      +ash install # Browse installation scripts
+      +```
+      +
+      +## Structure
+      +
+      +```
+      +├── install/     # Installation and configuration scripts
+      +├── scripts/     # Infrastructure automation scripts
+      +│   ├── google/     # GCP, BigQuery, Dataproc tools
+      +│   ├── kubernetes/ # K8s management and monitoring
+      +│   ├── mongo/      # MongoDB operations
+      +│   ├── grafana/    # Monitoring and metrics
+      +│   └── ...
+      +└── seedlings/   # Experimental projects and POCs
+      +```
+      +
+      +## Usage
+      +
+      +### Direct execution
+      +All scripts are designed to run independently:
+      +```bash
+      +bash scripts/path/to/script.sh [args]
+      +python scripts/path/to/script.py [args]
+      +```
+      +
+      +### Interactive manager
+      +- **Browse scripts**: `ash run` - Interactive selection with preview
+      +- **Browse installs**: `ash install` - Setup tools and dependencies
+      +- **List all**: `ash list` - Show available scripts by category
+      +- **Help**: `ash help` - Show all commands
+      +
+      +> ⚠️ Always review scripts before execution
+      \ No newline at end of file
+      diff --git c/agora.sh w/agora.sh
+      index 4842196..61a840c 100755
+      --- c/agora.sh
+      +++ w/agora.sh
+      @@ -1,72 +1,201 @@
+       #!/usr/bin/env bash
+      +# Agora.sh - Script manager for Seedtag infrastructure tools
+      +# Usage: ./agora.sh <command> or ash <command> (after setup)
+      +
+       set -e
+      +
+      +SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+       command=$1
+
+      +# Colors for better output
+      +RED='\033[0;31m'
+      +GREEN='\033[0;32m'
+      +YELLOW='\033[1;33m'
+      +NC='\033[0m' # No Color
+      +
+      +function log_info {
+      +    echo -e "${GREEN}[INFO]${NC} $1"
+      +}
+      +
+      +function log_warn {
+      +    echo -e "${YELLOW}[WARN]${NC} $1"
+      +}
+      +
+      +function log_error {
+      +    echo -e "${RED}[ERROR]${NC} $1"
+      +}
+      +
+      +function check_dependencies {
+      +    if ! command -v fzf &> /dev/null; then
+      +        log_error "fzf is required but not installed. Run 'ash setup' first."
+      +        exit 1
+      +    fi
+      +}
+      +
+       function interactive_exec {
+      -    folder=$1
+      -    script=$(find $folder -type f | fzf --preview 'cat {}')
+      -    if [[ -z $script ]]; then
+      +    local folder=$1
+      +
+      +    if [[ ! -d "$folder" ]]; then
+      +        log_error "Directory '$folder' not found"
+               exit 1
+           fi
+      +
+      +    # Check if folder has any scripts
+      +    if [[ -z "$(find "$folder" -type f)" ]]; then
+      +        log_warn "No scripts found in '$folder'"
+      +        exit 0
+      +    fi
+      +
+      +    check_dependencies
+      +
+      +    # Use fzf to select script with custom layout and handle different actions
+      +    local result
+      +    result=$(find "$folder" -type f -name "*.sh" -o -name "*.py" | fzf \
+      +        --preview 'cat {}' \
+      +        --height 80% \
+      +        --layout=reverse \
+      +        --border \
+      +        --preview-window=down:60% \
+      +        --header "Select a script | Enter: Execute | Ctrl-E: Edit | Ctrl-Y: Copy command" \
+      +        --prompt "Filter: " \
+      +        --info=inline \
+      +        --margin=1 \
+      +        --padding=1 \
+      +        --bind "ctrl-e:execute(${EDITOR:-vim} {})" \
+      +        --bind "ctrl-y:execute-silent(echo -n 'bash {}' | pbcopy)+abort")
+      +
+      +    local script="$result"
+      +
+      +    if [[ -z $script ]]; then
+      +        log_info "No script selected"
+      +        exit 0
+      +    fi
+      +
+      +    log_info "Selected: $script"
+      +
+           if [[ $folder == "scripts" ]]; then
+      -        # ask for args
+      -        echo "$script <args>"
+      -        read -p "args: " args
+      -        # if script is sh run it with bash, if py run it with python
+      +        # Ask for arguments for scripts
+      +        echo -n "Enter arguments (or press Enter for none): "
+      +        read -r args
+      +
+      +        # Execute based on file extension
+               case $script in
+                   *.sh)
+      -                bash $script $args
+      +                log_info "Executing bash script with args: $args"
+      +                bash "$script" $args
+                       ;;
+                   *.py)
+      -                python $script $args
+      +                log_info "Executing python script with args: $args"
+      +                python3 "$script" $args
+                       ;;
+                   *)
+      -                echo "Unknown script type"
+      +                log_error "Unsupported script type: $script"
+                       exit 1
+                       ;;
+               esac
+      +    elif [[ $folder == "install" ]]; then
+      +        # Installation scripts don't need arguments
+      +        log_info "Executing installation script: $script"
+      +        bash "$script"
+      +    fi
+      +}
+      +
+      +function show_help {
+      +    cat << EOF
+      +ash - Agora Shell Script Manager
+      +
+      +A tool for managing and executing Seedtag infrastructure scripts.
+      +
+      +USAGE:
+      +    ash <command> [options]
+      +
+      +COMMANDS:
+      +    setup           Install dependencies (fzf) and show alias setup
+      +    install, i      Browse and execute installation scripts interactively
+      +    run, exec       Browse and execute operational scripts interactively
+      +    list, ls        List all available scripts by category
+      +    help, h         Show this help message
+      +
+      +EXAMPLES:
+      +    ash setup                    # First-time setup
+      +    ash install                  # Browse installation scripts
+      +    ash run                      # Browse and run operational scripts
+      +    ash list                     # Show all available scripts
+      +
+      +DIRECTORIES:
+      +    install/        Installation and configuration scripts
+      +    scripts/        Infrastructure automation and operational scripts
+      +    seedlings/      Experimental projects and POCs
+      +
+      +For more information, see README.md
+      +EOF
+      +}
+      +
+      +function list_scripts {
+      +    echo -e "\n${GREEN}=== Installation Scripts ===${NC}"
+      +    if [[ -d "install" ]]; then
+      +        find install -type f -name "*.sh" | sort
+      +    else
+      +        echo "No install directory found"
+           fi
+
+      -    if [[ $folder == "install" ]]; then
+      -        echo "==== running $script"
+      -        bash $script
+      +    echo -e "\n${GREEN}=== Operational Scripts ===${NC}"
+      +    if [[ -d "scripts" ]]; then
+      +        find scripts -type f \( -name "*.sh" -o -name "*.py" \) | sort
+      +    else
+      +        echo "No scripts directory found"
+      +    fi
+      +
+      +    echo -e "\n${GREEN}=== Seedlings (Experimental) ===${NC}"
+      +    if [[ -d "seedlings" ]]; then
+      +        find seedlings -maxdepth 2 -type d | grep -v "^seedlings$" | sort
+      +    else
+      +        echo "No seedlings directory found"
+           fi
+       }
+
+      +function setup_agora {
+      +    log_info "Setting up Agora.sh..."
+      +
+      +    # Install fzf if install script exists
+      +    if [[ -f "install/fzf.sh" ]]; then
+      +        log_info "Installing fzf..."
+      +        bash install/fzf.sh
+      +    else
+      +        log_warn "fzf installation script not found at install/fzf.sh"
+      +    fi
+
+      -function help {
+      -    echo "ash - Agora shell script manager powered with fzf."
+      -    echo "Usage: ash <command> [args]"
+      -    echo "Commands:"
+      -    echo "  setup     - setup agora.sh"
+      -    echo "  i,install - execute installation script"
+      -    echo "  exec,run  - execute a script"
+      -    echo "  h,help    - help"
+      -    echo "  ls,list   - list scripts"
+      +    echo -e "\n${GREEN}Setup complete!${NC}"
+      +    echo -e "\nTo use 'ash' command globally, add this alias to your shell config:"
+      +    echo -e "${YELLOW}    alias ash=\"$SCRIPT_DIR/agora.sh\"${NC}"
+      +    echo -e "\nFor bash:\n   echo 'alias ash=\"$SCRIPT_DIR/agora.sh\"' >> ~/.bashrc"
+      +    echo -e "For zsh:\n    echo 'alias ash=\"$SCRIPT_DIR/agora.sh\"' >> ~/.zshrc"
+       }
+
+      +# Change to script directory to ensure relative paths work
+      +cd "$SCRIPT_DIR"
+      +
+      +# Main command handler
+       case "$command" in
+           setup)
+      -        ./install/fzf.sh
+      -        echo "Add this to your .bashrc or .zshrc:"
+      -        echo "    alias ash=\"$(pwd)/agora.sh\""
+      +        setup_agora
+               ;;
+           i|install)
+      -        shift
+               interactive_exec install
+      -    ;;
+      +        ;;
+           exec|run)
+      -        shift
+      -        interactive_exec run
+      -    ;;
+      +        interactive_exec scripts
+      +        ;;
+           ls|list)
+      -        find install -type f
+      -        find run -type f
+      -    ;;
+      -    h|help)
+      -        help
+      -    ;;
+      +        list_scripts
+      +        ;;
+      +    h|help|"")
+      +        show_help
+      +        ;;
+           *)
+      -        help
+      -    ;;
+      +        log_error "Unknown command: $command"
+      +        echo
+      +        show_help
+      +        exit 1
+      +        ;;
+       esac
+      diff --git c/install/fzf.sh w/install/fzf.sh
+      index eb21998..098442d 100755
+      --- c/install/fzf.sh
+      +++ w/install/fzf.sh
+      @@ -1,9 +1,9 @@
+       #!/usr/bin/env bash
+       if [[ -d ~/.fzf ]]; then
+      -  echo "==== fzf already installed"
+      +  echo "[agora.sh] fzf already installed"
+         exit 0
+       fi
+
+      -echo ==== Installing fzf
+      +echo "[agora.sh] Installing fzf"
+       git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+       ~/.fzf/install
+      diff --git c/install/kubectx.sh w/install/kubectx.sh
+      index d597a1b..adec349 100755
+      --- c/install/kubectx.sh
+      +++ w/install/kubectx.sh
+      @@ -1,5 +1,5 @@
+       #!/usr/bin/env bash
+      -echo ==== Installing kubectx
+      +echo "[agora.sh] Installing kubectx"
+       # if os is mac
+       if [[ "$OSTYPE" == "darwin"* ]]; then
+         brew install kubectx
+      ```
+
+      Return:
+
+      Quick summary:
+          •	Improved docs and scripts.
+
+      Main changes:
+          •	README.md: simplified text and added Quick Start.
+          •	agora.sh: added alias ash, colors, error handling, improved fzf.
+          •	.gitignore: added Python rules.
+
+      How to test:
+
+      ```
+      ash setup
+      ash run
+      ```
+      </system>
+
+      <user>
+      Generate a pr body for this diff:
+
+      ```diff
+      $|$
+      ```
+      </user>
+
+
 
   - trigger: ";ai-review;"
     replace: |
