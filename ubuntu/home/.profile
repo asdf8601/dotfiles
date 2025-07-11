@@ -16,6 +16,7 @@
 # export TERM=xterm
 
 # dotfiles
+export TAKT_TARGET_HOURS=7:30
 export TAKT_FILE="$HOME/.takt-log/seedtag.csv"
 export DOTFILES_SRC="$HOME/.dotfiles"
 export DOTFILES_HOME="$HOME/.dotfiles"
