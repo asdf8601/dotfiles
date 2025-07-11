@@ -756,6 +756,7 @@ source ~/.fzf.zsh
 source $(brew --prefix)/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
 
 
+alias espanso='EDITOR=nvim espanso'
 alias aider-pro='aider --model gemini/gemini-2.5-pro --architect --no-gitignore --no-attribute-author'
 alias aider-flash='aider --model gemini/gemini-2.5-flash --architect --no-gitignore --no-attribute-author'
 alias aider-lite='aider --model gemini/gemini-2.5-flash-lite-preview-06-17 --architect --no-gitignore --no-attribute-author'
