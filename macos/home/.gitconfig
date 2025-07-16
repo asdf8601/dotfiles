@@ -48,17 +48,16 @@
 	whitespace = nowarn
 
 [alias]
+	split = "!f() { git-split $@ }; f"
+	pushf = "!f() { git push --force-with-lease $@; }; f"
+	rbc = "!f() { git rebase --continue; }; f"
 	main = "!f() { if git diff-index --quiet HEAD --; then git checkout main && git pull; else git stash && git checkout main && git pull; fi }; f"
-	sync = "!f() { if git diff-index --quiet HEAD --; then git checkout main && git pull && git checkout -; else git stash && git checkout main && git pull && git checkout - && git stash pop; fi }; f"
+	sync = "!f() { if git diff-index --quiet HEAD --; then git checkout main && git pull && git checkout - && git rebase main; else git stash && git checkout main && git pull && git checkout - && git rebase main && git stash pop; fi }; f"
 	newb = "!f() { if git diff-index --quiet HEAD --; then git checkout main && git pull && git checkout -b $1; else git stash && git checkout main && git pull && git checkout -b $1 && git stash pop; fi }; f"
 	mcob = "!f() { if git diff-index --quiet HEAD --; then git checkout main && git pull && git checkout -b $1; else git stash && git checkout main && git pull && git checkout -b $1 && git stash pop; fi }; f"
-	split = "!f() { \
-		  url=$(jira issue create --project GC --summary \"$1\" --type Task --assignee $(jira me) --no-input --body \"$1\" | grep 'https') && \
-		  key=$(echo \"$url\" | grep -oE 'GC-[0-9]+$') && \
-		  branch_name=\"$key/$(echo \"$1\" | tr '[:upper:]' '[:lower:]' | sed 's/ /-/g' | cut -c1-40)\" && \
-		  echo \"Creating branch: $branch_name\" \
-		}; f"
 	ai = "!git commit -m \"$(sgpt cm --model gpt-4o-mini-2024-07-18 \"$(git diff --cached)\" | tee /tmp/git_commit_$(date +'%Y%m%d_%H%M').txt)\" $@"
+	aip = "!f() { git ai && git push; }; f"
+
 	fixup = "!git log -n 50 --pretty=format:'%h %s' --no-merges | fzf | cut -c -7 | xargs -o git commit --fixup"
 	; bsync = "!git branch -vv | grep ': gone]' | awk '{print $1}' | xargs -r git branch -D"
 	bsync = "!git fetch -p && git branch -vv | awk '/: gone]/{print $1}' | xargs git branch -d"
