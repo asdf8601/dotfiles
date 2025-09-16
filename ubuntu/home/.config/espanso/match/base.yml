@@ -83,37 +83,29 @@ matches:
   - trigger: ":hh:"
     replace: "## @today "
 
-  - trigger: ";gpt"
+  - trigger: ";chat;"
     replace: "{{out}}"
     vars:
       - name: out
         type: shell
         params:
-          cmd: "xdotool key ctrl+a && sleep 0.1 && xdotool key ctrl+x && sleep 0.1 && /home/mgreco/.local/bin/pbpaste | sed 's/:gpt://' | espanso_gpt"
+          cmd: "/home/mgreco/.local/bin/pbpaste | sed 's/;chat;//' | espanso_gpt"
 
-  - trigger: ";trad"
+  - trigger: ";trad;"
     replace: "{{out}}"
     vars:
       - name: out
         type: shell
         params:
-          cmd: "xdotool key ctrl+a && sleep 0.1 && xdotool key ctrl+x && sleep 0.1 && /home/mgreco/.local/bin/pbpaste | sed 's/:trad://' | espanso_gpt_trad"
+          cmd: "/home/mgreco/.local/bin/pbpaste | sed 's/;trad;//' | espanso_gpt_trad"
 
-  - trigger: ";fix"
+  - trigger: ";fix;"
     replace: "{{out}}"
     vars:
       - name: out
         type: shell
         params:
-          cmd: "xdotool key ctrl+a && sleep 0.1 && xdotool key ctrl+x && sleep 0.1 && /home/mgreco/.local/bin/pbpaste | sed 's/:fix://' | espanso_gpt_fix"
-
-  - trigger: ":Fix:"
-    replace: "{{out}}"
-    vars:
-      - name: out
-        type: shell
-        params:
-          cmd: "/home/mgreco/.local/bin/pbpaste | sed 's/:Fix://' | espanso_gpt_fix"
+          cmd: "/home/mgreco/.local/bin/pbpaste | sed 's/;fix;//' | espanso_gpt_fix"
 
   - trigger: ":retro:"
     replace: "1. Max 🔴🟡🟢\n    - 🔁 \n    - ✅ \n🧩🧩 "

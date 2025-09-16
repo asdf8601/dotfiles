@@ -115,3 +115,48 @@ function nvim-camp {
   git push && \
   cd -
 }
+
+
+
+# opencode
+export PATH=/Users/mgreco/.opencode/bin:$PATH
+
+# restish is a command-line tool for interacting with REST APIs.
+alias restish="noglob restish"
+alias cd.='cd $(find . -maxdepth 4 -type d | fzf --height 10%)'
+
+alias geminipro='llm -m github_copilot/gemini-2.5-pro -o temperature 0'
+alias geminiflash='llm -m github_copilot/gemini-2.0-flash-001 -o temperature 0'
+alias gpt5='llm -m github_copilot/gpt-5 -o temperature 0'
+alias sonnet='llm -m github_copilot/claude-4-sonnet -o temperature 0'
+alias sonnett='llm -m github_copilot/claude-3.7-sonnet-thought -o temperature 0'
+
+
+function ai() {
+  python3 - "$@" <<'PY'
+import argparse, os, shlex, sys
+
+parser = argparse.ArgumentParser(prog="ai")
+parser.add_argument("-m","--model", default="github_copilot/gemini-2.5-pro")
+parser.add_argument("-o","--option", nargs=2, action="append", default=[], metavar=("KEY","VALUE"))
+parser.add_argument("-q","--query", required=True)
+parser.add_argument("--dry-run", action="store_true")
+args = parser.parse_args()
+
+kv = [("temperature","0"), ("max_tokens","1024")]
+
+for k, v in (args.option or []):
+    kv = [(kk, vv) for kk, vv in kv if kk != k] + [(k, str(v))]
+
+cmd = ["llm", "-m", args.model]
+for k, v in kv:
+    cmd += ["-o", k, v]
+cmd += [args.query]
+
+if args.dry_run:
+    print(" ".join(shlex.quote(c) for c in cmd))
+    sys.exit(0)
+
+os.execvp(cmd[0], cmd)
+PY
+}
