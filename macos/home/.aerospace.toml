@@ -375,4 +375,12 @@ run = ['layout floating']
 if.app-id = 'com.openai.chat'
 run = ['layout floating']
 
+[[on-window-detected]]
+if.app-id = 'io.podmandesktop.PodmanDesktop'
+run = ['layout floating']
+
+[[on-window-detected]]
+if.app-id = 'com.electron.dockerdesktop'
+run = ['layout floating']
+
 # aerospace list-apps

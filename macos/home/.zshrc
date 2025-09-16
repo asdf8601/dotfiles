@@ -22,14 +22,22 @@ export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$HOME/go/bin:$HOME/.go/bin:/usr/local
 # export PS1="%F{magenta}%n%f@%F{green}%M%f:%F{cyan}%~%f %F{magenta}(%T)%f %F{green}\$%f "
 # export PS1="%F{magenta}%n%f@%F{green}%m%f:%F{cyan}%1d%f %F{magenta}(%D{%L:%M:%S})%f %F{green}\$%f "
 # export PS1="%F{cyan}%1d%f %F{magenta}(%D{%X})%f %F{green}\$%f "
-export PS1="%F{cyan}%~%f %F{magenta}(%D{%H:%M})%f %F{green}\$%f "
+# export PS1="%F{cyan}%~%f %F{magenta}(%D{%H:%M})%f %F{green}\$%f "
+export PS1="%F{cyan}%~%f %F{magenta}(%D{%H:%M})%f"$'\n'"%F{green}\$%f "
 
 setps() {
     case $1 in
         1)
+            # $
             export PS1="%F{green}\$%f "
         ;;
+        2)
+            # ~ (09:37)
+            # $
+            export PS1="%F{cyan}%~%f %F{magenta}(%D{%H:%M})%f"$'\n'"%F{green}\$%f "
+        ;;
         *)
+            # ~ (09:37) $
             export PS1="%F{cyan}%~%f %F{magenta}(%D{%H:%M})%f %F{green}\$%f "
         ;;
     esac
@@ -664,13 +672,14 @@ gi() { curl -L -s https://www.gitignore.io/api/$@ ;}
 # =============================================================================
 # Git
 
-pyright-here() {
+pyrightrc() {
     cp $DOTFILES/python/pyrightconfig.json .
 }
 
 pip-rdev() {
     pip install -r $DOTFILES/python/requirements-dev.txt
 }
+
 
 todo() {
     TODO_DEFAULT=${TODO_DEFAULT:-~/MyTODO.md}
@@ -679,7 +688,7 @@ todo() {
 }
 
 
-pdbrc-here () {
+pdbrc () {
     echo "# b $PWD/src/file.py:lineno, condition" > .pdbrc
 }
 
@@ -743,32 +752,65 @@ if [ -n "${ZSH_DEBUGRC+1}" ]; then
 fi
 
 
-# started to hate the UI
-# . "$HOME/.atuin/bin/env"
-# eval "$(atuin init zsh)"
-#
-
 export AUTOENV_ENV_FILENAME=".autoenv"
 export AUTOENV_ASSUME_YES=1
 source ~/.autoenv/activate.sh
 source ~/.fzf.zsh
 
-source $(brew --prefix)/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
+# source $(brew --prefix)/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh
 
 
 alias espanso='EDITOR=nvim espanso'
-alias aider-pro='aider --model gemini/gemini-2.5-pro --architect --no-gitignore --no-attribute-author'
-alias aider-flash='aider --model gemini/gemini-2.5-flash --architect --no-gitignore --no-attribute-author'
-alias aider-lite='aider --model gemini/gemini-2.5-flash-lite-preview-06-17 --architect --no-gitignore --no-attribute-author'
+alias opencode='EDITOR=nvim opencode'
 
 gh () {
     (
+        bkp_GH_TOKEN=$GH_TOKEN
         unset GH_TOKEN GITHUB_TOKEN
         command gh "$@"
+        export GH_TOKEN=$bkp_GH_TOKEN
     )
 }
 
 # opencode
 export PATH=/Users/mgreco/.opencode/bin:$PATH
 
+# restish is a command-line tool for interacting with REST APIs.
 alias restish="noglob restish"
+alias cd.='cd $(find . -maxdepth 4 -type d | fzf --height 10%)'
+
+alias geminipro='llm -m github_copilot/gemini-2.5-pro -o temperature 0'
+alias geminiflash='llm -m github_copilot/gemini-2.0-flash-001 -o temperature 0'
+alias gpt5='llm -m github_copilot/gpt-5 -o temperature 0'
+alias sonnet='llm -m github_copilot/claude-4-sonnet -o temperature 0'
+alias sonnett='llm -m github_copilot/claude-3.7-sonnet-thought -o temperature 0'
+
+
+function ai() {
+  python3 - "$@" <<'PY'
+import argparse, os, shlex, sys
+
+parser = argparse.ArgumentParser(prog="ai")
+parser.add_argument("-m","--model", default="github_copilot/gemini-2.5-pro")
+parser.add_argument("-o","--option", nargs=2, action="append", default=[], metavar=("KEY","VALUE"))
+parser.add_argument("-q","--query", required=True)
+parser.add_argument("--dry-run", action="store_true")
+args = parser.parse_args()
+
+kv = [("temperature","0"), ("max_tokens","1024")]
+
+for k, v in (args.option or []):
+    kv = [(kk, vv) for kk, vv in kv if kk != k] + [(k, str(v))]
+
+cmd = ["llm", "-m", args.model]
+for k, v in kv:
+    cmd += ["-o", k, v]
+cmd += [args.query]
+
+if args.dry_run:
+    print(" ".join(shlex.quote(c) for c in cmd))
+    sys.exit(0)
+
+os.execvp(cmd[0], cmd)
+PY
+}
