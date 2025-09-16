@@ -718,20 +718,6 @@ pushd_edit_pop () {
 }
 
 
-takt-git () {
-    case $1 in
-        push)
-            cd $(dirname $TAKT_FILE)
-            git add . && git commit -m "$1 $TAKT_FILE" && git push
-            ;;
-        *)
-            takt $@
-            cd $(dirname $TAKT_FILE)
-            git add . && git commit -m "$1 $TAKT_FILE" && git push
-            ;;
-    esac
-}
-
 # }}}
 
 
