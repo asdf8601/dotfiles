@@ -2,6 +2,8 @@
 # https://github.com/neovim/neovim/wiki/Installing-Neovim#ubuntu
 NEOVIM_DIR="/tmp/dotfiles/neovim"
 NEOVIM_URL="https://github.com/neovim/neovim.git"
+# NEOVIM_VER="${1:-nightly}"
+# NEOVIM_VER="${1:-nightly}"
 NEOVIM_VER="${1:-stable}"
 
 if ! command -v sudo &> /dev/null
@@ -40,9 +42,11 @@ echo
 git clone --depth 1 -b $NEOVIM_VER $NEOVIM_URL $NEOVIM_DIR
 
 pushd  $NEOVIM_DIR
+    make CMAKE_BUILD_TYPE=Release
+    sudo make install
     # https://github.com/neovim/neovim/wiki/Building-Neovim
-    make CMAKE_BUILD_TYPE=RelWithDebInfo
-    cd build && cpack -G DEB && sudo dpkg -i nvim-linux64.deb
+    # make CMAKE_BUILD_TYPE=RelWithDebInfo
+    # cd build && cpack -G DEB && sudo dpkg -i nvim-linux64.deb
 popd
 
 # PLUG_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/nvim/site/autoload/plug.vim"

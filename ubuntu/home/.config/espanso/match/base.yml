@@ -1,169 +1,102 @@
 matches:
+  # prometheus
+  - trigger: ";median;"
+    replace: "quantile_over_time(0.5,{{out}}[3h$|$])"
+    vars:
+      - name: out
+        type: clipboard
 
-  - trigger: ";gpt-pr"
-    replace: "I want a summary for a PR body so you should describe the modifications made as shown in this git diff. Provide a summary of significant changes. Keep the description straightforward and use basic language. Avoid complex terminology. Return a markdown formatted text."
+  - trigger: ";avg;"
+    replace: "avg_over_time({{out}}[1d$|$])"
+    vars:
+      - name: out
+        type: clipboard
 
-  - trigger: ";edit"
+  - trigger: ";am;"
+    replace: "avg_over_time(quantile_over_time(0.5,{{out}}[3h])[1d$|$])"
+    vars:
+      - name: out
+        type: clipboard
+
+  # vim
+  - trigger: ";edit;"
     replace: "{{output}}"
     vars:
       - name: output
         type: shell
         params:
-          cmd: "xdotool key ctrl+a && sleep 0.1 && xdotool key ctrl+x && sleep 0.1 && /home/mgreco/.local/bin/pbpaste > /tmp/espanso-nvim.txt && xterm -e zsh -c 'source ~/.profile && source ~/.zshrc && nvim /tmp/espanso-nvim.txt' && cat /tmp/espanso-nvim.txt"
+          cmd: "sleep 0.1 && pbpaste > /tmp/espanso-nvim.txt && wezterm -e zsh -c 'source ~/.profile && source ~/.zshrc && nvim /tmp/espanso-nvim.txt' && sleep 0.2 && cat /tmp/espanso-nvim.txt"
 
-  - trigger: ":setup:"
-    replace: "apt update -qq && apt install -qq -y curl && curl -#fLo- 'https://gist.github.com/mmngreco/ef7af0db1a9a70c0c73337f5788b0072/raw/setup-container.sh' | sh"
+  - trigger: ";setup;"
+    replace: "apt update -qq && apt install -qq -y curl && curl -#fLo- 'https://gist.github.com/asdf8601/ef7af0db1a9a70c0c73337f5788b0072/raw/setup-container.sh' | sh"
 
-  - trigger: ":toma:"
-    replace: https://media.giphy.com/media/ejJclNX60XyEo555wW/giphy.gif
-
-  - trigger: ":crying:"
-    replace: https://media.giphy.com/media/gjZUmIYSb6bacxzVh2/giphy.gif
-
-  - trigger: ":rolling:"
-    replace: https://media.giphy.com/media/lcySndwSDLxC4eOU86/giphy.gif
-
-  - trigger: ":NOOO:"
-    replace: https://giphy.com/clips/theoffice-lkibHaGO1xmJXapEdq
-
-  - trigger: ":letsdothis:"
-    replace: https://media.giphy.com/media/BpGWitbFZflfSUYuZ9/giphy.gif
-
-  - trigger: ":apatico:"
-    replace: https://media.giphy.com/media/BY8ORoRpnJDXeBNwxg/giphy.gif
-
-  - trigger: ":dance:"
-    replace: https://media.giphy.com/media/l0amJzVHIAfl7jMDos/giphy.gif
-
-  - trigger: ":itstrue:"
-    replace: https://media.giphy.com/media/dXFKDUolyLLi8gq6Cl/giphy.gif
-
-  - trigger: ":tbd:"
-    replace: https://media.giphy.com/media/VmcGXVrh4dHFfjQzrI/giphy.gif
-
-  - trigger: ":awkward:"
-    replace: https://media.giphy.com/media/4ZMsXG1uh6cZTo1F9Y/giphy.gif
-
-  - trigger: ":warmup:"
-    replace: https://media.giphy.com/media/Yz0Gp8s9jKqRy/giphy.gif
-
-  - trigger: ";zen"
-    replace: "{{quote}}"
-    vars:
-      - name: quote
-        type: shell
-        params:
-          cmd: "zen"
-
-  - trigger: ";lannister"
-    replace: "{{quote}}"
-    vars:
-      - name: quote
-        type: shell
-        params:
-          cmd: "lannister"
-
-  - trigger: ";stoic"
-    replace: "{{quote}}"
-    vars:
-      - name: quote
-        type: shell
-        params:
-          cmd: "stoic"
-
-  - trigger: ":>h:"
+  - trigger: ">h"
     replace: "> # @today "
 
-  - trigger: ":>hh:"
+  - trigger: ">hh"
     replace: "> ## @today "
 
-  - trigger: ":h:"
+  - trigger: ",h"
     replace: "# @today "
 
-  - trigger: ":hh:"
+  - trigger: ",hh"
     replace: "## @today "
 
-  - trigger: ";chat;"
-    replace: "{{out}}"
-    vars:
-      - name: out
-        type: shell
-        params:
-          cmd: "/home/mgreco/.local/bin/pbpaste | sed 's/;chat;//' | espanso_gpt"
+  - trigger: ";issue;"
+    force_clipboard: true
+    replace: |-
+      ## Context
+      while x then y
 
-  - trigger: ";trad;"
-    replace: "{{out}}"
-    vars:
-      - name: out
-        type: shell
-        params:
-          cmd: "/home/mgreco/.local/bin/pbpaste | sed 's/;trad;//' | espanso_gpt_trad"
+      ## Problem
+      y is a problem because of z
 
-  - trigger: ";fix;"
-    replace: "{{out}}"
-    vars:
-      - name: out
-        type: shell
-        params:
-          cmd: "/home/mgreco/.local/bin/pbpaste | sed 's/;fix;//' | espanso_gpt_fix"
+      ## Solution
+      we can try to do a,b,c
 
-  - trigger: ":retro:"
-    replace: "1. Max 🔴🟡🟢\n    - 🔁 \n    - ✅ \n🧩🧩 "
+  - trigger: ";retro"
+    force_clipboard: true
+    replace: |-
+      1. Max 🔴🟡🟢
+      🔁
+        - item
+      ✅
+        - item
+      🧩🧩
 
-  - trigger: ";draft"
-    replace: "---\ntitle: \"$|$\"\ndate: {{date}}\ndraft: false\ncategories: []\nlabels: []\n---\n\n"
+  - trigger: ";draft;"
+    replace: |-
+      ---
+      title: "Title"
+      date: {{date}}
+      draft: false
+      categories: ["programming"]
+      labels: ["spanish"]
+      ---
     vars:
       - name: date
         type: match
         params:
-          trigger: ":date:"
+          trigger: ";date"
 
-  - trigger: ";today"
+  - trigger: ";today;"
     replace: "/heading 3\n@Today \n"
 
-
-  - trigger: ";uuid"
-    replace: "{{out}}"
-    vars:
-      - name: out
-        type: shell
-        params:
-          cmd: "python3 -c 'import uuid; print(uuid.uuid4())'"
-
-  - trigger: ";py"
-    replace: |-
-      import pandas as pd
-      import numpy as np
-      from rich import print
-
-  - trigger: ";px"
-    replace: |-
-      import plotly.express as px
-      px.scatter(df, x="", y="")
-      px.line(df, x="", y="")
-
-  - trigger: ";plt"
+  - trigger: ";plt;"
     replace: |-
       from matplotlib import pyplot as plt
       plt.show()
 
-  - trigger: ";cp"
+  - trigger: ";pass;"
     replace: "{{out}}"
+    force_clipboard: true
     vars:
       - name: out
         type: shell
         params:
-          cmd: "xdotool key ctrl+a && xdotool key ctrl+c"
+          cmd: "python -c 'from random import choices as c; import string as s; print(\"\".join(c(s.ascii_letters, k=10) + c(s.digits, k=6) + c(s.punctuation, k=2)))'"
 
-  - trigger: ";pass"
-    replace: "{{out}}"
-    vars:
-      - name: out
-        type: shell
-        params:
-          cmd: "python3 ~/.local/bin/passgen"
-
-  - trigger: ";myip"
+  - trigger: ";ip"
     replace: "{{output}}"
     vars:
       - name: output
@@ -183,7 +116,25 @@ matches:
 
       </details>
 
-  - trigger: ";Date"
+  - trigger: ";import"
+    replace: |
+      import pandas as pd
+      import numpy as np
+      from matplotlib import pyplot as plt
+      plt.ion()
+
+  - trigger: ";linestyle;"
+    replace: linkStyle default interpolate basis
+
+  - trigger: ";h2 date;"
+    replace: "{{mydate}}"
+    vars:
+      - name: mydate
+        type: date
+        params:
+          format: "## %A %Y-%m-%d"
+
+  - trigger: ";Date;"
     replace: "{{mydate}}"
     vars:
       - name: mydate
@@ -191,15 +142,34 @@ matches:
         params:
           format: "%A %Y-%m-%d"
 
-  - trigger: ";date"
+  - trigger: ";datetime;"
     replace: "{{mydate}}"
+    force_clipboard: true
+    vars:
+      - name: mydate
+        type: date
+        params:
+          format: "%Y-%m-%d %H:%M:00"
+
+  - trigger: ";ts;"
+    replace: "{{mydate}}"
+    force_clipboard: true
+    vars:
+      - name: mydate
+        type: date
+        params:
+          format: "%Y-%m-%d %H:%M:00"
+
+  - trigger: ";date;"
+    replace: "{{mydate}}"
+    force_clipboard: true
     vars:
       - name: mydate
         type: date
         params:
           format: "%Y-%m-%d"
 
-  - trigger: ";time"
+  - trigger: ";time;"
     replace: "{{time}}"
     vars:
       - name: time
@@ -207,7 +177,7 @@ matches:
         params:
           format: "%H:%M"
 
-  - trigger: ";month"
+  - trigger: ";month;"
     replace: "{{date}}"
     vars:
       - name: date
@@ -215,68 +185,190 @@ matches:
         params:
           format: "%B %Y"
 
-  - trigger: ";a"
+  - trigger: ";mail;"
+    replace: asdf0x2199@gmail.com
+
+  - trigger: ";name;"
+    replace: Max G.
+
+  - trigger: ";link;"
+    replace: "[$|$]({{clipboard}})"
+    vars:
+    - name: "clipboard"
+      type: "clipboard"
+
+  - trigger: ";a;"
+    replace: "<a href=\"{{clipboard}}\" />$|$</a>"
+    vars:
+    - name: "clipboard"
+      type: "clipboard"
+
+  - trigger: ";mmd;"
+    force_clipboard: true
+    replace: |-
+      ```mermaid
+      flowchart LR
+      a --> b --> c
+      $|$
+
+      %% linkStyle 0,2 stroke:none
+      ```
+
+  - trigger: ";code;"
+    force_clipboard: true
+    replace: |-
+      ```
+      $|$
+      ```
+
+  - trigger: ";make;"
+    force_clipboard: true
+    replace: |-
+      ##@ Utility
+      .PHONY: help
+      help:  ## Display this help
+          @awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make <target>\033[36m\033[0m\n"} /^[a-zA-Z\._-]+:.*?##/ { printf "  \033[36m%-15s\033[0m %s\n", $$1, $$2 } /^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
+
+      ##@ dev
+      install:  ## create venv
+          uv venv
+          uv pip install .
+
+  - trigger: ";uname;"
     replace: "{{out}}"
     vars:
       - name: out
         type: shell
         params:
-          cmd: 'echo "<a href=\"$(pbpaste)\" /></a>"'
+          cmd: "/Users/mgreco/.local/bin/uvx names | tr '[A-Z]' '[a-z]' | tr ' ' '-'"
 
-  - trigger: ";code"
+  - trigger: ";pyproject;"
+    force_clipboard: true
     replace: |-
-      ```python
-      # code
-      ```
-
-  - trigger: ";mmd"
-    replace: |-
-      ```mermaid
-      flowchart LR
-
-      a --> b
-      ```
-
-  - trigger: ";dot"
-    replace: |-
-      graph {
-        rankdir=LR;
-        a -- b -- c
-      }
-
-  - trigger: ":linestyle:"
-    replace: linkStyle default interpolate basis
-
-
-  - trigger: ";toml"
-    replace: |-
-      [build-system]
-      requires = ["setuptools", "setuptools-scm"]
-      build-backend = "setuptools.build_meta"
-
       [project]
-      name = "my_package"
-      authors = [
-          {name = "Josiah Carberry", email = "josiah_carberry@brown.edu"},
-      ]
-      description = "My package description"
-      readme = "README.rst"
-      requires-python = ">=3.8"
-      keywords = ["one", "two"]
-      license = {text = "BSD-3-Clause"}
-      classifiers = [
-          "Framework :: Django",
-          "Programming Language :: Python :: 3",
-      ]
-      dependencies = [
-          "requests",
-          'importlib-metadata; python_version<"3.10"',
-      ]
-      dynamic = ["version"]
+      name = "test"
+      version = "0.1.0"
+      description = "Add your description here"
+      readme = "README.md"
+      requires-python = ">=3.11"
+      dependencies = []
 
-      [project.optional-dependencies]
-      pdf = ["ReportLab>=1.2", "RXP"]
-      rest = ["docutils>=0.3", "pack ==1.1, ==1.3"]
 
-      [project.scripts]
-      my-script = "my_package.module:function"
+  - trigger: ";py-multithreading;"
+    force_clipboard: true
+    replace: |-
+      from concurrent.futures import ThreadPoolExecutor
+      with ThreadPoolExecutor() as executor:
+          out = executor.map(func, files)
+
+  - trigger: ";py-multiprocessing;"
+    force_clipboard: true
+    replace: |-
+      from concurrent.futures import ProcessPoolExecutor
+      with ProcessPoolExecutor() as executor:
+          out = executor.map(func, files)
+
+  - trigger: ";py-query;"
+    force_clipboard: true
+    replace: |-
+      # /// script
+      # dependencies = [
+      #     "druidq",
+      #     "trinoq",
+      #     "pandas",
+      #     "dtale",
+      #     "ipython",
+      #     "pdbpp",
+      # ]
+      #
+      # [tool.uv.sources]
+      # druidq = { git = "https://github.com/asdf8601/druidq" }
+      # trinoq = { git = "https://github.com/asdf8601/trinoq" }
+      # ///
+      from druidq import execute as druid
+      from trinoq import execute as trino
+      import pandas as pd
+      import dtale
+      import sys
+      query = """
+      select 1
+      """
+      df = trino(query, quiet=True, no_cache=True)
+      # df = druid(query, quiet=True, no_cache=True).T
+      if len(sys.argv) <= 1:
+          print(df.to_csv())
+      elif sys.argv[1] == "dtale":
+          dtale.show(df, subprocess=False)
+      else:
+          import IPython
+          IPython.embed()
+
+  - trigger: ";trinoq;"
+    force_clipboard: true
+    replace: |-
+      # /// script
+      # dependencies = [
+      #     "trinoq",
+      # ]
+      #
+      # [tool.uv.sources]
+      # trinoq = { git = "https://github.com/asdf8601/trinoq" }
+      # ///
+      from trinoq import execute as trino
+      query = """
+      select 1
+      """
+      df = trino(query, quiet=True, no_cache=True)
+      print(df)
+
+
+  - trigger: ";druidq;"
+    force_clipboard: true
+    replace: |-
+      # /// script
+      # dependencies = [
+      #     "druidq",
+      #     "dtale",
+      # ]
+      #
+      # [tool.uv.sources]
+      # druidq = { git = "https://github.com/asdf8601/druidq" }
+      # ///
+      from druidq import execute as druid
+      import pandas as pd
+      import dtale
+      import sys
+      query = """
+      select 1
+      """
+      df = druid(query, quiet=True, no_cache=True)
+      if len(sys.argv) <= 1:
+          print(df.to_csv())
+      elif sys.argv[1] == "dtale":
+          dtale.show(df, subprocess=False)
+
+  - trigger: ";ipy;"
+    force_clipboard: true
+    replace: |-
+      # /// script
+      # dependencies = [
+      #     "druidq",
+      #     "trinoq",
+      #     "pandas",
+      #     "dtale",
+      #     "ipython",
+      #     "pdbpp",
+      # ]
+      #
+      # [tool.uv.sources]
+      # druidq = { git = "https://github.com/asdf8601/druidq" }
+      # trinoq = { git = "https://github.com/asdf8601/trinoq" }
+      # ///
+      from trinoq import execute as trino
+      import IPython
+      query = """
+      select 1
+      """
+      df = trino(query, quiet=True, no_cache=True)
+      IPython.embed()
+

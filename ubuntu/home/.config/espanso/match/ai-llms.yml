@@ -1,0 +1,37 @@
+matches:
+  - trigger: ";sum"
+    replace: "{{out}}"
+    force_clipboard: true
+    vars:
+      - name: out
+        type: shell
+        params:
+          cmd: "/home/mgreco/.local/bin/pbpaste | sed 's/;sum//' | espanso_gpt_summary"
+
+  - trigger: ";chat"
+    replace: "{{out}}"
+    force_clipboard: true
+    vars:
+      - name: out
+        type: shell
+        params:
+          cmd: "/home/mgreco/.local/bin/pbpaste | sed 's/;gpt//' | espanso_gpt"
+
+  - trigger: ";tra"
+    replace: "{{out}}"
+    force_clipboard: true
+    vars:
+      - name: out
+        type: shell
+        params:
+          cmd: "/home/mgreco/.local/bin/pbpaste | sed 's/;tra//' | espanso_gpt_trad"
+
+  - trigger: ";fix"
+    replace: "{{out}}"
+    force_clipboard: true
+    vars:
+      - name: out
+        type: shell
+        params:
+          cmd: "/home/mgreco/.local/bin/pbpaste | sed 's/;fix//' | espanso_gpt_fix"
+

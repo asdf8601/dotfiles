@@ -80,8 +80,8 @@ client.background        $base
 ## workspace definition
 set $ws1   "1:  "
 set $ws2   "2:  "
-set $ws3   "3:  "
-set $ws4   "4:  "
+set $ws3   "3:  "
+set $ws4   "4:  "
 set $ws5   "5:  "
 set $ws6   "6:  "
 set $ws7   "7:  "
@@ -116,13 +116,16 @@ floating_modifier $super
 # ----------------------------------------------------------------------------
 
 ## volume: alasmixer
-bindsym $super+v exec --no-startup-id st -T "st:Mixer" -f "Caskaydia Cove Nerd Font:pixelsize=18" -e alsamixer -Vall -m
+# bindsym $super+v exec --no-startup-id st -T "st:Mixer" -f "Caskaydia Cove Nerd Font:pixelsize=18" -e alsamixer -Vall -m
 
 ## time management
-bindsym $super+t exec --no-startup-id st -T "st:Takt" -f "Caskaydia Cove Nerd Font:pixelsize=18" -e takt edit
+# bindsym $super+t exec --no-startup-id st -T "st:Takt" -f "Caskaydia Cove Nerd Font:pixelsize=18" -e takt edit
+# bindsym $super+t exec "st -T 'st:Takt' -f 'Caskaydia Cove Nerd Font:pixelsize=18' -e takt edit"
+bindsym $super+t exec --no-startup-id sh -c "st -T 'st:Takt' -f 'Caskaydia Cove Nerd Font:pixelsize=18' -e takt edit"
 bindsym $super+o exec noti -t Takt -m "$(takt check)"
-bindsym $super+m exec noti -t Takt -m "$(takt summary)"
-bindsym $super+Shift+m exec noti -t Takt -m "$(takt wtd)"
+bindsym $super+m exec noti -t Takt -m "$(takt d 1)\n$(takt w 1)\n$(takt m 1)\n$(takt y 1)"
+# bindsym $super+Shift+m exec noti -t Takt -m "$(takt wtd)"
+
 ## emojis
 bindsym $super+e exec rofimoji
 # bindsym $super+e exec "/home/mgreco/rofi/splatmoji/splatmoji copy"
@@ -442,8 +445,8 @@ mode "$mode_gaps_outer" {
 
 assign [class=xterm] $ws1
 assign [class=Brave-browser] $ws2
-assign [class=DBeaver] $ws3
-assign [class=slack|Slack] $ws4
+assign [class=slack|Slack] $ws3
+assign [class=DBeaver] $ws4
 # assign [class=Org.gnome.Nautilus|Thunar|File-roller] $ws4
 assign [class=libreoffice*|Gimp*|Inkscape] $ws5
 assign [class=TelegramDesktop] $ws6

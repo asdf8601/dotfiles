@@ -1,0 +1,59 @@
+matches:
+  # memes
+  - trigger: ";toma;"
+    replace: https://media.giphy.com/media/ejJclNX60XyEo555wW/giphy.gif
+
+  - trigger: ";cry;"
+    replace: https://media.giphy.com/media/gjZUmIYSb6bacxzVh2/giphy.gif
+
+  - trigger: ";rolling;"
+    replace: https://media.giphy.com/media/lcySndwSDLxC4eOU86/giphy.gif
+
+  - trigger: ";NO;"
+    replace: https://giphy.com/clips/theoffice-lkibHaGO1xmJXapEdq
+
+  - trigger: ";letsdothis;"
+    replace: https://media.giphy.com/media/BpGWitbFZflfSUYuZ9/giphy.gif
+
+  - trigger: ";meh;"
+    replace: https://media.giphy.com/media/BY8ORoRpnJDXeBNwxg/giphy.gif
+
+  - trigger: ";dance;"
+    replace: https://media.giphy.com/media/l0amJzVHIAfl7jMDos/giphy.gif
+
+  - trigger: ";itstrue;"
+    replace: https://media.giphy.com/media/dXFKDUolyLLi8gq6Cl/giphy.gif
+
+  - trigger: ";tbd;"
+    replace: https://media.giphy.com/media/VmcGXVrh4dHFfjQzrI/giphy.gif
+
+  - trigger: ";awkward;"
+    replace: https://media.giphy.com/media/4ZMsXG1uh6cZTo1F9Y/giphy.gif
+
+  - trigger: ";warmup;"
+    replace: https://media.giphy.com/media/Yz0Gp8s9jKqRy/giphy.gif
+
+  - trigger: ";zen"
+    replace: "{{quote}}"
+    vars:
+      - name: quote
+        type: shell
+        params:
+          cmd: "zen"
+
+  - trigger: ";lannisterq"
+    replace: "{{quote}}"
+    vars:
+      - name: quote
+        type: shell
+        params:
+          cmd: "lannister"
+
+  - trigger: ";stoic"
+    replace: "{{quote}}"
+    vars:
+      - name: quote
+        type: shell
+        params:
+          cmd: "stoic"
+
