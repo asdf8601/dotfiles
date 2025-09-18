@@ -3,6 +3,7 @@ export DOTFILES=$HOME/.dotfiles/ubuntu
 export DOTFILES_HOME=$HOME/.dotfiles
 source ~/.common.sh
 export ZSH=~/.oh-my-zsh
+export TAKT_EDITOR=nvim
 
 function check_run {
     command -v $1 > /dev/null 2>&1 && $2 2> /dev/null
@@ -116,7 +117,16 @@ function nvim-camp {
   cd -
 }
 
+function lsps () {
+    # Print out the abslute path of every project (which has .git) at HOME dir.
+    # query="${1:-tesser}"
+    listProjects | fzf --select-1 --ansi --height 10% -q "$1"
+}
 
+function cdps () {
+    # Change directory to a project using fzf
+    cd $(lsps $@)
+}
 
 # opencode
 export PATH=/Users/mgreco/.opencode/bin:$PATH
@@ -160,3 +170,6 @@ if args.dry_run:
 os.execvp(cmd[0], cmd)
 PY
 }
+
+# opencode
+export PATH=/home/mgreco/.opencode/bin:$PATH
