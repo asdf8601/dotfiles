@@ -1,4 +1,12 @@
 matches:
+  - trigger: ";review;"
+    replace: "{{out}}"
+    vars:
+      - name: out
+        type: shell
+        params:
+          cmd: "pbpaste | tr -d '\n' | sed -E 's/(.*) (http.*)/👀🙏 \\1 👉 \\2/'"
+
   - trigger: ";sum"
     replace: "{{out}}"
     force_clipboard: true
@@ -6,7 +14,7 @@ matches:
       - name: out
         type: shell
         params:
-          cmd: "pbpaste | sed 's/;sum//' | ~/.local/bin/espanso_gpt_summary.sh"
+          cmd: "pbpaste | ~/.local/bin/espanso_gpt_summary.sh"
 
   - trigger: ";chat"
     replace: "{{out}}"
@@ -24,7 +32,7 @@ matches:
       - name: out
         type: shell
         params:
-          cmd: "pbpaste | sed 's/;tra//' | ~/.local/bin/espanso_gpt_trad.sh"
+          cmd: "pbpaste | ~/.local/bin/espanso_gpt_trad.sh"
 
   - trigger: ";fix"
     replace: "{{out}}"
@@ -33,5 +41,5 @@ matches:
       - name: out
         type: shell
         params:
-          cmd: "pbpaste | sed 's/;fix//' | ~/.local/bin/espanso_gpt_fix.sh"
+          cmd: "pbpaste | ~/.local/bin/espanso_gpt_fix.sh"
 

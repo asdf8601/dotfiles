@@ -1,5 +1,6 @@
 matches:
   # prometheus
+
   - trigger: ";median;"
     replace: "quantile_over_time(0.5,{{out}}[3h$|$])"
     vars:

@@ -49,6 +49,8 @@
 	whitespace = nowarn
 
 [alias]
+	cane = commit --amend --no-edit
+
 	split = "!f() { git-split $@ }; f"
 	pushf = "!f() { git push --force-with-lease $@; }; f"
 	rbc = "!f() { git rebase --continue; }; f"
