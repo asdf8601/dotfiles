@@ -49,6 +49,7 @@
 	whitespace = nowarn
 
 [alias]
+	fp = fetch --prune
 	cane = commit --amend --no-edit
 
 	split = "!f() { git-split $@ }; f"
