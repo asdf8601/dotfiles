@@ -226,7 +226,7 @@ alias kb-usnocaps='setxkbmap -rules evdev -model evdev -layout us -variant altgr
 
 
 alias dotcmd='mxm'
-alias cd.='. mxm cd'
+# alias cd.='. mxm cd'
 
 alias snip='pushd_edit_pop ~/github/asdf8601/snippets'
 alias scio='pushd_edit_pop ~/github/asdf8601/scio'
@@ -763,7 +763,28 @@ export PATH=/Users/mgreco/.opencode/bin:$PATH
 
 # restish is a command-line tool for interacting with REST APIs.
 alias restish="noglob restish"
-alias cd.='cd $(find . -maxdepth 4 -type d | fzf --height 10%)'
+function cd.() {
+  local query="$@"
+  local selected_dir
+
+  if [ -z "$query" ]; then
+    # If no argument, behave like the original interactive fzf
+    selected_dir=$(find . -maxdepth 4 -type d | fzf --height 10%)
+  else
+    # If argument, use it as query and automatically select the best match
+    selected_dir=$(find . -maxdepth 4 -type d | fzf --height 10% --select-1 --exit-0 -q "$query")
+  fi
+
+  if [ -n "$selected_dir" ]; then
+    cd "$selected_dir"
+  else
+    if [ -n "$query" ]; then
+      echo "No directory found matching '$query'."
+    else
+      echo "No directory selected."
+    fi
+  fi
+}
 
 alias geminipro='llm -m github_copilot/gemini-2.5-pro -o temperature 0'
 alias geminiflash='llm -m github_copilot/gemini-2.0-flash-001 -o temperature 0'
@@ -800,3 +821,7 @@ if args.dry_run:
 os.execvp(cmd[0], cmd)
 PY
 }
+
+# test container -- podman compatible
+export TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE=/var/run/docker.sock
+export PATH="/opt/homebrew/opt/go@1.24/bin:$PATH"

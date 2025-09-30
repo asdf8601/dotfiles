@@ -5,7 +5,7 @@ matches:
       - name: out
         type: shell
         params:
-          cmd: "pbpaste | tr -d '\n' | sed -E 's/(.*) (http.*)/👀🙏 \\1 👉 \\2/'"
+          cmd: "pbpaste | tr -d '\n' | sed -E 's/(.*) ?(http.*)/👀🙏 \\1 👉 \\2/'"
 
   - trigger: ";sum"
     replace: "{{out}}"
