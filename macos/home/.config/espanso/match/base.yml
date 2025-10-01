@@ -1,17 +1,4 @@
 matches:
-  - trigger: ";jira;"
-    # jira_cache (output):
-    # KEY	TYPE		STATUS		SUMMARY
-    # GC-621	Task		Done		Deactivate model with missing onnx file (huber loss)
-    # GC-620	Sub-task	In Review	traces on reserve-price
-    # GC-619	Sub-task	In Review	traces on header-bidding-pricing
-    replace: "{{output}}"
-    vars:
-      - name: output
-        type: menu
-        params:
-          command: '/Users/mgreco/.local/bin/jira-cache | jq -R --arg name_key "name" --arg value_key "value" "{($name_key): ., ($value_key): .}" | jq -s .'
-
   # prometheus
   - trigger: ";median;"
     replace: "quantile_over_time(0.5,{{out}}[3h$|$])"
