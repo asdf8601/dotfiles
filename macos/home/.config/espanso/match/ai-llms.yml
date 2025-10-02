@@ -1,12 +1,4 @@
 matches:
-  - trigger: ";review;"
-    replace: "{{out}}"
-    vars:
-      - name: out
-        type: shell
-        params:
-          cmd: "pbpaste | tr -d '\n' | sed -E 's/(.*) ?(http.*)/👀🙏 \\1 👉 \\2/'"
-
   - trigger: ";sum"
     replace: "{{out}}"
     force_clipboard: true
@@ -42,4 +34,3 @@ matches:
         type: shell
         params:
           cmd: "pbpaste | ~/.local/bin/espanso_gpt_fix.sh"
-

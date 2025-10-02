@@ -1,15 +1,26 @@
 matches:
-  - trigger: ",smtt"
+  - trigger: ";smtt;"
     replace: "Smart Throttling"
-  - trigger: ",smttdc"
+  - trigger: ";smttd"
     replace: "Smart Throttling Discrepancy"
-  - trigger: ",smttstd"
+  - trigger: ";smtts"
     replace: "Smart Throttling Standard"
-  - trigger: ",dp"
+  - trigger: ";kpi"
+    replace: "Ad Unit KPI"
+  - trigger: ";dp"
     replace: "Dynamic Pricing"
-  - trigger: ",bfs"
+  - trigger: ";bfs"
     replace: "Bid Floors Strategy"
-  - trigger: ",adxdata"
+  - trigger: ",data"
     replace: "ad-exchange-data"
-  - trigger: ",adxeng"
+  - trigger: ";eng"
     replace: "ad-exchange-engineering"
+  - trigger: ";jira"
+    replace: "https://seedtag.atlassian.net/browse/"
+  - trigger: ";pr"
+    replace: "{{out}}"
+    vars:
+      - name: out
+        type: shell
+        params:
+          cmd: "pbpaste | tr '\n' ' ' | sed -E 's/(.*) ?(http.*)/👀🙏 \\1 👉 \\2/'"
