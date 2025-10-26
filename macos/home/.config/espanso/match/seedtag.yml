@@ -1,4 +1,10 @@
 matches:
+  - trigger: ";hbps"
+    replace: "header-bidding-pricing-service"
+  - trigger: ";rps"
+    replace: "reserve-price-service"
+  - trigger: ";auks"
+    replace: "ad-unit-kpi-service"
   - trigger: ";smtt;"
     replace: "Smart Throttling"
   - trigger: ";smttd"

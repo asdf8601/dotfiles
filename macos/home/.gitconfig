@@ -52,6 +52,13 @@
 	fp = fetch --prune
 	cane = commit --amend --no-edit
 
+	nb = "!f() { \
+		issue=$(echo \"$1\" | sed -E 's#.*/([A-Z]+-[0-9]+).*#\\1#'); \
+		suffix=$2; \
+		branch=\"${issue}/${suffix}\"; \
+		git checkout -b \"$branch\"; \
+		}; f"
+
 	split = "!f() { git-split $@ }; f"
 	pushf = "!f() { git push --force-with-lease $@; }; f"
 	rbc = "!f() { git rebase --continue; }; f"
