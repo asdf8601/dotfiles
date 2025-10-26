@@ -190,8 +190,6 @@ run = [
 ]
 
 
-
-
 # make float all apple apps
 [[on-window-detected]]
 run = 'layout floating'
@@ -351,10 +349,6 @@ run = 'layout floating'
 if.app-id = 'com.github.wez.wezterm'
 
 [[on-window-detected]]
-run = 'layout floating'
-if.app-name-regex-substring = 'wezterm-gui'
-
-[[on-window-detected]]
 if.app-id = 'com.google.Chrome'
 if.window-title-regex-substring = '^about:blank - (?!Google Chrome).*$'
 run = ['layout floating']
@@ -381,6 +375,18 @@ run = ['layout floating']
 
 [[on-window-detected]]
 if.app-id = 'com.electron.dockerdesktop'
+run = ['layout floating']
+
+[[on-window-detected]]
+if.app-id = 'cc.ffitch.shottr'
+run = ['layout floating']
+
+[[on-window-detected]]
+if.app-id = 'com.federicoterzi.espanso'
+run = ['layout floating']
+
+[[on-window-detected]]
+if.app-id = 'com.apple.accessibility.universalAccessAuthWarn'
 run = ['layout floating']
 
 # aerospace list-apps

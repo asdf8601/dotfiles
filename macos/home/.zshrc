@@ -822,6 +822,25 @@ os.execvp(cmd[0], cmd)
 PY
 }
 
+k-debug() {
+    local pod=$(kubectl get pods --all-namespaces -o wide | fzf --header-lines=1 | awk '{print $2, $1}')
+    local pod_name=$(echo $pod | awk '{print $1}')
+    local namespace=$(echo $pod | awk '{print $2}')
+    local target=$(kubectl get pod $pod_name -n $namespace -o jsonpath='{.spec.containers[0].name}')
+    if [ -n "$pod_name" ]; then
+        kubectl debug $pod_name -n $namespace -ti --image=nicolaka/netshoot --target=$target --profile=sysadmin
+    fi
+}
+
 # test container -- podman compatible
 export TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE=/var/run/docker.sock
+export TESTCONTAINERS_RYUK_DISABLED=true
 export PATH="/opt/homebrew/opt/go@1.24/bin:$PATH"
+export TMPDIR=/tmp/
+
+# bun completions
+[ -s "/Users/mgreco/.oh-my-zsh/completions/_bun" ] && source "/Users/mgreco/.oh-my-zsh/completions/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
