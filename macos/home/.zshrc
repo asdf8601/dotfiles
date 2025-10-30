@@ -99,6 +99,16 @@ alias k-hpa='kubectl get hpa | fzf | awk "{print \$1}" | pbcopy && sleep 0.05 &&
 alias k-exec='kubectl exec -it $(pbpaste) -- bash'
 alias k-log='kubectl logs $(pbpaste) -f'
 
+function k-debug() {
+    local pod=$(kubectl get pods --all-namespaces -o wide | fzf --header-lines=1 | awk '{print $2, $1}')
+    local pod_name=$(echo $pod | awk '{print $1}')
+    local namespace=$(echo $pod | awk '{print $2}')
+    local target=$(kubectl get pod $pod_name -n $namespace -o jsonpath='{.spec.containers[0].name}')
+    if [ -n "$pod_name" ]; then
+        kubectl debug $pod_name -n $namespace -ti --image=nicolaka/netshoot --target=$target --profile=sysadmin
+    fi
+}
+
 # Files and directories
 alias mkdir='mkdir -p -v'
 
@@ -350,71 +360,6 @@ kx() {
     export KUBECONFIG=$(ls ~/.kube/config* | fzf --height 10 --layout reverse)
 }
 
-blog() {
-    # blog_home="$HOME/github.com/asdf8601/asdf8601.github.io"
-    blog_home="$HOME/github.com/asdf8601/blog"
-    EDITOR=nvim
-    case $1 in
-        help)
-            echo "Usage: blog <command>"
-            echo ""
-            echo "Commands:"
-            echo "  session  Create a new tmux session"
-            echo "  new      Create a new post"
-            echo "  serve    Serve the blog"
-            echo "  edit     Edit a post"
-            ;;
-        session)
-            # check if tmux server is running
-            tmux has-session -t blog && tmux kill-session -t blog
-            tmux info &> /dev/null || tmux start-server \; new-session -d
-            tmux new-session -s blog -d -c $blog_home
-            tmux new-window -a -t blog -c $blog_home
-            tmux new-window -a -t blog -c $blog_home
-
-            tmux rename-window -t blog:1 "server"
-            tmux rename-window -t blog:2 "edit"
-            tmux rename-window -t blog:3 "new"
-
-            tmux send-keys -t blog:edit "blog edit" C-m
-            tmux send-keys -t blog:new "blog new" C-m
-            tmux send-keys -t blog:server "blog serve" C-m
-
-            window=${2:-new}
-            tmux switch-client -t blog:$window || tmux attach-session -t blog:$window
-            ;;
-
-        quit)
-            tmux kill-session -t blog
-            ;;
-        new)
-            cd $blog_home
-            if [ -n "$2" ]; then
-                new_post=$2
-            else
-                new_post="$(date +"%Y-%m-%d")-post.md"
-            fi
-            hugo new content posts/$new_post
-            file=$blog_home/content/posts/$new_post
-            $EDITOR $file
-            git add $file
-            ;;
-        edit)
-            file=$(find . -type f | fzf --preview 'bat --color=always {}')
-            $EDITOR $file
-            # git add $file && git commit -m "enh: update $file"
-            ;;
-        serve)
-            hugo server -D
-            ;;
-        open)
-            open http://localhost:1313 &
-            ;;
-        *)
-            blog session
-            ;;
-    esac
-}
 
 # sourcePattern() {
 #     folder=$1
@@ -822,15 +767,6 @@ os.execvp(cmd[0], cmd)
 PY
 }
 
-k-debug() {
-    local pod=$(kubectl get pods --all-namespaces -o wide | fzf --header-lines=1 | awk '{print $2, $1}')
-    local pod_name=$(echo $pod | awk '{print $1}')
-    local namespace=$(echo $pod | awk '{print $2}')
-    local target=$(kubectl get pod $pod_name -n $namespace -o jsonpath='{.spec.containers[0].name}')
-    if [ -n "$pod_name" ]; then
-        kubectl debug $pod_name -n $namespace -ti --image=nicolaka/netshoot --target=$target --profile=sysadmin
-    fi
-}
 
 # test container -- podman compatible
 export TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE=/var/run/docker.sock
@@ -844,3 +780,5 @@ export TMPDIR=/tmp/
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+
+
