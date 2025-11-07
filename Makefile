@@ -8,36 +8,28 @@ help:  ## Display this help
 
 .PHONY: stow
 stow:  ## Install stow
-
 	[[ $(OS) == "Darwin" ]] && brew install stow || sudo apt-get install stow
 
 .PHONY: macos
 macos: personal  ## Install macos settings
-
 	stow -d macos/home/ -t $(HOME)/ .
 
 .PHONY: ubuntu
 ubuntu: personal  ## Install ubuntu settings
-
-
 	stow -d ubuntu/home/ -t $(HOME)/ .
 
 .PHONY: personal
 personal:  ## Install personal settings
-
 	stow --ignore ".git" -d personal/ -t $(HOME)/ .
 
 .PHONY: pushall
 pushall:  ## Push all changes
-
 	git add . && git commit -am "update all" && git push
 
 .PHONY: push
 push:  ## Push changes
-
 	git commit -am "update" && git push
 
 .PHONY: pull
 pull:  ## Pull changes
-
 	git pull && [[ $(OS) == "Darwin" ]] && make macos || make ubuntu
