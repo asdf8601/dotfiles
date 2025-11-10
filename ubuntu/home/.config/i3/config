@@ -121,18 +121,30 @@ floating_modifier $super
 ## time management
 # bindsym $super+t exec --no-startup-id st -T "st:Takt" -f "Caskaydia Cove Nerd Font:pixelsize=18" -e takt edit
 # bindsym $super+t exec "st -T 'st:Takt' -f 'Caskaydia Cove Nerd Font:pixelsize=18' -e takt edit"
-bindsym $super+t exec --no-startup-id sh -c "st -T 'st:Takt' -f 'Caskaydia Cove Nerd Font:pixelsize=18' -e takt edit"
-bindsym $super+o exec noti -t Takt -m "$(takt check)"
-bindsym $super+m exec noti -t Takt -m "$(takt d 1)\n$(takt w 1)\n$(takt m 1)\n$(takt y 1)"
+bindsym $super+Shift+t exec --no-startup-id sh -c "st -T 'st:Takt' -f 'Caskaydia Cove Nerd Font:pixelsize=18' -e /usr/local/bin/nvim /home/mgreco/.takt-log/seedtag.csv"
+bindsym $super+Shift+o exec noti -t Takt -m "$(takt check)"
+# bindsym $super+m exec noti -t Takt -m "$(takt d 1)\n$(takt w 1)\n$(takt m 1)\n$(takt y 1)"
 # bindsym $super+Shift+m exec noti -t Takt -m "$(takt wtd)"
+
+
+## Abrir ChatGPT en ventana nueva de Firefox
+# bindsym $super+g exec firefox --new-window https://chatgpt.com/
+# bindsym $super+g exec --no-startup-id firefox --new-window https://chatgpt.com/
+# # Cuando el título contenga “ChatGPT”, hacerla “popup” flotante y colocarla
+# for_window [class="^firefox$" title=".*ChatGPT.*"] floating enable, resize set 900 600, move position center
+bindsym $super+g exec --no-startup-id brave-browser --app=https://chatgpt.com --class ChatGPTPop
+for_window [class="^ChatGPTPop$"] floating enable, border pixel 0, resize set 900 600, move position center
+
+
+
 
 ## emojis
 bindsym $super+e exec rofimoji
 # bindsym $super+e exec "/home/mgreco/rofi/splatmoji/splatmoji copy"
 
 # bindsym $super+g exec bash $DOTFILES/rofi/rofi-gpt.sh
-bindsym $super+b exec st -T "st:Blog" -f "Caskaydia Cove Nerd Font:pixelsize=16" -e nvim ~/github.com/mmngreco/blog
-bindsym $super+g exec st -T "st:ChatGPT" -f "Caskaydia Cove Nerd Font:pixelsize=14" -e nvim +"term chatgpt" +"nnoremap <Esc> :q!<CR>" +'vnoremap y "+y' +'nnoremap p "+p' +"norm i"
+bindsym $super+b exec st -T "st:Blog" -f "Caskaydia Cove Nerd Font:pixelsize=16" -e nvim ~/github.com/asdf8601/blog
+# bindsym $super+g exec st -T "st:ChatGPT" -f "Caskaydia Cove Nerd Font:pixelsize=14" -e nvim +"term chatgpt" +"nnoremap <Esc> :q!<CR>" +'vnoremap y "+y' +'nnoremap p "+p' +"norm i"
 ## Make the currently focused window a scratchpad
 bindsym $super+Shift+minus move scratchpad
 ## Show the first scratchpad window
@@ -141,7 +153,7 @@ bindsym $super+minus scratchpad show
 ## Show the sup-mail scratchpad window, if any.
 # bindsym $alt+s [title="^Sup ::"] scratchpad show
 
-# bindsym $super+t exec xterm
+bindsym $super+t exec ghostty
 bindsym $super+Return exec st -f "CaskaydiaCove Nerd Font:size=14"
 
 # bindsym $super+Shift+Return workspace 1; focus; exec xterm
@@ -173,8 +185,8 @@ bindsym XF86MonBrightnessUp exec --no-startup-id light -A 1 # increase screen br
 bindsym XF86MonBrightnessDown exec --no-startup-id light -U 1 # decrease screen brightness
 
 # change wallpaper
-bindsym $super+Ctrl+Shift+e exec --no-startup-id feh -D 3600 --randomize --bg-fill $HOME/github.com/mmngreco/wallpapers/*
-bindsym $super+Ctrl+Shift+w exec --no-startup-id feh --randomize --bg-fill $HOME/github.com/mmngreco/wallpapers/*
+bindsym $super+Ctrl+Shift+e exec --no-startup-id feh -D 3600 --randomize --bg-fill $HOME/github.com/asdf8601/wallpapers/*
+bindsym $super+Ctrl+Shift+w exec --no-startup-id feh --randomize --bg-fill $HOME/github.com/asdf8601/wallpapers/*
 
 # Screenshots
 bindsym $alt+Shift+f exec img=$HOME/Pictures/ScreenShot_$(date +%Y-%m-%d_%H%M%S).png && maim $img && viewnior $img
@@ -182,7 +194,7 @@ bindsym --release $alt+Shift+s exec img="${HOME}/Pictures/ScreenShot_$(date +%Y-
 # bindsym $alt+Shift+Ctrl+v exec "i3-nagbar -t warning -m 'Screen Recording?' -b 'Start' 'rec_screen &' -b 'Stop' 'pkill ffmpeg'"
 
 # define lock screen
-bindsym $super+Ctrl+l exec i3lock -i /home/mgreco/github.com/mmngreco/wallpapers/0007.png
+bindsym $super+Ctrl+l exec i3lock -i /home/mgreco/github.com/asdf8601/wallpapers/0007.png
 
 # browsers
 # bindsym $super+w exec brave-browser-stable
@@ -320,11 +332,14 @@ bindsym $super+Shift+Tab workspace prev
 bindsym $super+f fullscreen
 # bindsym $super+g fullscreen global
 bindsym $super+y fullscreen disable; floating enable; resize set 600 450; sticky enable; move window to position 1940 54
+# bindsym $super+c fullscreen disable; floating enable; resize set 600 450; move window to position 1940 54
+bindsym $super+c fullscreen disable; floating enable; resize set 600 450; move window to position 1940 54; move position center
+
 
 bindsym $super+z exec /home/mgreco/.local/bin/boomer
 # bindsym $super+z layout stacking
-bindsym $super+x layout tabbed
-bindsym $super+c layout toggle split
+# bindsym $super+x layout tabbed
+# bindsym $super+c layout toggle split
 
 bindsym $super+s focus mode_toggle
 bindsym $super+a focus parent
@@ -495,8 +510,12 @@ no_focus [title="^Peek preview$"]
 # autostart
 # pipx install i3-layouts
 # exec --no-startup-id i3-layouts
+# sudo apt install policykit-desktop-privileges
+# sudo apt install policykit-1-gnome
+exec --no-startup-id /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1 &
+
 exec --no-startup-id xrandr --output DP-1 --left-of eDP-1 --auto --primary
-exec --no-startup-id feh --bg-fill $HOME/github.com/mmngreco/wallpapers/WallpaperDog-10941700.jpg
+exec --no-startup-id feh --bg-fill $HOME/github.com/asdf8601/wallpapers/WallpaperDog-10941700.jpg
 exec --no-startup-id dunst &
 exec --no-startup-id xsettingsd &
 exec --no-startup-id nm-applet &
