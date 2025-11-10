@@ -16,6 +16,7 @@ background-opacity = 0.9
 
 # keymaps {{{
 keybind = global:cmd+`=toggle_quick_terminal
+keybind = global:cmd+`=toggle_quick_terminal
 keybind = cmd+comma=text:nvim $HOME/.config/ghostty/config\n
 keybind = cmd+period=reload_config
 # }}}
@@ -26,3 +27,24 @@ keybind = cmd+period=reload_config
 # on bash:
 #   $ sed -n -l
 #   $ xxd -r -p
+
+## Like it
+theme = Firefly Traditional
+# theme = VibrantInk
+# theme = Wombat
+# theme = Wez
+# theme = UltraViolent
+# theme = iTerm2 Light Background
+# theme = NvimLight
+# theme = PaulMillr
+# theme = Raycast_Light
+# theme = RetroLegends
+# theme = xcodedarkhc
+# theme = zenbones_light
+# theme = zenwritten_light
+
+## Different
+# theme = WildCherry
+# theme = Oxocarbon
+# theme = synthwave
+# theme = Thayer Bright
