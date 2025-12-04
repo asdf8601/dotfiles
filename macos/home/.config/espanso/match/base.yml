@@ -105,15 +105,15 @@ matches:
           cmd: "curl 'https://api.ipify.org'"
 
   - trigger: ";details"
-    replace: |-
+    force_clipboard: true
+    replace: |
       <details><summary>Click to expand</summary>
-
       </details>
 
   - trigger: ";fold"
-    replace: |-
+    force_clipboard: true
+    replace: |
       <details><summary>Click to expand</summary>
-
       </details>
 
   - trigger: ";import"
