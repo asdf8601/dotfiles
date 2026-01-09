@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+
+
+
 source ~/.common.sh
 source ~/.prompt.sh
 
@@ -20,3 +23,6 @@ eval "$(atuin init bash)"
 
 # Generated for envman. Do not edit.
 [ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
+
+
+
