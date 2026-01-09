@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+
+
+
 if [ -e $HOME/.nix-profile/etc/profile.d/nix.sh ]; then . $HOME/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
 [ -d "$HOME/.cargo/" ] && . "$HOME/.cargo/env"
 
@@ -17,3 +20,6 @@ export PATH="$PATH:/Users/mgreco/Library/Application Support/Coursier/bin"
 
 
 . "$HOME/.atuin/bin/env"
+
+
+

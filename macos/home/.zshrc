@@ -1,5 +1,8 @@
 #!/usr/bin/env zsh
 
+
+
+
 if [ -n "${ZSH_DEBUGRC+1}" ]; then
     # Example:
     # time ZSH_DEBUGRC=1 zsh -i -c exit
@@ -787,3 +790,6 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 [ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
 export PATH=$PATH:$HOME/.local/opt/go/bin
 export PATH=$PATH:$HOME/.local/opt/go/bin
+
+
+
