@@ -17,8 +17,8 @@ window-decoration = auto
 # background-opacity = 0.80
 # background-opacity = 0.70
 
-# font-family = "CaskaydiaCove Nerd Font Mono"
-font-family = "M+1Code Nerd Font Mono"
+font-family = "CaskaydiaCove Nerd Font Mono"
+# font-family = "M+1Code Nerd Font Mono"
 
 # NOTE:
 # Waiting for the following feature:
