@@ -14,10 +14,10 @@ key-mapping.preset = 'qwerty'
 
 # on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
 # on-focus-changed = ['move-mouse window-lazy-center']
-exec-on-workspace-change = [
-    '/bin/bash', '-c',
-    '~/.config/aerospace/pip-move.sh',
-]
+# exec-on-workspace-change = [
+#     '/bin/bash', '-c',
+#     '~/.config/aerospace/pip-move.sh',
+# ]
 
 [gaps]
 inner.horizontal = 0
@@ -29,26 +29,13 @@ outer.top = 0
 
 [mode.main.binding]
 # cmd-h = [] # Disable 'hide application'
-cmd-alt-h = [] # Disable 'hide others'
+cmd-alt-h = []                                                           # Disable 'hide others'
 alt-f = 'fullscreen'
 alt-g = 'exec-and-forget open /System/Applications/Mission\ Control.app'
 
-
-# ctrl-g = '''exec-and-forget osascript -e '
-# tell application 'Safari'
-#     make new document at end of documents
-#     activate
-# end tell'
-# '''
-
-# alt-s = 'layout v_accordion' # 'layout stacking' in i3
-# alt-w = 'layout h_accordion' # 'layout tabbed' in i3
-# alt-e = 'layout tiles horizontal vertical' # 'layout toggle split' in i3
-
-ctrl-shift-space = 'layout floating tiling' # 'floating toggle' in i3
+ctrl-shift-space = 'layout floating tiling'           # 'floating toggle' in i3
 ctrl-shift-slash = 'layout tiles horizontal vertical'
 
-# TODO: integrate with tmux vim navigation
 ctrl-shift-h = 'focus left'
 ctrl-shift-j = 'focus down'
 ctrl-shift-k = 'focus up'
@@ -59,8 +46,6 @@ alt-shift-j = 'move down'
 alt-shift-k = 'move up'
 alt-shift-l = 'move right'
 
-# TODO: is this helpful? How does it work?
-# alt-shift-n = 'split opposite'
 alt-shift-minus = 'resize smart -100'
 alt-shift-equal = 'resize smart +100'
 
@@ -93,36 +78,28 @@ alt-shift-semicolon = 'mode layout'
 alt-r = 'mode resize'
 
 [mode.layout.binding]
-
 esc = ['mode main']
 e = 'layout accordion horizontal vertical'
-
 h = 'move left'
 j = 'move down'
 k = 'move up'
 l = 'move right'
-
 alt-h = 'join-with left'
 alt-j = 'join-with down'
 alt-k = 'join-with up'
 alt-l = 'join-with right'
-
 f = 'fullscreen'
 0 = ['flatten-workspace-tree', 'mode main']
 g = ['layout floating tiling', 'mode main']
 minus = 'resize smart -100'
 equal = 'resize smart +100'
-
 alt-shift-semicolon = 'mode service'
 
 [mode.service.binding]
-# NOTE: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
-# 'service' binding mode declaration.
 esc = ['reload-config', 'mode main']
-r = ['flatten-workspace-tree', 'mode main'] # reset layout
-f = ['layout floating tiling', 'mode main'] # Toggle between floating and tiling layout
+r = ['flatten-workspace-tree', 'mode main']
+f = ['layout floating tiling', 'mode main']
 backspace = ['close-all-windows-but-current', 'mode main']
-
 
 [mode.resize.binding]
 h = 'resize width -50'
@@ -137,16 +114,7 @@ if.app-id = 'com.apple.systempreferences'
 if.app-name-regex-substring = 'settings'
 if.during-aerospace-startup = true
 check-further-callbacks = true
-run = ['layout floating']  # The callback itself
-
-
-# [[on-window-detected]]
-# if.app-id = 'org.alacritty'
-# run = 'move-node-to-workspace 1'
-
-# [[on-window-detected]]
-# if.app-id = 'com.google.Chrome'
-# run = 'move-node-to-workspace 2'
+run = ['layout floating']
 
 [[on-window-detected]]
 if.app-id = 'com.markmcguill.strongbox'
@@ -162,33 +130,19 @@ run = 'layout floating'
 
 [[on-window-detected]]
 if.app-id = 'ru.keepcoder.Telegram'
-run = [
-  'layout floating',
-  # 'layout tiling',
-  'move-node-to-workspace 6',
-]
+run = ['layout floating', 'move-node-to-workspace 6']
 
 [[on-window-detected]]
-if.app-id='com.mitchellh.ghostty'
-run = [
-  # 'layout tiling',
-  'move-node-to-workspace 1',
-]
+if.app-id = 'com.mitchellh.ghostty'
+run = ['move-node-to-workspace 1']
 
 [[on-window-detected]]
-if.app-id='com.google.Chrome'
-run = [
-  # 'layout tiling',
-  'move-node-to-workspace 2',
-]
+if.app-id = 'com.google.Chrome'
+run = ['move-node-to-workspace 2']
 
 [[on-window-detected]]
-if.app-id='com.tinyspeck.slackmacgap'
-run = [
-  # 'layout tiling',
-  'move-node-to-workspace 3',
-]
-
+if.app-id = 'com.tinyspeck.slackmacgap'
+run = ['move-node-to-workspace 3']
 
 # make float all apple apps
 [[on-window-detected]]
@@ -332,6 +286,7 @@ if.app-id = 'com.apple.stocks'
 [[on-window-detected]]
 run = 'layout floating'
 if.app-id = 'com.apple.systempreferences'
+
 [[on-window-detected]]
 run = 'layout floating'
 if.app-id = 'com.apple.weather'
@@ -348,10 +303,10 @@ if.app-id = 'com.googlecode.iterm2'
 run = 'layout floating'
 if.app-id = 'com.github.wez.wezterm'
 
-[[on-window-detected]]
-if.app-id = 'com.google.Chrome'
-if.window-title-regex-substring = '^about:blank - (?!Google Chrome).*$'
-run = ['layout floating']
+# [[on-window-detected]]
+# if.app-id = 'com.google.Chrome'
+# if.window-title-regex-substring = '^about:blank - (?!Google Chrome).*$'
+# run = ['layout floating']
 
 [[on-window-detected]]
 if.app-id = 'com.electron.goose'
