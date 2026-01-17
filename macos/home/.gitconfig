@@ -50,12 +50,13 @@
 
 [alias]
 	; === llm
-	ai = "!git commit -m \"$(git diff --cached | llm -m gpt-4o-mini -s \"$(cat /Users/mgreco/.dotfiles/llm/prompts/cm)\" | tee /tmp/git_commit_$(date +'%Y%m%d_%H%M').txt)\" $@"
+	; ai = "!git commit -m \"$(git diff --cached | llm -m gpt-4o-mini -s \"$(cat /Users/mgreco/.dotfiles/llm/prompts/cm)\" | tee /tmp/git_commit_$(date +'%Y%m%d_%H%M').txt)\" $@"
 	; ai = "!git commit -m \"$(git diff --cached | llm -m o3-mini -s \"$(cat /Users/mgreco/.dotfiles/llm/prompts/cm)\" | tee /tmp/git_commit_$(date +'%Y%m%d_%H%M').txt)\" $@"
 	; ai = "!git commit -m \"$(git diff --cached | llm -m gpt-5-nano -s \"$(cat /Users/mgreco/.dotfiles/llm/prompts/cm)\" | tee /tmp/git_commit_$(date +'%Y%m%d_%H%M').txt)\" $@"
 	; === sgpt
 	; ai = "!git commit -m \"$( (cat /Users/mgreco/.dotfiles/llm/prompts/cm; echo; git diff --cached) | sgpt --model gpt-5-nano | tee /tmp/git_commit_$(date +'%Y%m%d_%H%M').txt)\" $@"
 	; ai = "!git commit -m \"$( (cat /Users/mgreco/.dotfiles/llm/prompts/cm; echo; git diff --cached) | sgpt --model gpt-4o-mini-2024-07-18 | tee /tmp/git_commit_$(date +'%Y%m%d_%H%M').txt)\" $@"
+	ai = "!git commit -m \"$( (cat /Users/mgreco/.dotfiles/llm/prompts/cm; echo; git diff --cached) | sgpt --model o3-mini | tee /tmp/git_commit_$(date +'%Y%m%d_%H%M').txt)\" $@"
 	aip = "!f() { git ai && git push; }; f"
 
 	fp = fetch --prune
