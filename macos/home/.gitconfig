@@ -49,10 +49,14 @@
 	whitespace = nowarn
 
 [alias]
+	ai = "!git commit -m \"$(git diff --cached | llm -m o3-mini -s \"$(cat /Users/mgreco/.dotfiles/llm/prompts/cm)\" | tee /tmp/git_commit_$(date +'%Y%m%d_%H%M').txt)\" $@"
+	# ai = "!git commit -m \"$(git diff --cached | llm -m gpt-5-nano -s \"$(cat /Users/mgreco/.dotfiles/llm/prompts/cm)\" | tee /tmp/git_commit_$(date +'%Y%m%d_%H%M').txt)\" $@"
+	aip = "!f() { git ai && git push; }; f"
+
 	fp = fetch --prune
 	cane = commit --amend --no-edit
 
-	nb = "!f() { \
+	newurl = "!f() { \
 		issue=$(echo \"$1\" | sed -E 's#.*/([A-Z]+-[0-9]+).*#\\1#'); \
 		suffix=$2; \
 		branch=\"${issue}/${suffix}\"; \
@@ -61,13 +65,11 @@
 
 	split = "!f() { git-split $@ }; f"
 	pushf = "!f() { git push --force-with-lease $@; }; f"
+	pushF = "!f() { git push $@; }; f"
 	rbc = "!f() { git rebase --continue; }; f"
 	main = "!f() { if git diff-index --quiet HEAD --; then git checkout main && git pull; else git stash && git checkout main && git pull; fi }; f"
 	sync = "!f() { if git diff-index --quiet HEAD --; then git checkout main && git pull && git checkout - && git rebase main; else git stash && git checkout main && git pull && git checkout - && git rebase main && git stash pop; fi }; f"
 	newb = "!f() { if git diff-index --quiet HEAD --; then git checkout main && git pull && git checkout -b $1; else git stash && git checkout main && git pull && git checkout -b $1 && git stash pop; fi }; f"
-	mcob = "!f() { if git diff-index --quiet HEAD --; then git checkout main && git pull && git checkout -b $1; else git stash && git checkout main && git pull && git checkout -b $1 && git stash pop; fi }; f"
-	ai = "!git commit -m \"$(sgpt cm --model gpt-4o-mini-2024-07-18 \"$(git diff --cached)\" | tee /tmp/git_commit_$(date +'%Y%m%d_%H%M').txt)\" $@"
-	aip = "!f() { git ai && git push; }; f"
 
 	fixup = "!git log -n 50 --pretty=format:'%h %s' --no-merges | fzf | cut -c -7 | xargs -o git commit --fixup"
 
