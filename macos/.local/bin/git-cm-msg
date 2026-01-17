@@ -1,0 +1,48 @@
+#!/bin/bash
+set -e
+
+# --- Configuration ---
+AI_TOOL="sgpt" # Options: "llm", "sgpt"
+# MODEL="gpt-5-nano"  # The model to use
+# MODEL="o3-mini"     # The model to use
+# MODEL="gpt-4o-mini" # The model to use
+MODEL="gpt-5-mini" # The model to use
+PROMPT_FILE="/Users/mgreco/.dotfiles/llm/prompts/cm"
+# ---------------------
+
+MSG_FILE="/tmp/git_commit_$(date +'%Y%m%d_%H%M').txt"
+
+generate_msg() {
+    local diff_input
+    diff_input=$(git diff --cached)
+
+    if [ -z "$diff_input" ]; then
+        echo "Error: No staged changes found." >&2
+        exit 1
+    fi
+
+    case "$AI_TOOL" in
+    llm)
+        # llm uses -s for system prompt
+        echo "$diff_input" | llm -m "$MODEL" -s "$(cat "$PROMPT_FILE")"
+        ;;
+    sgpt)
+        # sgpt requires piping prompt + diff to avoid template parsing errors
+        (
+            cat "$PROMPT_FILE"
+            echo
+            echo "---"
+            echo "$diff_input"
+        ) | sgpt --model "$MODEL"
+        ;;
+    *)
+        echo "Error: Unknown AI_TOOL '$AI_TOOL'" >&2
+        exit 1
+        ;;
+    esac
+}
+
+# Generate, log, and commit
+# The output is piped to tee so you see it in the console, then used as the commit file
+generate_msg | tee "$MSG_FILE"
+git commit -F "$MSG_FILE" "$@"

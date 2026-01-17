@@ -49,7 +49,7 @@
 	whitespace = nowarn
 
 [alias]
-	ai = !git-cm-msg
+	ai = "!f() { git-cm-msg $@; }; f"
 	aip = "!f() { git ai && git push; }; f"
 
 	fp = fetch --prune
