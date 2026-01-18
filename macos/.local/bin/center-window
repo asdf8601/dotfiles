@@ -15,12 +15,11 @@ from AppKit import NSScreen
 def get_pid_from_aerospace(title_substring):
     """Uses AeroSpace CLI to find the PID of a window matching the title."""
     try:
-        # aerospace list-windows --all --format "%{app-pid} | %{window-title}"
         cmd = ["aerospace", "list-windows", "--all", "--format", "%{app-pid} | %{window-title}"]
         result = subprocess.run(cmd, capture_output=True, text=True, check=True)
         for line in result.stdout.splitlines():
             if title_substring in line:
-                return line.split("|")[0].strip()
+                return int(line.split("|")[0].strip())
     except Exception as e:
         print(f"AeroSpace lookup failed: {e}")
     return None
@@ -34,51 +33,61 @@ def center_window(target_pid=None, target_title=None):
     s_x = v_frame.origin.x
     s_y = f_frame.size.height - v_frame.origin.y - v_frame.size.height
 
-    # If title provided, try to resolve to PID via AeroSpace first (more reliable)
+    # Try to resolve title via AeroSpace if possible
     if target_title and not target_pid:
         print(f"Resolving title '{target_title}' via AeroSpace...")
-        # Retry a few times as window might be spawning
         for _ in range(10):
             target_pid = get_pid_from_aerospace(target_title)
             if target_pid:
                 break
             time.sleep(0.1)
 
-    if target_pid:
-        target_logic = f'first process whose unix id is {target_pid}'
-        print(f"Targeting process with PID: {target_pid}")
-    elif target_title:
-        target_logic = f'first process whose background only is false and (title of every window contains "{target_title}")'
-        print(f"Targeting window with title (fallback): {target_title}")
-    else:
-        target_logic = 'first process whose frontmost is true'
-        print("Targeting frontmost window")
-
+    # Use a more robust AppleScript that finds the window by both PID and Title if available
+    safe_title = (target_title or "").replace('"', '\\"')
+    
     script_source = f"""
     tell application "System Events"
-        try
-            set theProcess to {target_logic}
-            tell theProcess
-                set theWindow to window 1
-                set {{wWidth, wHeight}} to size of theWindow
+        set foundWindow to missing value
+        set foundProcess to missing value
+        
+        set targetPID to {target_pid or 0}
+        set targetTitle to "{safe_title}"
+        
+        repeat with p in (every process whose background only is false)
+            set pPID to unix id of p
+            if targetPID is 0 or pPID is targetPID then
+                repeat with w in windows of p
+                    if targetTitle is "" or title of w contains targetTitle then
+                        set foundWindow to w
+                        set foundProcess to p
+                        exit repeat
+                    end if
+                end repeat
+            end if
+            if foundWindow is not missing value then exit repeat
+        end repeat
+        
+        if foundWindow is not missing value then
+            tell foundProcess
+                set {{wWidth, wHeight}} to size of foundWindow
                 
-                -- Resize if it's currently full screen/maximized
-                if wWidth >= {s_width} - 10 then
+                -- Resize if too large
+                if wWidth >= {s_width} - 20 then
                     set wWidth to 1200
                     set wHeight to 800
-                    set size of theWindow to {{wWidth, wHeight}}
+                    set size of foundWindow to {{wWidth, wHeight}}
                 end if
                 
                 set newX to {s_x} + ({s_width} - wWidth) / 2
                 set newY to {s_y} + ({s_height} - wHeight) / 2
                 
-                set position of theWindow to {{newX, newY}}
+                set position of foundWindow to {{newX, newY}}
                 set frontmost to true
-                return "Centered window of " & (name of theProcess) & " (PID: " & (unix id of theProcess) & ")"
+                return "Centered window '" & (title of foundWindow) & "' of " & (name of foundProcess) & " (PID: " & (unix id of foundProcess) & ")"
             end tell
-        on error err
-            return "Error: " & err
-        end try
+        else
+            return "Error: Could not find a matching window"
+        end if
     end tell
     """
     
@@ -97,7 +106,6 @@ if __name__ == "__main__":
     parser.add_argument("--title", help="Target window title substring")
     args = parser.parse_args()
     
-    # Handle positional argument
     pid = args.pid
     title = args.title
     
