@@ -5,20 +5,5 @@ open -n -a Ghostty --args \
   --window-save-state=never \
   -e /bin/sh -c "/opt/nvim/bin/nvim --cmd 'set title titlestring=Ghostty-Floating' $*"
 
-# Wait for AeroSpace to detect the window and retrieve the PID
-PID=""
-for i in $(seq 1 20); do
-  PID=$(aerospace list-windows --all --format "%{app-pid} | %{window-title}" | grep "Ghostty-Floating" | awk '{print $1}' | head -n 1)
-  if [ -n "$PID" ]; then
-    break
-  fi
-  sleep 0.1
-done
-
-if [ -n "$PID" ]; then
-  # Give AeroSpace a tiny bit more time to finish the layout before we move it
-  sleep 0.3
-  /Users/mgreco/.local/bin/center-window --pid "$PID"
-else
-  echo "Error: Could not find PID for Ghostty-Floating window"
-fi
+# center-window handles the wait and PID resolution via AeroSpace internally
+/Users/mgreco/.local/bin/center-window "Ghostty-Floating"
