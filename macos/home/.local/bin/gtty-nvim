@@ -1,0 +1,10 @@
+#!/bin/sh
+# Open Ghostty with a specific title
+open -n -a Ghostty --args \
+  --title="Ghostty-Floating" \
+  --window-save-state=never \
+  -e /bin/sh -c "/opt/nvim/bin/nvim --cmd 'set title titlestring=Ghostty-Floating' $*"
+
+# center-window ahora es más rápido y tiene su propio bucle de espera ligero
+sleep 0.2
+/Users/mgreco/.local/bin/center-window "Ghostty-Floating"

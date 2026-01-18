@@ -14,8 +14,9 @@ from AppKit import NSScreen
 
 def get_pid_from_ps(title_substring):
     try:
-        # Buscamos el proceso ghostty que contenga el título en sus argumentos
-        cmd = f"ps -ww -eo pid,command | grep '[g]hostty.*{title_substring}' | awk '{{print $1}}'"
+        # Buscamos el proceso ghostty que contenga el título.
+        # Ordenamos por PID descendente para pillar el más reciente.
+        cmd = f"ps -ww -eo pid,command | grep '[g]hostty.*{title_substring}' | sort -rn | awk '{{print $1}}'"
         result = subprocess.run(cmd, shell=True, capture_output=True, text=True)
         pids = result.stdout.strip().split()
         if pids:
@@ -34,38 +35,48 @@ def center_window(target_pid=None, target_title=None):
     s_y = f_frame.size.height - v_frame.origin.y - v_frame.size.height
 
     if target_title and not target_pid:
-        # Bucle más rápido: 20 reintentos cada 0.05s (1s total max)
         for _ in range(20):
             target_pid = get_pid_from_ps(target_title)
             if target_pid:
                 break
             time.sleep(0.05)
 
-    # AppleScript optimizado: acceso directo por PID
-    if target_pid:
-        target_process = f'application process whose unix id is {target_pid}'
+    if not target_pid and not target_title:
+        target_logic = 'first process whose frontmost is true'
+    elif target_pid:
+        target_logic = f'first process whose unix id is {target_pid}'
     else:
-        target_process = 'first application process whose frontmost is true'
+        print("Result: Error: Could not resolve PID")
+        return
 
     script_source = f"""
     tell application "System Events"
         try
-            set theProcess to {target_process}
-            set theWindow to window 1 of theProcess
-            set {{wWidth, wHeight}} to size of theWindow
-            
-            if wWidth >= {s_width} - 20 then
-                set wWidth to 1200
-                set wHeight to 800
-                set size of theWindow to {{wWidth, wHeight}}
-            end if
-            
-            set newX to {s_x} + ({s_width} - wWidth) / 2
-            set newY to {s_y} + ({s_height} - wHeight) / 2
-            
-            set position of theWindow to {{newX, newY}}
-            set frontmost of theProcess to true
-            return "Centered PID " & {target_pid or "front"}
+            set theProcess to {target_logic}
+            tell theProcess
+                set frontmost to true
+                repeat with i from 1 to 10
+                    if (count of windows) > 0 then exit repeat
+                    delay 0.1
+                end repeat
+                
+                if (count of windows) is 0 then return "Error: No windows found for process"
+                
+                set theWindow to window 1
+                set {{wWidth, wHeight}} to size of theWindow
+                
+                if wWidth >= {s_width} - 20 then
+                    set wWidth to 1200
+                    set wHeight to 800
+                    set size of theWindow to {{wWidth, wHeight}}
+                end if
+                
+                set newX to {s_x} + ({s_width} - wWidth) / 2
+                set newY to {s_y} + ({s_height} - wHeight) / 2
+                
+                set position of theWindow to {{newX, newY}}
+                return "Centered PID " & (unix id of theProcess)
+            end tell
         on error err
             return "Error: " & err
         end try
@@ -73,7 +84,12 @@ def center_window(target_pid=None, target_title=None):
     """
     
     as_obj = NSAppleScript.alloc().initWithSource_(script_source)
-    as_obj.executeAndReturnError_(None)
+    output, error = as_obj.executeAndReturnError_(None)
+    
+    if error:
+        print(f"AppleScript Error: {error}")
+    else:
+        print(f"Result: {output.stringValue()}")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
