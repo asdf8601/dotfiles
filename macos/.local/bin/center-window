@@ -6,63 +6,54 @@
 # ///
 
 import sys
+import argparse
 from Foundation import NSAppleScript
 from AppKit import NSScreen
 
-def center_window(target_title=None):
-    # Get the screen with the mouse/focus or the primary screen
+def center_window(target_pid=None, target_title=None):
     screen = NSScreen.mainScreen()
-    # visibleFrame excludes dock and menu bar
     v_frame = screen.visibleFrame()
     f_frame = screen.frame()
-    
-    # We'll use the full frame for calculation but offset by the visible frame's origin
-    # to handle multiple monitors correctly.
     s_width = v_frame.size.width
     s_height = v_frame.size.height
     s_x = v_frame.origin.x
-    # macOS coordinate system is bottom-left (0,0)
-    # System Events coordinate system is top-left (0,0)
     s_y = f_frame.size.height - v_frame.origin.y - v_frame.size.height
 
-    if target_title:
-        target_clause = f'window 1 whose title is "{target_title}"'
+    if target_pid:
+        target_logic = f'first process whose unix id is {target_pid}'
+        print(f"Targeting process with PID: {target_pid}")
+    elif target_title:
+        target_logic = f'first process whose background only is false and (title of every window contains "{target_title}")'
+        print(f"Targeting window with title: {target_title}")
     else:
-        target_clause = 'window 1'
-        target_title = ""
-    
+        target_logic = 'first process whose frontmost is true'
+        print("Targeting frontmost window")
+
     script_source = f"""
     tell application "System Events"
-        set theProcess to missing value
-        if "{target_title}" is not "" then
-            repeat with p in (every process whose background only is false)
-                try
-                    if exists ({target_clause}) of p then
-                        set theProcess to p
-                        exit repeat
-                    end if
-                end try
-            end repeat
-        else
-            set theProcess to first process whose frontmost is true
-        end if
-
-        if theProcess is not missing value then
+        try
+            set theProcess to {target_logic}
             tell theProcess
-                set theWindow to {target_clause}
+                set theWindow to window 1
                 set {{wWidth, wHeight}} to size of theWindow
                 
-                -- Calculations using screen data from Python
+                -- Resize if it's currently full screen/maximized
+                if wWidth >= {s_width} - 10 then
+                    set wWidth to 1200
+                    set wHeight to 800
+                    set size of theWindow to {{wWidth, wHeight}}
+                end if
+                
                 set newX to {s_x} + ({s_width} - wWidth) / 2
                 set newY to {s_y} + ({s_height} - wHeight) / 2
                 
                 set position of theWindow to {{newX, newY}}
                 set frontmost to true
-                return "Centered at " & newX & ", " & newY
+                return "Centered window of " & (name of theProcess) & " (PID: " & (unix id of theProcess) & ")"
             end tell
-        else
-            return "Error: Window not found"
-        end if
+        on error err
+            return "Error: " & err
+        end try
     end tell
     """
     
@@ -70,10 +61,14 @@ def center_window(target_title=None):
     output, error = as_obj.executeAndReturnError_(None)
     
     if error:
-        print(f"AppleScript Error: {error}")
+        print(f"AppleScript execution failed: {error}")
     else:
         print(f"Result: {output.stringValue()}")
 
 if __name__ == "__main__":
-    title = sys.argv[1] if len(sys.argv) > 1 else ""
-    center_window(title)
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--pid", type=int, help="Target process PID")
+    parser.add_argument("--title", help="Target window title substring")
+    args = parser.parse_args()
+    
+    center_window(target_pid=args.pid, target_title=args.title)
