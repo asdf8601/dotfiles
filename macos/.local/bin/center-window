@@ -1,15 +1,30 @@
-#!/usr/bin/env python3
+#!/usr/bin/env -S uv run --script
 # /// script
 # dependencies = [
-#   "pyobjc-framework-Cocoa",
+#   "pyobjc",
 # ]
 # ///
 
 import sys
 from Foundation import NSAppleScript
+from AppKit import NSScreen
 
 def center_window(target_title=None):
-    # If title is provided, search for it; otherwise target frontmost window
+    # Get the screen with the mouse/focus or the primary screen
+    screen = NSScreen.mainScreen()
+    # visibleFrame excludes dock and menu bar
+    v_frame = screen.visibleFrame()
+    f_frame = screen.frame()
+    
+    # We'll use the full frame for calculation but offset by the visible frame's origin
+    # to handle multiple monitors correctly.
+    s_width = v_frame.size.width
+    s_height = v_frame.size.height
+    s_x = v_frame.origin.x
+    # macOS coordinate system is bottom-left (0,0)
+    # System Events coordinate system is top-left (0,0)
+    s_y = f_frame.size.height - v_frame.origin.y - v_frame.size.height
+
     if target_title:
         target_clause = f'window 1 whose title is "{target_title}"'
     else:
@@ -19,7 +34,6 @@ def center_window(target_title=None):
     script_source = f"""
     tell application "System Events"
         set theProcess to missing value
-        -- If targeting by title, find the process first
         if "{target_title}" is not "" then
             repeat with p in (every process whose background only is false)
                 try
@@ -38,21 +52,27 @@ def center_window(target_title=None):
                 set theWindow to {target_clause}
                 set {{wWidth, wHeight}} to size of theWindow
                 
-                -- Center on primary screen
-                tell application "Finder"
-                    set screenBounds to bounds of window of desktop
-                    set sWidth to item 3 of screenBounds
-                    set sHeight to item 4 of screenBounds
-                end tell
+                -- Calculations using screen data from Python
+                set newX to {s_x} + ({s_width} - wWidth) / 2
+                set newY to {s_y} + ({s_height} - wHeight) / 2
                 
-                set position of theWindow to {{(sWidth - wWidth) / 2, (sHeight - wHeight) / 2}}
+                set position of theWindow to {{newX, newY}}
                 set frontmost to true
+                return "Centered at " & newX & ", " & newY
             end tell
+        else
+            return "Error: Window not found"
         end if
     end tell
     """
-    script = NSAppleScript.alloc().initWithSource_(script_source)
-    script.executeAndReturnError_(None)
+    
+    as_obj = NSAppleScript.alloc().initWithSource_(script_source)
+    output, error = as_obj.executeAndReturnError_(None)
+    
+    if error:
+        print(f"AppleScript Error: {error}")
+    else:
+        print(f"Result: {output.stringValue()}")
 
 if __name__ == "__main__":
     title = sys.argv[1] if len(sys.argv) > 1 else ""
