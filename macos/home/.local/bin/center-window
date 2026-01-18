@@ -13,17 +13,15 @@ from Foundation import NSAppleScript
 from AppKit import NSScreen
 
 def get_pid_from_ps(title_substring):
-    """Finds the PID of a ghostty process that has the title in its arguments."""
     try:
-        # Using ps to find the process. We look for 'ghostty' and the title string.
-        # -ww for wide output to avoid truncation.
-        cmd = "ps -ww -eo pid,command | grep 'ghostty' | grep '" + title_substring + "' | grep -v grep | awk '{print $1}'"
+        # Buscamos el proceso ghostty que contenga el título en sus argumentos
+        cmd = f"ps -ww -eo pid,command | grep '[g]hostty.*{title_substring}' | awk '{{print $1}}'"
         result = subprocess.run(cmd, shell=True, capture_output=True, text=True)
         pids = result.stdout.strip().split()
         if pids:
             return int(pids[0])
-    except Exception as e:
-        print(f"PS lookup failed: {e}")
+    except:
+        pass
     return None
 
 def center_window(target_pid=None, target_title=None):
@@ -35,89 +33,54 @@ def center_window(target_pid=None, target_title=None):
     s_x = v_frame.origin.x
     s_y = f_frame.size.height - v_frame.origin.y - v_frame.size.height
 
-    # Resolve title to PID via ps
     if target_title and not target_pid:
-        print(f"Resolving title '{target_title}' via ps...")
-        for _ in range(15):
+        # Bucle más rápido: 20 reintentos cada 0.05s (1s total max)
+        for _ in range(20):
             target_pid = get_pid_from_ps(target_title)
             if target_pid:
                 break
-            time.sleep(0.1)
+            time.sleep(0.05)
 
-    # Use AppleScript to find and move the window
-    safe_title = (target_title or "").replace('"', '\\"')
-    
+    # AppleScript optimizado: acceso directo por PID
+    if target_pid:
+        target_process = f'application process whose unix id is {target_pid}'
+    else:
+        target_process = 'first application process whose frontmost is true'
+
     script_source = f"""
     tell application "System Events"
-        set foundWindow to missing value
-        set foundProcess to missing value
-        
-        set targetPID to {target_pid or 0}
-        set targetTitle to "{safe_title}"
-        
-        repeat with p in (every process whose background only is false)
-            set pPID to unix id of p
-            if targetPID is 0 or pPID is targetPID then
-                try
-                    repeat with w in windows of p
-                        if targetTitle is "" or title of w contains targetTitle then
-                            set foundWindow to w
-                            set foundProcess to p
-                            exit repeat
-                        end if
-                    end repeat
-                end try
+        try
+            set theProcess to {target_process}
+            set theWindow to window 1 of theProcess
+            set {{wWidth, wHeight}} to size of theWindow
+            
+            if wWidth >= {s_width} - 20 then
+                set wWidth to 1200
+                set wHeight to 800
+                set size of theWindow to {{wWidth, wHeight}}
             end if
-            if foundWindow is not missing value then exit repeat
-        end repeat
-        
-        if foundWindow is not missing value then
-            tell foundProcess
-                set {{wWidth, wHeight}} to size of foundWindow
-                
-                -- Resize if too large
-                if wWidth >= {s_width} - 20 then
-                    set wWidth to 1200
-                    set wHeight to 800
-                    set size of foundWindow to {{wWidth, wHeight}}
-                end if
-                
-                set newX to {s_x} + ({s_width} - wWidth) / 2
-                set newY to {s_y} + ({s_height} - wHeight) / 2
-                
-                set position of foundWindow to {{newX, newY}}
-                set frontmost to true
-                return "Centered window '" & (title of foundWindow) & "' of " & (name of foundProcess) & " (PID: " & (unix id of foundProcess) & ")"
-            end tell
-        else
-            return "Error: Could not find a matching window"
-        end if
+            
+            set newX to {s_x} + ({s_width} - wWidth) / 2
+            set newY to {s_y} + ({s_height} - wHeight) / 2
+            
+            set position of theWindow to {{newX, newY}}
+            set frontmost of theProcess to true
+            return "Centered PID " & {target_pid or "front"}
+        on error err
+            return "Error: " & err
+        end try
     end tell
     """
     
     as_obj = NSAppleScript.alloc().initWithSource_(script_source)
-    output, error = as_obj.executeAndReturnError_(None)
-    
-    if error:
-        print(f"AppleScript execution failed: {error}")
-    else:
-        print(f"Result: {output.stringValue()}")
+    as_obj.executeAndReturnError_(None)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("title_or_pid", nargs="?", help="Target window title substring or PID")
-    parser.add_argument("--pid", type=int, help="Target process PID")
-    parser.add_argument("--title", help="Target window title substring")
+    parser.add_argument("title_or_pid", nargs="?", help="Title or PID")
     args = parser.parse_args()
     
-    pid = args.pid
-    title = args.title
-    
-    if args.title_or_pid:
-        if args.title_or_pid.isdigit():
-            pid = int(args.title_or_pid)
-        else:
-            title = args.title_or_pid
+    pid = int(args.title_or_pid) if args.title_or_pid and args.title_or_pid.isdigit() else None
+    title = args.title_or_pid if args.title_or_pid and not args.title_or_pid.isdigit() else None
             
     center_window(target_pid=pid, target_title=title)
-# vim: ft=python

@@ -5,5 +5,6 @@ open -n -a Ghostty --args \
   --window-save-state=never \
   -e /bin/sh -c "/opt/nvim/bin/nvim --cmd 'set title titlestring=Ghostty-Floating' $*"
 
-# center-window handles the wait and PID resolution via AeroSpace internally
+# center-window ahora es más rápido y tiene su propio bucle de espera ligero
+sleep 0.1
 /Users/mgreco/.local/bin/center-window "Ghostty-Floating"
