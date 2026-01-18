@@ -134,6 +134,11 @@ run = ['layout floating', 'move-node-to-workspace 6']
 
 [[on-window-detected]]
 if.app-id = 'com.mitchellh.ghostty'
+if.window-title-regex-substring = 'Ghostty-Floating'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.mitchellh.ghostty'
 run = ['move-node-to-workspace 1']
 
 [[on-window-detected]]
