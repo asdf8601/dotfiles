@@ -1,0 +1,5 @@
+#!/bin/sh
+open -n -a Ghostty --args \
+  --title="Ghostty-Floating" \
+  --window-save-state=never \
+  -e /bin/sh -c "/opt/nvim/bin/nvim $*"
