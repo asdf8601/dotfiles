@@ -1,0 +1,59 @@
+#!/usr/bin/env python3
+# /// script
+# dependencies = [
+#   "pyobjc-framework-Cocoa",
+# ]
+# ///
+
+import sys
+from Foundation import NSAppleScript
+
+def center_window(target_title=None):
+    # If title is provided, search for it; otherwise target frontmost window
+    if target_title:
+        target_clause = f'window 1 whose title is "{target_title}"'
+    else:
+        target_clause = 'window 1'
+        target_title = ""
+    
+    script_source = f"""
+    tell application "System Events"
+        set theProcess to missing value
+        -- If targeting by title, find the process first
+        if "{target_title}" is not "" then
+            repeat with p in (every process whose background only is false)
+                try
+                    if exists ({target_clause}) of p then
+                        set theProcess to p
+                        exit repeat
+                    end if
+                end try
+            end repeat
+        else
+            set theProcess to first process whose frontmost is true
+        end if
+
+        if theProcess is not missing value then
+            tell theProcess
+                set theWindow to {target_clause}
+                set {{wWidth, wHeight}} to size of theWindow
+                
+                -- Center on primary screen
+                tell application "Finder"
+                    set screenBounds to bounds of window of desktop
+                    set sWidth to item 3 of screenBounds
+                    set sHeight to item 4 of screenBounds
+                end tell
+                
+                set position of theWindow to {{(sWidth - wWidth) / 2, (sHeight - wHeight) / 2}}
+                set frontmost to true
+            end tell
+        end if
+    end tell
+    """
+    script = NSAppleScript.alloc().initWithSource_(script_source)
+    script.executeAndReturnError_(None)
+
+if __name__ == "__main__":
+    title = sys.argv[1] if len(sys.argv) > 1 else ""
+    center_window(title)
