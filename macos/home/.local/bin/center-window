@@ -1,0 +1,123 @@
+#!/usr/bin/env -S uv run --script
+# /// script
+# dependencies = [
+#   "pyobjc",
+# ]
+# ///
+
+import sys
+import argparse
+import subprocess
+import time
+from Foundation import NSAppleScript
+from AppKit import NSScreen
+
+def get_pid_from_ps(title_substring):
+    """Finds the PID of a ghostty process that has the title in its arguments."""
+    try:
+        # Using ps to find the process. We look for 'ghostty' and the title string.
+        # -ww for wide output to avoid truncation.
+        cmd = "ps -ww -eo pid,command | grep 'ghostty' | grep '" + title_substring + "' | grep -v grep | awk '{print $1}'"
+        result = subprocess.run(cmd, shell=True, capture_output=True, text=True)
+        pids = result.stdout.strip().split()
+        if pids:
+            return int(pids[0])
+    except Exception as e:
+        print(f"PS lookup failed: {e}")
+    return None
+
+def center_window(target_pid=None, target_title=None):
+    screen = NSScreen.mainScreen()
+    v_frame = screen.visibleFrame()
+    f_frame = screen.frame()
+    s_width = v_frame.size.width
+    s_height = v_frame.size.height
+    s_x = v_frame.origin.x
+    s_y = f_frame.size.height - v_frame.origin.y - v_frame.size.height
+
+    # Resolve title to PID via ps
+    if target_title and not target_pid:
+        print(f"Resolving title '{target_title}' via ps...")
+        for _ in range(15):
+            target_pid = get_pid_from_ps(target_title)
+            if target_pid:
+                break
+            time.sleep(0.1)
+
+    # Use AppleScript to find and move the window
+    safe_title = (target_title or "").replace('"', '\\"')
+    
+    script_source = f"""
+    tell application "System Events"
+        set foundWindow to missing value
+        set foundProcess to missing value
+        
+        set targetPID to {target_pid or 0}
+        set targetTitle to "{safe_title}"
+        
+        repeat with p in (every process whose background only is false)
+            set pPID to unix id of p
+            if targetPID is 0 or pPID is targetPID then
+                try
+                    repeat with w in windows of p
+                        if targetTitle is "" or title of w contains targetTitle then
+                            set foundWindow to w
+                            set foundProcess to p
+                            exit repeat
+                        end if
+                    end repeat
+                end try
+            end if
+            if foundWindow is not missing value then exit repeat
+        end repeat
+        
+        if foundWindow is not missing value then
+            tell foundProcess
+                set {{wWidth, wHeight}} to size of foundWindow
+                
+                -- Resize if too large
+                if wWidth >= {s_width} - 20 then
+                    set wWidth to 1200
+                    set wHeight to 800
+                    set size of foundWindow to {{wWidth, wHeight}}
+                end if
+                
+                set newX to {s_x} + ({s_width} - wWidth) / 2
+                set newY to {s_y} + ({s_height} - wHeight) / 2
+                
+                set position of foundWindow to {{newX, newY}}
+                set frontmost to true
+                return "Centered window '" & (title of foundWindow) & "' of " & (name of foundProcess) & " (PID: " & (unix id of foundProcess) & ")"
+            end tell
+        else
+            return "Error: Could not find a matching window"
+        end if
+    end tell
+    """
+    
+    as_obj = NSAppleScript.alloc().initWithSource_(script_source)
+    output, error = as_obj.executeAndReturnError_(None)
+    
+    if error:
+        print(f"AppleScript execution failed: {error}")
+    else:
+        print(f"Result: {output.stringValue()}")
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("title_or_pid", nargs="?", help="Target window title substring or PID")
+    parser.add_argument("--pid", type=int, help="Target process PID")
+    parser.add_argument("--title", help="Target window title substring")
+    args = parser.parse_args()
+    
+    pid = args.pid
+    title = args.title
+    
+    if args.title_or_pid:
+        if args.title_or_pid.isdigit():
+            pid = int(args.title_or_pid)
+        else:
+            title = args.title_or_pid
+            
+    center_window(target_pid=pid, target_title=title)
+# vim: ft=python
