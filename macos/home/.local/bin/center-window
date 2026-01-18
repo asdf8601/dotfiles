@@ -11,7 +11,7 @@ from Foundation import NSAppleScript
 from AppKit import NSScreen
 
 
-def get_pid_from_aerospace(title_substring):
+def get_pid_from_aerospace(title_substring) -> int | None:
     """Uses AeroSpace CLI to find the PID of a window matching the title."""
     try:
         cmd = f"aerospace list-windows --all --format '%{{app-pid}} | %{{window-title}}' | grep '{title_substring}' | awk '{{print $1}}'"
@@ -20,7 +20,7 @@ def get_pid_from_aerospace(title_substring):
         print(result.stdout)
         pids = result.stdout.strip().split()
         if pids:
-            return pids[0]
+            return int(pids[0])
     except Exception as e:
         print(f"AeroSpace lookup failed: {e}")
     return None
@@ -51,14 +51,8 @@ def center_window(target_pid=None, target_title=None):
 
     # Try to resolve title via AeroSpace if possible
     if target_title and not target_pid:
-        print(f"Resolving title '{target_title}' via AeroSpace...")
-        for _ in range(10):
-            target_pid = get_pid_from_aerospace(target_title)
-            if target_pid:
-                break
-            time.sleep(0.1)
+        target_pid = get_pid_from_aerospace(target_title)
 
-    # Use a more robust AppleScript that finds the window by both PID and Title if available
     safe_title = (target_title or "").replace('"', '\\"')
 
     script_source = f"""
@@ -121,5 +115,6 @@ if __name__ == "__main__":
     parser.add_argument("-t", "--title", help="Title")
     args = parser.parse_args()
     title = args.title
-    pid = int(get_pid_from_aerospace(args.title))
+    pid = get_pid_from_aerospace(args.title)
     center_window(target_pid=pid, target_title=title)
+# vim: ft=python
