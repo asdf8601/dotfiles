@@ -64,7 +64,7 @@
 
 	split = "!f() { git-split $@ }; f"
 	pushf = "!f() { git push --force-with-lease $@; }; f"
-	pushF = "!f() { git push $@; }; f"
+	pushF = "!f() { git push --force $@; }; f"
 	rbc = "!f() { git rebase --continue; }; f"
 	main = "!f() { if git diff-index --quiet HEAD --; then git checkout main && git pull; else git stash && git checkout main && git pull; fi }; f"
 	sync = "!f() { if git diff-index --quiet HEAD --; then git checkout main && git pull && git checkout - && git rebase main; else git stash && git checkout main && git pull && git checkout - && git rebase main && git stash pop; fi }; f"
