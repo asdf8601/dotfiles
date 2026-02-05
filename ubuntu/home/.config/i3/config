@@ -528,7 +528,8 @@ exec --no-startup-id copyq &
 # exec --no-startup-id caffeine-indicator &
 # exec --no-startup-id clipit &
 
-exec --no-startup-id i3-msg 'exec st -f "CaskaydiaCove Nerd Font:size=14"'
+# exec --no-startup-id i3-msg 'exec st -f "CaskaydiaCove Nerd Font:size=14"'
+exec --no-startup-id i3-msg 'exec ghostty'
 exec --no-startup-id i3-msg 'exec QT_SCALE_FACTOR=1.5 keepassxc'
 # exec --no-startup-id i3-msg 'exec xterm'
 # exec --no-startup-id i3-msg 'exec nautilus'
