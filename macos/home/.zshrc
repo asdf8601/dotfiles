@@ -790,3 +790,4 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 [ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
 export PATH=$PATH:$HOME/.local/opt/go/bin
 
+export DOCKER_HOST=unix:///Users/mgreco/.local/share/containers/podman/machine/qemu/podman.sock

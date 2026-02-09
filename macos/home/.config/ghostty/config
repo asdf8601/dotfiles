@@ -27,7 +27,7 @@ font-family = "CaskaydiaCove Nerd Font Mono"
 # quick-terminal-position = top # center
 
 # keymaps {{{
-keybind = global:cmd+`=toggle_quick_terminal
+# keybind = global:cmd+`=toggle_quick_terminal
 keybind = cmd+comma=text:nvim $HOME/.config/ghostty/config\n
 keybind = cmd+period=reload_config
 # }}}
