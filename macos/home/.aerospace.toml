@@ -349,4 +349,16 @@ run = ['layout floating']
 if.app-id = 'com.apple.accessibility.universalAccessAuthWarn'
 run = ['layout floating']
 
+[[on-window-detected]]
+if.app-id = 'com.electron.wispr-flow'
+run = ['layout floating']
+
+[[on-window-detected]]
+if.app-id = 'com.logi.cp-dev-mgr'
+run = ['layout floating']
+
+[[on-window-detected]]
+if.app-id = 'cc.ffitch.shottr'
+run = ['layout floating']
+
 # aerospace list-apps
