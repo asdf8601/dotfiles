@@ -90,6 +90,8 @@ function venv() {
 alias erc='nvim ~/.config/espanso/match/base.yml'
 alias dk='deepseek'
 
+alias avante='nvim -c "lua vim.defer_fn(function()require(\"avante.api\").zen_mode()end, 100)"'
+
 
 # kubernets
 alias hadolint='docker run --rm -i hadolint/hadolint < '
@@ -790,4 +792,8 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 [ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
 export PATH=$PATH:$HOME/.local/opt/go/bin
 
-export DOCKER_HOST=unix:///Users/mgreco/.local/share/containers/podman/machine/qemu/podman.sock
+# export DOCKER_HOST=unix:///Users/mgreco/.local/share/containers/podman/machine/qemu/podman.sock
+# export DOCKER_HOST=unix:///run/podman/podman.sock
+export DOCKER_HOST="unix://$(podman machine inspect --format '{{.ConnectionInfo.PodmanSocket.Path}}')"
+
+export OPENCODE_CONFIG_DIR="/Users/mgreco/.config/agentrc/"
