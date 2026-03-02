@@ -2,3 +2,7 @@
 	path = personal
 	url = ssh://git@github.com/mmngreco/personal
 	branch = main
+[submodule "seedtag"]
+	path = seedtag
+	url = git@github.com:asdf8601/dotfiles-seedtag.git
+	branch = main
