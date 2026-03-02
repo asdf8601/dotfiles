@@ -10,10 +10,6 @@ help:  ## Display this help
 stow:  ## Install stow
 	[[ $(OS) == "Darwin" ]] && brew install stow || sudo apt-get install stow
 
-.PHONY: seedtag
-seedtag:  ## Install seedtag settings
-	stow --ignore ".git" -d seedtag/ -t $(HOME)/ .
-
 .PHONY: macos
 macos: personal  ## Install macos settings
 	stow -d macos/home/ -t $(HOME)/ .
@@ -22,9 +18,23 @@ macos: personal  ## Install macos settings
 ubuntu: personal  ## Install ubuntu settings
 	stow -d ubuntu/home/ -t $(HOME)/ .
 
+SEEDTAG_SKILLS_SRC := $(CURDIR)/seedtag/.config/opencode/skills
+OPENCODE_SKILLS    := $(HOME)/.config/opencode/skills
+
 .PHONY: personal
-personal: seedtag  ## Install personal settings
+personal: seedtag  ## Install personal settings (includes seedtag skills)
 	stow --ignore ".git" -d personal/ -t $(HOME)/ .
+
+.PHONY: seedtag
+seedtag:  ## Symlink seedtag opencode skills into ~/.config/opencode/skills/
+	@mkdir -p $(OPENCODE_SKILLS)
+	@for skill in $(SEEDTAG_SKILLS_SRC)/*/; do \
+		name=$$(basename $$skill); \
+		if [ ! -e $(OPENCODE_SKILLS)/$$name ]; then \
+			ln -s $$skill $(OPENCODE_SKILLS)/$$name; \
+			echo "  LINK: $$name -> $$skill"; \
+		fi; \
+	done
 
 .PHONY: pushall
 pushall:  ## Push all changes
