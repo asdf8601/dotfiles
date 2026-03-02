@@ -10,6 +10,10 @@ help:  ## Display this help
 stow:  ## Install stow
 	[[ $(OS) == "Darwin" ]] && brew install stow || sudo apt-get install stow
 
+.PHONY: seedtag
+seedtag:  ## Install seedtag settings
+	stow --ignore ".git" -d seedtag/ -t $(HOME)/ .
+
 .PHONY: macos
 macos: personal  ## Install macos settings
 	stow -d macos/home/ -t $(HOME)/ .
@@ -19,7 +23,7 @@ ubuntu: personal  ## Install ubuntu settings
 	stow -d ubuntu/home/ -t $(HOME)/ .
 
 .PHONY: personal
-personal:  ## Install personal settings
+personal: seedtag  ## Install personal settings
 	stow --ignore ".git" -d personal/ -t $(HOME)/ .
 
 .PHONY: pushall
