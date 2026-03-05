@@ -796,4 +796,5 @@ export PATH=$PATH:$HOME/.local/opt/go/bin
 # export DOCKER_HOST=unix:///run/podman/podman.sock
 export DOCKER_HOST="unix://$(podman machine inspect --format '{{.ConnectionInfo.PodmanSocket.Path}}')"
 
-export OPENCODE_CONFIG_DIR="/Users/mgreco/.config/agentrc/"
+# export OPENCODE_CONFIG_DIR="/Users/mgreco/.config/agentrc/"
+export PATH=$PATH:$HOME/github.com/seedtag/adx-ohmyagent
