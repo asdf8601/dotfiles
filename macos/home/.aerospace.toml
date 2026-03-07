@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+#!/usr/bin/env bash
 # after-login-command = []
 # after-startup-command = []
 start-at-login = true
@@ -361,4 +362,9 @@ run = ['layout floating']
 if.app-id = 'cc.ffitch.shottr'
 run = ['layout floating']
 
+[[on-window-detected]]
+if.app-id = 'com.anthropic.claudefordesktop'
+run = ['layout floating']
+
 # aerospace list-apps
+# aerospace list-apps --format "%{app-bundle-id}"
