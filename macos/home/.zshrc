@@ -798,3 +798,4 @@ export DOCKER_HOST="unix://$(podman machine inspect --format '{{.ConnectionInfo.
 
 # export OPENCODE_CONFIG_DIR="/Users/mgreco/.config/agentrc/"
 export PATH=$PATH:$HOME/github.com/seedtag/adx-ohmyagent
+alias oc=opencode
