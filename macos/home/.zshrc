@@ -1,8 +1,5 @@
 #!/usr/bin/env zsh
 
-
-
-
 if [ -n "${ZSH_DEBUGRC+1}" ]; then
     # Example:
     # time ZSH_DEBUGRC=1 zsh -i -c exit
@@ -796,6 +793,6 @@ export PATH=$PATH:$HOME/.local/opt/go/bin
 # export DOCKER_HOST=unix:///run/podman/podman.sock
 export DOCKER_HOST="unix://$(podman machine inspect --format '{{.ConnectionInfo.PodmanSocket.Path}}')"
 
-# export OPENCODE_CONFIG_DIR="/Users/mgreco/.config/agentrc/"
 export PATH=$PATH:$HOME/github.com/seedtag/adx-ohmyagent
 alias oc=opencode
+alias ocrc='nvim ~/.config/opencode/'
