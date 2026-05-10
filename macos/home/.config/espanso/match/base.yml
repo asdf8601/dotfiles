@@ -1,5 +1,5 @@
 matches:
-- trigger: ";timefilter;"
+- trigger: ";wheredate;"
   replace: "{{out}}"
   vars:
   - name: out
@@ -32,14 +32,6 @@ matches:
       cmd: "sleep 0.1 && pbpaste > /tmp/espanso-nvim.txt && wezterm -e zsh -c 'source ~/.profile && source ~/.zshrc && nvim /tmp/espanso-nvim.txt' && sleep 0.2 && cat /tmp/espanso-nvim.txt"
 - trigger: ";setup;"
   replace: "apt update -qq && apt install -qq -y curl && curl -#fLo- 'https://gist.github.com/asdf8601/ef7af0db1a9a70c0c73337f5788b0072/raw/setup-container.sh' | sh"
-- trigger: ">h"
-  replace: "> # @today "
-- trigger: ">hh"
-  replace: "> ## @today "
-- trigger: ",h"
-  replace: "# @today "
-- trigger: ",hh"
-  replace: "## @today "
 - trigger: ";issue;"
   force_clipboard: true
   replace: |-
@@ -74,8 +66,6 @@ matches:
     type: match
     params:
       trigger: ";date"
-- trigger: ";today;"
-  replace: "/heading 3\n@Today \n"
 - trigger: ";plt;"
   replace: |-
     from matplotlib import pyplot as plt
@@ -113,13 +103,6 @@ matches:
     plt.ion()
 - trigger: ";linestyle;"
   replace: linkStyle default interpolate basis
-- trigger: ";h2 date;"
-  replace: "{{mydate}}"
-  vars:
-  - name: mydate
-    type: date
-    params:
-      format: "## %A %Y-%m-%d"
 - trigger: ";Date;"
   replace: "{{mydate}}"
   vars:

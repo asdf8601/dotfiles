@@ -1,36 +1,33 @@
 matches:
-  - trigger: ";sum"
-    replace: "{{out}}"
-    force_clipboard: true
-    vars:
-      - name: out
-        type: shell
-        params:
-          cmd: "pbpaste | ~/.local/bin/espanso_gpt_summary.sh"
-
-  - trigger: ";chat"
-    replace: "{{out}}"
-    force_clipboard: true
-    vars:
-      - name: out
-        type: shell
-        params:
-          cmd: "pbpaste | sed 's/;gpt//' | ~/.local/bin/espanso_gpt.sh"
-
-  - trigger: ";tra"
-    replace: "{{out}}"
-    force_clipboard: true
-    vars:
-      - name: out
-        type: shell
-        params:
-          cmd: "pbpaste | ~/.local/bin/espanso_gpt_trad.sh"
-
-  - trigger: ";fix"
-    replace: "{{out}}"
-    force_clipboard: true
-    vars:
-      - name: out
-        type: shell
-        params:
-          cmd: "pbpaste | ~/.local/bin/espanso_gpt_fix.sh"
+- trigger: ";sum"
+  replace: "{{out}}"
+  force_clipboard: true
+  vars:
+  - name: out
+    type: shell
+    params:
+      cmd: "pbpaste | ~/.local/bin/espanso_gpt_summary.sh"
+- trigger: ";chat"
+  replace: "{{out}}"
+  force_clipboard: true
+  vars:
+  - name: out
+    type: shell
+    params:
+      cmd: "pbpaste  | ~/.local/bin/espanso_gpt.sh"
+- trigger: ";trad"
+  replace: "{{out}}"
+  force_clipboard: true
+  vars:
+  - name: out
+    type: shell
+    params:
+      cmd: "pbpaste | ~/.local/bin/espanso_gpt_trad.sh"
+- trigger: ";fix"
+  replace: "{{out}}"
+  force_clipboard: true
+  vars:
+  - name: out
+    type: shell
+    params:
+      cmd: "pbpaste | ~/.local/bin/espanso_gpt_fix.sh"

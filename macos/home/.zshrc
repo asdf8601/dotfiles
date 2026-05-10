@@ -794,6 +794,8 @@ export PATH=$PATH:$HOME/.local/opt/go/bin
 export DOCKER_HOST="unix://$(podman machine inspect --format '{{.ConnectionInfo.PodmanSocket.Path}}')"
 
 export PATH=$PATH:$HOME/github.com/seedtag/adx-ohmyagent
+# export UV_EXCLUDE_NEWER='30 days'
+
 alias oc=opencode
 alias ocrc='nvim ~/.config/opencode/'
 alias cc=claude
