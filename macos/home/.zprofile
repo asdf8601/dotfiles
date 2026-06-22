@@ -53,3 +53,7 @@ setopt HIST_VERIFY               # Don't execute immediately upon history expans
 
 # Kiro CLI post block. Keep at the bottom of this file.
 [[ -f "${HOME}/Library/Application Support/kiro-cli/shell/zprofile.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/kiro-cli/shell/zprofile.post.zsh"
+
+
+# Added by Antigravity CLI installer
+export PATH="/Users/mgreco/.local/bin:$PATH"

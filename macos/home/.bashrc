@@ -26,3 +26,7 @@ eval "$(atuin init bash)"
 
 
 
+
+
+# Added by Antigravity CLI installer
+export PATH="/Users/mgreco/.local/bin:$PATH"

@@ -23,3 +23,7 @@ export PATH="$PATH:/Users/mgreco/Library/Application Support/Coursier/bin"
 
 
 
+
+
+# Added by Antigravity CLI installer
+export PATH="/Users/mgreco/.local/bin:$PATH"
