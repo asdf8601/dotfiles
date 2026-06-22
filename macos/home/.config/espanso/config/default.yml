@@ -3,8 +3,8 @@
 # backend: Clipboard
 backend: Auto
 # search_shortcut: ALT+SHIFT+SPACE
-show_icon: true
+show_icon: false
 search_trigger: ";s;"
 # x11_use_xdotool_backend: true
 # disable_x11_fast_inject: true
-undo_backspace: true
+undo_backspace: false
