@@ -1,0 +1,27 @@
+#!/bin/zsh
+# Claude Code launcher that pins a session id per pane so tmux-resurrect
+# can restore each pane to its exact conversation.
+
+# Passthrough when the caller already controls the session (cc -c, cc -r ...).
+if [[ "$1" == -* ]]; then
+  exec claude "$@"
+fi
+
+id="$1"
+if [[ "$id" =~ '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$' ]]; then
+  shift
+else
+  # Re-exec with a fresh uuid so the id lands in this process argv, which is
+  # what tmux-resurrect saves and replays on restore.
+  exec "$0" "$(uuidgen | tr '[:upper:]' '[:lower:]')" "$@"
+fi
+
+# Run claude as a child, not exec: claude's own process shows up in ps as
+# plain "claude" without arguments, so the uuid must stay in this wrapper's
+# argv for tmux-resurrect to capture it.
+session_files=(~/.claude/projects/*/"$id".jsonl(N))
+if (( ${#session_files} )); then
+  claude --resume "$id" "$@"
+else
+  claude --session-id "$id" "$@"
+fi

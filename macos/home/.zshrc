@@ -799,7 +799,7 @@ export PATH=$PATH:$HOME/github.com/seedtag/adx-ohmyagent
 
 alias oc=opencode
 alias ocrc='nvim ~/.config/opencode/'
-alias cc=claude
+alias cc=ccr
 
 # Skip npm/yarn/pnpm lifecycle scripts
 export NPM_CONFIG_IGNORE_SCRIPTS=true
