@@ -1,0 +1,17 @@
+#!/bin/zsh
+# Called from Claude Code hooks. Marks the tmux window that holds this Claude
+# session so the status bar shows whether it is working or waiting for you.
+# Usage: cc-tmux-state working|done|attention|clear
+
+[[ -z "$TMUX_PANE" ]] && exit 0
+
+case "$1" in
+  working)   icon='#[fg=yellow]◐ ' ;;
+  done)      icon='#[fg=green]● ' ;;
+  attention) icon='#[fg=red]● ' ;;
+  *)         icon='' ;;
+esac
+
+window=$(tmux display-message -p -t "$TMUX_PANE" '#{window_id}' 2>/dev/null) || exit 0
+tmux set-option -w -t "$window" @cc "$icon" 2>/dev/null
+exit 0
