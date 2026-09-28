@@ -810,5 +810,9 @@ export NPM_CONFIG_MINIMUM_RELEASE_AGE=7200
 # Added by Antigravity CLI installer
 export PATH="/Users/mgreco/.local/bin:$PATH"
 
-# Silence Homebrew untrusted-tap warnings (taps are intentional)
-export HOMEBREW_NO_REQUIRE_TAP_TRUST=1
+# kimi-code
+export PATH="/Users/mgreco/.kimi-code/bin:$PATH"
+
+# Qwen Code PATH block begin
+export PATH='/Users/mgreco/.local/bin':$PATH
+# Qwen Code PATH block end

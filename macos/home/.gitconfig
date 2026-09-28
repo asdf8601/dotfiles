@@ -188,3 +188,5 @@
 	required = true
 [url "git@github.com:seedtag/buying-engine-service"]
 	insteadOf = https://github.com/seedtag/buying-engine-service
+[url "ssh://git@github.com/"]
+	insteadOf = https://github.com/
