@@ -1,4 +1,39 @@
 matches:
+# old sgpt triggers, replaced by pi below
+# ----------------------------------------
+# - trigger: ";sum"
+#   replace: "{{out}}"
+#   force_clipboard: true
+#   vars:
+#   - name: out
+#     type: shell
+#     params:
+#       cmd: "pbpaste | ~/.local/bin/espanso_gpt_summary.sh"
+# - trigger: ";chat"
+#   replace: "{{out}}"
+#   force_clipboard: true
+#   vars:
+#   - name: out
+#     type: shell
+#     params:
+#       cmd: "pbpaste  | ~/.local/bin/espanso_gpt.sh"
+# - trigger: ";trad"
+#   replace: "{{out}}"
+#   force_clipboard: true
+#   vars:
+#   - name: out
+#     type: shell
+#     params:
+#       cmd: "pbpaste | ~/.local/bin/espanso_gpt_trad.sh"
+# - trigger: ";fix"
+#   replace: "{{out}}"
+#   force_clipboard: true
+#   vars:
+#   - name: out
+#     type: shell
+#     params:
+#       cmd: "pbpaste | ~/.local/bin/espanso_gpt_fix.sh"
+# ----------------------------------------
 - trigger: ";sum"
   replace: "{{out}}"
   force_clipboard: true
@@ -6,7 +41,7 @@ matches:
   - name: out
     type: shell
     params:
-      cmd: "pbpaste | ~/.local/bin/espanso_gpt_summary.sh"
+      cmd: "pbpaste | ~/.local/bin/espanso_pi.sh sum"
 - trigger: ";chat"
   replace: "{{out}}"
   force_clipboard: true
@@ -14,7 +49,7 @@ matches:
   - name: out
     type: shell
     params:
-      cmd: "pbpaste  | ~/.local/bin/espanso_gpt.sh"
+      cmd: "pbpaste | ~/.local/bin/espanso_pi.sh chat"
 - trigger: ";trad"
   replace: "{{out}}"
   force_clipboard: true
@@ -22,7 +57,7 @@ matches:
   - name: out
     type: shell
     params:
-      cmd: "pbpaste | ~/.local/bin/espanso_gpt_trad.sh"
+      cmd: "pbpaste | ~/.local/bin/espanso_pi.sh trad"
 - trigger: ";fix"
   replace: "{{out}}"
   force_clipboard: true
@@ -30,4 +65,4 @@ matches:
   - name: out
     type: shell
     params:
-      cmd: "pbpaste | ~/.local/bin/espanso_gpt_fix.sh"
+      cmd: "pbpaste | ~/.local/bin/espanso_pi.sh fix"
