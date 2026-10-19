@@ -1,0 +1,17 @@
+#!/bin/zsh
+# Called from the Claude Code UserPromptSubmit, Stop and SessionEnd hooks and from the tmux
+# client-attached hook. Refreshes ~/.claude/tmux-board/latest.json and ledger.jsonl in the
+# background, at most once every 30 seconds, so the hook returns at once.
+# The hook JSON on stdin is ignored. $TMUX may be unset, board.py uses the default tmux socket.
+# Always exits 0.
+# Usage: cc-board-refresh
+
+zmodload zsh/stat zsh/datetime
+stamp=~/.claude/tmux-board/refresh.stamp
+mkdir -p ${stamp:h}
+# The stamp is touched before the run starts, so hooks firing while a run is in flight are debounced too.
+[[ -e $stamp ]] && (( EPOCHSECONDS - $(zstat +mtime $stamp) < 30 )) && exit 0
+touch $stamp
+
+nohup python3 ~/.claude/skills/tmux-board/board.py --ledger </dev/null >/dev/null 2>&1 &!
+exit 0
