@@ -42,7 +42,7 @@ t = re.sub(r"[^a-z0-9]+", "-", t.lower()).strip("-")
 # The ticket comes from the title, else from the directory (a gitflow worktree carries it).
 ticket = re.search(TICKET, t) or re.search(TICKET, sys.argv[1].lower())
 prefix = ticket.group(1) if ticket else ""
-words, out = [w for w in t.split("-") if w and w != prefix], prefix
+words, out = [w for w in t.replace(prefix, "").split("-") if w], prefix
 for w in words:
     if out and len(out) + 1 + len(w) > MAX: break
     out = f"{out}-{w}" if out else w
