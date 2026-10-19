@@ -1,0 +1,19 @@
+#!/bin/zsh
+# Called from the Claude Code SessionEnd hook (JSON on stdin with session_id and reason).
+# Flags Jira tickets of the ending session that look out of date: appends them to
+# ~/.claude/ticket-followups.tsv and, inside tmux, flashes the first one in the status line.
+# Always exits 0 and never syncs, so closing a pane stays fast.
+# Usage: cc-session-end < hook-json
+
+sid=$(python3 -c 'import json,sys; print(json.load(sys.stdin).get("session_id", ""))' 2>/dev/null)
+[[ -z "$sid" ]] && exit 0
+
+out=$(python3 ~/.claude/skills/sessions/sessions.py followups "$sid" --plain 2>/dev/null)
+[[ -z "$out" || "$out" == "no follow-ups" ]] && exit 0
+
+while IFS= read -r line; do
+  printf '%s\t%s\t%s\n' "$(date +%Y-%m-%dT%H:%M:%S%z)" "$sid" "$line" >> ~/.claude/ticket-followups.tsv
+done <<< "$out"
+
+[[ -n "$TMUX_PANE" ]] && tmux display-message -d 8000 "follow-up: ${out%%$'\n'*}" 2>/dev/null
+exit 0
