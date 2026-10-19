@@ -1,6 +1,6 @@
 [submodule "personal"]
 	path = personal
-	url = ssh://git@github.com/mmngreco/personal
+	url = git@github.com:asdf8601/personal.git
 	branch = main
 [submodule "seedtag"]
 	path = seedtag
