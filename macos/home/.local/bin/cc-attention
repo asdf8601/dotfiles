@@ -7,6 +7,15 @@
 #   cc-attention --plain    # one line per pane
 #   cc-attention --count    # status-right fragment, empty when nothing waits
 #   --client <name>         # the tmux client to move (from a display-popup binding)
+#   --preview <pane_id>     # fzf preview, last lines of the pane, recap line first
+
+if [[ "$1" == --preview ]]; then
+  body=$(tmux capture-pane -p -t "$2" -S -40 2>/dev/null | grep -v '^[[:space:]]*$' | tail -n 40)
+  recap=$(grep -F '※ recap:' <<< "$body" | tail -n 1)
+  [[ -n "$recap" ]] && print -- "$recap\n"
+  print -- "$body"
+  exit 0
+fi
 
 mode=plain; client=""
 while (( $# )); do
@@ -51,7 +60,8 @@ if [[ "$mode" == plain ]]; then
   exit 0
 fi
 
-pick=$(printf '%s\n' "$rows" | fmt | fzf --layout=reverse --delimiter=$'\t' --with-nth=4 --header="red first, then oldest. Enter jumps.") || exit 0
+pick=$(printf '%s\n' "$rows" | fmt | fzf --layout=reverse --delimiter=$'\t' --with-nth=4 --header="red first, then oldest. Enter jumps." \
+  --preview="$0 --preview {3}" --preview-window=down,60%,wrap) || exit 0
 IFS=$'\t' read -r session wid pid _ <<< "$pick"
 if [[ -n "$client" ]]; then
   tmux switch-client -c "$client" -t "$session"
