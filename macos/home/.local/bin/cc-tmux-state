@@ -1,17 +1,49 @@
 #!/bin/zsh
-# Called from Claude Code hooks. Marks the tmux window that holds this Claude
-# session so the status bar shows whether it is working or waiting for you.
-# Usage: cc-tmux-state working|done|attention|clear
+# Called from Claude Code hooks and from tmux hooks. Keeps one state per pane
+# and shows the worst state of the window in the status bar, so a window only
+# asks for attention until you look at it.
+#
+#   cc-tmux-state working|done|attention|clear   # from Claude hooks, pane = $TMUX_PANE
+#   cc-tmux-state seen <pane_id>                 # from tmux hooks when a pane gets focus
+#
+# Pane options: @cc_state (working|done|attention|seen), @cc_since (epoch of the change).
+# Window option: @cc, the icon. attention > done > working > seen or none.
+# A `done` that lands on the pane you are looking at goes straight to `seen`.
+# A `seen` only clears `done`; a permission prompt stays red until the next turn.
 
-[[ -z "$TMUX_PANE" ]] && exit 0
+cmd="$1"
+if [[ "$cmd" == "seen" ]]; then
+  pane="$2"
+else
+  pane="$TMUX_PANE"
+fi
+[[ -z "$pane" ]] && exit 0
 
-case "$1" in
-  working)   icon='#[fg=yellow]◐ ' ;;
-  done)      icon='#[fg=green]● ' ;;
-  attention) icon='#[fg=red]● ' ;;
-  *)         icon='' ;;
+IFS=$'\t' read -r window state active <<< "$(tmux display-message -p -t "$pane" \
+  $'#{window_id}\t#{@cc_state}\t#{?#{&&:#{pane_active},#{&&:#{window_active},#{session_attached}}},1,0}' 2>/dev/null)"
+[[ -z "$window" ]] && exit 0
+
+case "$cmd" in
+  working|attention) new="$cmd" ;;
+  done)  if [[ "$active" == 1 ]]; then new=seen; else new=done; fi ;;
+  seen)  [[ "$state" == "done" ]] || exit 0; new=seen ;;
+  clear) new="" ;;
+  *) exit 0 ;;
 esac
 
-window=$(tmux display-message -p -t "$TMUX_PANE" '#{window_id}' 2>/dev/null) || exit 0
+if [[ -z "$new" ]]; then
+  tmux set-option -pu -t "$pane" @cc_state 2>/dev/null
+  tmux set-option -pu -t "$pane" @cc_since 2>/dev/null
+else
+  tmux set-option -p -t "$pane" @cc_state "$new" 2>/dev/null
+  tmux set-option -p -t "$pane" @cc_since "$(date +%s)" 2>/dev/null
+fi
+
+states=$(tmux list-panes -t "$window" -F '#{@cc_state}' 2>/dev/null)
+if [[ "$states" == *attention* ]]; then icon='#[fg=red]● '
+elif [[ "$states" == *done* ]]; then icon='#[fg=green]● '
+elif [[ "$states" == *working* ]]; then icon='#[fg=yellow]◐ '
+else icon=''
+fi
 tmux set-option -w -t "$window" @cc "$icon" 2>/dev/null
 exit 0

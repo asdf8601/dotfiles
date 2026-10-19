@@ -1,0 +1,62 @@
+#!/bin/zsh
+# Lists the Claude panes that wait for you: permission prompts first, then
+# finished turns you have not looked at yet, oldest first. State comes from the
+# pane options cc-tmux-state keeps.
+#
+#   cc-attention            # fzf picker, Enter jumps to the pane
+#   cc-attention --plain    # one line per pane
+#   cc-attention --count    # status-right fragment, empty when nothing waits
+#   --client <name>         # the tmux client to move (from a display-popup binding)
+
+mode=plain; client=""
+while (( $# )); do
+  case "$1" in
+    --plain) mode=plain ;;
+    --count) mode=count ;;
+    --client) client="$2"; shift ;;
+  esac
+  shift
+done
+[[ -t 1 && "$mode" == plain && "$0" != *--plain* ]] && mode=fzf
+
+now=$(date +%s)
+rows=$(tmux list-panes -a -F $'#{@cc_state}\t#{@cc_since}\t#{session_name}\t#{window_id}\t#{window_index}\t#{pane_id}\t#{pane_index}\t#{window_panes}\t#{window_name}\t#{pane_title}' \
+  | awk -F'\t' '$1=="attention"||$1=="done"' \
+  | sort -t$'\t' -k1,1 -k2,2n)
+
+if [[ "$mode" == count ]]; then
+  red=$(printf '%s\n' "$rows" | awk -F'\t' '$1=="attention"' | grep -c .)
+  green=$(printf '%s\n' "$rows" | awk -F'\t' '$1=="done"' | grep -c .)
+  out=""
+  (( red ))   && out+="#[fg=red]● $red "
+  (( green )) && out+="#[fg=green]● $green "
+  printf '%s' "$out"
+  exit 0
+fi
+
+[[ -z "$rows" ]] && { [[ "$mode" == fzf ]] && echo "nothing waits for you"; exit 0; }
+
+fmt() {
+  while IFS=$'\t' read -r state since session wid widx pid pidx panes name title; do
+    age=$(( now - since ))
+    if (( age < 60 )); then a="${age}s"; elif (( age < 3600 )); then a="$(( age / 60 ))m"; else a="$(( age / 3600 ))h$(( age % 3600 / 60 ))m"; fi
+    [[ "$state" == attention ]] && mark="● wants permission" || mark="● finished"
+    loc="$session:$widx"; (( panes > 1 )) && loc+=".$pidx"
+    printf '%s\t%s\t%s\t%-5s %-14s %-20s %s\n' "$session" "$wid" "$pid" "$a" "$loc" "$name" "$mark  ${title#✳ }"
+  done
+}
+
+if [[ "$mode" == plain ]]; then
+  printf '%s\n' "$rows" | fmt | cut -f4-
+  exit 0
+fi
+
+pick=$(printf '%s\n' "$rows" | fmt | fzf --layout=reverse --delimiter=$'\t' --with-nth=4 --header="red first, then oldest. Enter jumps.") || exit 0
+IFS=$'\t' read -r session wid pid _ <<< "$pick"
+if [[ -n "$client" ]]; then
+  tmux switch-client -c "$client" -t "$session"
+else
+  tmux switch-client -t "$session"
+fi
+tmux select-window -t "$wid"
+tmux select-pane -t "$pid"
