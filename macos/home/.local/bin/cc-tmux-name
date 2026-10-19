@@ -1,0 +1,71 @@
+#!/bin/zsh
+# Called from the Claude Code Stop hook (JSON on stdin with transcript_path).
+# Renames the tmux window that holds this Claude session after the session's
+# title, so the status bar says what each window is about.
+#
+# Rules, in order:
+#   - outside tmux, or a window with several panes: do nothing
+#   - a cc-spawn window (bs-, design-, exec-): keep its name, it is a SendMessage address
+#   - a /rename title (custom-title) always wins
+#   - the auto title (ai-title) only replaces a generic name (zsh, the directory,
+#     the tmux session name) or a name this hook set before (kept in @cc_name)
+#   - a name set by hand or by the tmux-name skill is kept
+# Usage: cc-tmux-name < hook-json
+#        cc-tmux-name --print < hook-json   # print the name, rename nothing
+
+[[ -z "$TMUX_PANE" ]] && exit 0
+
+transcript=$(python3 -c 'import json,sys; print(json.load(sys.stdin).get("transcript_path", ""))' 2>/dev/null)
+[[ -z "$transcript" || ! -r "$transcript" ]] && exit 0
+
+read -r window cur panes session dir <<< "$(tmux display-message -p -t "$TMUX_PANE" \
+  '#{window_id} #{window_name} #{window_panes} #{session_name} #{b:pane_current_path}' 2>/dev/null)"
+[[ -z "$window" ]] && exit 0
+[[ "$1" != "--print" && "$panes" != 1 ]] && exit 0
+[[ "$cur" == (bs|design|exec)-* ]] && exit 0
+
+prev=$(tmux show-option -wqv -t "$window" @cc_name 2>/dev/null)
+
+# Last custom title wins over the last AI title.
+title=$(grep -E '"type":"(custom-title|ai-title)"' "$transcript" | python3 -c '
+import json, sys, re, unicodedata
+custom = ai = ""
+for line in sys.stdin:
+    d = json.loads(line)
+    if d.get("type") == "custom-title": custom = d.get("customTitle") or custom
+    else: ai = d.get("aiTitle") or ai
+t = custom or ai
+t = unicodedata.normalize("NFKD", t).encode("ascii", "ignore").decode()
+t = re.sub(r"[^a-z0-9]+", "-", t.lower()).strip("-")
+words, out = t.split("-"), ""
+for w in words:
+    if out and len(out) + 1 + len(w) > 24: break
+    out = f"{out}-{w}" if out else w
+ticket = re.search(r"\b((?:gc|ml|adx|toe|ln)-\d{2,5})\b", t)
+if ticket and not out.startswith(ticket.group(1)):
+    out = f"{ticket.group(1)}-{out}"[:30].rstrip("-")
+print(("custom" if custom else "ai") + " " + out)
+' 2>/dev/null)
+[[ -z "$title" ]] && exit 0
+kind="${title%% *}"; new="${title#* }"
+[[ -z "$new" ]] && exit 0
+
+if [[ "$1" == "--print" ]]; then
+  echo "$new"
+  exit 0
+fi
+
+generic=0
+[[ "$cur" == "zsh" || "$cur" == "$dir" || "$cur" == "$session" || "$cur" == "claude" ]] && generic=1
+if [[ "$kind" == "ai" ]]; then
+  if [[ -n "$prev" ]]; then
+    [[ "$cur" != "$prev" ]] && exit 0
+  else
+    (( generic )) || exit 0
+  fi
+fi
+[[ "$new" == "$cur" ]] && exit 0
+
+tmux rename-window -t "$window" "$new" 2>/dev/null
+tmux set-option -w -t "$window" @cc_name "$new" 2>/dev/null
+exit 0
