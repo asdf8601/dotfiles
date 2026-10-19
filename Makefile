@@ -21,9 +21,25 @@ ubuntu: personal  ## Install ubuntu settings
 SEEDTAG_SKILLS_SRC := $(CURDIR)/seedtag/.config/opencode/skills
 OPENCODE_SKILLS    := $(HOME)/.config/opencode/skills
 
+PERSONAL_SKILLS_SRC := $(CURDIR)/personal/.claude/skills
+SKILL_TARGETS       := $(HOME)/.config/opencode/skills $(HOME)/.pi/agent/skills $(HOME)/.codex/skills $(HOME)/.gemini/antigravity-cli/skills
+
 .PHONY: personal
-personal: seedtag  ## Install personal settings (includes seedtag skills)
+personal: seedtag skills  ## Install personal settings (includes seedtag and personal skills)
 	stow --ignore ".git" -d personal/ -t $(HOME)/ .
+
+.PHONY: skills
+skills:  ## Symlink personal/.claude/skills into the other agents (stow covers ~/.claude)
+	@for target in $(SKILL_TARGETS); do \
+		mkdir -p $$target; \
+		for skill in $(PERSONAL_SKILLS_SRC)/*/; do \
+			name=$$(basename $$skill); \
+			if [ ! -e $$target/$$name ]; then \
+				ln -s $${skill%/} $$target/$$name; \
+				echo "  LINK: $$target/$$name -> $${skill%/}"; \
+			fi; \
+		done; \
+	done
 
 .PHONY: seedtag
 seedtag:  ## Symlink seedtag opencode skills into ~/.config/opencode/skills/
