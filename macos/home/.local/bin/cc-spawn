@@ -1,0 +1,53 @@
+#!/bin/zsh
+# Open a named Claude session in a new tmux window (or a pane with -p).
+#
+#   cc-spawn [-p] [-w <branch>] <name> [dir]
+#
+# -w runs the session in <repo>/.worktree/<branch with / as ->, creating the
+# worktree from main when it is missing. Prints the new session uuid.
+#
+# The pane runs only `ccr <uuid> --name <name>`: tmux-resurrect replays that
+# argv on restore, so a task prompt there would be re-sent every time. Hand the
+# task over with SendMessage instead.
+
+set -euo pipefail
+
+usage() { print -u2 "usage: cc-spawn [-p] [-w <branch>] <name> [dir]"; exit 2 }
+
+pane=0 branch=""
+while getopts "pw:" opt; do
+  case $opt in
+    p) pane=1 ;;
+    w) branch=$OPTARG ;;
+    *) usage ;;
+  esac
+done
+shift $((OPTIND - 1))
+(( $# >= 1 )) || usage
+name=$1
+dir=${2:-$PWD}
+
+[[ -n ${TMUX:-} ]] || { print -u2 "cc-spawn: not inside tmux"; exit 1 }
+[[ $name =~ '^[A-Za-z0-9._-]+$' ]] || { print -u2 "cc-spawn: name must be [A-Za-z0-9._-]"; exit 2 }
+
+if [[ -n $branch ]]; then
+  # The common git dir's parent is the main checkout, even when dir is itself a worktree.
+  common=$(git -C "$dir" rev-parse --path-format=absolute --git-common-dir)
+  root=${common:h}
+  dir=$root/.worktree/${branch//\//-}
+  if [[ ! -d $dir ]]; then
+    git -C "$root" fetch -q origin main
+    git -C "$root" worktree add -q --no-track -b "$branch" "$dir" origin/main >&2
+  fi
+fi
+
+# Type ccr into a fresh shell instead of making it the pane command: resurrect
+# saves the shell's child, so the pane must look like one where cc was typed.
+id=$(uuidgen | tr '[:upper:]' '[:lower:]')
+if (( pane )); then
+  target=$(tmux split-window -h -d -P -F '#{pane_id}' -t "${TMUX_PANE:-}" -c "$dir")
+else
+  target=$(tmux new-window -d -P -F '#{pane_id}' -n "$name" -c "$dir")
+fi
+tmux send-keys -t "$target" "ccr $id --name $name" Enter
+print "$id"
