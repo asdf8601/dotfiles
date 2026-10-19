@@ -18,8 +18,8 @@
 transcript=$(python3 -c 'import json,sys; print(json.load(sys.stdin).get("transcript_path", ""))' 2>/dev/null)
 [[ -z "$transcript" || ! -r "$transcript" ]] && exit 0
 
-read -r window cur panes session dir <<< "$(tmux display-message -p -t "$TMUX_PANE" \
-  '#{window_id} #{window_name} #{window_panes} #{session_name} #{b:pane_current_path}' 2>/dev/null)"
+IFS=$'\t' read -r window cur panes session dir <<< "$(tmux display-message -p -t "$TMUX_PANE" \
+  $'#{window_id}\t#{window_name}\t#{window_panes}\t#{session_name}\t#{b:pane_current_path}' 2>/dev/null)"
 [[ -z "$window" ]] && exit 0
 [[ "$1" != "--print" && "$panes" != 1 ]] && exit 0
 [[ "$cur" == (bs|design|exec)-* ]] && exit 0
@@ -29,6 +29,8 @@ prev=$(tmux show-option -wqv -t "$window" @cc_name 2>/dev/null)
 # Last custom title wins over the last AI title.
 title=$(grep -E '"type":"(custom-title|ai-title)"' "$transcript" | python3 -c '
 import json, sys, re, unicodedata
+TICKET = r"\b((?:gc|ml|adx|toe|ln)-\d{2,5})\b"
+MAX = 30
 custom = ai = ""
 for line in sys.stdin:
     d = json.loads(line)
@@ -37,15 +39,15 @@ for line in sys.stdin:
 t = custom or ai
 t = unicodedata.normalize("NFKD", t).encode("ascii", "ignore").decode()
 t = re.sub(r"[^a-z0-9]+", "-", t.lower()).strip("-")
-words, out = t.split("-"), ""
+# The ticket comes from the title, else from the directory (a gitflow worktree carries it).
+ticket = re.search(TICKET, t) or re.search(TICKET, sys.argv[1].lower())
+prefix = ticket.group(1) if ticket else ""
+words, out = [w for w in t.split("-") if w and w != prefix], prefix
 for w in words:
-    if out and len(out) + 1 + len(w) > 24: break
+    if out and len(out) + 1 + len(w) > MAX: break
     out = f"{out}-{w}" if out else w
-ticket = re.search(r"\b((?:gc|ml|adx|toe|ln)-\d{2,5})\b", t)
-if ticket and not out.startswith(ticket.group(1)):
-    out = f"{ticket.group(1)}-{out}"[:30].rstrip("-")
 print(("custom" if custom else "ai") + " " + out)
-' 2>/dev/null)
+' "$dir" 2>/dev/null)
 [[ -z "$title" ]] && exit 0
 kind="${title%% *}"; new="${title#* }"
 [[ -z "$new" ]] && exit 0
