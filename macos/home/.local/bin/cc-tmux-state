@@ -4,12 +4,14 @@
 # asks for attention until you look at it.
 #
 #   cc-tmux-state working|done|attention|clear   # from Claude hooks, pane = $TMUX_PANE
+#   cc-tmux-state resume                         # from PostToolUse, after a tool runs
 #   cc-tmux-state seen <pane_id>                 # from tmux hooks when a pane gets focus
 #
 # Pane options: @cc_state (working|done|attention|seen), @cc_since (epoch of the change).
 # Window option: @cc, the icon. attention > done > working > seen or none.
 # A `done` that lands on the pane you are looking at goes straight to `seen`.
-# A `seen` only clears `done`; a permission prompt stays red until the next turn.
+# A `seen` only clears `done`; a permission prompt stays red until it is answered.
+# A `resume` only clears `attention`: an approved tool ran, so nothing is waiting.
 
 cmd="$1"
 if [[ "$cmd" == "seen" ]]; then
@@ -27,6 +29,7 @@ case "$cmd" in
   working|attention) new="$cmd" ;;
   done)  if [[ "$active" == 1 ]]; then new=seen; else new=done; fi ;;
   seen)  [[ "$state" == "done" ]] || exit 0; new=seen ;;
+  resume) [[ "$state" == "attention" ]] || exit 0; new=working ;;
   clear) new="" ;;
   *) exit 0 ;;
 esac
