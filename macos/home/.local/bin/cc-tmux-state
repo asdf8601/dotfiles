@@ -6,14 +6,20 @@
 #   cc-tmux-state working|done|attention|clear   # from Claude hooks, pane = $TMUX_PANE
 #   cc-tmux-state resume                         # from PostToolUse, after a tool runs
 #   cc-tmux-state seen <pane_id>                 # from tmux hooks when a pane gets focus
+#   cc-tmux-state recount                        # from tmux hooks when a pane closes
 #
 # Pane options: @cc_state (working|done|attention|seen), @cc_since (epoch of the change).
 # Window option: @cc, the icon. attention > done > working > seen or none.
+# Global option: @cc_count, the status-right fragment from `cc-attention --count`.
+# done and attention also fire the user events @cc-done and @cc-attention for the
+# pane (tmux 3.8), so a script can block on `tmux wait-for -v -E @cc-done`.
 # A `done` that lands on the pane you are looking at goes straight to `seen`.
 # A `seen` only clears `done`; a permission prompt stays red until it is answered.
 # A `resume` only clears `attention`: an approved tool ran, so nothing is waiting.
 
 cmd="$1"
+recount() { tmux set-option -g @cc_count "$(${0:h}/cc-attention --count)" 2>/dev/null }
+[[ "$cmd" == "recount" ]] && { recount; exit 0 }
 if [[ "$cmd" == "seen" ]]; then
   pane="$2"
 else
@@ -49,4 +55,6 @@ elif [[ "$states" == *working* ]]; then icon='#[fg=yellow]◐ '
 else icon=''
 fi
 tmux set-option -w -t "$window" @cc "$icon" 2>/dev/null
+recount
+[[ "$cmd" == (done|attention) ]] && tmux set-hook -E -t "$pane" "@cc-$cmd" 2>/dev/null
 exit 0
