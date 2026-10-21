@@ -816,3 +816,11 @@ export PATH="/Users/mgreco/.kimi-code/bin:$PATH"
 # Qwen Code PATH block begin
 export PATH='/Users/mgreco/.local/bin':$PATH
 # Qwen Code PATH block end
+
+# pnpm
+export PNPM_HOME='/Users/mgreco/Library/pnpm'
+case ":$PATH:" in
+  *":$PNPM_HOME/bin:"*) ;;
+  *) export PATH="$PNPM_HOME/bin:$PATH" ;;
+esac
+# pnpm end
