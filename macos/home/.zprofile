@@ -6,9 +6,6 @@ export PATH="$PATH:/opt/homebrew/bin:$HOME/.pixi/bin:$HOMEBREW_PREFIX/opt/gnu-se
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
 # source ~/.common.sh
-# >>> coursier install directory >>>
-export PATH="$PATH:/Users/mgreco/Library/Application Support/Coursier/bin"
-# <<< coursier install directory <<<
 export TAKT_TARGET_HOURS=7:30
 export TAKT_FILE="/Users/mgreco/.takt-log/seedtag.csv"
 export TAKT_EDITOR="nvim"
