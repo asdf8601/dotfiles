@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 # Write a TL;DR, topics and action items for a meet-transcribe transcript.
-# The summary lands next to the transcript as <name>.md.
+# The summary lands next to the transcript as <name>_summary.md.
 #
 # Usage: meet-summary [transcript]    defaults to the newest one
 
 dir="$HOME/Documents/meet-transcripts"
 transcript=${1:-$(ls -t "$dir"/*.txt 2>/dev/null | head -1)}
 [[ -s $transcript ]] || { echo "no transcript to summarize"; exit 1; }
-summary="${transcript%.txt}.md"
+summary="${transcript%.txt}_summary.md"
 
 echo "summarizing $transcript"
 claude -p "The input is a meeting transcript. Lines read '[HH:MM:SS] who: text', where 'me' is the user and 'them' is everyone else. \
