@@ -1,0 +1,9 @@
+[global]
+# don't print the +VAR/-VAR diff on every cd
+hide_env_diff = true
+warn_timeout = "10s"
+
+# .envrc files under the company org load without `direnv allow`, so new
+# worktrees work at once; personal repos still need approval
+[whitelist]
+prefix = ["/home/mgreco/github.com/seedtag"]

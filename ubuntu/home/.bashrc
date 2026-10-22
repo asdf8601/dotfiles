@@ -21,7 +21,7 @@ unset __conda_setup
 # <<< conda initialize <<<
 
 # always after any prompt changes
-[ -f $HOME/.autoenv/activate.sh ] && source $HOME/.autoenv/activate.sh
+command -v direnv &>/dev/null && eval "$(direnv hook bash)"
 
 # >>> mamba initialize >>>
 # !! Contents within this block are managed by 'mamba init' !!

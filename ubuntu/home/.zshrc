@@ -5,6 +5,8 @@ if [ -n "${ZSH_DEBUGRC+1}" ]; then
     zmodload zsh/zprof
 fi
 
+# keep PATH entries unique across nested shells
+typeset -U path PATH
 
 # opencode
 export PATH=/home/mgreco/.opencode/bin:$PATH
@@ -19,11 +21,7 @@ export DOTFILES_SRC="$HOME/.dotfiles"
 export DOTFILES_HOME="$HOME/.dotfiles"
 
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
-export SSH_KEY_PATH="~/.ssh/rsa_id"
 export EDITOR="nvim"
-
-export AUTOENV_ENV_FILENAME=".autoenv"
-export AUTOENV_ASSUME_YES=1
 
 export GEM_HOME="$HOME/.gem"
 export DEFAULT_IMG=mmngreco/dev:latest
@@ -37,7 +35,6 @@ if [[ "$OSTYPE" != "darwin"* ]]; then
     export GDK_BACKEND=x11
     export GTK_THEME=Materia:dark:compact
 fi
-export AWS_CONFIG_FILE=$HOME/.aws/credentials
 # }}}
 
 
@@ -536,12 +533,10 @@ alias serve="browser-sync start --server --files . --no-notify --port 9000"
 # python
 alias ipy=ipython
 alias py-server='python -s -m http.server'
-# alias asdf='setxkbmap -rules evdev -model evdev -layout us -variant dvorak'
 alias kb-us='setxkbmap -rules evdev -model evdev -layout us -variant altgr-intl'
 alias kb-usnocaps='setxkbmap -rules evdev -model evdev -layout us -variant altgr-intl -option ctrl:nocaps'
 alias pipenv='pipx run pipenv'
 
-# alias myip="ifconfig | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p'"
 
 alias mic_monitor='gst-launch-1.0 pulsesrc ! pulsesink'
 
@@ -610,6 +605,52 @@ addToMyGitProjects $HOME/gitlab
 # }}}
 
 # source {{{
+# API tokens live in one libsecret item (service "dotfiles", account "env")
+# as base64 NAME=value lines. Only the first shell pays the lookup; shells that
+# inherit DOTFILES_SECRETS skip it.
+if command -v secret-tool &>/dev/null; then
+    if [[ -z ${DOTFILES_SECRETS:-} ]]; then
+        () {
+            local blob line
+            blob=$(secret-tool lookup service dotfiles account env 2>/dev/null | base64 -d 2>/dev/null)
+            [[ -n $blob ]] || return
+            for line in ${(f)blob}; do
+                [[ $line == [A-Za-z_]*=* ]] && export "$line"
+            done
+            export DOTFILES_SECRETS=1
+        }
+    fi
+
+    secrets-edit() {
+        # edit the libsecret secrets in $EDITOR; shells already open keep the old values
+        local tmp
+        tmp=$(mktemp) || return
+        secret-tool lookup service dotfiles account env | base64 -d > $tmp
+        ${EDITOR:-nvim} $tmp
+        base64 < $tmp | tr -d '\n' | secret-tool store --label='dotfiles shell secrets' service dotfiles account env
+        rm -f $tmp
+    }
+
+    new-secret-set() {
+        # add or replace one libsecret secret and export it in this shell; the value
+        # is read without echo and never passed as an argument to a command
+        local name=$1 value blob
+        local -a lines
+        if [[ ! $name =~ '^[A-Za-z_][A-Za-z0-9_]*$' ]]; then
+            print -u2 "usage: new-secret-set NAME"
+            return 2
+        fi
+        read -rs "value?$name: "
+        print
+        [[ -n $value ]] || return 1
+        blob=$(secret-tool lookup service dotfiles account env 2>/dev/null | base64 -d 2>/dev/null)
+        lines=(${(f)blob})
+        lines=(${lines:#$name=*} "$name=$value")
+        print -r -- ${(F)lines} | base64 | tr -d '\n' | secret-tool store --label='dotfiles shell secrets' service dotfiles account env || return
+        export "$name=$value"
+    }
+fi
+
 sourcePattern $DOTFILES "*.secret"
 sourcePattern $DOTFILES "*.hide"
 sourcePattern $DOTFILES_SRC/personal "*.hide"
@@ -642,7 +683,7 @@ source ~/.prompt.zsh
 
 
 # always after any prompt changes
-[ -f $HOME/.autoenv/activate.sh ] && source $HOME/.autoenv/activate.sh
+command -v direnv &>/dev/null && eval "$(direnv hook zsh)"
 [ -f $HOME/.fzf.zsh ] && source $HOME/.fzf.zsh
 
 # ----------------------------------------------------------------------------
@@ -743,11 +784,9 @@ alias zperf='time ZSH_DEBUGRC=1 zsh -i -c exit'
 alias restish="noglob restish"
 alias cd.='cd $(find . -maxdepth 4 -type d | fzf --height 10%)'
 
-alias geminipro='llm -m github_copilot/gemini-2.5-pro -o temperature 0'
-alias geminiflash='llm -m github_copilot/gemini-2.0-flash-001 -o temperature 0'
-alias gpt5='llm -m github_copilot/gpt-5 -o temperature 0'
-alias sonnet='llm -m github_copilot/claude-4-sonnet -o temperature 0'
-alias sonnett='llm -m github_copilot/claude-3.7-sonnet-thought -o temperature 0'
+alias geminiflash='llm -m github_copilot/gemini-3.8-flash -o temperature 0'
+alias gpt6='llm -m github_copilot/gpt-6.1-sol -o temperature 0'
+alias sonnet='llm -m github_copilot/claude-sonnet-5.5 -o temperature 0'
 
 
 function ai() {
@@ -755,7 +794,7 @@ function ai() {
 import argparse, os, shlex, sys
 
 parser = argparse.ArgumentParser(prog="ai")
-parser.add_argument("-m","--model", default="github_copilot/gemini-2.5-pro")
+parser.add_argument("-m","--model", default="github_copilot/claude-sonnet-5.5")
 parser.add_argument("-o","--option", nargs=2, action="append", default=[], metavar=("KEY","VALUE"))
 parser.add_argument("-q","--query", required=True)
 parser.add_argument("--dry-run", action="store_true")
