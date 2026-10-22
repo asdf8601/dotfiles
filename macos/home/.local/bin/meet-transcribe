@@ -4,6 +4,7 @@
 # goes to a local whisper-server and the text lands in ~/Documents/meet-transcripts.
 # Use headphones, or the mic also picks up the remote side. The AirPods mic is
 # avoided on purpose, since opening it drops AirPods playback to mono 24 kHz.
+# On ctrl-c, meet-summary writes a TL;DR, topics and actions next to the transcript.
 #
 # Usage: meet-transcribe [lang]    lang defaults to auto (es, en, ...)
 set -e
@@ -24,7 +25,12 @@ command -v whisper-server >/dev/null || { echo "run: brew install whisper.cpp"; 
 # Start it before joining the call, since switching outputs mid-call glitches Meet audio.
 pgrep -x "Background Music" >/dev/null || { open -a "Background Music"; sleep 2; }
 
-trap 'kill $(jobs -p) 2>/dev/null; rm -rf "$chunks"' EXIT
+function finish() {
+    kill $(jobs -p) 2>/dev/null
+    rm -rf "$chunks"
+    [[ -s $out ]] && meet-summary "$out"
+}
+trap finish EXIT
 
 whisper-server -m "$model" --vad -vm "$vad_model" -l "$lang" --port $port >/dev/null 2>&1 &
 until curl -s -o /dev/null localhost:$port; do sleep 0.5; done

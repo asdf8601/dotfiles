@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# Write a TL;DR, topics and action items for a meet-transcribe transcript.
+# The summary lands next to the transcript as <name>.md.
+#
+# Usage: meet-summary [transcript]    defaults to the newest one
+
+dir="$HOME/Documents/meet-transcripts"
+transcript=${1:-$(ls -t "$dir"/*.txt 2>/dev/null | head -1)}
+[[ -s $transcript ]] || { echo "no transcript to summarize"; exit 1; }
+summary="${transcript%.txt}.md"
+
+echo "summarizing $transcript"
+claude -p "The input is a meeting transcript. Lines read '[HH:MM:SS] who: text', where 'me' is the user and 'them' is everyone else. \
+Lines are 10 s chunks, so sentences can be split across lines, and short filler on a quiet side ('Thank you.') can be speech-to-text hallucinations. \
+Write a Markdown summary in the language most of the meeting was held in, with exactly these sections: \
+'# <date and time of the first line>', \
+'## TL;DR' (2 to 4 sentences), \
+'## Topics' (one bullet per topic with what was said or decided), \
+'## Actions' (checkbox bullets '- [ ] owner: action (deadline)'; owner is 'me', a name said in the call, or 'them'; omit the deadline if none was said; write 'None' if there are none). \
+Use only what the transcript says. Output the Markdown only." < "$transcript" > "$summary"
+
+cat "$summary"
