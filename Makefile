@@ -53,8 +53,11 @@ skills:  ## Symlink personal/.claude/skills into the other agents (stow covers ~
 		done; \
 	done
 
+ESPANSO_MATCH := $(CURDIR)/$(if $(filter Darwin,$(OS)),macos,ubuntu)/home/.config/espanso/match
+
 .PHONY: seedtag
-seedtag:  ## Symlink seedtag opencode skills into ~/.config/opencode/skills/
+seedtag:  ## Symlink seedtag opencode skills and espanso snippets from the seedtag submodule
+	@ln -sfn $(CURDIR)/seedtag/.config/espanso/match/seedtag.yml $(ESPANSO_MATCH)/seedtag.yml
 	@mkdir -p $(OPENCODE_SKILLS)
 	@for skill in $(SEEDTAG_SKILLS_SRC)/*/; do \
 		name=$$(basename $$skill); \

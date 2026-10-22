@@ -185,3 +185,6 @@ poetry.toml
 .ruff_cache/
 
 # End of https://www.toptal.com/developers/gitignore/api/python
+
+# linked from the private seedtag submodule by `make seedtag`
+*/home/.config/espanso/match/seedtag.yml
