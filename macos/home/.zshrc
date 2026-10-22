@@ -226,9 +226,6 @@ alias serve="browser-sync start --server --files . --no-notify --port 9000"
 # python
 alias ipy=ipython
 alias py-server='python -s -m http.server'
-# alias asdf='setxkbmap -rules evdev -model evdev -layout us -variant dvorak'
-alias kb-us='setxkbmap -rules evdev -model evdev -layout us -variant altgr-intl'
-alias kb-usnocaps='setxkbmap -rules evdev -model evdev -layout us -variant altgr-intl -option ctrl:nocaps'
 
 # alias myip="ifconfig | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p'"
 # alias mic_monitor='gst-launch-1.0 pulsesrc ! pulsesink'
@@ -383,34 +380,6 @@ addToPathFront(){
 }
 
 
-recordingScreen() {
-    tmux new-session -s recording -d rec_screen
-    clear
-}
-
-recordingStop() {
-    tmux send-keys -t recording:1 C-c
-    nautilus $HOME/Videos &
-    clear
-}
-
-
-set_rand_wallpaper(){
-    find ~/github.com/asdf8601/wallpapers \
-        -type f \
-        -not -name "README.md" \
-        -not -path "*/.git/*" \
-        | shuf -n1\
-        | xargs -L1 -I IMG hsetroot -fill IMG
-}
-
-
-
-pip-lastest() {
-    pip install $1==kk |& grep -oP '.*\b\K\d+\.\d+\.\d+\b'
-}
-
-
 ipytdd ()  {
     ipython
     echo "Restarting ipython, press a key to abort."
@@ -425,17 +394,6 @@ ipytdd ()  {
 
 # =============================================================================
 # Docker {{
-
-dfix() {
-    # see https://serverfault.com/a/642984/573706
-    # sudo apt-get install bridge-utils
-    sudo pkill docker
-    sudo iptables -t nat -F
-    sudo ifconfig docker0 down
-    sudo brctl delbr docker0
-    sudo service docker restart
-}
-
 
 drun() {
 
@@ -493,17 +451,6 @@ ddev() {
             --tty \
             "$IMAGE_NAME"
     fi
-
-}
-
-
-dclean() {
-    docker system prune -a -f
-    sudo systemctl stop docker
-    sudo systemctl stop docker.socket
-    sudo rm -rf /var/lib/docker
-    sudo systemctl start docker.socket
-    sudo systemctl start docker
 
 }
 # }}
