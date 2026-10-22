@@ -15,8 +15,16 @@ hooks:  ## Use the repo's git hooks (gitleaks pre-commit)
 	git config core.hooksPath .githooks
 
 .PHONY: macos
-macos: hooks personal  ## Install macos settings
+macos: hooks personal launchd  ## Install macos settings
 	stow -d macos/home/ -t $(HOME)/ .
+
+LAUNCHD_PLIST := com.asdf8601.dotfiles-maintenance.plist
+
+.PHONY: launchd
+launchd:  ## Install the monthly maintenance launchd job (copied, launchd ignores symlinked plists)
+	cp macos/launchd/$(LAUNCHD_PLIST) $(HOME)/Library/LaunchAgents/
+	launchctl bootout gui/$$(id -u)/$(basename $(LAUNCHD_PLIST)) 2>/dev/null || true
+	launchctl bootstrap gui/$$(id -u) $(HOME)/Library/LaunchAgents/$(LAUNCHD_PLIST)
 
 .PHONY: ubuntu
 ubuntu: hooks personal  ## Install ubuntu settings

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.asdf8601.dotfiles-maintenance</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/Users/mgreco/.local/bin/dotfiles-maintenance</string>
+    </array>
+    <!-- 1st of each month at 10:00; if the Mac is asleep it runs on wake -->
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Day</key>
+        <integer>1</integer>
+        <key>Hour</key>
+        <integer>10</integer>
+        <key>Minute</key>
+        <integer>0</integer>
+    </dict>
+    <key>StandardOutPath</key>
+    <string>/Users/mgreco/Library/Logs/dotfiles-maintenance.log</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/mgreco/Library/Logs/dotfiles-maintenance.log</string>
+    <key>ProcessType</key>
+    <string>Background</string>
+    <key>LowPriorityIO</key>
+    <true/>
+</dict>
+</plist>

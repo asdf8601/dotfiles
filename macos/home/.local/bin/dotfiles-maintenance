@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+# Monthly upkeep for the macOS setup. launchd runs it on the 1st of each month
+# (macos/launchd/com.asdf8601.dotfiles-maintenance.plist); the log goes to
+# ~/Library/Logs/dotfiles-maintenance.log.
+set -u
+
+export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:/nix/var/nix/profiles/default/bin:$HOME/.nix-profile/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+
+failed=()
+
+function step() {
+    local name=$1
+    shift
+    echo "== $(date '+%F %T') $name"
+    "$@" || failed+=("$name")
+}
+
+step "nix store gc" nix store gc
+step "nix profile upgrade" nix profile upgrade --all
+step "brew update" brew update
+# casks can prompt for a password, so only formulae upgrade unattended
+step "brew upgrade" brew upgrade --formula
+step "brew cleanup" brew cleanup
+step "gitleaks" gitleaks git --redact --no-banner "$HOME/.dotfiles"
+
+dirty=$(git -C "$HOME/.dotfiles" status --porcelain | wc -l | tr -d ' ')
+casks=$(brew outdated --cask --quiet | wc -l | tr -d ' ')
+
+if (( ${#failed[@]} )); then
+    msg="Failed: $(IFS=,; echo "${failed[*]}")."
+else
+    msg="All steps passed."
+fi
+(( dirty )) && msg+=" ~/.dotfiles has $dirty uncommitted files."
+(( casks )) && msg+=" $casks casks to upgrade by hand."
+echo "== $(date '+%F %T') $msg"
+
+noti --title "dotfiles maintenance" --message "$msg"
