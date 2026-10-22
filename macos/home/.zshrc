@@ -549,9 +549,7 @@ if [ -n "${ZSH_DEBUGRC+1}" ]; then
 fi
 
 
-export AUTOENV_ENV_FILENAME=".autoenv"
-export AUTOENV_ASSUME_YES=1
-source ~/.autoenv/activate.sh
+eval "$(direnv hook zsh)"
 source ~/.fzf.zsh
 
 # source $(brew --prefix)/opt/zsh-vi-mode/share/zsh-vi-mode/zsh-vi-mode.plugin.zsh

@@ -1,0 +1,4 @@
+# nix-direnv caches `use flake` and keeps GC roots, so dev shells survive
+# nix-collect-garbage; plain direnv falls back to its uncached use_flake
+nix_direnv=$HOME/.nix-profile/share/nix-direnv/direnvrc
+[[ -f $nix_direnv ]] && source "$nix_direnv"

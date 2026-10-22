@@ -10,7 +10,7 @@ source ~/.prompt.sh
 
 
 # always after any prompt changes
-[ -f $HOME/.autoenv/activate.sh ] && source $HOME/.autoenv/activate.sh
+command -v direnv &>/dev/null && eval "$(direnv hook bash)"
 
 # Prompt
 eval "$(starship init bash)"
