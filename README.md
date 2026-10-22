@@ -11,7 +11,7 @@ sudo apt install stow
 ## Installation
 
 ```bash
-git clone --recurse-submodules ssh://git@gitlab.com/mmngreco/dotfiles ~/.dotfiles
+git clone --recurse-submodules git@github.com:asdf8601/dotfiles.git ~/.dotfiles
 ```
 
 
