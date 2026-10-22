@@ -6,6 +6,9 @@ if [ -n "${ZSH_DEBUGRC+1}" ]; then
     zmodload zsh/zprof
 fi
 
+# keep PATH entries unique across nested shells
+typeset -U path PATH
+
 export MYGITPROJECTS="$HOME/github.com:$HOME/gitlab.com"
 export PKG_CONFIG_PATH="/opt/homebrew/opt/openblas/lib/pkgconfig"
 #
@@ -240,9 +243,8 @@ alias kb-usnocaps='setxkbmap -rules evdev -model evdev -layout us -variant altgr
 alias dotcmd='mxm'
 # alias cd.='. mxm cd'
 
-alias snip='pushd_edit_pop ~/github/asdf8601/snippets'
-alias scio='pushd_edit_pop ~/github/asdf8601/scio'
-alias nvim.='nvim .'
+alias snip='pushd_edit_pop ~/github.com/asdf8601/snippets'
+alias scio='pushd_edit_pop ~/github.com/asdf8601/scio'
 alias nvim.='nvim .'
 alias nivm.='nvim .'
 
@@ -346,17 +348,6 @@ pyvenv () {
 
 
 # functions {{{
-
-git-br-clean() {
-    git fetch -p origin
-    git branch -vv | grep 'origin/.*: gone]' | awk '{print $1}' | xargs git branch -d
-}
-
-gpt-trad-md() {
-    file=/tmp/gpt4-translate.md
-    sgpt --model gpt-4-1106-preview --chat blog "translate to english and fix grammar from this markdown: \n\n $(cat $1)" | tee $file
-    echo "File: $file"
-}
 
 kx() {
     export KUBECONFIG=$(ls ~/.kube/config* | fzf --height 10 --layout reverse)

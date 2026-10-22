@@ -2,8 +2,8 @@
 # Kiro CLI pre block. Keep at the top of this file.
 [[ -f "${HOME}/Library/Application Support/kiro-cli/shell/zprofile.pre.zsh" ]] && builtin source "${HOME}/Library/Application Support/kiro-cli/shell/zprofile.pre.zsh"
 
-export PATH="$PATH:/opt/homebrew/bin:$HOME/.pixi/bin:$HOMEBREW_PREFIX/opt/gnu-sed/libexec/gnubin:/opt/nvim/bin"
 eval "$(/opt/homebrew/bin/brew shellenv)"
+export PATH="$PATH:/opt/nvim/bin"
 
 # source ~/.common.sh
 export TAKT_TARGET_HOURS=7:30
