@@ -36,6 +36,7 @@ ffmpeg -loglevel error \
     -map 1:a -ac 1 -ar 16000 -f segment -segment_time 10 "$chunks/me-%05d.wav" &
 
 mkdir -p "$(dirname "$out")"
+touch "$out"
 echo "transcript: $out (ctrl-c to stop)"
 
 while sleep 1; do
