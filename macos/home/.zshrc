@@ -562,13 +562,13 @@ secrets-edit() {
     rm -f $tmp
 }
 
-secrets-set() {
+new-secret-set() {
     # add or replace one keychain secret and export it in this shell; the value
     # is read without echo and never passed as an argument to a command
     local name=$1 value blob
     local -a lines
     if [[ ! $name =~ '^[A-Za-z_][A-Za-z0-9_]*$' ]]; then
-        print -u2 "usage: secrets-set NAME"
+        print -u2 "usage: new-secret-set NAME"
         return 2
     fi
     read -rs "value?$name: "
