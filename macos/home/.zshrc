@@ -641,6 +641,16 @@ export GOTOOLCHAIN=auto
 export GOTMPDIR=$HOME/.cache/go-tmp
 [[ -d $GOTMPDIR ]] || mkdir -p $GOTMPDIR
 
+# completion: skip the compaudit security check except once a day
+autoload -Uz compinit
+_zcompdump_stale=(${ZDOTDIR:-$HOME}/.zcompdump(N.mh+24))
+if (( $#_zcompdump_stale )); then
+    compinit && touch ${ZDOTDIR:-$HOME}/.zcompdump
+else
+    compinit -C
+fi
+unset _zcompdump_stale
+
 # bun completions
 [ -s "/Users/mgreco/.oh-my-zsh/completions/_bun" ] && source "/Users/mgreco/.oh-my-zsh/completions/_bun"
 
@@ -650,13 +660,16 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 
 
 
-# Generated for envman. Do not edit.
-[ -s "$HOME/.config/envman/load.sh" ] && source "$HOME/.config/envman/load.sh"
 export PATH=$PATH:$HOME/.local/opt/go/bin
 
-# export DOCKER_HOST=unix:///Users/mgreco/.local/share/containers/podman/machine/qemu/podman.sock
-# export DOCKER_HOST=unix:///run/podman/podman.sock
-export DOCKER_HOST="unix://$(podman machine inspect --format '{{.ConnectionInfo.PodmanSocket.Path}}')"
+# podman puts its API socket under the TMPDIR the machine started with, so
+# read the path from a cache and refresh it in the background
+_podman_host_cache=$HOME/.cache/podman-docker-host
+[[ -s $_podman_host_cache ]] && export DOCKER_HOST=$(<$_podman_host_cache)
+(
+    sock=$(podman machine inspect --format '{{.ConnectionInfo.PodmanSocket.Path}}' 2>/dev/null) \
+        && [[ -n $sock ]] && print -r -- "unix://$sock" >| $_podman_host_cache
+) &!
 
 export PATH=$PATH:$HOME/github.com/seedtag/adx-ohmyagent
 # export UV_EXCLUDE_NEWER='30 days'
