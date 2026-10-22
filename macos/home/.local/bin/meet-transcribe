@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+# Live transcript of a call, fully local. The remote side is recorded from the
+# Background Music device and your side from the default mic. Every 10 s chunk
+# goes to a local whisper-server and the text lands in ~/Documents/meet-transcripts.
+# Use headphones, or the mic also picks up the remote side.
+#
+# Usage: meet-transcribe [lang]    lang defaults to auto (es, en, ...)
+set -e
+
+lang=${1:-auto}
+models="$HOME/.local/share/whisper"
+model="$models/ggml-large-v3-turbo-q5_0.bin"
+vad_model="$models/ggml-silero-v5.1.2.bin"
+port=8178
+chunks=$(mktemp -d)
+out="$HOME/Documents/meet-transcripts/$(date +%Y-%m-%d_%H%M).txt"
+
+command -v whisper-server >/dev/null || { echo "run: brew install whisper.cpp"; exit 1; }
+[[ -f "$model" ]] || curl -fL --create-dirs -o "$model" https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-large-v3-turbo-q5_0.bin
+[[ -f "$vad_model" ]] || curl -fL -o "$vad_model" https://huggingface.co/ggml-org/whisper-vad/resolve/main/ggml-silero-v5.1.2.bin
+
+# Background Music must be the system output, or the remote side records silence.
+# Start it before joining the call, since switching outputs mid-call glitches Meet audio.
+pgrep -x "Background Music" >/dev/null || { open -a "Background Music"; sleep 2; }
+
+trap 'kill $(jobs -p) 2>/dev/null; rm -rf "$chunks"' EXIT
+
+whisper-server -m "$model" --vad -vm "$vad_model" -l "$lang" --port $port >/dev/null 2>&1 &
+until curl -s -o /dev/null localhost:$port; do sleep 0.5; done
+
+ffmpeg -loglevel error \
+    -f avfoundation -i ":Background Music" \
+    -f avfoundation -i ":default" \
+    -map 0:a -ac 1 -ar 16000 -f segment -segment_time 10 "$chunks/them-%05d.wav" \
+    -map 1:a -ac 1 -ar 16000 -f segment -segment_time 10 "$chunks/me-%05d.wav" &
+
+mkdir -p "$(dirname "$out")"
+echo "transcript: $out (ctrl-c to stop)"
+
+while sleep 1; do
+    for side in them me; do
+        files=("$chunks"/$side-*.wav)
+
+        # the newest chunk is still being written by ffmpeg
+        for f in "${files[@]:0:${#files[@]}-1}"; do
+            text=$(curl -s -F file=@"$f" -F response_format=text localhost:$port/inference | tr -s ' \n' ' ' | sed 's/^ //; s/ $//')
+            rm "$f"
+            [[ -n $text ]] && echo "[$(date +%H:%M:%S)] $side: $text" | tee -a "$out"
+        done
+    done
+done
