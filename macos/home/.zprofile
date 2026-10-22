@@ -16,9 +16,6 @@ export BUILDX_EXPERIMENTAL=1
 export COMPOSE_DOCKER_CLI_BUILD=1
 export DOTFILES=$HOME/.dotfiles/macos/home
 
-export ZSH=~/.oh-my-zsh
-export ZSH_THEME="robbyrussell"
-
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f "$HOME/Downloads/google-cloud-sdk/path.zsh.inc" ]; then . "$HOME/Downloads/google-cloud-sdk/path.zsh.inc"; fi
 

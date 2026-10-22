@@ -16,9 +16,7 @@ export PIP_REQUIRE_VIRTUALENV=true
 #
 export GEM_HOME="$HOME/.gem"
 export MYVIMRC="$HOME/.config/nvim/init.lua"
-export SSH_KEY_PATH="~/.ssh/rsa_id"
 export KITTY_LISTEN_ON=unix:/tmp/mykitty-$PPID
-export AWS_CONFIG_FILE=$HOME/.aws/credentials
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$HOME/go/bin:$HOME/.go/bin:/usr/local/go/bin:/opt/mssql-tools/bin:$GEM_HOME/bin:$PATH:/usr/local/bin:$HOME/bin:$HOME/.cargo/bin:$HOME/.local/bin"
 
 # Prompts {{{
@@ -124,7 +122,6 @@ alias ..="cd .."
 alias ...="cd  ../.."
 
 # Editor
-# alias nano='nano -W -m'
 alias edit='nvim'
 
 alias :e='edit'
@@ -134,20 +131,6 @@ alias :q='exit'
 alias g=git
 alias g.='git here'
 
-# alias clab='PAGER=cat glab'
-# alias gcl='git clone'
-# alias gst='git status'
-# alias gb='git branch'
-# alias gco='git checkout'
-# alias gob='git checkout -b'
-# alias ga='git add'
-# alias gc='git commit'
-# alias gl='git pull'
-# alias gh='git push'
-# alias glom='git pull origin master'
-# alias ghom='git push origin master'
-# alias gg='git grep'
-# alias glg='git log --oneline --decorate --graph'
 
 # Output
 alias lcase="tr '[:upper:]' '[:lower:]'"
@@ -171,37 +154,11 @@ alias wgetncc='wget --no-check-certificate'
 alias sitecopy='wget -k -K -E -r -l 10 -p -N -F -nH '
 alias ytmp3='youtube-dl --extract-audio --audio-format mp3 '
 
-# docker
-# alias dhere="bash ~/gitlab/COM/docker-base/docker_run.sh"
-# alias dsrm='docker rm $(docker stop $(docker ps -qa))'
-# alias datt='docker attach'
-# alias dcb='docker-compose build'
-# alias dclogs='docker-compose logs'
-# alias dcu='docker-compose up'
-# alias ddiff='docker diff'
-# alias dimg='docker images'
-# alias dins='docker inspect'
-# alias dps='docker ps'
-# alias drm='docker rm'
-# alias drmi='docker rmi'
-# alias drun='docker run'
-# alias dstart='docker start'
-# alias dstop='docker stop'
-# alias dclimg='docker rmi $(docker images --filter "dangling=true" -q --no-trunc)'
-# alias drestartf='docker start $(docker ps -ql) && docker attach $(docker ps -ql)'
-
 # ls variants
 alias la='ls -A'
 alias l='ls -alFtr'
 alias lsd='ls -d .*'
 alias ll='ls -alF'
-
-# Various
-# alias h='history | tail'
-# alias hg='history | grep'
-# alias mvi='mv -i'
-# alias rmi='rm -i'
-# alias ak='ack-grep'
 
 # github.com
 alias gist='open https://gist.github.com/'
@@ -227,26 +184,15 @@ alias serve="browser-sync start --server --files . --no-notify --port 9000"
 alias ipy=ipython
 alias py-server='python -s -m http.server'
 
-# alias myip="ifconfig | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p'"
-# alias mic_monitor='gst-launch-1.0 pulsesrc ! pulsesink'
-
-
-# kitty {{{{
-# alias icat="kitty +kitten icat"
-# alias s="kitty +kitten ssh"
-# }}}
 
 
 alias dotcmd='mxm'
-# alias cd.='. mxm cd'
 
 alias snip='pushd_edit_pop ~/github.com/asdf8601/snippets'
 alias scio='pushd_edit_pop ~/github.com/asdf8601/scio'
 alias nvim.='nvim .'
 alias nivm.='nvim .'
 
-# alias gpt4='sgpt --model gpt-4'
-# alias gpt4p='sgpt --model gpt-4-1106-preview'
 alias pjson='python -c "from rich import print; import sys; print(sys.stdin.buffer.read())"'
 alias pprint='python -c "from rich import print; import sys; print(sys.stdin.buffer.read())"'
 alias blog-monthly='uv run https://gist.githubusercontent.com/asdf8601/60e05c74cd3906a1985b7e78a2224871/raw/rss-monthly.py'
@@ -264,10 +210,6 @@ tasks() {
     fi
 }
 
-
-# pprint() {
-#     echo $@ | python -c "import sys; print(eval(sys.stdin.buffer.read()))"
-# }
 
 py-new() {
     # create a python project skeleton
@@ -350,15 +292,6 @@ kx() {
     export KUBECONFIG=$(ls ~/.kube/config* | fzf --height 10 --layout reverse)
 }
 
-
-# sourcePattern() {
-#     folder=$1
-#     pattern=$2
-#     for hidden in $(find $folder -name $pattern -type f)
-#     do
-#         source $hidden
-#     done
-# }
 
 addToMyGitProjects(){
     if [[ "$MYGITPROJECTS" != *"$1"*  ]]; then
@@ -534,13 +467,6 @@ txw() {
 
 # =============================================================================
 # cheat sheet
-# cs () {
-#     # cheat sheet
-#     url="$(echo cht.sh/$@ | tr ' ' '+')"
-#     echo $url
-#     curl -s $url
-# }
-
 csl () {
     # cheat sheet pipe less
     chsl $@ | less
@@ -671,11 +597,9 @@ function cd.() {
   fi
 }
 
-alias geminipro='llm -m github_copilot/gemini-2.5-pro -o temperature 0'
-alias geminiflash='llm -m github_copilot/gemini-2.0-flash-001 -o temperature 0'
-alias gpt5='llm -m github_copilot/gpt-5 -o temperature 0'
-alias sonnet='llm -m github_copilot/claude-4-sonnet -o temperature 0'
-alias sonnett='llm -m github_copilot/claude-3.7-sonnet-thought -o temperature 0'
+alias geminiflash='llm -m github_copilot/gemini-3.8-flash -o temperature 0'
+alias gpt6='llm -m github_copilot/gpt-6.1-sol -o temperature 0'
+alias sonnet='llm -m github_copilot/claude-sonnet-5.5 -o temperature 0'
 
 
 function ai() {
@@ -683,7 +607,7 @@ function ai() {
 import argparse, os, shlex, sys
 
 parser = argparse.ArgumentParser(prog="ai")
-parser.add_argument("-m","--model", default="github_copilot/gemini-2.5-pro")
+parser.add_argument("-m","--model", default="github_copilot/claude-sonnet-5.5")
 parser.add_argument("-o","--option", nargs=2, action="append", default=[], metavar=("KEY","VALUE"))
 parser.add_argument("-q","--query", required=True)
 parser.add_argument("--dry-run", action="store_true")
@@ -713,7 +637,9 @@ export TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE=/var/run/docker.sock
 export TESTCONTAINERS_RYUK_DISABLED=true
 # go: version per project via go.mod toolchain directive
 export GOTOOLCHAIN=auto
-export TMPDIR=/tmp/
+# go builds and runs binaries here instead of the macOS per-user TMPDIR
+export GOTMPDIR=$HOME/.cache/go-tmp
+[[ -d $GOTMPDIR ]] || mkdir -p $GOTMPDIR
 
 # bun completions
 [ -s "/Users/mgreco/.oh-my-zsh/completions/_bun" ] && source "/Users/mgreco/.oh-my-zsh/completions/_bun"
