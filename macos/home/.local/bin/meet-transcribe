@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 # Live transcript of a call, fully local. The remote side is recorded from the
-# Background Music device and your side from the default mic. Every 10 s chunk
+# Background Music device and your side from the built-in mic. Every 10 s chunk
 # goes to a local whisper-server and the text lands in ~/Documents/meet-transcripts.
-# Use headphones, or the mic also picks up the remote side.
+# Use headphones, or the mic also picks up the remote side. The AirPods mic is
+# avoided on purpose, since opening it drops AirPods playback to mono 24 kHz.
 #
 # Usage: meet-transcribe [lang]    lang defaults to auto (es, en, ...)
 set -e
@@ -30,7 +31,7 @@ until curl -s -o /dev/null localhost:$port; do sleep 0.5; done
 
 ffmpeg -loglevel error \
     -f avfoundation -i ":Background Music" \
-    -f avfoundation -i ":default" \
+    -f avfoundation -i ":Micrófono del MacBook Pro" \
     -map 0:a -ac 1 -ar 16000 -f segment -segment_time 10 "$chunks/them-%05d.wav" \
     -map 1:a -ac 1 -ar 16000 -f segment -segment_time 10 "$chunks/me-%05d.wav" &
 
