@@ -24,7 +24,19 @@ delete this file when they are all done.
    sudo apt install direnv libsecret-tools
    ```
 
-2. [ ] Copy the secrets item from the Mac **before** pulling `personal`,
+2. [ ] Make KeePassXC the Secret Service provider, so `secret-tool` stores
+   the item in the KeePassXC database:
+   - Tools > Settings > Secret Service Integration: enable it. Turn off
+     "Confirm when passwords are retrieved by clients", otherwise every new
+     shell pops a dialog.
+   - Database > Database Settings > Secret Service Integration: expose a group,
+     e.g. `dotfiles`.
+   - Stop GNOME Keyring from owning the Secret Service, or KeePassXC cannot
+     register it: disable the "GNOME Keyring: Secret Service" startup entry.
+   - KeePassXC must be running and unlocked when a shell starts; while it is
+     locked the loader finds nothing and the shell starts without tokens.
+
+3. [ ] Copy the secrets item from the Mac **before** pulling `personal`,
    otherwise the shell starts without tokens. From the Mac:
 
    ```bash
@@ -32,18 +44,18 @@ delete this file when they are all done.
      | ssh <ubuntu-host> 'secret-tool store --label="dotfiles shell secrets" service dotfiles account env'
    ```
 
-   `secret-tool` needs an unlocked desktop keyring. If it fails over SSH with
+   `secret-tool` needs KeePassXC unlocked in the desktop session. If it fails over SSH with
    a D-Bus error, run `secret-tool store --label="dotfiles shell secrets"
    service dotfiles account env` in a terminal on the Ubuntu desktop and paste
    the output of the Mac command.
 
-3. [ ] Pull and install:
+4. [ ] Pull and install:
 
    ```bash
    cd ~/.dotfiles && git pull --recurse-submodules && make ubuntu
    ```
 
-4. [ ] Open a new shell and check:
+5. [ ] Open a new shell and check:
 
    ```bash
    echo $DOTFILES_SECRETS      # 1
@@ -51,14 +63,14 @@ delete this file when they are all done.
    whence -w new-secret-set    # function
    ```
 
-5. [ ] Convert any remaining `.autoenv` files to `.envrc`, then remove
+6. [ ] Convert any remaining `.autoenv` files to `.envrc`, then remove
    `~/.autoenv`:
 
    ```bash
    find ~/github.com ~/gitlab.com -maxdepth 6 -name .autoenv
    ```
 
-6. [ ] For the team repos with `use flake` (ssp-service, buying-engine-service,
+7. [ ] For the team repos with `use flake` (ssp-service, buying-engine-service,
    terraform_adexchange_infra, adexchange-grafana-dashboards), install nix and
    nix-direnv:
 
@@ -67,10 +79,10 @@ delete this file when they are all done.
    nix profile add nixpkgs#nix-direnv
    ```
 
-7. [ ] Switch the espanso `;sum`, `;chat`, `;tra` and `;fix` matches in
+8. [ ] Switch the espanso `;sum`, `;chat`, `;tra` and `;fix` matches in
    `ubuntu/home/.config/espanso/match/ai-llms.yml` to
    `personal/.local/bin/espanso_pi.sh`, as on macOS. They call
    `espanso_gpt*` commands that no longer exist. `espanso_pi.sh` needs the
    `pi` CLI and its PATH line points at Homebrew, so adapt it for Linux.
 
-8. [ ] Delete this file and commit.
+9. [ ] Delete this file and commit.
