@@ -562,6 +562,25 @@ secrets-edit() {
     rm -f $tmp
 }
 
+secrets-set() {
+    # add or replace one keychain secret and export it in this shell; the value
+    # is read without echo and never passed as an argument to a command
+    local name=$1 value blob
+    local -a lines
+    if [[ ! $name =~ '^[A-Za-z_][A-Za-z0-9_]*$' ]]; then
+        print -u2 "usage: secrets-set NAME"
+        return 2
+    fi
+    read -rs "value?$name: "
+    print
+    [[ -n $value ]] || return 1
+    blob=$(security find-generic-password -s dotfiles -a env -w 2>/dev/null | base64 -d 2>/dev/null)
+    lines=(${(f)blob})
+    lines=(${lines:#$name=*} "$name=$value")
+    print -r -- "add-generic-password -U -s dotfiles -a env -w $(print -r -- ${(F)lines} | base64 | tr -d '\n')" | security -i || return
+    export "$name=$value"
+}
+
 source $DOTFILES_SRC/personal/.custom.hide
 source $DOTFILES_SRC/personal/.seedtag.hide
 # }}}
