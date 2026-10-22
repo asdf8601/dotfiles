@@ -10,12 +10,16 @@ help:  ## Display this help
 stow:  ## Install stow
 	[[ $(OS) == "Darwin" ]] && brew install stow || sudo apt-get install stow
 
+.PHONY: hooks
+hooks:  ## Use the repo's git hooks (gitleaks pre-commit)
+	git config core.hooksPath .githooks
+
 .PHONY: macos
-macos: personal  ## Install macos settings
+macos: hooks personal  ## Install macos settings
 	stow -d macos/home/ -t $(HOME)/ .
 
 .PHONY: ubuntu
-ubuntu: personal  ## Install ubuntu settings
+ubuntu: hooks personal  ## Install ubuntu settings
 	stow -d ubuntu/home/ -t $(HOME)/ .
 
 SEEDTAG_SKILLS_SRC := $(CURDIR)/seedtag/.config/opencode/skills
