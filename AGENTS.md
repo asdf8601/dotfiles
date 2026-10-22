@@ -25,5 +25,8 @@
 - Config files: dotfile convention (`.zshrc`, `.gitconfig`)
 - Directories: lowercase, no spaces
 
+## Pending Ubuntu setup
+On Linux, when `ubuntu/TODO.md` exists, tell the user at the start of the session which of its steps are still unchecked and offer to run them. Delete the file once every step is done.
+
 ## Symlink Management
 Uses GNU `stow` to symlink configs. Structure mirrors $HOME (e.g., `macos/home/.zshrc` -> `~/.zshrc`).

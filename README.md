@@ -21,6 +21,9 @@ git clone --recurse-submodules ssh://git@gitlab.com/mmngreco/dotfiles ~/.dotfile
 make ubuntu
 ```
 
+> **Pending:** the 2026-10-22 changes (direnv, libsecret secrets) were never run
+> on Ubuntu. Follow [`ubuntu/TODO.md`](ubuntu/TODO.md) before `make ubuntu`.
+
 ## macOS
 
 ```bash
