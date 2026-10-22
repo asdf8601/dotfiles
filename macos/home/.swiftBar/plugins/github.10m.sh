@@ -18,7 +18,7 @@ if [[ $1 == copy ]]; then
   exit 0
 fi
 
-query='
+pr_fragment='
 fragment pr on PullRequest {
   number title url isDraft createdAt mergeStateStatus reviewDecision additions deletions
   repository { name nameWithOwner owner { login } }
@@ -30,7 +30,8 @@ fragment pr on PullRequest {
     nodes { ... on ReviewRequestedEvent { createdAt requestedReviewer { ... on User { login } ... on Team { slug } } } }
   }
   commits(last: 1) { nodes { commit { statusCheckRollup { state } } } }
-}
+}'
+discussion_fragment='
 fragment discussion on PullRequest {
   number title url
   repository { name nameWithOwner owner { login } }
@@ -40,24 +41,41 @@ fragment discussion on PullRequest {
     nodes { isResolved isOutdated comments(first: 20) { nodes { author { __typename login } createdAt } } }
   }
   comments(last: 20) { nodes { author { __typename login } createdAt } }
-}
-query {
-  viewer { login }
-  authored: search(query: "is:open is:pr archived:false author:@me", type: ISSUE, first: 100) {
-    nodes { ...pr ...discussion }
-  }
-  commented: search(query: "is:open is:pr archived:false commenter:@me -author:@me", type: ISSUE, first: 50) {
-    nodes { ...discussion }
-  }
-  assigned: search(query: "is:open is:pr archived:false assignee:@me", type: ISSUE, first: 100) {
-    nodes { ...pr }
-  }
-  requested: search(query: "is:open is:pr archived:false user-review-requested:@me", type: ISSUE, first: 50) {
-    nodes { ...pr }
-  }
 }'
 
-if ! json=$(gh api graphql -f query="$query" 2>&1); then
+# One big query runs past GitHub's ~10s GraphQL timeout (502/504), so each
+# search is its own request, run in parallel and retried once.
+tmp=$(mktemp -d)
+trap 'rm -rf "$tmp"' EXIT
+
+search() { # name fragment spread search first
+  local fragment=$pr_fragment
+  [[ $2 == discussion ]] && fragment=$discussion_fragment
+  local query="$fragment
+query { viewer { login } $1: search(query: \"$3\", type: ISSUE, first: $4) { nodes { ...$2 } } }"
+  gh api graphql -f query="$query" >"$tmp/$1" 2>&1 ||
+    gh api graphql -f query="$query" >"$tmp/$1" 2>&1 ||
+    { mv "$tmp/$1" "$tmp/$1.failed"; echo "{\"data\": {\"$1\": {\"nodes\": []}}}" >"$tmp/$1"; }
+}
+
+search authored pr "is:open is:pr archived:false author:@me" 100 &
+search authoredDiscussion discussion "is:open is:pr archived:false author:@me" 100 &
+search commented discussion "is:open is:pr archived:false commenter:@me -author:@me" 50 &
+search assigned pr "is:open is:pr archived:false assignee:@me" 100 &
+search requested pr "is:open is:pr archived:false user-review-requested:@me" 50 &
+wait
+
+# A failed search leaves empty nodes; the sections it feeds say so in the menu.
+failed='{}'
+for file in "$tmp"/*.failed; do
+  [[ -e $file ]] || continue
+  name=$(basename "$file" .failed)
+  error=$(grep -o 'gh: .*' "$file" | tail -1)
+  failed=$(jq -c --arg n "$name" --arg e "${error:-unknown error}" '. + {($n): $e}' <<<"$failed")
+done
+
+if [[ $(jq length <<<"$failed") == 5 ]]; then
+  json=$(<"$tmp/authored.failed")
   echo "GH !"
   echo "---"
   echo "gh api graphql failed | color=red"
@@ -65,8 +83,17 @@ if ! json=$(gh api graphql -f query="$query" 2>&1); then
   exit 0
 fi
 
+json=$(jq -s '
+  reduce .[] as $r ({}; . * $r)
+  | .data.authoredDiscussion.nodes as $disc
+  # The two authored searches can disagree by a PR that just opened or closed.
+  | .data.authored.nodes |= map(. as $pr
+      | (first($disc[] | select(.url == $pr.url)) // {reviewThreads: {nodes: []}, comments: {nodes: []}}) as $d
+      | $pr + $d + {commits: {nodes: [($pr.commits.nodes[0] // {}) * ($d.commits.nodes[0] // {})]}})
+' "$tmp"/authored "$tmp"/authoredDiscussion "$tmp"/commented "$tmp"/assigned "$tmp"/requested)
+
 # shellcheck disable=SC2016
-jq -r --arg self "$(cd "$(dirname "$0")" && pwd)/$(basename "$0")" '
+jq -r --argjson failed "$failed" --arg self "$(cd "$(dirname "$0")" && pwd)/$(basename "$0")" '
 def age($t): (now - ($t | fromdate)) as $s
   | if $s < 3600 then "\($s / 60 | floor)m"
     elif $s < 86400 then "\($s / 3600 | floor)h"
@@ -147,17 +174,18 @@ def cimark: {"SUCCESS": "CI ✓", "FAILURE": "CI ✗", "ERROR": "CI ✗", "PENDI
     else "" end;
   [
     {key: "action", icon: "🔧", label: "Needs my action", color: "red", prs: $action,
-     url: "https://github.com/pulls?q=is%3Aopen+is%3Apr+author%3A%40me+archived%3Afalse+draft%3Afalse"},
+     url: "https://github.com/pulls?q=is%3Aopen+is%3Apr+author%3A%40me+archived%3Afalse+draft%3Afalse", src: ["authored"]},
     {key: "ready", icon: "🚀", label: "Ready to merge", prs: $ready,
-     url: "https://github.com/pulls?q=is%3Aopen+is%3Apr+author%3A%40me+archived%3Afalse"},
+     url: "https://github.com/pulls?q=is%3Aopen+is%3Apr+author%3A%40me+archived%3Afalse", src: ["authored", "assigned"]},
     {key: "reviews", icon: "👀", label: "Review requested", prs: $reviews,
-     url: "https://github.com/pulls?q=is%3Aopen+is%3Apr+user-review-requested%3A%40me+archived%3Afalse"},
+     url: "https://github.com/pulls?q=is%3Aopen+is%3Apr+user-review-requested%3A%40me+archived%3Afalse", src: ["requested"]},
     {key: "waiting", icon: "⏳", label: "Waiting for review", prs: $waiting,
-     url: "https://github.com/pulls?q=is%3Aopen+is%3Apr+author%3A%40me+archived%3Afalse+draft%3Afalse+review%3Arequired"},
+     url: "https://github.com/pulls?q=is%3Aopen+is%3Apr+author%3A%40me+archived%3Afalse+draft%3Afalse+review%3Arequired", src: ["authored"]},
     {key: "replies", icon: "💬", label: "Unanswered comments", prs: $replies,
-     url: "https://github.com/pulls?q=is%3Aopen+is%3Apr+involves%3A%40me+archived%3Afalse"}
+     url: "https://github.com/pulls?q=is%3Aopen+is%3Apr+involves%3A%40me+archived%3Afalse", src: ["authored", "authoredDiscussion", "commented"]}
   ]
-  | map(select(.prs | length > 0))
+  | map(. + {errors: [.src[] | $failed[.] // empty] | unique})
+  | map(select((.prs | length > 0) or (.errors | length > 0)))
   | map(.key as $key | .prs |= map(. + {cells: ({ref: ("#\(.number)" as $n | (ref | cap(20 - ($n | length))) + $n), title: short} + fields($key)),
                                       tip: tip($key)}))
   | . as $sections
@@ -169,9 +197,12 @@ def cimark: {"SUCCESS": "CI ✓", "FAILURE": "CI ✗", "ERROR": "CI ✗", "PENDI
       | ([$cols[] | select($w[.] > 0) | . as $k | $c[$k] | if $k == "age" then lpad($w[$k]) else pad($w[$k]) end]
          + (if $c.extra == "" then [] else [$c.extra] end))
       | join("  ") | clean;
-  (if $sections == [] then "✓" else $sections | map("\(.icon) \(.prs | length)") | join(" ") end),
+  (if $sections == [] then "✓"
+   else $sections | map("\(.icon) \(if .errors == [] then .prs | length else "!" end)") | join(" ") end),
     ($sections[]
-      | "---", "\(.icon) \(.label) | href=\(.url)\(if .color then " color=\(.color)" else "" end)",
+      | "---",
+        if .errors == [] then "\(.icon) \(.label) | href=\(.url)\(if .color then " color=\(.color)" else "" end)"
+        else "\(.icon) \(.label) (failed, may be incomplete) | href=\(.url) color=red tooltip=\"\(.errors | join(", ") | clean)\"" end,
         (.prs[] | "\(line) | href=\(.url) tooltip=\"\(.title | clean)\(if .tip == "" then "" else " · " + (.tip | clean) end)\" font=.AppleSystemUIFontMonospaced size=12 symbolize=false",
                   "\(ref)#\(.number) copy URL | alternate=true bash=\($self) param1=copy param2=\(.url) terminal=false"))
 ' <<<"$json"
