@@ -78,12 +78,11 @@ def requested_at($r): . as $pr
   | [.timelineItems.nodes[] | select(.requestedReviewer != null and (.requestedReviewer | who) == ($r | who)) | .createdAt]
   | last // $pr.createdAt;
 def clean: gsub("\\|"; "/") | gsub("\""; "'\''");
-# Drop [scope] tags but keep the Jira key up front, so rows stay narrow.
-def short:
-  (.title | [match("\\[([A-Z][A-Z0-9]+-[0-9]+)\\]").captures[0].string] | .[0]) as $key
-  | (.title | gsub("\\[[^\\]]*\\]"; "") | gsub("\\s+"; " ") | ltrimstr(" ") | rtrimstr(" ")) as $t
-  | (if ($t | length) > 45 then $t[0:44] + "…" else $t end) as $t
-  | (if $key then "[\($key)] " else "" end) + $t | clean;
+def cap($n): if length > $n then .[0:$n - 1] + "…" else . end;
+def pad($n): . + ((" " * ($n - length)) // "");
+def lpad($n): ((" " * ($n - length)) // "") + .;
+# Jira keys and [scope] tags dropped from the title.
+def short: .title | gsub("\\[[^\\]]*\\]"; "") | gsub("\\s+"; " ") | ltrimstr(" ") | rtrimstr(" ") | cap(40);
 def cimark: {"SUCCESS": "CI ✓", "FAILURE": "CI ✗", "ERROR": "CI ✗", "PENDING": "CI …", "EXPECTED": "CI …"}[ci // ""] // empty;
 
 .data.viewer.login as $me
@@ -124,23 +123,24 @@ def cimark: {"SUCCESS": "CI ✓", "FAILURE": "CI ✗", "ERROR": "CI ✗", "PENDI
     | map(select(.pendingall | length > 0))
     | sort_by(.pendingall | map(.createdAt) | min)) as $replies
 | ([$action[], $ready[], $reviews[], $waiting[], $replies[]] | map(.repository.owner.login) | unique | length == 1) as $strip
-| def row(meta; tip):
-    (if $strip then .repository.name | sub("^(adexchange-|terraform_adexchange_|victoria-metrics_|github-actions-)"; "")
-     else .repository.nameWithOwner end) as $ref
-    | "\($ref)#\(.number) \(short)\(if meta == "" then "" else " · " + meta end) | href=\(.url) tooltip=\"\(.title | clean)\(if tip == "" then "" else " · " + (tip | clean) end)\" symbolize=false",
-      "\($ref)#\(.number) copy URL | alternate=true bash=\($self) param1=copy param2=\(.url) terminal=false";
+| def ref:
+    if $strip then .repository.name | sub("^(adexchange-|terraform_adexchange_|victoria-metrics_|github-actions-)"; "")
+    else .repository.nameWithOwner end;
   def author: if .author.login == $me then "" else "@\(.author.login)" end;
-  def meta($key):
-    if $key == "action" then .reason
-    elif $key == "ready" then author
+  # Per-section columns after the title: who, age (right-aligned) and a free-form extra.
+  def fields($key):
+    if $key == "action" then {who: "", age: "", extra: (.reason | if startswith("no reviewer") then "re-request" else . end)}
+    elif $key == "ready" then {who: author, age: "", extra: ""}
+    elif $key == "reviews" then {who: author, age: age(requested_at($meref)),
+      extra: (["+\(.additions) −\(.deletions)", cimark] | map(select(. != "")) | join("  "))}
     elif $key == "replies" then
       def count($n; $word): if $n == 0 then "" elif $n == 1 then "1 \($word)" else "\($n) \($word)s" end;
-      [author, count(.pending.threads | length; "thread"), count(.pending.conv | length; "comment"),
-       (.pendingall | "\(map("@" + .author.login) | unique | join(", ")) \(age(map(.createdAt) | max))")]
-      | map(select(. != "")) | join(" · ")
-    elif $key == "reviews" then [author, "asked \(age(requested_at($meref)))", "+\(.additions) −\(.deletions)", cimark] | map(select(. != "")) | join(" · ")
+      {who: (.pendingall | map("@" + .author.login) | unique | join(", ")), age: (.pendingall | age(map(.createdAt) | max)),
+       extra: ([count(.pending.threads | length; "thread"), count(.pending.conv | length; "comment")] | map(select(. != "")) | join(", "))}
     else . as $pr | pending as $p
-      | "\($p[0] | who)\(if ($p | length) > 1 then " +\(($p | length) - 1)" else "" end) \(age($p | map(. as $r | $pr | requested_at($r)) | min))" end;
+      | {who: "\($p[0] | who)\(if ($p | length) > 1 then " +\(($p | length) - 1)" else "" end)",
+         age: age($p | map(. as $r | $pr | requested_at($r)) | min), extra: ""} end
+    | .who |= cap(21);
   # Full reviewer list for the tooltip, since the waiting row shows only the first one.
   def tip($key):
     if $key == "waiting" then . as $pr | pending | map(. as $r | "\(who) \($pr | age(requested_at($r)))") | join(", ")
@@ -157,11 +157,23 @@ def cimark: {"SUCCESS": "CI ✓", "FAILURE": "CI ✗", "ERROR": "CI ✗", "PENDI
     {key: "replies", icon: "💬", label: "Unanswered comments", prs: $replies,
      url: "https://github.com/pulls?q=is%3Aopen+is%3Apr+involves%3A%40me+archived%3Afalse"}
   ]
-  | map(select(.prs | length > 0)) as $sections
-  | (if $sections == [] then "✓" else $sections | map("\(.icon) \(.prs | length)") | join(" ") end),
-    ($sections[] | .key as $key
+  | map(select(.prs | length > 0))
+  | map(.key as $key | .prs |= map(. + {cells: ({ref: ("#\(.number)" as $n | (ref | cap(20 - ($n | length))) + $n), title: short} + fields($key)),
+                                      tip: tip($key)}))
+  | . as $sections
+  # Column widths are shared across all sections so every row lines up; empty columns drop out.
+  | ["ref", "title", "who", "age"] as $cols
+  | ([$sections[].prs[].cells] as $all | $cols | map({key: ., value: ([$all[][.] | length] | max)}) | from_entries) as $w
+  | def line:
+      .cells as $c
+      | ([$cols[] | select($w[.] > 0) | . as $k | $c[$k] | if $k == "age" then lpad($w[$k]) else pad($w[$k]) end]
+         + (if $c.extra == "" then [] else [$c.extra] end))
+      | join("  ") | clean;
+  (if $sections == [] then "✓" else $sections | map("\(.icon) \(.prs | length)") | join(" ") end),
+    ($sections[]
       | "---", "\(.icon) \(.label) | href=\(.url)\(if .color then " color=\(.color)" else "" end)",
-        (.prs[] | row(meta($key); tip($key))))
+        (.prs[] | "\(line) | href=\(.url) tooltip=\"\(.title | clean)\(if .tip == "" then "" else " · " + (.tip | clean) end)\" font=.AppleSystemUIFontMonospaced size=12 symbolize=false",
+                  "\(ref)#\(.number) copy URL | alternate=true bash=\($self) param1=copy param2=\(.url) terminal=false"))
 ' <<<"$json"
 echo "---"
 echo "Refresh | refresh=true"
