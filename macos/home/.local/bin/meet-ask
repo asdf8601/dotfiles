@@ -1,15 +1,27 @@
 #!/usr/bin/env bash
-# Open Claude on the newest meet-transcribe transcript, to ask questions
-# about the call from a split pane while it runs.
+# Open Claude on a meet-transcribe transcript to ask questions about the call,
+# live from a split pane or afterwards. Without a transcript it lets you pick
+# one with fzf, previewing its summary.
 #
-# Usage: meet-ask [claude options]
+# Usage: meet-ask [transcript] [claude options]
 
 dir="$HOME/Documents/meet-transcripts"
-latest=$(ls -t "$dir"/*.txt 2>/dev/null | head -1)
-[[ -z $latest ]] && { echo "no transcript in $dir, start meet-transcribe first"; exit 1; }
 
-exec claude --add-dir "$dir" --append-system-prompt "A live meeting transcript is at $latest and grows every ~10 s. \
+if [[ -f $1 ]]; then
+    transcript=$1
+    shift
+else
+    transcript=$(ls -t "$dir"/*.txt 2>/dev/null | fzf --delimiter / --with-nth -1 \
+        --preview 'f={}; s="${f%.txt}_summary.md"; if [ -f "$s" ]; then cat "$s"; else tail -n 60 "$f"; fi')
+fi
+[[ -z $transcript ]] && { echo "no transcript selected in $dir"; exit 1; }
+
+summary="${transcript%.txt}_summary.md"
+[[ -f $summary ]] && summary_note="Its summary is at $summary. " || summary_note=""
+
+exec claude --add-dir "$dir" --append-system-prompt "A meeting transcript is at $transcript. ${summary_note}\
+If the call is still live, the transcript grows every ~10 s, so re-read it before every answer. \
 Lines read '[HH:MM:SS] who: text', where 'me' is the user and 'them' is everyone else on the call. \
 Each line is a 10 s audio chunk, so a sentence can be split across lines, and the time is when the chunk was transcribed. \
 Short lines like 'Thank you.' on a quiet side can be speech-to-text hallucinations. \
-Re-read the file before every answer, since it changes between questions. Answer in the language of the question." "$@"
+Answer in the language of the question." "$@"

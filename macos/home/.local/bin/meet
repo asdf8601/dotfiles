@@ -21,13 +21,13 @@ notes=$(tmux split-window -v -P -F '#{pane_id}' -t "$transcribe" -c "$dir")
 tmux send-keys -t "$transcribe" "meet-transcribe $*" Enter
 tmux send-keys -t "$notes" "nvim ." Enter
 
-# meet-ask opens the newest transcript, so wait until meet-transcribe has created it
+# wait until meet-transcribe has created this call's transcript
 for _ in {1..60}; do
     latest=$(ls -t "$dir"/*.txt 2>/dev/null | head -1)
     [[ -n $latest && $latest != "$before" ]] && break
     sleep 1
 done
-tmux send-keys -t "$ask" "meet-ask" Enter
+tmux send-keys -t "$ask" "meet-ask '$latest'" Enter
 tmux select-pane -t "$ask"
 
 [[ -n $TMUX ]] || tmux attach -t meet
