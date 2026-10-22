@@ -537,6 +537,31 @@ export DOTFILES_SRC=$HOME/.dotfiles
 export DOTFILES_HOME=$HOME/.dotfiles
 export DOTFILES_ROOT=$HOME/.dotfiles
 
+# API tokens live in one login-keychain item (service "dotfiles", account
+# "env") as base64 NAME=value lines. Only the first shell pays the ~20ms
+# lookup; shells that inherit DOTFILES_SECRETS skip it.
+if [[ -z ${DOTFILES_SECRETS:-} ]]; then
+    () {
+        local blob line
+        blob=$(security find-generic-password -s dotfiles -a env -w 2>/dev/null | base64 -d 2>/dev/null)
+        [[ -n $blob ]] || return
+        for line in ${(f)blob}; do
+            [[ $line == [A-Za-z_]*=* ]] && export "$line"
+        done
+        export DOTFILES_SECRETS=1
+    }
+fi
+
+secrets-edit() {
+    # edit the keychain secrets in $EDITOR; shells already open keep the old values
+    local tmp
+    tmp=$(mktemp) || return
+    security find-generic-password -s dotfiles -a env -w | base64 -d > $tmp
+    ${EDITOR:-nvim} $tmp
+    print -r -- "add-generic-password -U -s dotfiles -a env -w $(base64 < $tmp | tr -d '\n')" | security -i
+    rm -f $tmp
+}
+
 source $DOTFILES_SRC/personal/.custom.hide
 source $DOTFILES_SRC/personal/.seedtag.hide
 # }}}
