@@ -558,14 +558,11 @@ source ~/.fzf.zsh
 alias espanso='EDITOR=nvim espanso'
 alias opencode='EDITOR=nvim opencode'
 
-gh () {
-    (
-        bkp_GH_TOKEN=$GH_TOKEN
-        unset GH_TOKEN GITHUB_TOKEN
-        command gh "$@"
-        export GH_TOKEN=$bkp_GH_TOKEN
-    )
-}
+# Run gh with its own stored auth; the subshell keeps GH_TOKEN for everything else.
+gh () (
+    unset GH_TOKEN GITHUB_TOKEN
+    command gh "$@"
+)
 
 # opencode
 export PATH=/Users/mgreco/.opencode/bin:$PATH
