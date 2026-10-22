@@ -11,14 +11,14 @@ set -e
 
 lang=${1:-auto}
 models="$HOME/.local/share/whisper"
-model="$models/ggml-large-v3-turbo-q5_0.bin"
+model="$models/ggml-large-v3-q5_0.bin"
 vad_model="$models/ggml-silero-v5.1.2.bin"
 port=8178
 chunks=$(mktemp -d)
 out="$HOME/Documents/meet-transcripts/$(date +%Y-%m-%d_%H%M).txt"
 
 command -v whisper-server >/dev/null || { echo "run: brew install whisper.cpp"; exit 1; }
-[[ -f "$model" ]] || curl -fL --create-dirs -o "$model" https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-large-v3-turbo-q5_0.bin
+[[ -f "$model" ]] || curl -fL --create-dirs -o "$model" https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-large-v3-q5_0.bin
 [[ -f "$vad_model" ]] || curl -fL -o "$vad_model" https://huggingface.co/ggml-org/whisper-vad/resolve/main/ggml-silero-v5.1.2.bin
 
 # Background Music must be the system output, or the remote side records silence.
