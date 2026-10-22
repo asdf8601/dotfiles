@@ -67,4 +67,10 @@ delete this file when they are all done.
    nix profile add nixpkgs#nix-direnv
    ```
 
-7. [ ] Delete this file and commit.
+7. [ ] Switch the espanso `;sum`, `;chat`, `;tra` and `;fix` matches in
+   `ubuntu/home/.config/espanso/match/ai-llms.yml` to
+   `personal/.local/bin/espanso_pi.sh`, as on macOS. They call
+   `espanso_gpt*` commands that no longer exist. `espanso_pi.sh` needs the
+   `pi` CLI and its PATH line points at Homebrew, so adapt it for Linux.
+
+8. [ ] Delete this file and commit.
