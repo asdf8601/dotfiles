@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+# Open a tmux window for a call: meet-ask on the left, and on the right
+# meet-transcribe on top with nvim on the transcripts folder below.
+# Outside tmux it starts a new session.
+#
+# Usage: meet [lang]    lang is passed to meet-transcribe
+
+dir="$HOME/Documents/meet-transcripts"
+mkdir -p "$dir"
+before=$(ls -t "$dir"/*.txt 2>/dev/null | head -1)
+
+if [[ -n $TMUX ]]; then
+    ask=$(tmux new-window -P -F '#{pane_id}' -n meet -c "$dir")
+else
+    tmux new-session -d -s meet -n meet -c "$dir"
+    ask=$(tmux display-message -p -t meet: '#{pane_id}')
+fi
+transcribe=$(tmux split-window -h -P -F '#{pane_id}' -t "$ask" -c "$dir")
+notes=$(tmux split-window -v -P -F '#{pane_id}' -t "$transcribe" -c "$dir")
+
+tmux send-keys -t "$transcribe" "meet-transcribe $*" Enter
+tmux send-keys -t "$notes" "nvim ." Enter
+
+# meet-ask opens the newest transcript, so wait until meet-transcribe has created it
+for _ in {1..60}; do
+    latest=$(ls -t "$dir"/*.txt 2>/dev/null | head -1)
+    [[ -n $latest && $latest != "$before" ]] && break
+    sleep 1
+done
+tmux send-keys -t "$ask" "meet-ask" Enter
+tmux select-pane -t "$ask"
+
+[[ -n $TMUX ]] || tmux attach -t meet
