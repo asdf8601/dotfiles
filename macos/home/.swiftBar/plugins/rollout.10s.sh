@@ -9,7 +9,8 @@
 # Title: one glyph per DC in the order euw usc usw use ase:
 #   █ done  ▒ rolling  ░ waiting (DC still on an older image)  ✗ kubectl error
 # While idle, scheduled runs only redraw the cache; the clusters are queried
-# when the menu opens, on Refresh, or via swiftbar://refreshplugin?name=rollout.
+# when the menu opens, on Refresh, or via swiftbar://refreshplugin?name=rollout,
+# and the menu updates when that query ends.
 
 export PATH="/opt/homebrew/bin:$PATH"
 
@@ -68,9 +69,20 @@ active() {
   [[ -n $(files) ]] && jq -se "$states | any(.dcs[]; .state == \"rolling\" or .state == \"waiting\")" $(files) >/dev/null
 }
 
+cache_age() {
+  local f=$(files | head -1)
+  [[ -n $f ]] && echo $(($(date +%s) - $(stat -f %m "$f"))) || echo 999999
+}
+
+# A requested refresh draws the cache at once and queries in the background,
+# then asks SwiftBar to redraw; that redraw sees a fresh cache and stops there.
 case $SWIFTBAR_PLUGIN_REFRESH_REASON in
   Schedule | FirstLaunch) active && fetch ;;
-  *) fetch ;;
+  *)
+    if (($(cache_age) > 5)); then
+      (fetch; open -g "swiftbar://refreshplugin?name=rollout") </dev/null >/dev/null 2>&1 &
+    fi
+    ;;
 esac
 
 if [[ -z $(files) ]]; then
