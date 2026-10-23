@@ -202,82 +202,116 @@ def pad(n): tostring | if length < n then . + (" " * (n - length)) else . end;
 def lpad(n): tostring | if length < n then (" " * (n - length)) + . else . end;
 def dur: floor | if . >= 3600 then "\(. / 3600 | floor)h\(. % 3600 / 60 | floor)m"
   else "\(. / 60 | floor)m\(. % 60 | tostring | lpad(2) | gsub(" "; "0"))s" end;
-def glyph: {done: "█", rolling: "▒", waiting: "░", error: "✗"}[.state];
-def state_text: {done: "✅ done", rolling: "🔄 rolling", waiting: "⏳ waiting", error: "❌ kubectl"}[.state];
-def job_icon: if .status != "completed" then "🔄" elif .conclusion == "success" then "✅"
-  elif .conclusion == "skipped" then "–" else "❌" end;
 def mins: "\(. / 60 | floor)m";
-def mono: " | font=Menlo size=12";
-def clean: gsub("\\|"; "/");
+def age: ($now - .) as $s
+  | if $s < 3600 then "\($s / 60 | floor)m" elif $s < 86400 then "\($s / 3600 | floor)h" else "\($s / 86400 | floor)d" end;
+def F: "font=.AppleSystemUIFontMonospaced size=12";
+def clean: gsub("\\|"; "/") | gsub("\""; "'\''");
+def glyph: {done: "█", rolling: "▒", waiting: "░", error: "✗"}[.state];
+def icon: {done: "✅", rolling: "🔄", waiting: "⏳", error: "❌"}[.state];
+# Done with at least 90% of pods available; HPA scale-ups keep the rest busy.
+def settled: .state == "done" and .avail * 10 >= .desired * 9;
+def has_end: .end and (.end | t) > (.start | t);
+def took: (.end | t) - (.start | t);
+
 def merge_rows($repo; prefix):
   "\(prefix)\(.sha[0:9])  \(.title | clean | .[0:70])  \(.author) \(.date | hm) | href="
     + (if .pr then "https://github.com/\($repo)/pull/\(.pr)" else "https://github.com/\($repo)/commit/\(.sha)" end)
-    + " font=Menlo size=12 symbolize=false",
-  "\(prefix)\(.sha[0:9])  copiar sha | alternate=true bash=\($self) param1=copy param2=\(.sha) terminal=false font=Menlo size=12";
-def merges_block($repo):
-  if length <= 3 then .[] | merge_rows($repo; "")
-  else "\(length) merges | font=Menlo size=12", (.[] | merge_rows($repo; "--")) end;
+    + " \(F) symbolize=false",
+  "\(prefix)\(.sha[0:9])  copy sha | alternate=true bash=\($self) param1=copy param2=\(.sha) terminal=false \(F)";
+def merges_block($repo; prefix):
+  if length <= 3 then .[] | merge_rows($repo; prefix)
+  else "\(prefix)\(length) merges | \(F)", (.[] | merge_rows($repo; prefix + "--")) end;
 
-# Adds what the title and menu need to each service.
+def dc_row($gh):
+  if .state == "error" then "\(.dc | pad(5))❌  \(.error | clean | .[0:60]) | \(F) color=red"
+  elif .state == "waiting" then "\(.dc | pad(5))⏳  \(.tag)"
+    + (if $gh.bump then "  bump \($gh.bump.date | t | age) ago" else "" end) + " | \(F)"
+  else
+    "\(.dc | pad(5))\(icon)\("\(.avail)/\(.desired)" | lpad(11))  "
+    + (if .state == "done" and has_end then "\(took | dur) → \(.end | hm)" else "\(($now - (.start | t)) | dur)" end)
+    + " | \(F) tooltip=\"old \(.old) · start \(.start | hm)\""
+  end;
+
+# "5 DCs ✅ 11m–22m → 10:36" over the settled DCs, then the ones that are not.
+def dcs_summary:
+  [.dcs[] | select(settled)] as $ok
+  | [$ok[] | select(has_end) | took] as $tk
+  | "\($ok | length) DCs ✅"
+    + (if ($tk | length) > 0 then " \($tk | min | mins)–\($tk | max | mins) → \([$ok[] | select(has_end) | .end | t] | max | strflocaltime("%H:%M"))" else "" end)
+    + ([.dcs[] | select(settled | not) | " · \(.dc) \(if .state == "done" then "\(.avail)/\(.desired)" else .state end)"] | join(""));
+def dcs_tooltip: [.dcs[] | "\(.dc) " + (if has_end then "\(took | dur) → \(.end | hm)" else .state end)] | join(" · ");
+
+# When every DC is settled the rows fold into one line, else one row per DC.
+def dc_block(prefix):
+  if (.dcs | length) > 0 and all(.dcs[]; settled)
+  then "\(prefix)\(dcs_summary) | \(F) tooltip=\"\(dcs_tooltip)\""
+  else . as $s | "---", (if prefix == "" then empty else "\(prefix)| \(F)" end), (.dcs[] | dc_row($s.gh)) end;
+
 def enrich:
   . as $s
-  | ([$s.dcs[] | select(.state == "done" and .end and (.end | t) > (.start | t)) | .end | t] | max) as $last_end
+  | ([$s.dcs[] | select(.state == "done" and has_end) | .end | t] | max) as $last_end
   | ([$s.dcs[] | select(.state != "error" and .tag == $s.target) | .start | t] | min
      // ($s.gh.bump.date // null | if . then t else null end)) as $first_start
-  | . + {last_end: $last_end, title:
+  | . + {last_end: $last_end, first_start: $first_start,
+      red: ($s.gh.ci.state == "failed" or any($s.dcs[]; .state == "error")),
+      title:
       (if $s.rolling then
-         "🚀 \($s.sv.short) \([$order | split(" ")[] as $dc | ($s.dcs | map(select(.dc == $dc)) | .[0] | if . then glyph else "·" end)] | join("")) \(($now - $first_start) | mins) | font=Menlo"
-       elif $s.building then "🚀 \($s.sv.short) ⏳ CI \(($now - ($s.gh.ci.created | t)) | mins)"
-       elif $s.gh.ci.state == "failed" then "🚀 \($s.sv.short) ✗ CI | color=red"
-       elif $last_end and ($now - $last_end) < 1800 then "🚀 \($s.sv.short) ✅ \(($now - $last_end) | mins)"
+         "\($s.sv.short) \([$order | split(" ")[] as $dc | ($s.dcs | map(select(.dc == $dc)) | .[0] | if . then glyph else "·" end)] | join("")) \(($now - $first_start) | mins)"
+       elif $s.building then "\($s.sv.short) ⏳ CI \(($now - ($s.gh.ci.created | t)) | mins)"
+       elif $s.gh.ci.state == "failed" then "\($s.sv.short) ✗ CI"
+       elif $last_end and ($now - $last_end) < 1800 then "\($s.sv.short) ✅ \(($now - $last_end) | mins)"
        else null end)};
 
+# A service with news: what is happening first, the release already live last.
 def section:
   . as $s | ($s.gh.ci // null) as $ci | ($s.gh.repo // $s.sv.repo) as $repo
-  | (if $s.gh.tag then
-       "🚀 \($s.sv.dep)  \($s.gh.tag)  bump \($s.gh.bump.sha[0:9]) · \($s.gh.bump.date | hm)"
-         + (if $s.gh.run_url then " | href=\($s.gh.run_url)" else "" end),
-       ($s.gh.merges | merges_block($repo))
-     else "\($s.sv.dep)  \($s.target)" end),
+  | ($s.gh.run_url // null | if . then " href=\(.)" else "" end) as $run_href
+  | ("tooltip=\"bump \($s.gh.bump.sha // "?" | .[0:9]) \($s.gh.bump.date // null | if . then hm else "" end)\"") as $bump_tip
+  | (if $ci.state == "building" then "\($s.sv.dep)  ⏳ building \(($now - ($ci.created | t)) | mins) | href=\($ci.url)"
+     elif $ci.state == "failed" then "\($s.sv.dep)  ✗ CI failed, nothing rolls out | href=\($ci.url) color=red"
+     elif $s.rolling then "\($s.sv.dep)  🔄 rolling \(($now - $s.first_start) | mins)  \($s.target) |\($run_href) \($bump_tip)"
+     elif $s.title then "\($s.sv.dep)  ✅ done \($s.last_end | age) ago  \($s.target) |\($run_href) \($bump_tip)"
+     else "\($s.sv.dep)  \($s.target) |\($run_href) \($bump_tip)" end),
+    (($ci.merges // $s.gh.merges // []) | merges_block($repo; "")),
     (if $s.gh.error then "❌ gh  \($s.gh.error | clean | .[0:60]) | color=red" else empty end),
-    "---",
-    ($s.dcs[] |
-      if .state == "error" then "\(.dc | pad(5))\(state_text)  \(.error | clean | .[0:60])\(mono) color=red"
-      elif .state == "waiting" then "\(.dc | pad(5))\(state_text | pad(11))  \(.tag)"
-        + (if $s.gh.bump then "  bump hace \(($now - ($s.gh.bump.date | t)) | mins)" else "" end) + mono
-      else
-        "\(.dc | pad(5))\(state_text | pad(11))\("\(.avail)/\(.desired)" | lpad(9))\("\(if .desired > 0 then (.avail * 100 / .desired | floor) else 100 end)%" | lpad(6))  "
-        + (if .state == "done" and .end and (.end | t) > (.start | t)
-           then "\((.end | t) - (.start | t) | dur) → \(.end | hm)"
-           else "\(($now - (.start | t)) | dur)" end)
-        + mono + " tooltip=\"old \(.old) · start \(.start | hm)\""
-      end),
-    (if $ci then
-       "---",
-       (if $ci.state == "building"
-        then "⏳ build en curso \(($now - ($ci.created | t)) | mins) | href=\($ci.url)"
-        else "✗ CI failed, nothing will roll out | href=\($ci.url) color=red" end),
-       ($ci.merges | merges_block($repo)),
-       ($ci.jobs // [] | .[] | "\(job_icon) \(.name | clean) | href=\(.url) font=Menlo size=12"
-         + (if job_icon == "❌" then " color=red" else "" end))
-     else empty end);
+    (if $ci.state == "building" then
+       ($ci.jobs // []) as $j
+       | ([["🔄", "running", [$j[] | select(.status != "completed")]],
+           ["✅", "", [$j[] | select(.status == "completed" and .conclusion == "success")]],
+           ["❌", "failed", [$j[] | select(.status == "completed" and (.conclusion | IN("success", "skipped") | not))]]]
+          | map(select((.[2] | length) > 0) | "\(.[0]) \(.[2] | length)\(if .[1] == "" then "" else " " + .[1] end)") | join(" · ")) as $counts
+       | if $counts == "" then empty else "\($counts) | href=\($ci.url) \(F)" end
+     elif $ci.state == "failed" then
+       ($ci.jobs // [] | .[] | select(.status == "completed" and (.conclusion | IN("success", "skipped") | not))
+        | "❌ \(.name | clean) | href=\(.url) \(F) color=red")
+     else empty end),
+    (if $ci then dc_block("live  \($s.target)  ") else dc_block("") end);
 
-def summary:
-  "\(.sv.dep | pad(31))\(.target // "?" | pad(18))"
-  + (if any(.dcs[]; .state == "error") or .gh.error then "❌"
-     elif .last_end then "✅ \(.last_end | strflocaltime("%d/%m %H:%M"))" else "" end)
-  + mono;
+# A quiet service: one row, its detail in a submenu.
+def quiet_row:
+  . as $s | ($s.gh.repo // $s.sv.repo) as $repo
+  | "\($s.sv.short | pad(5))\(($s.last_end // ($s.gh.bump.date // null | if . then t else null end)) | if . then age else "?" end | pad(5))"
+    + "\($s.gh.merges[0].title // $s.target // "?" | clean | .[0:70]) | \(F) symbolize=false tooltip=\"\($s.target // "?") · \(dcs_summary)\"",
+    "--\($s.sv.dep)  \($s.target // "?")" + (if $s.gh.bump then "  bump \($s.gh.bump.sha[0:9]) \($s.gh.bump.date | hm)" else "" end)
+      + (if $s.gh.run_url then " | href=\($s.gh.run_url)" else "" end),
+    ($s.gh.merges // [] | merges_block($repo; "--")),
+    (if $s.gh.error then "--❌ gh  \($s.gh.error | clean | .[0:60]) | color=red" else empty end),
+    "-----",
+    ($s.dcs[] | "--" + dc_row($s.gh));
 
 map(enrich) as $all
 | ($all | map(select(.title or .gh.error or any(.dcs[]; .state == "error")))) as $news
 | ($all - $news) as $quiet
-| ([$all[] | .title | select(.)]) as $titles
-| (if any($all[].dcs[]; .error and (.error | test("credential|token|auth|login"; "i"))) then "🚀 🔑 | color=red"
-   elif ($titles | length) > 0 then $titles[]
-   else "| sfimage=shippingbox" end),
+| ([if any($all[].dcs[]; .error and (.error | test("credential|token|auth|login"; "i"))) then "🔑" else empty end]
+   + [$all[] | .title | select(.)]) as $parts
+| (if ($parts | length) == 0 then "| sfimage=shippingbox"
+   else "\($parts | join(" · ")) | sfimage=shippingbox"
+     + (if any($all[]; .rolling) then " font=.AppleSystemUIFontMonospaced" else "" end)
+     + (if any($all[]; .red) then " color=red" else "" end) end),
   ($news[] | "---", section),
-  (if ($quiet | length) > 0 then "---", ($quiet[] | summary, (section | "--" + .)) else empty end),
+  (if ($quiet | length) > 0 then "---", ($quiet[] | quiet_row) else empty end),
   "---",
-  "consultado \($checked) | color=gray",
+  "checked \($checked) | color=gray",
   "Refresh | refresh=true"
 '
