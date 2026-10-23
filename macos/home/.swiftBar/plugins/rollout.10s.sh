@@ -8,9 +8,8 @@
 # Rollouts of the services below in the 5 adserving DCs: the release from GitHub
 # (latest image bump of the deployment, the merges its CI runs built, any newer
 # run) and the pods from kubectl.
-# Title: one line per service with news, SwiftBar cycles them. The glyphs are
-# one per DC in the order euw usc usw use ase:
-#   █ done  ▒ rolling  ░ waiting (DC not on the release yet)  ✗ kubectl error  · not deployed
+# Title: the services with news joined by " · ". A rollout shows the DCs done out
+# of those it deploys to and the minutes since it started, e.g. "ssp 2/5 9m".
 # While idle, scheduled runs only redraw the cache; GitHub and the clusters are
 # queried when the menu opens, on Refresh, or via
 # swiftbar://refreshplugin?name=rollout, and the menu updates when that query ends.
@@ -194,7 +193,7 @@ else
   checked=$(date -r "$checked_file" "+%d/%m %H:%M")
 fi
 
-run_model -r --arg self "$0" --arg checked "$checked" --argjson now "$(date +%s)" --arg order "$dcs" "$model"' |
+run_model -r --arg self "$0" --arg checked "$checked" --argjson now "$(date +%s)" "$model"' |
 def t: fromdateiso8601;
 def hm: t | strflocaltime("%H:%M");
 def pad(n): tostring | if length < n then . + (" " * (n - length)) else . end;
@@ -206,28 +205,35 @@ def age: ($now - .) as $s
   | if $s < 3600 then "\($s / 60 | floor)m" elif $s < 86400 then "\($s / 3600 | floor)h" else "\($s / 86400 | floor)d" end;
 def F: "font=.AppleSystemUIFontMonospaced size=12";
 def clean: gsub("\\|"; "/") | gsub("\""; "'\''");
-def glyph: {done: "█", rolling: "▒", waiting: "░", error: "✗"}[.state];
-def icon: {done: "✅", rolling: "🔄", waiting: "⏳", error: "❌"}[.state];
+def rep(s; n): if n > 0 then s * n else "" end;
+def pct: if .desired > 0 then [.avail * 100 / .desired | floor, 100] | min else 100 end;
+# Fills a cell per 10%, so the bar is full only at 100%.
+def bar: pct as $p | rep("━"; $p / 10 | floor) + rep("─"; 10 - ($p / 10 | floor));
+# A merge whose [scope] tags name another service, e.g. a reserve-price change
+# that also triggered the header-bidding workflow in the monorepo.
+def foreign($dep): [.title | scan("\\[([^\\]]+)\\]") | .[0] | ascii_downcase | gsub(" "; "-")
+    | select(test("^[a-z]+-[0-9]+$") | not)] as $scopes
+  | ($scopes | length) > 0 and all($scopes[]; . as $sc | $sc != "shared" and ($dep | startswith($sc) | not));
 # Done with at least 90% of pods available; HPA scale-ups keep the rest busy.
 def settled: .state == "done" and .avail * 10 >= .desired * 9;
 def has_end: .end and (.end | t) > (.start | t);
 def took: (.end | t) - (.start | t);
 
-def merge_rows($repo; prefix):
+def merge_rows($repo; $dep; prefix):
   "\(prefix)\(.sha[0:9])  \(.title | clean | .[0:70])  \(.author) \(.date | hm) | href="
     + (if .pr then "https://github.com/\($repo)/pull/\(.pr)" else "https://github.com/\($repo)/commit/\(.sha)" end)
-    + " \(F) symbolize=false",
+    + " \(F) symbolize=false" + (if foreign($dep) then " color=gray" else "" end),
   "\(prefix)\(.sha[0:9])  copy sha | alternate=true bash=\($self) param1=copy param2=\(.sha) terminal=false \(F)";
-def merges_block($repo; prefix):
-  if length <= 3 then .[] | merge_rows($repo; prefix)
-  else "\(prefix)\(length) merges | \(F)", (.[] | merge_rows($repo; prefix + "--")) end;
+def merges_block($repo; $dep; prefix):
+  if length <= 3 then .[] | merge_rows($repo; $dep; prefix)
+  else "\(prefix)\(length) merges | \(F)", (.[] | merge_rows($repo; $dep; prefix + "--")) end;
 
 def dc_row($gh):
   if .state == "error" then "\(.dc | pad(5))❌  \(.error | clean | .[0:60]) | \(F) color=red"
   elif .state == "waiting" then "\(.dc | pad(5))⏳  \(.tag)"
     + (if $gh.bump then "  bump \($gh.bump.date | t | age) ago" else "" end) + " | \(F)"
   else
-    "\(.dc | pad(5))\(icon)\("\(.avail)/\(.desired)" | lpad(11))  "
+    "\(.dc | pad(5))\(bar)\("\(pct)%" | lpad(5))\("\(.avail)/\(.desired)" | lpad(11))  "
     + (if .state == "done" and has_end then "\(took | dur) → \(.end | hm)" else "\(($now - (.start | t)) | dur)" end)
     + " | \(F) tooltip=\"old \(.old) · start \(.start | hm)\""
   end;
@@ -256,7 +262,7 @@ def enrich:
       red: ($s.gh.ci.state == "failed" or any($s.dcs[]; .state == "error")),
       title:
       (if $s.rolling then
-         "\($s.sv.short) \([$order | split(" ")[] as $dc | ($s.dcs | map(select(.dc == $dc)) | .[0] | if . then glyph else "·" end)] | join("")) \(($now - $first_start) | mins)"
+         "\($s.sv.short) \([$s.dcs[] | select(settled)] | length)/\($s.dcs | length) \(($now - $first_start) | mins)"
        elif $s.building then "\($s.sv.short) ⏳ CI \(($now - ($s.gh.ci.created | t)) | mins)"
        elif $s.gh.ci.state == "failed" then "\($s.sv.short) ✗ CI"
        elif $last_end and ($now - $last_end) < 1800 then "\($s.sv.short) ✅ \(($now - $last_end) | mins)"
@@ -269,10 +275,10 @@ def section:
   | ("tooltip=\"bump \($s.gh.bump.sha // "?" | .[0:9]) \($s.gh.bump.date // null | if . then hm else "" end)\"") as $bump_tip
   | (if $ci.state == "building" then "\($s.sv.dep)  ⏳ building \(($now - ($ci.created | t)) | mins) | href=\($ci.url)"
      elif $ci.state == "failed" then "\($s.sv.dep)  ✗ CI failed, nothing rolls out | href=\($ci.url) color=red"
-     elif $s.rolling then "\($s.sv.dep)  🔄 rolling \(($now - $s.first_start) | mins)  \($s.target) |\($run_href) \($bump_tip)"
+     elif $s.rolling then "\($s.sv.dep)  rolling \(($now - $s.first_start) | mins)  \($s.target) |\($run_href) \($bump_tip)"
      elif $s.title then "\($s.sv.dep)  ✅ done \($s.last_end | age) ago  \($s.target) |\($run_href) \($bump_tip)"
      else "\($s.sv.dep)  \($s.target) |\($run_href) \($bump_tip)" end),
-    (($ci.merges // $s.gh.merges // []) | merges_block($repo; "")),
+    (($ci.merges // $s.gh.merges // []) | merges_block($repo; $s.sv.dep; "")),
     (if $s.gh.error then "❌ gh  \($s.gh.error | clean | .[0:60]) | color=red" else empty end),
     (if $ci.state == "building" then
        ($ci.jobs // []) as $j
@@ -294,7 +300,7 @@ def quiet_row:
     + "\($s.gh.merges[0].title // $s.target // "?" | clean | .[0:70]) | \(F) symbolize=false tooltip=\"\($s.target // "?") · \(dcs_summary)\"",
     "--\($s.sv.dep)  \($s.target // "?")" + (if $s.gh.bump then "  bump \($s.gh.bump.sha[0:9]) \($s.gh.bump.date | hm)" else "" end)
       + (if $s.gh.run_url then " | href=\($s.gh.run_url)" else "" end),
-    ($s.gh.merges // [] | merges_block($repo; "--")),
+    ($s.gh.merges // [] | merges_block($repo; $s.sv.dep; "--")),
     (if $s.gh.error then "--❌ gh  \($s.gh.error | clean | .[0:60]) | color=red" else empty end),
     "-----",
     ($s.dcs[] | "--" + dc_row($s.gh));
@@ -306,7 +312,6 @@ map(enrich) as $all
    + [$all[] | .title | select(.)]) as $parts
 | (if ($parts | length) == 0 then "| sfimage=shippingbox"
    else "\($parts | join(" · ")) | sfimage=shippingbox"
-     + (if any($all[]; .rolling) then " font=.AppleSystemUIFontMonospaced" else "" end)
      + (if any($all[]; .red) then " color=red" else "" end) end),
   ($news[] | "---", section),
   (if ($quiet | length) > 0 then "---", ($quiet[] | quiet_row) else empty end),
