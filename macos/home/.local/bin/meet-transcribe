@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Live transcript of a call, fully local. The remote side is recorded from the
-# Background Music device and your side from the built-in mic. Every 10 s chunk
+# Background Music device and your side from a mic it asks for. Every 10 s chunk
 # goes to a local whisper-server and the text lands in ~/Documents/meet-transcripts.
 # Use headphones, or the mic also picks up the remote side. The AirPods mic is
 # avoided on purpose, since opening it drops AirPods playback to mono 24 kHz.
@@ -25,6 +25,31 @@ command -v whisper-server >/dev/null || { echo "run: brew install whisper.cpp"; 
 # Start it before joining the call, since switching outputs mid-call glitches Meet audio.
 pgrep -x "Background Music" >/dev/null || { open -a "Background Music"; sleep 2; }
 
+function current_output() {
+    system_profiler SPAudioDataType 2>/dev/null |
+        awk '/^        [^ ].*:$/ { sub(/^ +/, ""); sub(/:$/, ""); dev = $0 } /Default Output Device: Yes/ { print dev }'
+}
+while [[ $(current_output) != "Background Music" ]]; do
+    read -rp "Output is '$(current_output)', not Background Music, so the remote side records silence. Switch it and press Enter, or type c to go on: " answer
+    [[ $answer == c ]] && break
+done
+
+# Ask for the mic every call: with the lid closed the built-in mic records silence.
+mics=()
+while IFS= read -r m; do mics+=("$m"); done < <(
+    ffmpeg -hide_banner -f avfoundation -list_devices true -i "" 2>&1 |
+        sed -n '/audio devices/,$ s/^.*\] \[[0-9]*\] //p' | grep -v '^Background Music'
+)
+mic="Micrófono del MacBook Pro"
+if ioreg -r -k AppleClamshellState -d 4 | grep -q '"AppleClamshellState" = Yes'; then
+    for m in "${mics[@]}"; do [[ $m != "$mic" ]] && { mic=$m; break; }; done
+fi
+echo "Mic for your side:"
+for i in "${!mics[@]}"; do echo "  $((i + 1))) ${mics[i]}"; done
+while read -rp "Pick a number [Enter = $mic]: " n && [[ -n $n ]]; do
+    [[ $n =~ ^[0-9]+$ ]] && ((n >= 1 && n <= ${#mics[@]})) && { mic=${mics[n - 1]}; break; }
+done
+
 function finish() {
     kill $(jobs -p) 2>/dev/null
     rm -rf "$chunks"
@@ -37,7 +62,7 @@ until curl -s -o /dev/null localhost:$port; do sleep 0.5; done
 
 ffmpeg -loglevel error \
     -f avfoundation -i ":Background Music" \
-    -f avfoundation -i ":Micrófono del MacBook Pro" \
+    -f avfoundation -i ":$mic" \
     -map 0:a -ac 1 -ar 16000 -f segment -segment_time 10 "$chunks/them-%05d.wav" \
     -map 1:a -ac 1 -ar 16000 -f segment -segment_time 10 "$chunks/me-%05d.wav" &
 
