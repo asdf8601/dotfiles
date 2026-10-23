@@ -68,9 +68,9 @@ def spec_update: [.metadata.managedFields[]?
 # The release is the newest image bump of the deployment; build-<id> names the CI
 # run that built it. Its merges are the head commits of the runs since the
 # previous bump, failed and cancelled ones included, since their code ships in
-# this build. A newer run that is not cancelled is the next build: still
-# building, or failed. A successful run counts as building for 30 min while its
-# bump lands, so a run that never bumps stops showing.
+# this build. A newer run still in progress is the next build, and a newer
+# failed one means CI failed. A newer successful run without a bump released
+# nothing (its release job was skipped), since the bump lands before the run ends.
 release='
 def build_id: capture("build-(?<id>[0-9]+)").id | tonumber;
 def merges(after; upto): $runs | map(select(.id > after and .id <= upto)
@@ -80,8 +80,8 @@ def merges(after; upto): $runs | map(select(.id > after and .id <= upto)
   ($b[0].title | build_id) as $bid
   | ($b[1].title // null | if . then build_id else 0 end) as $pbid
   | ($runs | map(select(.id == $bid)) | .[0]) as $run
-  | ($runs | map(select(.id > $bid and .conclusion != "cancelled"
-      and (.conclusion != "success" or $now - (.created | fromdateiso8601) < 1800))) | .[0]) as $ci
+  | ($runs | map(select(.id > $bid
+      and (.conclusion == null or (.conclusion | IN("failure", "timed_out", "startup_failure"))))) | .[0]) as $ci
   | {app: $app, repo: $repo, tag: "build-\($bid)",
      bump: {sha: $b[0].sha, date: $b[0].date},
      run_url: $run.url,
@@ -101,8 +101,7 @@ fetch_gh() {
       --jq '[.[] | {sha, date: .commit.author.date, title: (.commit.message | split("\n")[0])}]' 2>&1); then
     jq -cn --arg app "$dep" --arg err "$(tail -1 <<<"$runs$bumps")" '{app: $app, error: $err}' >"$out.tmp"
   else
-    rel=$(jq -cn --arg app "$dep" --arg repo "$repo" --argjson runs "$runs" --argjson bumps "$bumps" \
-      --argjson now "$(date +%s)" "$release")
+    rel=$(jq -cn --arg app "$dep" --arg repo "$repo" --argjson runs "$runs" --argjson bumps "$bumps" "$release")
     ci_id=$(jq -r '.ci.id // empty' <<<"$rel")
     if [[ -n $ci_id ]]; then
       jobs=$(command gh api "repos/$repo/actions/runs/$ci_id/jobs" \
