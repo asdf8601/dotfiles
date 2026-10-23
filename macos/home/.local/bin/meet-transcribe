@@ -50,21 +50,56 @@ while read -rp "Pick a number [Enter = $mic]: " n && [[ -n $n ]]; do
     [[ $n =~ ^[0-9]+$ ]] && ((n >= 1 && n <= ${#mics[@]})) && { mic=${mics[n - 1]}; break; }
 done
 
+# Whisper writes these on silence; a chunk whose whole text is one of them is dropped.
+hallucinations=(
+    "ご視聴ありがとうございました"
+    "Gracias por ver el video"
+    "Subtítulos realizados por la comunidad de Amara.org"
+    "Thank you for watching"
+)
+
+function transcribe() {
+    local side=$1 f=$2 text
+    # keep the chunk if curl dies (ctrl-c mid-request), so finish retries it
+    text=$(curl -sf -F file=@"$f" -F response_format=text localhost:$port/inference) || return 0
+    rm "$f"
+    text=$(tr -s ' \n' ' ' <<<"$text" | sed 's/^ //; s/ $//')
+    printf '%s\n' "${hallucinations[@]}" | grep -qxF -- "${text%[.!。]}" && return 0
+    [[ -n $text ]] && echo "[$(date +%H:%M:%S)] $side: $text" | tee -a "$out"
+    return 0
+}
+
+# Stop ffmpeg with a single SIGINT so it closes the last segment, then
+# transcribe what is left before stopping whisper-server.
 function finish() {
+    trap '' INT
+    kill -INT $ffmpeg_pid 2>/dev/null || true
+    wait $ffmpeg_pid 2>/dev/null || true
+    for side in them me; do
+        for f in "$chunks"/$side-*.wav; do
+            [[ -f $f ]] && transcribe $side "$f"
+        done
+    done
     kill $(jobs -p) 2>/dev/null
     rm -rf "$chunks"
     [[ -s $out ]] && meet-summary "$out"
 }
 trap finish EXIT
 
+# set -m puts whisper-server and ffmpeg in their own process groups, so ctrl-c
+# reaches only this script and finish stops them in order. A second SIGINT
+# makes ffmpeg abort the last segment.
+set -m
 whisper-server -m "$model" --vad -vm "$vad_model" -l "$lang" --port $port >/dev/null 2>&1 &
 until curl -s -o /dev/null localhost:$port; do sleep 0.5; done
 
-ffmpeg -loglevel error \
+ffmpeg -nostdin -loglevel error \
     -f avfoundation -i ":Background Music" \
     -f avfoundation -i ":$mic" \
     -map 0:a -ac 1 -ar 16000 -f segment -segment_time 10 "$chunks/them-%05d.wav" \
     -map 1:a -ac 1 -ar 16000 -f segment -segment_time 10 "$chunks/me-%05d.wav" &
+ffmpeg_pid=$!
+set +m
 
 mkdir -p "$(dirname "$out")"
 touch "$out"
@@ -76,9 +111,7 @@ while sleep 1; do
 
         # the newest chunk is still being written by ffmpeg
         for f in "${files[@]:0:${#files[@]}-1}"; do
-            text=$(curl -s -F file=@"$f" -F response_format=text localhost:$port/inference | tr -s ' \n' ' ' | sed 's/^ //; s/ $//')
-            rm "$f"
-            [[ -n $text ]] && echo "[$(date +%H:%M:%S)] $side: $text" | tee -a "$out"
+            transcribe $side "$f"
         done
     done
 done
