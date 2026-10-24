@@ -1,8 +1,9 @@
 #!/bin/sh
 # Open Ghostty with a specific title
+last=$(aerospace list-windows --all --format '%{window-id}' | sort -n | tail -1)
 open -n -a Ghostty --args \
   --title="Ghostty-Floating" \
   --window-save-state=never \
   -e /bin/sh -c "/opt/nvim/bin/nvim --cmd 'set title titlestring=Ghostty-Floating' $*"
 
-/Users/mgreco/.local/bin/center-window -t "Ghostty-Floating"
+/Users/mgreco/.local/bin/center-window -a "${last:-0}" -t "Ghostty-Floating"

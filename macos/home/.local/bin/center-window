@@ -1,31 +1,38 @@
 #!/bin/sh
 # Center a window whose title contains TITLE on the main screen.
-# Waits up to 3s for a matching window that did not exist at start (so it can
-# run right after launching the app), else uses the newest existing match.
-# Usage: center-window -t TITLE
+# With -a ID, waits up to 3s for a matching window whose AeroSpace id is
+# greater than ID, so the caller can record the highest id before launching
+# the app. Without -a, uses the newest existing match.
+# Usage: center-window [-a ID] -t TITLE
 
-[ "$1" = "-t" ] && shift
-title="$1"
-[ -z "$title" ] && { echo "usage: center-window -t TITLE" >&2; exit 1; }
+after=0
+title=""
+while getopts a:t: opt; do
+  case $opt in
+    a) after=$OPTARG ;;
+    t) title=$OPTARG ;;
+    *) exit 1 ;;
+  esac
+done
+[ -z "$title" ] && { echo "usage: center-window [-a ID] -t TITLE" >&2; exit 1; }
 
-matches() {
+newest() {
   aerospace list-windows --all --format '%{window-id}|%{app-pid}|%{window-title}' |
-    grep -F "$title" | sort -t'|' -k1,1n
+    grep -F "$title" | sort -t'|' -k1,1n | tail -1
 }
 
-before=$(matches | cut -d'|' -f1)
 pid=""
 i=0
 while [ $i -lt 100 ]; do
-  pid=$(matches | while IFS='|' read -r id p _; do
-    echo "$before" | grep -qx "$id" || echo "$p"
-  done | tail -1)
-  [ -n "$pid" ] && break
+  w=$(newest)
+  if [ -n "$w" ] && [ "${w%%|*}" -gt "$after" ]; then
+    pid=$(echo "$w" | cut -d'|' -f2)
+    break
+  fi
   sleep 0.03
   i=$((i + 1))
 done
-[ -z "$pid" ] && pid=$(matches | tail -1 | cut -d'|' -f2)
-[ -z "$pid" ] && { echo "center-window: no window matching '$title'" >&2; exit 1; }
+[ -z "$pid" ] && { echo "center-window: no new window matching '$title'" >&2; exit 1; }
 
 osascript -l JavaScript - "$pid" "$title" <<'EOF'
 ObjC.import("AppKit")
@@ -37,13 +44,8 @@ function run(argv) {
   var sy = primary.size.height - vis.origin.y - sh
   var proc = Application("System Events").processes.whose({ unixId: pid })[0]
   var win = proc.windows.whose({ name: { _contains: title } })[0]
-  var size = win.size()
-  var w = size[0], h = size[1]
-  if (w >= sw - 20) {
-    w = 1200
-    h = 800
-    win.size = [w, h]
-  }
+  var w = Math.min(1200, sw - 40), h = Math.min(800, sh - 40)
+  win.size = [w, h]
   win.position = [Math.round(sx + (sw - w) / 2), Math.round(sy + (sh - h) / 2)]
   proc.frontmost = true
   return "centered " + title + " (pid " + pid + ")"
