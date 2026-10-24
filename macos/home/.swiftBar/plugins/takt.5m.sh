@@ -11,7 +11,6 @@
 # <swiftbar.hideLastUpdated>true</swiftbar.hideLastUpdated>
 # <swiftbar.hideDisablePlugin>true</swiftbar.hideDisablePlugin>
 # <swiftbar.hideSwiftBar>true</swiftbar.hideSwiftBar>
-# <swiftbar.refreshOnOpen>true</swiftbar.refreshOnOpen>
 # <swiftbar.environment>[EDITOR=nvim, TAKT_FILE=/Users/mgreco/.takt-log/seedtag.csv, ... ]</swiftbar.environment>
 
 takt=/Users/mgreco/.local/bin/takt
