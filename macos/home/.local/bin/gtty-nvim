@@ -6,4 +6,4 @@ open -n -a Ghostty --args \
   --window-save-state=never \
   -e /bin/sh -c "/opt/nvim/bin/nvim --cmd 'set title titlestring=Ghostty-Floating' $*"
 
-/Users/mgreco/.local/bin/center-window -a "${last:-0}" -t "Ghostty-Floating"
+/Users/mgreco/.local/bin/center-window -a "${last:-0}" -z 3 -t "Ghostty-Floating"

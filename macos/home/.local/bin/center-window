@@ -3,18 +3,21 @@
 # With -a ID, waits up to 3s for a matching window whose AeroSpace id is
 # greater than ID, so the caller can record the highest id before launching
 # the app. Without -a, uses the newest existing match.
-# Usage: center-window [-a ID] -t TITLE
+# With -z N, presses cmd+= N times on the window to enlarge its font.
+# Usage: center-window [-a ID] [-z N] -t TITLE
 
 after=0
+zoom=0
 title=""
-while getopts a:t: opt; do
+while getopts a:t:z: opt; do
   case $opt in
     a) after=$OPTARG ;;
     t) title=$OPTARG ;;
+    z) zoom=$OPTARG ;;
     *) exit 1 ;;
   esac
 done
-[ -z "$title" ] && { echo "usage: center-window [-a ID] -t TITLE" >&2; exit 1; }
+[ -z "$title" ] && { echo "usage: center-window [-a ID] [-z N] -t TITLE" >&2; exit 1; }
 
 newest() {
   aerospace list-windows --all --format '%{window-id}|%{app-pid}|%{window-title}' |
@@ -34,10 +37,10 @@ while [ $i -lt 100 ]; do
 done
 [ -z "$pid" ] && { echo "center-window: no new window matching '$title'" >&2; exit 1; }
 
-osascript -l JavaScript - "$pid" "$title" <<'EOF'
+osascript -l JavaScript - "$pid" "$title" "$zoom" <<'EOF'
 ObjC.import("AppKit")
 function run(argv) {
-  var pid = parseInt(argv[0]), title = argv[1]
+  var pid = parseInt(argv[0]), title = argv[1], zoom = parseInt(argv[2])
   var primary = $.NSScreen.screens.objectAtIndex(0).frame
   var vis = $.NSScreen.mainScreen.visibleFrame
   var sx = vis.origin.x, sw = vis.size.width, sh = vis.size.height
@@ -48,6 +51,9 @@ function run(argv) {
   win.size = [w, h]
   win.position = [Math.round(sx + (sw - w) / 2), Math.round(sy + (sh - h) / 2)]
   proc.frontmost = true
+  for (var i = 0; i < zoom; i++) {
+    Application("System Events").keystroke("=", { using: "command down" })
+  }
   return "centered " + title + " (pid " + pid + ")"
 }
 EOF
