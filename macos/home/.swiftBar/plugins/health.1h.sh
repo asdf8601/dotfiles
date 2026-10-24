@@ -182,7 +182,7 @@ fetch
 
 checked=$(date -r "$(cat "$cache/checked")" +%H:%M)
 
-run_model -r --arg checked "$checked" --arg project "$project" "$model"' |
+run_model -r --arg checked "$checked" --arg project "$project" --arg k9s ~/.local/bin/gtty-k9s "$model"' |
 def F: "font=.AppleSystemUIFontMonospaced size=12";
 def pad(n): tostring | if length < n then . + (" " * (n - length)) else . end;
 def lpad(n): tostring | if length < n then (" " * (n - length)) + . else . end;
@@ -212,9 +212,10 @@ def logs_url($dep): "https://console.cloud.google.com/logs/query;query="
      + " | \(F)"
      + (if ($s.red | length) > 0 then " color=red" elif ($s.orange | length) > 0 then " color=orange" else "" end),
      ($s.red + $s.orange | if length > 0 then "--\(join(" · ")) | \(F)" else empty end),
-     ($s.dcs[] | if .error then "--\(.dc | pad(5))❌ \(.error | .[0:70]) | \(F) color=red"
+     ($s.dcs[] | " bash=\($k9s) param1=\(.dc) param2=\($s.sv.dep) terminal=false" as $k9s_click
+       | if .error then "--\(.dc | pad(5))❌ \(.error | .[0:70]) | \(F) color=red\($k9s_click)"
        else "--\(.dc | pad(5))5xx \(.fivexx.peak | pct | lpad(6))  unav \(.unavail | pct | lpad(6))  rst \(.restarts // 0 | tostring | lpad(3))"
-         + (if (.oom // 0) > 0 then "  OOM \(.oom)" else "" end) + " | \(F)" end),
+         + (if (.oom // 0) > 0 then "  OOM \(.oom)" else "" end) + " | \(F)\($k9s_click)" end),
      (if $s.top and ($s.top.top | length) > 0 then
         "-----",
         "--top WARNING+ (\($s.top.rate * 100)% of \($s.top.mins) min, \($s.top.n) entries) | \(F) color=gray",

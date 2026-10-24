@@ -1,0 +1,11 @@
+#!/bin/sh
+# Open k9s in a floating Ghostty on the pods of one app in one kube context.
+# Usage: gtty-k9s CONTEXT APP
+[ $# -eq 2 ] || { echo "usage: gtty-k9s CONTEXT APP" >&2; exit 1; }
+last=$(aerospace list-windows --all --format '%{window-id}' | sort -n | tail -1)
+open -n -a Ghostty --args \
+  --title="Ghostty-Floating" \
+  --window-save-state=never \
+  -e /bin/zsh -lc "k9s --context '$1' -n default -c 'pods app=$2'"
+
+/Users/mgreco/.local/bin/center-window -a "${last:-0}" -t "Ghostty-Floating"

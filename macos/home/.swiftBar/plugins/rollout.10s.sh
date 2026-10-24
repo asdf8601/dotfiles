@@ -193,7 +193,7 @@ else
   checked=$(date -r "$checked_file" "+%d/%m %H:%M")
 fi
 
-run_model -r --arg self "$0" --arg checked "$checked" --argjson now "$(date +%s)" "$model"' |
+run_model -r --arg self "$0" --arg k9s ~/.local/bin/gtty-k9s --arg checked "$checked" --argjson now "$(date +%s)" "$model"' |
 def t: fromdateiso8601;
 def hm: t | strflocaltime("%H:%M");
 def pad(n): tostring | if length < n then . + (" " * (n - length)) else . end;
@@ -228,14 +228,16 @@ def merges_block($repo; $dep; prefix):
   if length <= 3 then .[] | merge_rows($repo; $dep; prefix)
   else "\(prefix)\(length) merges | \(F)", (.[] | merge_rows($repo; $dep; prefix + "--")) end;
 
+# Clicking a DC row opens k9s on the pods of the service in that cluster.
+def k9s: " bash=\($k9s) param1=\(.dc) param2=\(.app) terminal=false";
 def dc_row($gh):
   if .state == "error" then "\(.dc | pad(5))❌  \(.error | clean | .[0:60]) | \(F) color=red"
   elif .state == "waiting" then "\(.dc | pad(5))⏳  \(.tag)"
-    + (if $gh.bump then "  bump \($gh.bump.date | t | age) ago" else "" end) + " | \(F)"
+    + (if $gh.bump then "  bump \($gh.bump.date | t | age) ago" else "" end) + " | \(F)\(k9s)"
   else
     "\(.dc | pad(5))\(bar)\("\(pct)%" | lpad(5))\("\(.avail)/\(.desired)" | lpad(11))  "
     + (if .state == "done" and has_end then "\(took | dur) → \(.end | hm)" else "\(($now - (.start | t)) | dur)" end)
-    + " | \(F) tooltip=\"old \(.old) · start \(.start | hm)\""
+    + " | \(F) tooltip=\"old \(.old) · start \(.start | hm)\"\(k9s)"
   end;
 
 # "5 DCs ✅ 11m–22m → 10:36" over the settled DCs, then the ones that are not.
