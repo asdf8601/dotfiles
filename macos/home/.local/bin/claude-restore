@@ -1,0 +1,25 @@
+#!/usr/bin/env zsh
+# tmux-resurrect restore command for panes saved running `claude ...` (see
+# @resurrect-processes in .tmux.conf). It reads this pane's saved command from
+# the resurrect file and resumes that conversation with `ccr <uuid>`. A pane
+# saved without a uuid stays on a plain shell with a note.
+
+dir=$(tmux show -gqv @resurrect-dir)
+dir=${dir/#\~/$HOME}
+if [[ -z "$dir" ]]; then
+  if [[ -d ~/.tmux/resurrect ]]; then
+    dir=~/.tmux/resurrect
+  else
+    dir=${XDG_DATA_HOME:-$HOME/.local/share}/tmux/resurrect
+  fi
+fi
+
+pane=$(tmux display -p -t "$TMUX_PANE" '#S	#I	#P')
+saved=$(awk -F'\t' -v k="$pane" '$1 == "pane" && $2 "\t" $3 "\t" $6 == k { print substr($11, 2); exit }' "$dir/last")
+
+if [[ "$saved" =~ '(--resume|--session-id|-r) ([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})' ]]; then
+  exec ccr "${match[2]}"
+fi
+
+print -r -- "claude-restore: not resumed, the saved command has no session id: ${saved[1,120]:-(none found for $pane)}"
+print -r -- "claude-restore: find the conversation with the sessions skill, then run: ccr <uuid>"
