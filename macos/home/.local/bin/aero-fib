@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# aero-main-stack: fibonacci layout, focused window first, each next window splits the rest in the other direction
+set -euo pipefail
+a=/opt/homebrew/bin/aerospace
+ws=$($a list-workspaces --focused)
+main=$($a list-windows --focused --format '%{window-id}')
+others=$($a list-windows --workspace "$ws" --format '%{window-id}' | grep -vx "$main" || true)
+[ -z "$others" ] && exit 0
+ids=($main $others)
+n=${#ids[@]}
+
+$a flatten-workspace-tree --workspace "$ws"
+$a layout --workspace "$ws" --root h_tiles >/dev/null 2>&1 || true
+for ((i = n - 1; i >= 0; i--)); do
+  for _ in $(seq "$n"); do $a move --window-id "${ids[i]}" --boundaries workspace --boundaries-action stop left; done
+done
+# Join from the innermost pair outward; normalization flips each nested container to the opposite orientation
+if ((n > 2)); then
+  $a join-with --window-id "${ids[n - 1]}" left
+  for ((i = n - 3; i >= 1; i--)); do $a join-with --window-id "${ids[i]}" right; done
+fi
+$a focus --window-id "$main"

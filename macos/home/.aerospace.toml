@@ -39,6 +39,7 @@ alt-shift-p = '''exec-and-forget ws=$(/opt/homebrew/bin/aerospace list-workspace
 
 ctrl-shift-space = 'layout floating tiling'           # 'floating toggle' in i3
 ctrl-shift-slash = 'layout tiles horizontal vertical'
+alt-m = 'exec-and-forget ~/.local/bin/aero-fib'                  # fibonacci layout, focused window first
 
 ctrl-shift-h = 'focus left'
 ctrl-shift-j = 'focus down'
@@ -372,3 +373,7 @@ run = ['layout floating']
 
 # aerospace list-apps
 # aerospace list-apps --format "%{app-bundle-id}"
+
+[[on-window-detected]]
+if.app-id = 'com.pais.handy'
+run = ['layout floating']
