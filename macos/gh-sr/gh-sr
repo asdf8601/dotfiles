@@ -1,0 +1,259 @@
+#!/usr/bin/env python3
+"""gh sr (simple review): review a PR by editing it in a worktree; the diff becomes GitHub suggestions.
+
+  gh sr open <N|URL>      worktree of PR N at <repo>/.worktree/pr-<N>, detached;
+                          reopening moves it to the latest PR head if you have no edits
+  gh sr review [--dry-run]
+                          run inside the worktree; writes payload.json + preview.md
+                          and, without --dry-run, posts them as your pending review
+                          (replacing the one you had)
+  gh sr submit [comment|approve|request-changes] [message]
+                          posts the review first if there is no pending one
+  gh sr discard           delete your pending review, the worktree and its ref
+
+A comment line "REVIEW: text" becomes the comment text; "REVIEW(3/5): text"
+adds an importance label (1/5 don't care .. 5/5 must fix). Next to a code change
+it explains the suggestion; alone it is a plain comment on the line below, or on
+the N lines below with "REVIEW(+N):" / "REVIEW(3/5+N):". Changes GitHub cannot
+anchor (outside the PR diff, new files) go in the review body as diff blocks.
+"""
+
+import json
+import re
+import subprocess
+import sys
+from pathlib import Path
+
+HUNK = re.compile(r"^@@ -(\d+)(?:,(\d+))? \+(\d+)(?:,(\d+))? @@")
+REVIEW = re.compile(r"^\s*\S{0,4}\s*REVIEW(?:\(([\w/]*)(?:\+(\d+))?\))?:\s*(.*?)\s*(?:\*/|-->)?\s*$")
+
+
+def run(*cmd, cwd=None):
+    res = subprocess.run(cmd, cwd=cwd, capture_output=True, text=True)
+    if res.returncode:
+        sys.exit(f"{' '.join(cmd[:3])}: {res.stderr.strip()} {res.stdout.strip()}")
+    return res.stdout
+
+
+def gh_json(*args, cwd=None):
+    return json.loads(run("gh", *args, cwd=cwd))
+
+
+def cmd_open(number, url_repo=None):
+    # The main checkout, also when run from inside another PR worktree.
+    root = Path(run("git", "rev-parse", "--path-format=absolute", "--git-common-dir").strip()).parent
+    repo = gh_json("repo", "view", "--json", "nameWithOwner", cwd=root)["nameWithOwner"]
+    if url_repo and url_repo.lower() != repo.lower():
+        sys.exit(f"that PR is in {url_repo}, but you are in {repo}; cd into a clone of {url_repo}")
+    path = root / ".worktree" / f"pr-{number}"
+    ref = f"refs/sr/{number}"
+    # --no-prune: with fetch.prune on, a second fetch deletes the ref it just wrote.
+    run("git", "fetch", "--no-prune", "origin", f"+pull/{number}/head:{ref}", cwd=root)
+    if not path.exists():
+        run("git", "worktree", "add", "--detach", str(path), ref, cwd=root)
+    elif run("git", "rev-parse", "HEAD", cwd=path) != run("git", "rev-parse", ref, cwd=root):
+        if run("git", "status", "--porcelain", "--untracked-files=no", cwd=path):
+            sys.exit(f"the PR has new commits but {path} has edits; post or discard them first")
+        run("git", "checkout", "--detach", ref, cwd=path)
+    print(path)
+
+
+def parse_hunks(diff):
+    # Counts, not prefixes, decide what is content: a removed "-- comment" line reads as "--- ".
+    hunks, path, hunk, old_left, new_left = [], None, None, 0, 0
+    for line in diff.splitlines():
+        if old_left or new_left:
+            if line[:1] == "-":
+                old_left -= 1
+            elif line[:1] == "+":
+                hunk["new"].append(line[1:])
+                new_left -= 1
+            hunk["raw"].append(line)
+        elif line.startswith("--- a/"):
+            path = line[6:]
+        elif line.startswith("+++ b/"):
+            path = line[6:]
+        elif m := HUNK.match(line):
+            old_left = int(m[2] if m[2] is not None else 1)
+            new_left = int(m[4] if m[4] is not None else 1)
+            hunk = {"path": path, "start": int(m[1]), "count": old_left, "new": [], "raw": [line]}
+            hunks.append(hunk)
+    return hunks
+
+
+def commentable_lines(repo, number):
+    lines = {}
+    for page in gh_json("api", "--paginate", "--slurp", f"repos/{repo}/pulls/{number}/files"):
+        for item in page:
+            right, n = set(), 0
+            for line in (item.get("patch") or "").splitlines():
+                if m := HUNK.match(line):
+                    n = int(m[3])
+                elif line[:1] in (" ", "+"):
+                    right.add(n)
+                    n += 1
+            lines[item["filename"]] = right
+    return lines
+
+
+def suggestion(note, code):
+    return (note + "\n\n" if note else "") + "```suggestion\n" + "".join(c + "\n" for c in code) + "```"
+
+
+def comment(path, first, last, body):
+    c = {"path": path, "line": last, "side": "RIGHT", "body": body}
+    if first != last:
+        c |= {"start_line": first, "start_side": "RIGHT"}
+    return c
+
+
+def candidates(hunk, head_lines):
+    """Comments for a hunk, best first; the caller keeps the first one GitHub can anchor."""
+    notes, code, span = [], [], 1
+    for line in hunk["new"]:
+        if m := REVIEW.match(line):
+            notes.append(f"**{m[1]}:** {m[3]}" if m[1] else m[3])
+            span = max(span, int(m[2] or 1))
+        else:
+            code.append(line)
+    note = "\n".join(notes)
+    path, a, b = hunk["path"], hunk["start"], hunk["count"]
+
+    if b == 0 and not code:
+        return note, [comment(path, a + 1, a + span, note), comment(path, a + 1, a + 1, note), comment(path, a, a, note)] if note else []
+    if b == 0:
+        # Insertion after line a: rewrite line a (or line a+1) to include the new lines.
+        out = []
+        if a >= 1:
+            out.append(comment(path, a, a, suggestion(note, [head_lines[a - 1]] + code)))
+        if a < len(head_lines):
+            out.append(comment(path, a + 1, a + 1, suggestion(note, code + [head_lines[a]])))
+        return note, out
+    return note, [comment(path, a, a + b - 1, suggestion(note, code))]
+
+
+def head_file(root, path, cache={}):
+    if path not in cache:
+        res = subprocess.run(["git", "show", f"HEAD:{path}"], cwd=root, capture_output=True, text=True)
+        cache[path] = res.stdout.split("\n") if res.returncode == 0 else []
+    return cache[path]
+
+
+def worktree():
+    root = Path(run("git", "rev-parse", "--show-toplevel").strip())
+    if not (m := re.fullmatch(r"pr-(\d+)", root.name)):
+        sys.exit(f"not a gh sr worktree: {root}")
+    repo = gh_json("repo", "view", "--json", "nameWithOwner", cwd=root)["nameWithOwner"]
+    return root, repo, int(m[1])
+
+
+def pending_review(repo, number):
+    me = run("gh", "api", "user", "--jq", ".login").strip()
+    reviews = gh_json("api", "--paginate", "--slurp", f"repos/{repo}/pulls/{number}/reviews")
+    mine = [r for page in reviews for r in page if r["state"] == "PENDING" and r["user"]["login"] == me]
+    return mine[0] if mine else None
+
+
+def cmd_review(dry_run):
+    root, repo, number = worktree()
+    head = run("git", "rev-parse", "HEAD", cwd=root).strip()
+    diff = run("git", "diff", "-U0", "--no-color", "--no-ext-diff", "--src-prefix=a/", "--dst-prefix=b/", "HEAD", cwd=root)
+    allowed = commentable_lines(repo, number)
+
+    def anchorable(c):
+        return all(n in allowed.get(c["path"], ()) for n in range(c.get("start_line", c["line"]), c["line"] + 1))
+
+    comments, general = [], []
+    for hunk in parse_hunks(diff):
+        note, cands = candidates(hunk, head_file(root, hunk["path"]))
+        if not cands:
+            continue
+        if c := next((c for c in cands if anchorable(c)), None):
+            comments.append(c)
+            continue
+        # Not part of the PR diff: GitHub cannot anchor it, so it goes in the review body.
+        a, b = hunk["start"], hunk["count"]
+        where = f"`{hunk['path']}:{a}-{a + b - 1}`" if b > 1 else f"`{hunk['path']}:{max(a, 1)}`"
+        code = [r for r in hunk["raw"][1:] if not REVIEW.match(r[1:])]
+        general.append(where + (f" {note}" if note else "") + ("\n```diff\n" + "\n".join(code) + "\n```" if code else ""))
+
+    untracked = run("git", "ls-files", "--others", "--exclude-standard", cwd=root).split()
+    # 99 (the nvim LLM plugin) writes its scratch files to ./tmp
+    for path in (p for p in untracked if not p.startswith("tmp/")):
+        text = (root / path).read_text(errors="replace").rstrip("\n")
+        general.append(f"New file `{path}`:\n```\n{text}\n```")
+
+    payload = {"commit_id": head, "body": "\n\n".join(general), "comments": comments}
+    out = Path(run("git", "rev-parse", "--absolute-git-dir", cwd=root).strip()) / "sr"
+    out.mkdir(exist_ok=True)
+    (out / "payload.json").write_text(json.dumps(payload, indent=2) + "\n")
+
+    md = [f"# {repo}#{number} @ {head[:9]}", ""]
+    if general:
+        md += ["## Review body (outside the PR diff)", "", payload["body"], ""]
+    for c in comments:
+        first = c.get("start_line", c["line"])
+        span = f"{first}-{c['line']}" if first != c["line"] else str(first)
+        md += [f"## {c['path']}:{span}", "", c["body"], ""]
+    (out / "preview.md").write_text("\n".join(md) + "\n")
+
+    print(f"{len(comments)} inline comments, {len(general)} in the review body")
+    print(out / "preview.md")
+    print(out / "payload.json")
+    if dry_run:
+        return
+    if not comments and not general:
+        sys.exit("nothing to post")
+    if old := pending_review(repo, number):
+        run("gh", "api", "--method", "DELETE", f"repos/{repo}/pulls/{number}/reviews/{old['id']}")
+    run("gh", "api", "--method", "POST", f"repos/{repo}/pulls/{number}/reviews", "--input", str(out / "payload.json"))
+    print(f"pending review posted: https://github.com/{repo}/pull/{number}/files")
+
+
+def cmd_submit(event, message):
+    _, repo, number = worktree()
+    if not (review := pending_review(repo, number)):
+        cmd_review(dry_run=False)
+        review = pending_review(repo, number)
+    # The submit body replaces the review body, which holds the hunks GitHub could not anchor.
+    body = "\n\n".join(b for b in (message, review["body"]) if b)
+    fields = ["-f", f"event={event.upper().replace('-', '_')}"] + (["-f", f"body={body}"] if body else [])
+    run("gh", "api", "--method", "POST", f"repos/{repo}/pulls/{number}/reviews/{review['id']}/events", *fields)
+    print(f"review submitted: https://github.com/{repo}/pull/{number}")
+
+
+def cmd_discard():
+    root, repo, number = worktree()
+    if review := pending_review(repo, number):
+        run("gh", "api", "--method", "DELETE", f"repos/{repo}/pulls/{number}/reviews/{review['id']}")
+        print("pending review deleted")
+    main_root = root.parent.parent
+    run("git", "worktree", "remove", "--force", str(root), cwd=main_root)
+    run("git", "update-ref", "-d", f"refs/sr/{number}", cwd=main_root)
+    print(f"removed {root}")
+
+
+def main():
+    args = sys.argv[1:]
+    if args[:1] == ["open"] and len(args) == 2:
+        if m := re.search(r"github\.com/([^/]+/[^/]+)/pull/(\d+)", args[1]):
+            cmd_open(int(m[2]), m[1])
+        elif m := re.fullmatch(r"#?(\d+)", args[1]):
+            cmd_open(int(m[1]))
+        else:
+            sys.exit(__doc__)
+    elif args[:1] == ["review"]:
+        cmd_review("--dry-run" in args)
+    elif args[:1] == ["submit"] and len(args) <= 3:
+        event = args[1] if len(args) > 1 else "comment"
+        if event not in ("comment", "approve", "request-changes"):
+            sys.exit(__doc__)
+        cmd_submit(event, args[2] if len(args) > 2 else "")
+    elif args == ["discard"]:
+        cmd_discard()
+    else:
+        sys.exit(__doc__)
+
+
+if __name__ == "__main__":
+    main()
