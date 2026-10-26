@@ -18,7 +18,8 @@
 # A `resume` only clears `attention`: an approved tool ran, so nothing is waiting.
 
 cmd="$1"
-recount() { tmux set-option -g @cc_count "$(${0:h}/cc-attention --count)" 2>/dev/null }
+dir=${0:A:h}
+recount() { tmux set-option -g @cc_count "$($dir/cc-attention --count)" 2>/dev/null }
 [[ "$cmd" == "recount" ]] && { recount; exit 0 }
 if [[ "$cmd" == "seen" ]]; then
   pane="$2"
