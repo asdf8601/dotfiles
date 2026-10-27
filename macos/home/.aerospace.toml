@@ -115,6 +115,15 @@ enter = 'mode main'
 esc = 'mode main'
 
 [[on-window-detected]]
+if.window-title-regex-substring = '(?i)(paypal|stripe|klarna|apple pay|3d secure|3-d secure|verified by visa|mastercard id check|securecode)'
+run = ['layout floating', 'move-node-to-workspace 5']
+
+[[on-window-detected]]
+if.app-id = 'org.mozilla.firefox'
+if.window-title-regex-substring = '(?i)(cuentas de google|google accounts|inicia sesión|iniciar sesión|sign in)'
+run = 'layout floating'
+
+[[on-window-detected]]
 if.app-id = 'com.markmcguill.strongbox'
 run = 'layout floating'
 
@@ -138,6 +147,11 @@ run = 'layout floating'
 [[on-window-detected]]
 if.app-id = 'com.mitchellh.ghostty'
 run = ['move-node-to-workspace 1']
+
+[[on-window-detected]]
+if.app-id = 'com.google.Chrome'
+if.window-title-regex-substring = '(?i)(cuentas de google|google accounts|inicia sesión|iniciar sesión|sign in)'
+run = ['layout floating', 'move-node-to-workspace 2']
 
 [[on-window-detected]]
 if.app-id = 'com.google.Chrome'
@@ -376,4 +390,8 @@ run = ['layout floating']
 
 [[on-window-detected]]
 if.app-id = 'com.pais.handy'
+run = ['layout floating']
+
+[[on-window-detected]]
+if.app-id = 'com.hnc.Discord'
 run = ['layout floating']
