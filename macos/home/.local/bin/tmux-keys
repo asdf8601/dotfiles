@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# fzf over tmux keybindings; enter runs the chosen one.
+# Usage: tmux-keys <client_name>  (called from the prefix ? popup)
+client=$1
+line=$({
+  tmux list-keys -N -a -T prefix
+  tmux list-keys -N -a -T root -P ''
+} | grep -vE 'Mouse|Click|Wheel|Drag' | fzf --no-sort) || exit 0
+
+read -r first second _ <<<"$line"
+if [[ $line == " "* ]]; then
+  keys=("$first")
+else
+  keys=("$first" "$second")
+fi
+# Wait for the popup to close, so the keys reach the window and not the popup.
+tmux run-shell -b -d 0.1 "tmux send-keys -K -c '$client' $(printf '%q ' "${keys[@]}")"
