@@ -12,7 +12,7 @@
 In the file, "# path:10-20" or "# path:10" starts a comment on those lines of
 the PR head, and the text below it is the comment. A ```suggestion block in
 the text replaces those lines. A range outside the PR diff goes in the review
-body with its path and lines.
+body with its path and lines. Text above the first heading opens the review body.
 """
 
 import json
@@ -60,16 +60,16 @@ def commentable_lines(repo, number):
 
 
 def parse_md(text):
-    sections, fence = [], False
+    """Return the text above the first "# path:line" heading and the sections."""
+    preamble, sections, fence = [], [], False
     for line in text.splitlines():
         if line.startswith("```"):
             fence = not fence
         elif not fence and (m := MD_HEADER.match(line)):
             sections.append({"path": m[1], "first": int(m[2]), "last": int(m[3] or m[2]), "body": []})
             continue
-        if sections:
-            sections[-1]["body"].append(line)
-    return [{**s, "body": "\n".join(s["body"]).strip()} for s in sections]
+        (sections[-1]["body"] if sections else preamble).append(line)
+    return "\n".join(preamble).strip(), [{**s, "body": "\n".join(s["body"]).strip()} for s in sections]
 
 
 def pending_review(repo, number):
@@ -82,8 +82,9 @@ def pending_review(repo, number):
 def cmd_md(repo, number, md_file, dry_run):
     head = gh_json("pr", "view", str(number), "--repo", repo, "--json", "headRefOid")["headRefOid"]
     allowed = commentable_lines(repo, number)
-    comments, general = [], []
-    for sec in parse_md(Path(md_file).read_text()):
+    preamble, sections = parse_md(Path(md_file).read_text())
+    comments, general = [], [preamble] if preamble else []
+    for sec in sections:
         first, last = sec["first"], sec["last"]
         span = f"{first}-{last}" if first != last else str(first)
         if all(n in allowed.get(sec["path"], ()) for n in range(first, last + 1)):
@@ -95,6 +96,8 @@ def cmd_md(repo, number, md_file, dry_run):
         else:
             general.append(f"`{sec['path']}:{span}` {sec['body']}")
             print(f"{sec['path']}:{span}  (outside the PR diff: goes in the review body)")
+    if preamble:
+        print("text above the first heading  (goes first in the review body)")
     print(f"{len(comments)} inline comments, {len(general)} in the review body, on {head[:9]}")
     if dry_run:
         return
