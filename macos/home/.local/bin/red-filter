@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# Toggle the macOS red color filter (Accessibility > Display > Color Filters > Color Tint).
+# No public CLI exists, so it calls private MediaAccessibility functions from a small Swift binary.
+set -euo pipefail
+bin="$HOME/.cache/red-filter/red-filter"
+if [[ ! -x "$bin" || "$bin" -ot "$0" ]]; then
+  mkdir -p "$(dirname "$bin")"
+  cat > "$bin.swift" <<'SWIFT'
+import Foundation
+@_silgen_name("MADisplayFilterPrefGetCategoryEnabled") func getEnabled(_ category: Int32) -> Bool
+@_silgen_name("MADisplayFilterPrefSetCategoryEnabled") func setEnabled(_ category: Int32, _ enabled: Bool)
+@_silgen_name("MADisplayFilterPrefSetType") func setType(_ category: Int32, _ type: Int32)
+let colorCategory: Int32 = 1
+let colorTint: Int32 = 16
+let on = !getEnabled(colorCategory)
+if on {
+    UserDefaults(suiteName: "com.apple.mediaaccessibility")?.set(0.0, forKey: "MADisplayFilterSingleColorHue")
+    setType(colorCategory, colorTint)
+}
+setEnabled(colorCategory, on)
+SWIFT
+  swiftc -O "$bin.swift" -o "$bin" -framework MediaAccessibility
+fi
+exec "$bin"
