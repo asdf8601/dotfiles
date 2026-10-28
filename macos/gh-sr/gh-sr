@@ -9,7 +9,9 @@
                           (replacing the one you had)
   gh sr submit [comment|approve|request-changes] [message]
                           posts the review first if there is no pending one
-  gh sr discard           delete your pending review, the worktree and its ref
+  gh sr status            list your pending review's comments and the lines GitHub stored
+  gh sr discard           delete your pending review, the worktree and its ref; your edits
+                          are saved first to <repo>/.git/sr/pr-<N>.patch
 
 A comment line "REVIEW: text" becomes the comment text; "REVIEW(3/5): text"
 adds an importance label (1/5 don't care .. 5/5 must fix). Next to a code change
@@ -164,7 +166,13 @@ def cmd_review(dry_run):
         return all(n in allowed.get(c["path"], ()) for n in range(c.get("start_line", c["line"]), c["line"] + 1))
 
     comments, general = [], []
-    for hunk in parse_hunks(diff):
+    hunks = parse_hunks(diff)
+    for prev, nxt in zip(hunks, hunks[1:]):
+        lone = prev["count"] == 0 and all(REVIEW.match(l) for l in prev["new"])
+        if lone and not any(REVIEW.match(l)[2] for l in prev["new"]) and nxt["path"] == prev["path"] and nxt["count"] and 0 < nxt["start"] - prev["start"] <= 3:
+            print(f"warning: {prev['path']}:{prev['start'] + 1} REVIEW sits above a suggestion but not next to it; "
+                  "move it right above the changed line or it becomes a separate comment")
+    for hunk in hunks:
         note, cands = candidates(hunk, head_file(root, hunk["path"]))
         if not cands:
             continue
@@ -222,8 +230,34 @@ def cmd_submit(event, message):
     print(f"review submitted: https://github.com/{repo}/pull/{number}")
 
 
+def cmd_status():
+    _, repo, number = worktree()
+    owner, name = repo.split("/")
+    query = (
+        "query($o:String!,$n:String!,$pr:Int!){repository(owner:$o,name:$n){pullRequest(number:$pr){"
+        "reviews(states:PENDING,first:5){nodes{author{login} comments(first:100){nodes{path startLine line body}}}}}}}"
+    )
+    data = gh_json("api", "graphql", "-f", f"query={query}", "-F", f"o={owner}", "-F", f"n={name}", "-F", f"pr={number}")
+    me = run("gh", "api", "user", "--jq", ".login").strip()
+    nodes = data["data"]["repository"]["pullRequest"]["reviews"]["nodes"]
+    mine = [r for r in nodes if r["author"]["login"] == me]
+    if not mine:
+        sys.exit("no pending review")
+    for c in mine[0]["comments"]["nodes"]:
+        span = f"{c['startLine']}-{c['line']}" if c["startLine"] else str(c["line"])
+        print(f"{c['path']}:{span}  {c['body'].splitlines()[0][:70]}")
+
+
 def cmd_discard():
     root, repo, number = worktree()
+    untracked = [p for p in run("git", "ls-files", "--others", "--exclude-standard", cwd=root).split() if not p.startswith("tmp/")]
+    if untracked:
+        run("git", "add", "--intent-to-add", *untracked, cwd=root)
+    if patch := run("git", "diff", "--binary", "HEAD", cwd=root):
+        backup = Path(run("git", "rev-parse", "--path-format=absolute", "--git-common-dir", cwd=root).strip()) / "sr" / f"pr-{number}.patch"
+        backup.parent.mkdir(exist_ok=True)
+        backup.write_text(patch)
+        print(f"edits saved to {backup}; restore with: gh sr open {number} && git apply {backup}")
     if review := pending_review(repo, number):
         run("gh", "api", "--method", "DELETE", f"repos/{repo}/pulls/{number}/reviews/{review['id']}")
         print("pending review deleted")
@@ -249,6 +283,8 @@ def main():
         if event not in ("comment", "approve", "request-changes"):
             sys.exit(__doc__)
         cmd_submit(event, args[2] if len(args) > 2 else "")
+    elif args == ["status"]:
+        cmd_status()
     elif args == ["discard"]:
         cmd_discard()
     else:
