@@ -12,7 +12,7 @@
   gh sr md <N|URL> <file.md> [--dry-run]
                           post a pending review written as markdown, no worktree needed:
                           "# path:10-20" or "# path:10" starts a comment on those lines;
-                          a ``` block with no language under it becomes a suggestion
+                          a ```suggestion block under it replaces those lines
   gh sr status            list your pending review's comments and the lines GitHub stored
   gh sr discard           delete your pending review, the worktree and its ref; your edits
                           are saved first to <repo>/.git/sr/pr-<N>.patch
@@ -241,8 +241,6 @@ def parse_md(text):
     sections, fence = [], False
     for line in text.splitlines():
         if line.startswith("```"):
-            if not fence and line.strip() == "```":
-                line = "```suggestion"
             fence = not fence
         elif not fence and (m := MD_HEADER.match(line)):
             sections.append({"path": m[1], "first": int(m[2]), "last": int(m[3] or m[2]), "body": []})
