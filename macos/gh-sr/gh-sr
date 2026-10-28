@@ -9,6 +9,10 @@
                           (replacing the one you had)
   gh sr submit [comment|approve|request-changes] [message]
                           posts the review first if there is no pending one
+  gh sr md <N|URL> <file.md> [--dry-run]
+                          post a pending review written as markdown, no worktree needed:
+                          "# path:10-20" or "# path:10" starts a comment on those lines;
+                          a ``` block with no language under it becomes a suggestion
   gh sr status            list your pending review's comments and the lines GitHub stored
   gh sr discard           delete your pending review, the worktree and its ref; your edits
                           are saved first to <repo>/.git/sr/pr-<N>.patch
@@ -230,6 +234,50 @@ def cmd_submit(event, message):
     print(f"review submitted: https://github.com/{repo}/pull/{number}")
 
 
+MD_HEADER = re.compile(r"^# (\S+?):(\d+)(?:-(\d+))?\s*$")
+
+
+def parse_md(text):
+    sections, fence = [], False
+    for line in text.splitlines():
+        if line.startswith("```"):
+            if not fence and line.strip() == "```":
+                line = "```suggestion"
+            fence = not fence
+        elif not fence and (m := MD_HEADER.match(line)):
+            sections.append({"path": m[1], "first": int(m[2]), "last": int(m[3] or m[2]), "body": []})
+            continue
+        if sections:
+            sections[-1]["body"].append(line)
+    return [{**s, "body": "\n".join(s["body"]).strip()} for s in sections]
+
+
+def cmd_md(number, url_repo, md_file, dry_run):
+    repo = url_repo or gh_json("repo", "view", "--json", "nameWithOwner")["nameWithOwner"]
+    head = gh_json("pr", "view", str(number), "--repo", repo, "--json", "headRefOid")["headRefOid"]
+    allowed = commentable_lines(repo, number)
+    comments, general = [], []
+    for sec in parse_md(Path(md_file).read_text()):
+        span = f"{sec['first']}-{sec['last']}" if sec["first"] != sec["last"] else str(sec["first"])
+        if all(n in allowed.get(sec["path"], ()) for n in range(sec["first"], sec["last"] + 1)):
+            comments.append(comment(sec["path"], sec["first"], sec["last"], sec["body"]))
+            print(f"{sec['path']}:{span}")
+        else:
+            general.append(f"`{sec['path']}:{span}` {sec['body']}")
+            print(f"{sec['path']}:{span}  (outside the PR diff: goes in the review body)")
+    print(f"{len(comments)} inline comments, {len(general)} in the review body, on {head[:9]}")
+    if dry_run:
+        return
+    if not comments and not general:
+        sys.exit("nothing to post")
+    if old := pending_review(repo, number):
+        run("gh", "api", "--method", "DELETE", f"repos/{repo}/pulls/{number}/reviews/{old['id']}")
+    payload = {"commit_id": head, "body": "\n\n".join(general), "comments": comments}
+    subprocess.run(["gh", "api", "--method", "POST", f"repos/{repo}/pulls/{number}/reviews", "--input", "-"],
+                   input=json.dumps(payload), text=True, check=True, capture_output=True)
+    print(f"pending review posted: https://github.com/{repo}/pull/{number}/files")
+
+
 def cmd_status():
     _, repo, number = worktree()
     owner, name = repo.split("/")
@@ -274,6 +322,13 @@ def main():
             cmd_open(int(m[2]), m[1])
         elif m := re.fullmatch(r"#?(\d+)", args[1]):
             cmd_open(int(m[1]))
+        else:
+            sys.exit(__doc__)
+    elif args[:1] == ["md"] and len(args) >= 3:
+        if m := re.search(r"github\.com/([^/]+/[^/]+)/pull/(\d+)", args[1]):
+            cmd_md(int(m[2]), m[1], args[2], "--dry-run" in args)
+        elif m := re.fullmatch(r"#?(\d+)", args[1]):
+            cmd_md(int(m[1]), None, args[2], "--dry-run" in args)
         else:
             sys.exit(__doc__)
     elif args[:1] == ["review"]:
