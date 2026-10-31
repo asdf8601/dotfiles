@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+# Give each pane of a tmux window its own background; the focused pane keeps the normal one.
+# Usage: tmux-pane-tint <window-id> [cycle]
+# Mode lives in the window option @tint: tint (default) | focus | off. "cycle" moves to the next one.
+
+w=${1:?window id}
+colors=('#1d2433' '#2a231b' '#1b2a20' '#2a1d27' '#27271b' '#1b2829')
+dim='#1c1c1c'
+
+mode=$(tmux show -wqv -t "$w" @tint 2>/dev/null)
+mode=${mode:-tint}
+if [ "${2:-}" = cycle ]; then
+  case $mode in tint) mode=focus ;; focus) mode=off ;; *) mode=tint ;; esac
+  tmux set -w -t "$w" @tint "$mode"
+  tmux display-message -d 1000 "pane tint: $mode"
+fi
+
+panes=$(tmux list-panes -t "$w" -F '#{pane_top} #{pane_left} #{pane_id}' 2>/dev/null) || exit 0
+i=0
+while read -r _ _ p; do
+  case $mode in
+    tint) bg=${colors[i % ${#colors[@]}]} ;;
+    focus) bg=$dim ;;
+    *) bg= ;;
+  esac
+  if [ -n "$bg" ]; then
+    tmux set -p -t "$p" window-style "bg=$bg" \; set -p -t "$p" window-active-style 'bg=default'
+  else
+    tmux set -pu -t "$p" window-style \; set -pu -t "$p" window-active-style
+  fi
+  i=$((i + 1))
+done < <(sort -n -k1,1 -k2,2 <<<"$panes")
