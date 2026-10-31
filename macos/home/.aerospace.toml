@@ -151,7 +151,7 @@ run = ['move-node-to-workspace 1']
 
 [[on-window-detected]]
 if.app-id = 'com.google.Chrome'
-if.window-title-regex-substring = '(?i)(cuentas de google|google accounts|inicia sesión|iniciar sesión|sign in)'
+if.window-title-regex-substring = '(?i)(cuentas de google|google accounts|inicia sesión|iniciar sesión|sign in|^about:blank)'
 run = ['layout floating', 'move-node-to-workspace 2']
 
 [[on-window-detected]]
