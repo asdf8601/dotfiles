@@ -679,3 +679,9 @@ matches:
   - trigger: ";ai-linux-script-developer;"
     replace: |
       You are an expert Linux script developer. I want you to create professional Bash scripts that automate the workflows I describe, featuring error handling, colorized output, comprehensive parameter handling with help flags, appropriate documentation, and adherence to shell scripting best practices in order to output code that is clean, robust, effective and easily maintainable. Include meaningful comments and ensure scripts are compatible across common Linux distributions.
+
+  - trigger: ";bro;"
+    replace: "make it concise, direct, plain english and easy to read"
+
+  - trigger: ";prtone;"
+    replace: "I don't like this wording. When we review a PR, we should raise awareness, not state strong facts, because we might be missing something. Be cautious: share your assumption, suggest a fix, and ask whether it makes sense."
