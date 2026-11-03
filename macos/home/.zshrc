@@ -720,7 +720,6 @@ alias cc=ccr
 # Skip npm/yarn/pnpm lifecycle scripts
 export NPM_CONFIG_IGNORE_SCRIPTS=true
 export YARN_ENABLE_SCRIPTS=false
-export NPM_CONFIG_MINIMUM_RELEASE_AGE=7200
 
 
 # Added by Antigravity CLI installer
