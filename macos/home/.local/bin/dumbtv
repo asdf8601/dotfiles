@@ -1,0 +1,227 @@
+#!/usr/bin/env bash
+# dumbtv on the living room Fire TV (Fire TV Stick 4K, AFTMM, Fire OS 6.7.1.1,
+# Android 7.1.2, sdk 25).
+#
+# Upstream is https://github.com/humblemuzzu/dumbtv. This wrapper exists for one
+# reason: macOS local network privacy blocks Homebrew's adb from the LAN, so it
+# keeps a /usr/bin/python3 TCP relay on 127.0.0.1 and passes that serial to the
+# upstream scripts as ADB_SERIAL, which every one of them honours.
+# Why, gotchas and how to undo it all: docs/dumbtv-fire-tv.md.
+set -euo pipefail
+
+TV_IP=${DUMBTV_TV_IP:-192.168.31.108}
+SRC=${DUMBTV_SRC:-$HOME/github.com/humblemuzzu/dumbtv}
+PORT=${DUMBTV_RELAY_PORT:-5556}
+CACHE=${XDG_CACHE_HOME:-$HOME/.cache}/dumbtv
+RELAY=$CACHE/relay.py
+# Homebrew's python3 hits the same local network privacy wall as Homebrew's adb:
+# only an Apple-signed binary gets to open a socket to the TV.
+PY=/usr/bin/python3
+SERIAL=127.0.0.1:$PORT
+
+function die() {
+    printf '%s\n' "$*" >&2
+    exit 1
+}
+
+function mac_ip() {
+    local iface
+    iface=$(route -n get default 2>/dev/null | awk '/interface:/{print $2}')
+    ipconfig getifaddr "${iface:-en0}" 2>/dev/null || true
+}
+
+function relay_listening() {
+    nc -z -G 1 127.0.0.1 "$PORT" >/dev/null 2>&1
+}
+
+# A running relay keeps forwarding to the IP it started with, so the target has
+# to be remembered: DHCP moves this TV and a stale relay looks like a dead TV.
+function relay_target() {
+    cat "$CACHE/target" 2>/dev/null || true
+}
+
+# The TV has to answer 5555 itself before adb is worth touching: a sleeping Fire
+# TV drops off Wi-Fi entirely, so adb would just sit there as "offline".
+function tv_answers() {
+    "$PY" - "$TV_IP" <<'EOF' >/dev/null 2>&1
+import socket, sys
+socket.create_connection((sys.argv[1], 5555), timeout=5).close()
+EOF
+}
+
+# The relay is deliberately not part of the repo: it is plumbing for a macOS
+# permission bug, not for the TV. It is rewritten on every start so it cannot
+# drift.
+function write_relay() {
+    mkdir -p "$CACHE"
+    cat > "$RELAY" <<'EOF'
+import os, socket, threading
+
+target = (os.environ["RELAY_TARGET_HOST"], int(os.environ["RELAY_TARGET_PORT"]))
+listen = ("127.0.0.1", int(os.environ["RELAY_LISTEN_PORT"]))
+
+
+def pipe(a, b):
+    try:
+        while True:
+            data = a.recv(65536)
+            if not data:
+                break
+            b.sendall(data)
+    except OSError:
+        pass
+    finally:
+        for sock in (a, b):
+            try:
+                sock.shutdown(socket.SHUT_RDWR)
+            except OSError:
+                pass
+
+
+def handle(client):
+    try:
+        upstream = socket.create_connection(target, timeout=10)
+    except OSError:
+        client.close()
+        return
+    threading.Thread(target=pipe, args=(client, upstream), daemon=True).start()
+    threading.Thread(target=pipe, args=(upstream, client), daemon=True).start()
+
+
+server = socket.socket()
+server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+server.bind(listen)
+server.listen(16)
+while True:
+    conn, _ = server.accept()
+    threading.Thread(target=handle, args=(conn,), daemon=True).start()
+EOF
+}
+
+function stop_relay() {
+    local pids _
+    pids=$(lsof -ti "tcp:$PORT" -sTCP:LISTEN 2>/dev/null || true)
+    if [[ -n $pids ]]; then
+        kill $pids 2>/dev/null || true
+        for _ in $(seq 1 20); do
+            relay_listening || return 0
+            sleep 0.1
+        done
+    fi
+}
+
+function ensure_relay() {
+    if relay_listening && [[ $(relay_target) == "$TV_IP" ]]; then
+        return 0
+    fi
+    [[ -x $PY ]] || die "$PY not found, needed for the adb relay"
+    stop_relay
+    mkdir -p "$CACHE"
+    printf '%s\n' "$TV_IP" > "$CACHE/target"
+    write_relay
+    RELAY_TARGET_HOST=$TV_IP RELAY_TARGET_PORT=5555 RELAY_LISTEN_PORT=$PORT \
+        nohup "$PY" "$RELAY" > "$CACHE/relay.log" 2>&1 &
+    local _
+    for _ in $(seq 1 25); do
+        relay_listening && return 0
+        sleep 0.2
+    done
+    die "the relay did not come up on 127.0.0.1:$PORT (see $CACHE/relay.log)"
+}
+
+function ensure_adb() {
+    command -v adb >/dev/null || die "adb not found. Install it: brew install --cask android-platform-tools"
+    ensure_relay
+    if ! tv_answers; then
+        die "the TV at $TV_IP is not answering on port 5555.
+
+Most likely it is asleep: a sleeping Fire TV leaves the network completely, so
+press a button on the remote first. The Developer Options switch stays ON, so
+it is not evidence.
+
+If the TV is awake: Settings, My Fire TV, Developer Options, ADB debugging. Turn
+it off and on again (some builds keep it lit with 5555 refusing after a reboot),
+then accept Allow USB debugging? on the TV, ticking Always allow. If the IP
+moved, run: dumbtv find"
+    fi
+    adb connect "$SERIAL" >/dev/null 2>&1 || true
+    local state
+    state=$(adb -s "$SERIAL" get-state 2>/dev/null || true)
+    if [[ $state != device ]]; then
+        # Stale transport, usually the TV rebooting on the other side.
+        adb disconnect "$SERIAL" >/dev/null 2>&1 || true
+        adb connect "$SERIAL" >/dev/null 2>&1 || true
+        sleep 1
+        state=$(adb -s "$SERIAL" get-state 2>/dev/null || true)
+    fi
+    [[ $state == device ]] || die "the TV answers on 5555 but adb reports '$state'.
+
+If it says unauthorized, accept Allow USB debugging? on the TV.
+Otherwise: adb kill-server && dumbtv relay"
+}
+
+function pick_script() {
+    local name=$1
+    shift
+    [[ -d $SRC ]] || die "dumbtv source not found at $SRC
+
+git clone https://github.com/humblemuzzu/dumbtv $SRC"
+    [[ -x $SRC/scripts/$name.sh ]] || die "no such upstream script: $SRC/scripts/$name.sh"
+    ( cd "$SRC" && ADB_SERIAL=$SERIAL "$SRC/scripts/$name.sh" "$@" )
+}
+
+# DHCP moves this TV around, and a sleeping Fire TV ignores ping, so a port scan
+# for adb is the only reliable way to find it.
+function find_tvs() {
+    local ip base host
+    ip=$(mac_ip)
+    [[ -n $ip ]] || die "this Mac has no LAN address on the default route"
+    base=${ip%.*}
+    printf 'scanning %s.0/24 for adb (port 5555)...\n' "$base"
+    for host in $(seq 1 254); do
+        ( nc -z -G 1 "$base.$host" 5555 2>/dev/null && printf '  %s. %s\n' "$base" "$host" ) &
+    done
+    wait || true
+    printf 'nothing above means ADB debugging is off, or the TV is asleep.\n'
+}
+
+function usage() {
+    cat <<EOF
+dumbtv on the Fire TV at $TV_IP (adb via 127.0.0.1:$PORT, ADB_SERIAL=$SERIAL)
+
+  status                  read-only: device, platform, what a pass would change
+  pass [-y]               the whole pass: ask, debloat, filter, launcher, 2 reboots
+  verify                  the checks that end with 'all checks passed'
+  restore                 undo everything, HOME back to Amazon's launcher
+  conf [flags]            rewrite dumbtv.conf (--prime/--alexa/--launcher/--dnsfilter/--youtube)
+  debloat|lockdown|dnsfilter|launcher|youtube|home|discover   any upstream script
+  shell [cmd]             adb shell on the TV
+  find                    scan the LAN for port 5555
+  relay                   only fix the relay and adb connect
+
+Env: DUMBTV_TV_IP=$TV_IP  DUMBTV_SRC=$SRC  DUMBTV_RELAY_PORT=$PORT
+Docs: ~/.dotfiles/docs/dumbtv-fire-tv.md
+EOF
+}
+
+cmd=${1:-help}
+shift || true
+case $cmd in
+    help | -h | --help) usage ;;
+    relay)
+        ensure_adb
+        printf 'relay 127.0.0.1:%s -> %s:5555, adb says: %s\n' "$PORT" "$TV_IP" "$(adb -s "$SERIAL" get-state 2>/dev/null || echo nothing)"
+        ;;
+    find) find_tvs ;;
+    shell) ensure_adb; exec adb -s "$SERIAL" shell "$@" ;;
+    status) ensure_adb; pick_script preflight "$@" ;;
+    pass | all) ensure_adb; pick_script all "$@" ;;
+    verify) ensure_adb; pick_script verify "$@" ;;
+    restore) ensure_adb; pick_script restore "$@" ;;
+    conf | configure) ensure_adb; pick_script configure "$@" ;;
+    preflight | debloat | lockdown | dnsfilter | launcher | youtube | home | discover | appdata | appui | accessibility)
+        ensure_adb
+        pick_script "$cmd" "$@"
+        ;;
+    *) die "unknown command: $cmd (try: dumbtv help)" ;;
+esac

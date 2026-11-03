@@ -2,6 +2,8 @@
 # Community examples:
 #   https://github.com/search?q=path%3Aghostty%2Fconfig&type=code
 shell-integration-features = no-cursor
+clipboard-read = allow
+clipboard-write = allow
 cursor-style = block
 cursor-style-blink = false
 
