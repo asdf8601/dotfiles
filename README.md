@@ -29,3 +29,10 @@ make ubuntu
 ```bash
 make macos
 ```
+
+Set up by hand, outside stow: [`docs/free-my-tv.md`](docs/free-my-tv.md) —
+the Samsung TV's home screen app, and `free-my-tv update` to keep it current.
+
+Same for the Fire TV: [`docs/dumbtv-fire-tv.md`](docs/dumbtv-fire-tv.md) — the
+ads and tracking are off and dumbtv home owns the HOME button; `dumbtv status`,
+`dumbtv pass`, `dumbtv restore`.

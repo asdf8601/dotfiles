@@ -1,0 +1,155 @@
+#!/usr/bin/env bash
+# Free My TV on the living room Samsung TV (UE65TU8005KXXC, Tizen 5.5, 2020).
+#
+# The Samsung build has no self-update: this downloads the latest signed .wgt
+# from GitHub and installs it over the one on the TV, which keeps the TMDB key
+# and the settings the app stores on the TV. It speaks SDB to the TV directly,
+# so it needs Python 3 and nothing else. Why and what breaks: docs/free-my-tv.md.
+set -euo pipefail
+
+TV_IP=${FREE_MY_TV_IP:-192.168.31.130}
+UPSTREAM=https://github.com/simbasjungles/free-my-tv
+SRC=${FREE_MY_TV_SRC:-$HOME/.cache/free-my-tv}
+# Homebrew's python3 can't reach the LAN on macOS (local network privacy), so
+# the socket to the TV fails with "No route to host" where nc still connects.
+PY=${FREE_MY_TV_PYTHON:-/usr/bin/python3}
+APP_ID=FreeMyTVio.FreeMyTV
+
+function mac_ip() {
+    local iface
+    iface=$(route -n get default 2>/dev/null | awk '/interface:/{print $2}')
+    ipconfig getifaddr "${iface:-en0}" 2>/dev/null || echo "this Mac's IP"
+}
+
+function reachable() {
+    "$PY" - "$TV_IP" <<'EOF' >/dev/null 2>&1
+import socket, sys
+socket.create_connection((sys.argv[1], 26101), timeout=6).close()
+EOF
+}
+
+function need_dev_mode() {
+    cat <<EOF
+The TV at $TV_IP isn't answering on port 26101 (developer mode's sdbd).
+
+On the TV: Apps → type 1 2 3 4 5 on the remote → Developer mode on → Host PC IP
+= $(mac_ip) → then restart the TV (a full power cycle, not standby).
+
+If the TV is in standby it also drops off the network: turn it on first, and
+give it half a minute after it wakes.
+EOF
+    exit 1
+}
+
+function sync_src() {
+    if [[ -d $SRC/.git ]]; then
+        git -C "$SRC" pull --ff-only --quiet
+    else
+        mkdir -p "$(dirname "$SRC")"
+        git clone --depth 1 --quiet "$UPSTREAM" "$SRC"
+    fi
+}
+
+function latest_tag() {
+    local url
+    url=$(curl -fsSL -o /dev/null -w '%{url_effective}' "$UPSTREAM/releases/latest")
+    basename "$url"
+}
+
+function installed_tag() {
+    cat "$SRC/INSTALLED" 2>/dev/null || echo "unknown"
+}
+
+function fetch_wgt() {
+    local tag=$1
+    curl -fsSL -o "$SRC/FreeMyTV-tizen.wgt" \
+        "$UPSTREAM/releases/download/$tag/FreeMyTV-tizen.wgt"
+    "$PY" - "$SRC/FreeMyTV-tizen.wgt" <<'EOF'
+import sys, zipfile
+with zipfile.ZipFile(sys.argv[1]) as z:
+    names = z.namelist()
+    if 'author-signature.xml' not in names or 'signature1.xml' not in names:
+        sys.exit('That .wgt came unsigned: the TV only installs signed apps.')
+EOF
+}
+
+function install() {
+    local tag=$1
+    sync_src
+    reachable || need_dev_mode
+    echo "Installing Free My TV $tag on $TV_IP ..."
+    "$PY" "$SRC/tizen/install.py" "$TV_IP"
+    echo "$tag" > "$SRC/INSTALLED"
+}
+
+function cmd_update() {
+    sync_src
+    local latest current
+    latest=$(latest_tag)
+    current=$(installed_tag)
+    if [[ $latest == "$current" && ${1:-} != --force ]]; then
+        echo "Already on $current, the latest release. --force reinstalls it anyway."
+        return
+    fi
+    fetch_wgt "$latest"
+    install "$latest"
+    echo "Updated $current → $latest. Settings and the TMDB key stayed on the TV."
+}
+
+function cmd_status() {
+    sync_src
+    echo "latest release: $(latest_tag), last installed from here: $(installed_tag)"
+    echo "TV: $TV_IP, this Mac: $(mac_ip)"
+    reachable || need_dev_mode
+    "$PY" - "$SRC" "$TV_IP" <<'EOF'
+import sys
+sys.path.insert(0, sys.argv[1] + '/tizen')
+from install import Sdb
+s = Sdb(sys.argv[2])
+caps = s.capabilities()
+print('connected: %s, Tizen %s, sdk_toolpath %s' % (
+    s.banner.split(':')[2], caps.get('platform_version'), caps.get('sdk_toolpath')))
+EOF
+}
+
+function cmd_open() {
+    reachable || need_dev_mode
+    "$PY" - "$SRC" "$TV_IP" "$APP_ID" <<'EOF'
+import sys
+sys.path.insert(0, sys.argv[1] + '/tizen')
+from install import Sdb
+Sdb(sys.argv[2]).shell('0 was_execute ' + sys.argv[3], None, 20)
+print('Launched on the TV.')
+EOF
+}
+
+function cmd_uninstall() {
+    sync_src
+    reachable || need_dev_mode
+    echo "Removing Free My TV, and with it the TMDB key and settings kept on the TV."
+    "$PY" "$SRC/tizen/install.py" "$TV_IP" --uninstall
+    rm -f "$SRC/INSTALLED"
+    echo "If the TV doesn't answer the uninstall, remove it on it: Apps → Settings → Free My TV → Delete."
+}
+
+function usage() {
+    cat <<EOF
+Usage: free-my-tv <command>
+
+  update [--force]  Install the latest GitHub release over the one on the TV
+  status            Latest release, what's installed, and whether the TV answers
+  open              Launch Free My TV on the TV
+  uninstall         Remove it (and the key and settings kept on the TV)
+
+TV: $TV_IP (override with FREE_MY_TV_IP)
+EOF
+}
+
+case ${1:-update} in
+    update)    shift || true; cmd_update "${1:-}" ;;
+    status)    cmd_status ;;
+    open)      cmd_open ;;
+    uninstall) cmd_uninstall ;;
+    -h|--help|help) usage ;;
+    *)         usage; exit 1 ;;
+esac
