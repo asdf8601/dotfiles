@@ -208,7 +208,7 @@ def clean: gsub("\\|"; "/") | gsub("\""; "'\''");
 def rep(s; n): if n > 0 then s * n else "" end;
 def pct: if .desired > 0 then [.avail * 100 / .desired | floor, 100] | min else 100 end;
 # Fills a cell per 10%, so the bar is full only at 100%.
-def bar: pct as $p | rep("━"; $p / 10 | floor) + rep("─"; 10 - ($p / 10 | floor));
+def bar: pct as $p | rep("█"; $p / 10 | floor) + rep("░"; 10 - ($p / 10 | floor));
 # A merge whose [scope] tags name another service, e.g. a reserve-price change
 # that also triggered the header-bidding workflow in the monorepo.
 def foreign($dep): [.title | scan("\\[([^\\]]+)\\]") | .[0] | ascii_downcase | gsub(" "; "-")
