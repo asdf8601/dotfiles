@@ -1,0 +1,30 @@
+#!/bin/zsh
+# oncall <url>: new window in the tmux "oncall" session with two Claude panes
+# side by side: opus debugs the alert, haiku gives a quick read meanwhile.
+#
+# The prompt is typed into Claude after it starts, not passed as argv, so
+# tmux-resurrect does not re-send it on restore (see cc-spawn).
+
+set -euo pipefail
+
+url=${1:?usage: oncall <slack-url>}
+dir=$HOME/github.com/seedtag
+session=oncall
+name=oc-$(date +%H%M)
+
+tmux has-session -t "=$session" 2>/dev/null || tmux new-session -d -s "$session" -c "$dir"
+
+left=$(tmux new-window -P -F '#{pane_id}' -t "=$session:" -n "$name" -c "$dir")
+right=$(tmux split-window -h -P -F '#{pane_id}' -t "$left" -c "$dir")
+
+start() {
+  local pane=$1 model=$2 prompt=$3
+  tmux send-keys -t "$pane" "ccr $(uuidgen | tr '[:upper:]' '[:lower:]') --model $model --name $name-$model" Enter
+  ( sleep 5; tmux send-keys -t "$pane" -l "$prompt"; tmux send-keys -t "$pane" Enter ) &!
+}
+
+start "$left" opus "debuguea $url"
+start "$right" haiku "qué pasa aquí $url"
+
+tmux select-pane -t "$left"
+tmux switch-client -t "$left" 2>/dev/null || true
