@@ -265,14 +265,14 @@ def snooze_lines($k):
      url: "https://github.com/pulls?q=is%3Aopen+is%3Apr+author%3A%40me+archived%3Afalse+draft%3Afalse", src: ["authored"]},
     {key: "ready", icon: "🚀", label: "Ready to merge", prs: $ready,
      url: "https://github.com/pulls?q=is%3Aopen+is%3Apr+author%3A%40me+archived%3Afalse", src: ["authored", "assigned"]},
-    {key: "merged", icon: "✅", label: "Merged today", prs: $merged,
-     url: "https://github.com/pulls?q=is%3Apr+is%3Amerged+involves%3A%40me", src: ["mergedAuthored", "mergedReviewed"]},
     {key: "reviews", icon: "👀", label: "Review requested", prs: $reviews,
      url: "https://github.com/pulls?q=is%3Aopen+is%3Apr+user-review-requested%3A%40me+archived%3Afalse", src: ["requested"]},
     {key: "waiting", icon: "⏳", label: "Waiting for review", prs: $waiting,
      url: "https://github.com/pulls?q=is%3Aopen+is%3Apr+author%3A%40me+archived%3Afalse+draft%3Afalse+review%3Arequired", src: ["authored"]},
     {key: "replies", icon: "💬", label: "Unanswered comments", prs: $replies,
-     url: "https://github.com/pulls?q=is%3Aopen+is%3Apr+involves%3A%40me+archived%3Afalse", src: ["authored", "authoredDiscussion", "commented"]}
+     url: "https://github.com/pulls?q=is%3Aopen+is%3Apr+involves%3A%40me+archived%3Afalse", src: ["authored", "authoredDiscussion", "commented"]},
+    {key: "merged", icon: "✅", label: "Merged today", prs: $merged,
+     url: "https://github.com/pulls?q=is%3Apr+is%3Amerged+involves%3A%40me", src: ["mergedAuthored", "mergedReviewed"]}
   ]
   | map(. + {errors: [.src[] | $failed[.] // empty] | unique})
   | map(select((.prs | length > 0) or (.errors | length > 0)))
