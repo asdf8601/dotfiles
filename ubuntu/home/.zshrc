@@ -9,7 +9,7 @@ fi
 typeset -U path PATH
 
 # opencode
-export PATH=/home/mgreco/.opencode/bin:$PATH
+export PATH=$HOME/.opencode/bin:$PATH
 
 export DOTFILES=$HOME/.dotfiles/ubuntu
 export DOTFILES_HOME=$HOME/.dotfiles

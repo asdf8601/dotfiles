@@ -14,3 +14,8 @@ test -r $HOME/.opam/opam-init/init.sh && . $HOME/.opam/opam-init/init.sh > /dev/
 # >>> coursier install directory >>>
 export PATH="$PATH:/Users/mgreco/Library/Application Support/Coursier/bin"
 # <<< coursier install directory <<<
+
+# Load .bashrc for interactive shells
+if [ -n "$BASH_VERSION" ] && [ -f "$HOME/.bashrc" ]; then
+    . "$HOME/.bashrc"
+fi
