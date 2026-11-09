@@ -739,3 +739,6 @@ case ":$PATH:" in
   *) export PATH="$PNPM_HOME/bin:$PATH" ;;
 esac
 # pnpm end
+
+# Claude Code for adapting.dev (separate account and configuration).
+alias cca='CLAUDE_CONFIG_DIR="$HOME/.claude-adapting" claude'

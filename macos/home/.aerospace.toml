@@ -137,6 +137,10 @@ if.app-id = 'com.daisydiskapp.DaisyDisk'
 run = 'layout floating'
 
 [[on-window-detected]]
+if.app-id = 'com.xykong.Markdown'
+run = 'layout floating'
+
+[[on-window-detected]]
 if.app-id = 'ru.keepcoder.Telegram'
 run = ['layout floating', 'move-node-to-workspace 6']
 

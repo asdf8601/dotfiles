@@ -284,7 +284,7 @@ def snooze_lines($k):
       | map(. + {cells: (.cells + {age: ($hidden[.url] as $t
             | if $t >= 4102444800 then "hidden" else ($t | localtime | strftime("%a %H:%M")) end)})})) as $paused
   | ($all | map(. + {prs: [.prs[] | select(.url as $u | $hidden | has($u) | not)]})
-      | map(select(.prs | length > 0 or .errors != []))) as $visible
+      | map(select((.prs | length > 0) or .errors != []))) as $visible
   | ($visible + (if $paused == [] then [] else [{key: "paused", icon: "💤", label: "Paused", prs: $paused, errors: [], url: ""}] end)) as $sections
   # Column widths are shared across all sections so every row lines up; empty columns drop out.
   | ["ref", "title", "age"] as $cols

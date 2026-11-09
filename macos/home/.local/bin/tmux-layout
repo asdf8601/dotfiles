@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+# Apply a tmux layout to a window, picked by pane count unless given.
+#   tmux-layout [-t window] [-m pane] [layout]
+#   -t  target window or pane (default: window of $TMUX_PANE, else current)
+#   -m  pane id that should be the big one (moved first, main-vertical)
+#   layout  any tmux layout name: even-horizontal, even-vertical,
+#           main-vertical, main-horizontal, tiled
+set -euo pipefail
+
+target="${TMUX_PANE:-}" main="" layout=""
+while getopts "t:m:h" o; do
+  case $o in
+    t) target=$OPTARG ;;
+    m) main=$OPTARG ;;
+    *) sed -n '2,8p' "$0"; exit 0 ;;
+  esac
+done
+shift $((OPTIND - 1))
+layout=${1:-}
+
+win=$(tmux display-message -p ${target:+-t "$target"} '#{window_id}')
+n=$(tmux display-message -p -t "$win" '#{window_panes}')
+
+if [ -z "$layout" ]; then
+  if [ -n "$main" ]; then
+    layout=main-vertical
+  else
+    case $n in
+      1) exit 0 ;;
+      2) layout=even-horizontal ;;
+      3) layout=main-vertical ;;
+      *) layout=tiled ;;
+    esac
+  fi
+fi
+
+if [ -n "$main" ]; then
+  first=$(tmux list-panes -t "$win" -F '#{pane_id}' | head -1)
+  [ "$main" = "$first" ] || tmux swap-pane -d -s "$main" -t "$first"
+fi
+
+case $layout in
+  main-vertical) tmux set-option -w -t "$win" main-pane-width 60% ;;
+  main-horizontal) tmux set-option -w -t "$win" main-pane-height 60% ;;
+esac
+
+tmux select-layout -t "$win" "$layout"
+echo "$win $n panes -> $layout${main:+ (main $main)}"
