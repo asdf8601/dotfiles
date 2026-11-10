@@ -36,3 +36,18 @@ the Samsung TV's home screen app, and `free-my-tv update` to keep it current.
 Same for the Fire TV: [`docs/dumbtv-fire-tv.md`](docs/dumbtv-fire-tv.md) — the
 ads and tracking are off and dumbtv home owns the HOME button; `dumbtv status`,
 `dumbtv pass`, `dumbtv restore`.
+
+### Keyboard types `~` as `±`
+
+macOS saved the keyboard as ISO instead of ANSI. This usually happens when the
+setup assistant runs for a new keyboard and the key gets pressed on the wrong one.
+Set the keyboard back to ANSI (`40`; `41` is ISO). The key is
+`<idProduct>-<idVendor>-0`, and the Dactyl-Manuform's is `13622-17485-0`:
+
+```bash
+defaults read /Library/Preferences/com.apple.keyboardtype
+osascript -e 'do shell script "defaults write /Library/Preferences/com.apple.keyboardtype keyboardtype -dict-add \"13622-17485-0\" -int 40" with administrator privileges'
+```
+
+Then unplug the keyboard and plug it back in. To find another keyboard's ids:
+`ioreg -p IOUSB -l -w0 | grep -E '"USB Product Name"|"idVendor"|"idProduct"'`.
