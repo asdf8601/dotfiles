@@ -741,4 +741,5 @@ esac
 # pnpm end
 
 # Claude Code for adapting.dev (separate account and configuration).
-alias cca='CLAUDE_CONFIG_DIR="$HOME/.claude-adapting" claude'
+alias ca='CLAUDE_CONFIG_DIR="$HOME/.claude-adapting" claude'
+alias cx='CLAUDE_CONFIG_DIR="$HOME/.claude-mmngreco" claude'
